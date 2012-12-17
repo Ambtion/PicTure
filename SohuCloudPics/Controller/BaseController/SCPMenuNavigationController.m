@@ -63,9 +63,9 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 
 - (void)customeNavigationBar
 {
-    self.view.backgroundColor = [UIColor clearColor];
-    [self.navigationBar setBackgroundImage:[[UIImage imageNamed:@"navigation_bar.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationBar setTranslucent:YES];
+//    self.view.backgroundColor = [UIColor clearColor];
+//    [self.navigationBar setBackgroundImage:[[UIImage imageNamed:@"navigation_bar.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationBar setTranslucent:YES];
 }
 
 - (void)viewDidUnload
@@ -245,7 +245,6 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 {
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
     //    [self.ribbonView setHidden:NO];
-    
 }
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag

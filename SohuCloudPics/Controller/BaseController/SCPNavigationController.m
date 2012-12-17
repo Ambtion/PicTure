@@ -52,7 +52,6 @@
     //        anime.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     //        [self.view.layer addAnimation:anime forKey:@"push"];
     //    }
-    
     [super pushViewController:viewController animated:animated];
 }
 

@@ -71,17 +71,10 @@
     _pullingController.tableView.dataSource = self;
     _pullingController.headView.datasouce = self;
     [self.view addSubview:_pullingController.view];
-    [self updateBannerStrings];
     [self initNavigationItem];
     
 }
-- (void)updateBannerStrings
-{
-    self.bannerLeftString = [NSString stringWithFormat:@"共有 %d 张图片", self.albumData.photoNum];
-    self.bannerRightString = [NSString stringWithFormat:@"%d次浏览", self.albumData.viewCount];
-    [self.pullingController.headView BannerreloadDataSource];
-    
-}
+
 - (void)initNavigationItem
 {
     /* customize backButtonItem */
@@ -177,9 +170,7 @@
         
 		[_photoList addObject:photo];
 		[photo release];
-	}
-    [self updateBannerStrings];
-    
+	}    
 	[_pullingController reloadDataSourceWithAniamtion:NO];
 	[_pullingController refreshDoneLoadingTableViewData];
 }
@@ -270,18 +261,22 @@
     NSMutableArray * photoArray = [NSMutableArray arrayWithCapacity:0];
     NSMutableArray * uploadArray = [NSMutableArray arrayWithCapacity:0];
     
-    for (SCPPhoto * ob in _imagesToDel){
+    for (SCPPhoto * ob in [_imagesToDel allObjects]){
         if (!ob.photoUrl) {
             [uploadArray addObject:ob];
         }else{
             [photoArray addObject:ob];
         }
     }
+    [_imagesToDel removeAllObjects];
+    [self comeBackToStateNomal];
+
     if (uploadArray.count)
         [self removeTask:uploadArray];
     if (photoArray.count)
         [self deletePhoto:photoArray];
-    [self comeBackToStateNomal];
+    
+    
 }
 - (BOOL)removeTask:(NSArray *)array
 {
@@ -302,11 +297,15 @@
     if (unitArray.count){
         [[SCPUploadTaskManager currentManager] cancelupLoadWithAlbumID:_albumData.albumId WithUnit:unitArray];
     }
+    for (UIImage * image in self.thumbnailArray) {
+        NSLog(@"after Remvoe thunmnail:%@",image);
+    }
     taskTotal = self.thumbnailArray.count;
     self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:_albumData.albumId];
     [_photoList removeObjectsInArray:array];
-    [self refresh];
+    [self.pullingController reloadDataSourceWithAniamtion:NO];
     return YES;
+    
 }
 - (void)deletePhoto:(NSArray *)photoArray
 {
@@ -315,18 +314,23 @@
         NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
         for (SCPPhoto * photo in photoArray)
             [array addObject:photo.photoID];
+        NSLog(@"%@",array);
         NSLog(@"%s end",__FUNCTION__);
-
         [_request deletePhotosWithUserId:[SCPLoginPridictive currentUserId] folderId:self.albumData.albumId photoIds:array success:^(NSString *response) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                for (SCPPhoto * photo in photoArray){
+                    if ([_photoList indexOfObject:photo] < taskTotal){
+                        [self.thumbnailArray removeObjectAtIndex:taskTotal -[_photoList indexOfObject:photo] - 1];
+                        taskTotal = self.thumbnailArray.count;
+                    }
+                }
                 //删除任务和显示界面窗口
+                self.albumData.photoNum -= photoArray.count;
                 [_photoList removeObjectsInArray:photoArray];
                 UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_backButton];
                 self.navigationItem.leftBarButtonItem = item;
                 [item release];
-                self.albumData.photoNum -= photoArray.count;
-                [self updateBannerStrings];
-                [self refresh];
+                [self.pullingController reloadDataSourceWithAniamtion:NO];
             });
         }];
     }
@@ -366,7 +370,7 @@
     [self.pullingController openDataChangeFunction];
     [_tasksToDel removeAllObjects];
     [_imagesToDel removeAllObjects];
-    [_pullingController.tableView reloadData];
+    [self.pullingController reloadDataSourceWithAniamtion:NO];
     CATransition *animation = [CATransition animation];
     animation.type = kCATransitionMoveIn;
     animation.subtype = kCATransitionFromLeft;
@@ -421,6 +425,7 @@
             }
             //设置图片
             [[cell imageViewAt:i] setImage:[self.thumbnailArray objectAtIndex:taskTotal - tag.integerValue - 1]];
+            NSLog(@"Cell Image:%@ %d",[self.thumbnailArray objectAtIndex:taskTotal - tag.integerValue - 1],tag.integerValue);
             //当前任务 设置进度条
             if (tag.integerValue == _uploadTaskList.taskList.count - 1) {
                 [self.uploadTaskList.currentTask.request setUploadProgressDelegate:[cell.progViewList objectAtIndex:i]];
@@ -512,18 +517,18 @@
         [self.thumbnailArray removeObjectAtIndex:taskTotal - alertView.tag - 1];
         taskTotal--;
         self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:_albumData.albumId];
-        [self.pullingController.tableView reloadData];
+        [self.pullingController reloadDataSourceWithAniamtion:NO];
     }
 }
 #pragma mark -
 #pragma mark BannerDataSource
 - (NSString *)bannerDataSouceLeftLabel
 {
-    return self.bannerLeftString;
+    return [NSString stringWithFormat:@"共有%d张图片", self.albumData.photoNum];
 }
 - (NSString *)bannerDataSouceRightLabel
 {
-    return self.bannerRightString;
+    return [NSString stringWithFormat:@"%d次浏览", self.albumData.viewCount];
 }
 
 #pragma mark -
@@ -569,16 +574,14 @@
 }
 - (void)albumTaskOver:(NSNotification *)notification
 {
-    //    [self.curProgreeeView setHidden:YES];
-    //    self.curProgreeeView = nil;
-    //    [self refresh];
+//    [self refresh];
 }
 - (void)albumChange:(NSNotification *)notification
 {
     
     if (!taskTotal )  return;
     NSDictionary * requsetInfo = [[[notification userInfo] objectForKey:@"RequsetInfo"] objectForKey:@"data"];
-    NSLog(@"Task %d, finished %d",taskTotal, self.uploadTaskList.taskList.count);
+    if (requsetInfo) self.albumData.photoNum++;
     SCPPhoto * photo = [_photoList objectAtIndex:self.uploadTaskList.taskList.count];
     photo.photoID = [requsetInfo objectForKey:@"id"];
     photo.photoUrl = [requsetInfo objectForKey:@"big_url"];

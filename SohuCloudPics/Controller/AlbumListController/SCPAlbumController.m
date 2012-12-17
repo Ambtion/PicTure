@@ -210,8 +210,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
-    [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
+    SCPMenuNavigationController * menuController = (SCPMenuNavigationController *)self.navigationController;
+    [menuController setDisableMenu:YES];
+    [menuController setDisableRibbon:YES];
+//    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
+//    [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
     [self refresh];
 }
 

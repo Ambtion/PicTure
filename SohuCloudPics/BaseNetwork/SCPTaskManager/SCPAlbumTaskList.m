@@ -96,7 +96,8 @@
 {
     [request cancel];
     [request clearDelegatesAndCancel];
-    [self.taskList removeObjectAtIndex:0];
+    if (self.taskList.count)
+        [self.taskList removeObjectAtIndex:0];
     if ([_delegate respondsToSelector:@selector(albumTask:requsetFinish:)]) {
         [_delegate performSelector:@selector(albumTask:requsetFinish:) withObject:self withObject:request];
     }

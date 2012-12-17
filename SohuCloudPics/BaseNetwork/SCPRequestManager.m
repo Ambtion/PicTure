@@ -520,8 +520,8 @@
 }
 - (BOOL)whetherFollowUs:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success
 {
-    NSString *url = [NSString stringWithFormat:API_BASE "/isFollowing/%@?yuntu_token=%@",following_Id,useId];
-    
+    NSString *url = [NSString stringWithFormat:API_BASE "/v1/friendships?user_id=%@&yuntu_token=%@",following_Id,useId];
+    NSLog(@"%@",url);
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     [request addRequestHeader:@"accept" value:@"application/json"];
     [request setTimeOutSeconds:5];

@@ -11,11 +11,11 @@
 
 @class SCPFollowCommonCell;
 typedef  enum  {
-    FLLOW_ME = 0,
-    FLLOW_BUYME = 1,
-    FLLOW_TOGETHER = 2,
-    FLLOW_NONE = 3
-}FLLOW_STATE;
+    FOLLOW_ME = 0,
+    FOLLOW_BUYME = 1,
+    FOLLOW_TOGETHER = 2,
+    FOLLOW_NONE = 3
+}FOLLOW_STATE;
 
 @interface SCPFollowCommonCellDataSource : NSObject
 @property(nonatomic,retain)NSDictionary * allInfo;
@@ -23,7 +23,7 @@ typedef  enum  {
 @property(nonatomic,retain)NSString * title;
 @property(nonatomic,assign)NSInteger pictureCount;
 @property(nonatomic,assign)NSInteger albumCount;
-@property(nonatomic,assign)FLLOW_STATE fllowState;
+@property(nonatomic,assign)FOLLOW_STATE followState;
 @end
 
 @protocol SCPFollowCommonCellDelegate <NSObject>

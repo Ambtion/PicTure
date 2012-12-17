@@ -57,7 +57,7 @@
         dataSource.coverImage = [dic objectForKey:@"icon"];
         dataSource.pictureCount = [[dic objectForKey:@"photoNum"] intValue];
         dataSource.albumCount = [[dic objectForKey:@"publicFolders"] intValue];
-        dataSource.fllowState = FLLOW_ME;
+        dataSource.followState = FOLLOW_ME;
         [_dataSource addObject:dataSource];
         [dataSource release];
     }

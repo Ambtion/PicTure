@@ -22,7 +22,6 @@
 
 - (void)dealloc
 {
-    
     if (_refreshButton) {
         [_refreshButton release];
     }

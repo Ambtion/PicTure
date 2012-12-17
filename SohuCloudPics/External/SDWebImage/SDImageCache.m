@@ -323,6 +323,7 @@ static natural_t get_free_memory(void)
         // ...notify delegate immediately, no need to go async
         if ([delegate respondsToSelector:@selector(imageCache:didFindImage:forKey:userInfo:)])
         {
+            
             NSString * Cache;
             
             [delegate imageCache:self didFindImage:image forKey:@"Cache" userInfo:info];

@@ -269,7 +269,7 @@ done:
     [[SCPUploadTaskManager currentManager] addTaskList:album];
     
     //为了给上传任务预留点时间;
-    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.5];
+    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.0];
 }
 #pragma mark Back
 - (void)backTotop:(UIButton*)button

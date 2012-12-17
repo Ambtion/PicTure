@@ -340,6 +340,7 @@
 - (void)MyPersonalCell:(MyPersonalCell *)cell followingButtonClicked:(id)sender
 {
     if (![self isLogin]) return;
+    NSLog(@"%s",__FUNCTION__);
     UINavigationController *nav = _controller.navigationController;
     SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]];
     [nav pushViewController:ctrl animated:YES];

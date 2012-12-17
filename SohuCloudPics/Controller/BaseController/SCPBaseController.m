@@ -31,13 +31,12 @@
         naviRecognizerDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showNavigationBar)];
         naviRecognizerDown.direction = UISwipeGestureRecognizerDirectionDown;
         naviRecognizerDown.delegate = self;
-        
         naviRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideNavigationBar)];
         naviRecognizerUp.direction = UISwipeGestureRecognizerDirectionUp;
         naviRecognizerUp.delegate = self;
         
-        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera)];
-        slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
+//        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera)];
+//        slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
     }
     return self;
 }
@@ -53,19 +52,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self.view addGestureRecognizer:naviRecognizerDown];
     [self.view addGestureRecognizer:naviRecognizerUp];
 //    [self.view addGestureRecognizer:slideRecognizerR2L];
-    
     needHideNavigationBar = FALSE;
 }
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self showNavigationBar];
+//    [self showNavigationBar];
 }
 
 - (void)onBackBtnClicked:(id)sender
@@ -81,6 +76,7 @@
 }
 #pragma mark -
 #pragma mark delegate
+
 //- (void)showCamera
 //{
 //    CameraViewController *phc = [[CameraViewController alloc] init];
@@ -88,7 +84,6 @@
 //    [self.navigationController pushViewController:phc animated:YES];
 //    [phc release];
 //}
-
 #pragma mark -
 #pragma switchNavigationBar
 - (void)switchNavigationBar:(float)yOffset scrollView:(UIScrollView *)scrollView
