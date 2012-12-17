@@ -15,7 +15,7 @@
 @synthesize taskList = _taskList;
 @synthesize albumId = _albumId;
 @synthesize isUpLoading = _isUpLoading;
-@synthesize operationQuene = _operationQuene;
+//@synthesize operationQuene = _operationQuene;
 @synthesize delegate = _delegate;
 
 @synthesize currentTask = _currentTask;
@@ -26,8 +26,8 @@
     [self.currentTask.request cancel];
     [self.currentTask.request clearDelegatesAndCancel];
     self.currentTask = nil;
-    [NSObject cancelPreviousPerformRequestsWithTarget:_operationQuene];
-    self.operationQuene  = nil;
+//    [NSObject cancelPreviousPerformRequestsWithTarget:_operationQuene];
+//    self.operationQuene  = nil;
     [super dealloc];
 }
 -(id)initWithTaskList:(NSMutableArray *)taskList album_id:(NSString *)albumID
@@ -38,11 +38,11 @@
         self.albumId = albumID;
         _isUpLoading = NO;
         
-        _operationQuene = [[ASINetworkQueue  alloc] init];
-        [_operationQuene setShouldCancelAllRequestsOnFailure:NO];
-        [_operationQuene setShowAccurateProgress:NO];
-        _operationQuene.maxConcurrentOperationCount = 1;
-        _operationQuene.delegate = self;
+//        _operationQuene = [[ASINetworkQueue  alloc] init];
+//        [_operationQuene setShouldCancelAllRequestsOnFailure:NO];
+//        [_operationQuene setShowAccurateProgress:NO];
+//        _operationQuene.maxConcurrentOperationCount = 1;
+//        _operationQuene.delegate = self;
     }
     return self;
 }
@@ -54,35 +54,27 @@
 {
     if (!self.currentTask) self.currentTask = [self.taskList objectAtIndex:0];
     self.currentTask.request = [self getUploadRequest:nil];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit *unit) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
-            [_operationQuene addOperation:self.currentTask.request];
-            [_operationQuene go];
+            [self.currentTask.request startAsynchronous];
             NSLog(@"addTaskUnit :%@",self.currentTask.request);
         });
     } failture:^(NSError *error, SCPTaskUnit *unit) {
         NSLog(@"%s, %@",__FUNCTION__,error);
         unit.taskState = UPLoadStatusFailedUpload;
     }];
-//    });
+    });
     return;
 }
 
 - (void)go
 {
     NSLog(@"%s",__FUNCTION__);
-    [_operationQuene go];
     [self addTaskUnitToQuene];
 }
 
-- (void)setSuspended
-{
-    [_operationQuene cancelAllOperations];
-    [_operationQuene setSuspended:YES];
-    [NSObject cancelPreviousPerformRequestsWithTarget:_operationQuene];
-}
 - (void)cancelupLoadWithTag:(NSArray *)unitArray
 {
     NSLog(@"requset cancel");

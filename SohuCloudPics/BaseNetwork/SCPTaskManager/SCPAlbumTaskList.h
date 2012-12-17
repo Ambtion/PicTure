@@ -35,7 +35,7 @@
 @property (assign, nonatomic) BOOL isUpLoading;
 -(id)initWithTaskList:(NSMutableArray *)taskList album_id:(NSString *)albumID;
 
-@property (nonatomic,retain)ASINetworkQueue * operationQuene;
+//@property (nonatomic,retain)ASINetworkQueue * operationQuene;
 
 //队列任务管理
 - (void)go;

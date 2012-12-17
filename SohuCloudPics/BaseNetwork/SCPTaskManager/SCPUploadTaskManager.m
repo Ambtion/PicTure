@@ -149,7 +149,9 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 {
     NSLog(@"Operation cancel");
     if ([self.curTask.albumId isEqualToString:albumID]) {
-        [self.curTask.operationQuene setSuspended:YES];
+        [self.curTask.currentTask.request cancel];
+        [self.curTask.currentTask.request clearDelegatesAndCancel];
+        [self.taskList removeObject:self.curTask];
         [self albumTaskQueneFinished:nil];
         return;
     }
@@ -188,11 +190,11 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 - (void)albumTaskQueneFinished:(SCPAlbumTaskList *)albumTaskList
 {
     NSLog(@"Finished one Operation");
+    if (!albumTaskList) return;
     [_taskList removeObjectAtIndex:0];
     [self removeAlbunInfo:self.curTask.albumId];
     self.curTask = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:ALBUMUPLOADOVER object:nil userInfo:[_taskDic objectForKey:self.curTask.albumId]];
-    
     if (_taskList.count) {
         [self gotoNext];
     }else{
