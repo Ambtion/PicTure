@@ -37,12 +37,7 @@
         self.taskList = taskList;
         self.albumId = albumID;
         _isUpLoading = NO;
-        
-//        _operationQuene = [[ASINetworkQueue  alloc] init];
-//        [_operationQuene setShouldCancelAllRequestsOnFailure:NO];
-//        [_operationQuene setShowAccurateProgress:NO];
-//        _operationQuene.maxConcurrentOperationCount = 1;
-//        _operationQuene.delegate = self;
+ 
     }
     return self;
 }
@@ -54,18 +49,18 @@
 {
     if (!self.currentTask) self.currentTask = [self.taskList objectAtIndex:0];
     self.currentTask.request = [self getUploadRequest:nil];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit *unit) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
-            [self.currentTask.request startAsynchronous];
-            NSLog(@"addTaskUnit :%@",self.currentTask.request);
-        });
-    } failture:^(NSError *error, SCPTaskUnit *unit) {
-        NSLog(@"%s, %@",__FUNCTION__,error);
-        unit.taskState = UPLoadStatusFailedUpload;
-    }];
-    });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit *unit) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
+                if (!self.currentTask.request.isCancelled)
+                    [self.currentTask.request startAsynchronous];
+            });
+        } failture:^(NSError *error, SCPTaskUnit *unit) {
+            NSLog(@"%s, %@",__FUNCTION__,error);
+            unit.taskState = UPLoadStatusFailedUpload;
+        }];
+//    });
     return;
 }
 
@@ -77,7 +72,9 @@
 
 - (void)cancelupLoadWithTag:(NSArray *)unitArray
 {
-    NSLog(@"requset cancel");
+    NSLog(@"requset cancel %d",_taskList.count);
+    for (SCPTaskUnit * unit in _taskList)
+        NSLog(@"original::unit ::%@",unit.thumbnail);
     for (SCPTaskUnit * unit in unitArray) {
         if ([self.currentTask isEqual:unit]) {
             [self.currentTask.request cancel];
@@ -85,12 +82,13 @@
             [self requestFinished:nil];
             continue;
         }
-        for (int i = _taskList.count - 1 ; i >=0;i--) {
+        for (int i = _taskList.count - 1 ; i >= 0;i--) {
             SCPTaskUnit * tss = [_taskList objectAtIndex:i];
             if ([tss isEqual:unit]) [self.taskList removeObject:tss];
         }
     }
-
+    for (SCPTaskUnit * unit in _taskList)
+        NSLog(@"after Remove::unit ::%@",unit.thumbnail);
 }
 #pragma mark - Requsetdelgate
 

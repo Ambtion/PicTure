@@ -194,6 +194,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
     [_taskList removeObjectAtIndex:0];
     [self removeAlbunInfo:self.curTask.albumId];
     self.curTask = nil;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:ALBUMUPLOADOVER object:nil userInfo:[_taskDic objectForKey:self.curTask.albumId]];
     if (_taskList.count) {
         [self gotoNext];
@@ -205,9 +206,9 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 - (void)albumTask:(SCPAlbumTaskList *)albumTaskList requsetFinish:(ASIHTTPRequest *)requset
 {
     [self finishOneRequsetWith:self.curTask];
+    NSLog(@"%@",_taskDic);
     NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[_taskDic objectForKey:self.curTask.albumId]];
-
-    if (requset && ![[requset responseString] JSONValue])
+    if (requset && [requset responseString] && [[requset responseString] JSONValue])
         [dic setObject:[[requset responseString] JSONValue] forKey:@"RequsetInfo"];
     [[NSNotificationCenter defaultCenter] postNotificationName:ALBUMTASKCHANGE object:nil userInfo:dic];
 
