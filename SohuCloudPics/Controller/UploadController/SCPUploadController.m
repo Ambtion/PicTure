@@ -1,0 +1,444 @@
+//
+//  SCPUploadController.m
+//  SohuCloudPics
+//
+//  Created by mysohu on 12-8-31.
+//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//
+
+#import "SCPUploadController.h"
+
+#import "SCPUploadCell.h"
+#import "SCPMenuNavigationController.h"
+
+//#import "SCPTaskManager.h"
+
+
+#import "SCPUploadTaskManager.h"
+
+@implementation SCPUploadController
+
+@synthesize keyboardHeight = _keyboardHeight;
+
+//@synthesize labelList = _labelList;
+@synthesize curAlbumID = _curAlbumID;
+@synthesize albumList = _albumList;
+//@synthesize uploadAlbum = _uploadAlbum;
+
+@synthesize uploadHeader = _uploadHeader;
+@synthesize uploadTableView = _uploadTableView;
+@synthesize labelBox = _labelBox;
+@synthesize labelChooser = _labelChooser;
+@synthesize descCell = _descCell;
+
+- (void)dealloc
+{
+    [_requsetManager release];
+    [_preLabelObjs release];
+    [_imageList release];
+    [_cells release];
+    
+    //    [_labelList release];
+    self.curAlbumID = nil;
+    [_albumList release];
+    //    [_uploadAlbum release];
+    
+    [_uploadHeader release];
+    [_uploadTableView release];
+    [_labelBox release];
+    [_labelChooser release];
+    [_descCell release];
+    
+    [super dealloc];
+}
+#pragma mark - init
+- (id)initWithImageToUpload:(NSArray *)imageList : (id)decontrller
+{
+    
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        controller = decontrller;
+        //        if (_preLabelObjs == nil) {
+        //            _preLabelObjs = [[NSMutableArray alloc] init];
+        //            SCPLabelObject *obj = nil;
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"快乐树" colorStyle:SCPLabelColorStyleBlue];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"生活" colorStyle:SCPLabelColorStyleGreen];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"春天" colorStyle:SCPLabelColorStyleRed];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"旅行" colorStyle:SCPLabelColorStyleGreen];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"自拍" colorStyle:SCPLabelColorStyleBlue];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"美女" colorStyle:SCPLabelColorStyleRed];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"帅哥" colorStyle:SCPLabelColorStyleRed];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"美食" colorStyle:SCPLabelColorStyleBlue];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"晒车" colorStyle:SCPLabelColorStyleGreen];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"运动" colorStyle:SCPLabelColorStyleBlue];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"随心畅拍" colorStyle:SCPLabelColorStyleGreen];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"手机" colorStyle:SCPLabelColorStyleRed];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"无极限" colorStyle:SCPLabelColorStyleGreen];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"动漫" colorStyle:SCPLabelColorStyleBlue];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"手绘插画" colorStyle:SCPLabelColorStyleRed];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //
+        //            obj = [[SCPLabelObject alloc] initWithContent:@"数码" colorStyle:SCPLabelColorStyleBlue];
+        //            [_preLabelObjs addObject:obj];
+        //            [obj release];
+        //        }
+        
+        _requsetManager = [[SCPRequestManager alloc] init];
+        _imageList = [imageList retain];
+        int count = _imageList.count;
+        NSMutableArray *mCells = [[NSMutableArray alloc] initWithCapacity:count];
+        for (int i = 0; i < count; ++i) {
+            SCPUploadCell *cell = [[SCPUploadCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.uploadController = self;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.portraitImageView.image = [[_imageList objectAtIndex:i] objectForKey:@"UIImagePickerControllerThumbnail"];
+            [mCells addObject:cell];
+            [cell release];
+        }
+        _cells = mCells;
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    _uploadHeader = [[SCPUploadHeader alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    _uploadHeader.selectionStyle = UITableViewCellEditingStyleNone;
+    _uploadHeader.delegate = self;
+    //    _labelBox = [[SCPLabelBox alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    //    _labelBox.selectionStyle = UITableViewCellEditingStyleNone;
+    //    _labelBox.delegate = self;
+    
+    //    _displayingLabels = NO;
+    //    _labelChooser = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    //    _labelChooser.selectionStyle = UITableViewCellEditingStyleNone;
+    //    _labelChooser.clipsToBounds = YES;
+    //    SCPLabelChooser *chooser = [[SCPLabelChooser alloc] initWithLabels:_preLabelObjs];
+    //    chooser.clipsToBounds = YES;
+    //    chooser.autoresizesSubviews = YES;
+    //    chooser.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    //    chooser.delegate = self;
+    //    [_labelChooser addSubview:chooser];
+    //    _labelChooser.frame = CGRectZero;
+    //    [chooser release];
+    
+    _descCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    _descCell.selectionStyle = UITableViewCellEditingStyleNone;
+    _descCell.textLabel.font = [UIFont systemFontOfSize:15];
+    _descCell.textLabel.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
+    _descCell.textLabel.text = @"请对图片添加描述";
+    _descCell.frame = CGRectMake(0, 0, 320, 20);
+    
+    _uploadTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    _uploadTableView.autoresizesSubviews = YES;
+    _uploadTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
+    _uploadTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _uploadTableView.dataSource = self;
+    _uploadTableView.delegate = self;
+    [self.view addSubview:_uploadTableView];
+    
+    [self customizeNavigationBar];
+}
+- (void)customizeNavigationBar
+{
+    UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(15, 10, 26, 26);
+    [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
+    [backButton addTarget:self action:@selector(backTotop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:backButton];
+    
+    UIButton* selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
+    [selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
+    [selectButton addTarget:self action:@selector(dismissModalView:) forControlEvents:UIControlEventTouchUpInside];
+    selectButton.frame = CGRectMake(284 - 5, 10, 26, 26);
+    [self.view addSubview:selectButton];
+    
+}
+
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
+        [((SCPMenuNavigationController *) self.navigationController) setDisableMenu:YES];
+    if (!self.navigationController.navigationBar.hidden) {
+        [self.navigationController.navigationBar setHidden:YES];
+    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)resignFirstResponderForAll
+{
+    [_uploadHeader dismissAlbumChooseTable];
+    
+    for (UIView *view in _uploadTableView.subviews) {
+        if ([view class] == [SCPUploadCell class]) {
+            for (view in view.subviews) {
+                if ([view class] == [UITextView class] && [view isFirstResponder]) {
+                    [view resignFirstResponder];
+                    goto done;
+                }
+            }
+        }
+    }
+    
+done:
+    return;
+}
+
+- (void)onUploadTableViewTapped:(id)sender
+{
+    [self resignFirstResponderForAll];
+}
+#pragma mark  UPData OK
+- (void)dismissModalView:(UIButton*)button
+{
+
+    if (!self.curAlbumID) {
+        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"请选择专辑" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+        [alterView show];
+        return;
+    }
+    
+    NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
+    for (int i = 0; i < _imageList.count; i++) {
+        SCPTaskUnit * unit = [[SCPTaskUnit alloc] init];
+        NSDictionary * dic = [_imageList objectAtIndex:i];
+        unit.asseetUrl = [dic objectForKey:@"UIImagePickerControllerRepresentationURL"];
+        unit.thumbnail = [dic objectForKey:@"UIImagePickerControllerThumbnail"];
+        [array addObject:unit];
+        [unit release];
+    }
+    
+    SCPAlbumTaskList * album = [[[SCPAlbumTaskList alloc] initWithTaskList:array album_id:self.curAlbumID] autorelease];
+    [[SCPUploadTaskManager currentManager] addTaskList:album];
+    
+    //为了给上传任务预留点时间;
+    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.5];
+}
+#pragma mark Back
+- (void)backTotop:(UIButton*)button
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+#pragma mark -
+#pragma mark SCPUploadDelegate
+- (void)uploadHeader:(SCPUploadHeader *)header selectAlbum:(NSString *)albumID
+{
+    self.curAlbumID = albumID;
+}
+#pragma mark -
+#pragma mark SCPLabelBox delegate
+//- (void)SCPLabelBox:(SCPLabelBox *)labelBox addLabelButtonClicked:(id)sender
+//{
+//    [_uploadHeader dismissAlbumChooseTable];
+//
+//    if (!_displayingLabels) {
+//        _displayingLabels = YES;
+//        _labelBox.addLabelButton.selected = YES;
+//        [UIView beginAnimations:nil context:nil];
+//        [UIView setAnimationDuration:0.3];
+//        [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:_uploadTableView cache:YES];
+//        _labelChooser.frame = CGRectMake(0, 0, 320, 137);
+//        [UIView commitAnimations];
+//    }
+//
+//    [_uploadTableView beginUpdates];
+//    [_uploadTableView endUpdates];
+//}
+//
+//- (void)SCPLabelChooser:(SCPLabelChooser *)chooser foldButtonClicked:(id)sender
+//{
+//    [_uploadHeader dismissAlbumChooseTable];
+//
+//    if (_displayingLabels) {
+//        _displayingLabels = NO;
+//        _labelBox.addLabelButton.selected = NO;
+//        [UIView beginAnimations:nil context:nil];
+//        [UIView setAnimationDuration:0.3];
+//        [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:_uploadTableView cache:YES];
+//        _labelChooser.frame = CGRectZero;
+//        [UIView commitAnimations];
+//    }
+//
+//    [_uploadTableView beginUpdates];
+//    [_uploadTableView endUpdates];
+//}
+//
+//// delete labels from the box
+//- (void)SCPLabelBox:(SCPLabelBox *)labelBox clickedAtIndex:(NSInteger)index label:(id)sender
+//{
+//    [_uploadHeader dismissAlbumChooseTable];
+//
+//    [labelBox removeLabelAtIndex:index];
+//
+//    [_uploadTableView beginUpdates];
+//    [_uploadTableView endUpdates];
+//}
+//
+//- (void)SCPLabelChooser:(SCPLabelChooser *)chooser clickedAtObj:(SCPLabelObject *)object
+//{
+//    [_uploadHeader dismissAlbumChooseTable];
+//
+//    if ([_labelBox labelObjectContains:object]) {
+//        return;
+//    }
+//
+//    [_labelBox addLabel:object];
+//
+//    [_uploadTableView beginUpdates];
+//    [_uploadTableView endUpdates];
+//
+//}
+
+#pragma mark -
+#pragma mark keyboard delegate
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    [_uploadHeader dismissAlbumChooseTable];
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGRect frame = self.view.frame;
+    frame.size.height -= keyboardSize.height;
+    
+    self.keyboardHeight = keyboardSize.height;
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
+    _uploadTableView.frame = frame;
+    [UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    self.keyboardHeight = 0;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
+    _uploadTableView.frame = self.view.frame;
+    [UIView commitAnimations];
+}
+
+- (void)setViewMoveUp:(BOOL)moveUp
+{
+    
+}
+
+
+#pragma mark -
+#pragma mark tableViewDelegate & datasource
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    int row = indexPath.row;
+    
+    switch (row) {
+        case 0:
+            return _uploadHeader;
+            //        case 1:
+            //            return _labelBox;
+            //        case 1:
+            //            return _labelChooser;
+        case 1:
+            return _descCell;
+        default:
+            return [_cells objectAtIndex:row - 2];
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _cells.count + 2;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    int row = indexPath.row;
+    
+    switch (row) {
+            
+        case 0:
+            return _uploadHeader.frame.size.height;
+            //        case 1:
+            //            return _labelBox.frame.size.height;
+            //        case 1:
+            //            return _labelChooser.frame.size.height;
+        case 1:
+            return _descCell.frame.size.height;
+        default:
+            return ((SCPUploadCell *) [_cells objectAtIndex:row - 2]).frame.size.height;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self resignFirstResponderForAll];
+}
+
+#pragma mark
+#pragma mark UIScrollView Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_uploadHeader dismissAlbumChooseTable];
+}
+
+@end

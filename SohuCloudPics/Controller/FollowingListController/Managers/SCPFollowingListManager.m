@@ -1,0 +1,221 @@
+//
+//  SCPFollowingListManager.m
+//  SohuCloudPics
+//
+//  Created by Chong Chen on 12-9-6.
+//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//
+
+#import "SCPFollowingListManager.h"
+#import "SCPFollowingListViewController.h"
+
+#import "SCPPersonalPageViewController.h"
+
+@implementation SCPFollowingListManager
+
+@synthesize controller = _controller;
+
+- (void)dealloc
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_dataSource release];
+    [super dealloc];
+}
+
+- (id)initWithViewController:(SCPFollowingListViewController *)ctrl useID:(NSString *)useID
+{
+    self = [super init];
+    if (self) {
+        _user_ID = [useID retain];
+        _maxNum = 0;
+        _isLoading = NO;
+        _isinit = YES;
+        _willRefresh = YES;
+        _controller = ctrl;
+        _dataSource = [[NSMutableArray alloc] initWithCapacity:0];
+        _requestManger  = [[SCPRequestManager alloc] init];
+        _requestManger.delegate = self;
+    }
+    return self;
+}
+
+#pragma mark -
+#pragma mark
+- (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
+{
+    _maxNum = [[info objectForKey:@"totalCount"] intValue];
+    NSArray * array = [info objectForKey:@"friendViewList"];
+    if (_willRefresh)
+        [_dataSource removeAllObjects];
+    NSLog(@"%@",[array lastObject]);
+    for (int i = 0; i < array.count; i++) {
+        SCPFollowCommonCellDataSource * dataSource = [[SCPFollowCommonCellDataSource alloc] init];
+        NSDictionary * dic = [array objectAtIndex:i];
+        dic = [dic objectForKey:@"user"];
+        dataSource.allInfo = dic;
+        dataSource.title = [dic objectForKey:@"nickname"];
+        dataSource.coverImage = [dic objectForKey:@"icon"];
+        dataSource.pictureCount = [[dic objectForKey:@"photoNum"] intValue];
+        dataSource.albumCount = [[dic objectForKey:@"publicFolders"] intValue];
+        dataSource.fllowState = FLLOW_ME;
+        [_dataSource addObject:dataSource];
+        [dataSource release];
+    }
+    if (_isinit) {
+        _isinit = NO;
+        _isLoading = NO;
+        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+    }
+    if (_willRefresh) {
+        [self followedRefreshDataFinishLoad];
+    }else{
+        [self followedMoreDataFinishLoad];
+    }
+}
+#pragma mark - networkFailed
+- (void)requestFailed:(ASIHTTPRequest *)mangeger
+{
+    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"访问失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
+    [alterView show];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != 0) {
+        [self dataSourcewithRefresh:_willRefresh];
+    }else{
+        [self restNetWorkState];
+    }
+}
+- (void)restNetWorkState
+{
+    if (_willRefresh) {
+        [self followedRefreshDataFinishLoad];
+    }else{
+        [self followedMoreDataFinishLoad];
+    }
+    _willRefresh = YES;
+}
+#pragma mark - refresh Data
+- (void)dataSourcewithRefresh:(BOOL)isRefresh
+{
+    _isLoading = YES;
+    _willRefresh = isRefresh;
+    if(_willRefresh | !_dataSource.count){
+        [_requestManger getUserFollowingsWithUserID:_user_ID page:1];
+    }else{
+        NSLog(@"%d max: %d",[_dataSource count],_maxNum);
+        if (_maxNum <= [_dataSource count]) {
+            UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"已达到最大" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
+            [alterView show];
+            [self followedMoreDataFinishLoad];
+            return;
+        }
+        NSInteger pagenum = [_dataSource count] / 20;
+        [_requestManger getUserFollowingsWithUserID:_user_ID page:pagenum + 1];
+    }
+    
+}
+
+#pragma mark - dataChange
+#pragma mark refresh
+
+//1 点击 2 下拉 3 结束
+- (void)refreshData:(id)sender
+{
+    if (_isLoading) {
+        return;
+    }
+    
+    [self dataSourcewithRefresh:YES];
+}
+
+- (void)pullingreloadTableViewDataSource:(id)sender
+{
+    [self.controller.refreshButton rotateButton];
+    [self refreshData:nil];
+}
+
+- (void)followedRefreshDataFinishLoad
+{
+    _isLoading = NO;
+    [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+    [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
+    
+}
+#pragma mark more
+//1:下拉刷新 2:刷新结束
+
+- (void)pullingreloadMoreTableViewData:(id)sender
+{
+    [self dataSourcewithRefresh:NO];
+}
+- (void)followedMoreDataFinishLoad
+{
+    _isLoading = NO;
+    [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+    [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+    
+}
+
+#pragma mark -
+#pragma mark bannerDataSource
+- (NSString*)bannerDataSouceLeftLabel
+{
+    return [NSString stringWithFormat:@"跟随了%d人",_maxNum];
+}
+
+- (NSString*)bannerDataSouceRightLabel
+{
+    return nil;
+}
+#pragma mark -
+#pragma tableviewdataSouce
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if ( ( _maxNum <= [_dataSource count]) && !_isinit ) {
+        self.controller.pullingController.footView.hidden = YES;
+    }else{
+        self.controller.pullingController.footView.hidden = NO;
+    }
+    return _dataSource.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    SCPFollowCommonCell * commoncell = [tableView dequeueReusableCellWithIdentifier:@"COMMONCELL"];
+    if (commoncell == nil) {
+        commoncell = [[[SCPFollowCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"COMMONCELL"] autorelease];
+        commoncell.delegate = self;
+    }
+    commoncell.dataSource = [_dataSource objectAtIndex:indexPath.row];
+    return commoncell;
+}
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
+}
+#pragma mark -
+#pragma mark delegate For commonCell
+-(void)follweCommonCell:(SCPFollowCommonCell *)cell followButton:(UIButton *)button
+{
+    NSLog(@"followButton");
+    
+}
+-(void)follweCommonCell:(SCPFollowCommonCell *)cell followImage:(id)image
+{
+    SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:[NSString stringWithFormat:@"%@",[cell.dataSource.allInfo objectForKey:@"userId"]]]  autorelease];
+    [_controller.navigationController pushViewController:scp animated:YES];
+}
+
+@end

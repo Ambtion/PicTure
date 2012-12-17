@@ -1,0 +1,14 @@
+.DS_Store
+*.swp
+*.lock
+profile
+*~.nib
+build/
+DerivedData/
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+xcuserdata
+!xcshareddata
+*.moved-aside

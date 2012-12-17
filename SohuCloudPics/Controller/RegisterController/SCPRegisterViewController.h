@@ -1,0 +1,26 @@
+//
+//  SCPRegisterViewController.h
+//  SohuCloudPics
+//
+//  Created by Chong Chen on 12-9-12.
+//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "SCPSecondLayerController.h"
+#import "EmailTextField.h"
+
+@interface SCPRegisterViewController : SCPSecondLayerController
+{
+    UIImage *_checked, *_noChecked;
+}
+
+@property (strong, nonatomic) UIImageView *backgroundImageView;
+@property (strong, nonatomic) UIControl *backgroundControl;
+@property (strong, nonatomic) EmailTextField *usernameTextField;
+@property (strong, nonatomic) UITextField *passwordTextField;
+@property (strong, nonatomic) UITextField *nicknameTextField;
+@property (strong, nonatomic) UIButton *displayPasswordButton;
+@property (strong, nonatomic) UIButton *registerButton;
+
+@end
