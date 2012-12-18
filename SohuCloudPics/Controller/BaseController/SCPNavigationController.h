@@ -6,9 +6,10 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+// 主要是为了重载Navigation的转场动画....
+
 #import <UIKit/UIKit.h>
 
-// just for the animation
 @interface SCPNavigationController : UINavigationController
 
 @end

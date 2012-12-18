@@ -18,7 +18,6 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     return t;
 }
 
-
 @implementation SCPMenuNavigationController
 
 @synthesize disableMenu;
@@ -63,9 +62,9 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 
 - (void)customeNavigationBar
 {
-//    self.view.backgroundColor = [UIColor clearColor];
-//    [self.navigationBar setBackgroundImage:[[UIImage imageNamed:@"navigation_bar.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forBarMetrics:UIBarMetricsDefault];
-//    [self.navigationBar setTranslucent:YES];
+    //    self.view.backgroundColor = [UIColor clearColor];
+    //    [self.navigationBar setBackgroundImage:[[UIImage imageNamed:@"navigation_bar.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forBarMetrics:UIBarMetricsDefault];
+    //    [self.navigationBar setTranslucent:YES];
 }
 
 - (void)viewDidUnload
@@ -87,11 +86,11 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 #pragma initview
 - (void)initMenu
 {
-    
     // add 3DLayer
     [menuManager prepareView];
     menuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
     menuView.layer.sublayerTransform = CATransform3DMakePerspective(1000);
+    menuView.backgroundColor = [UIColor redColor];
     menuManager.naviView = self.view;
     
     [menuView setHidden:YES];
@@ -118,10 +117,6 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     self.ribbonView = menuManager.ribbon;
     [self.view addSubview:ribbonView];
     
-    //    self.ribbonViewFake = menuManager.ribbonFake;
-    //    [ribbonViewFake setHidden:YES];
-    //    [self.view addSubview:ribbonViewFake];
-    
     [self addGesTure];
     
 }
@@ -144,18 +139,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [tap release];
 }
 
-#pragma mark - Rotation
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
-- (BOOL)shouldAutorotate
-{
-    return [self.visibleViewController shouldAutorotate];
-}
-
 #pragma mark SwitchMenu
-
 - (void)switchMenu:(UIGestureRecognizer *)recognizer
 {
     if (menuManager.isMenuShowing) {
@@ -164,37 +148,29 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
         [self showMenu];
     }
 }
-
 - (void)showMenu
 {
-    if (disableMenu) {
-        return;
-    }
+    if (disableMenu) return;
     [menuManager showMenuWithRibbon];
 }
 
 - (void)hideMenu
 {
-    if (disableMenu) {
-        return;
-    }
+    if (disableMenu) return;
     [menuManager hideMenuWithRibbon:NO];
 }
 
-- (void)resetMenu
-{
-    disableRibbon = NO;
-    [self setNavigationBarHidden:NO];
-    [self setDisableMenus:NO];
-}
+//- (void)resetMenu
+//{
+//    disableRibbon = NO;
+//    [self setNavigationBarHidden:NO];
+//    [self setDisableMenus:NO];
+//}
 
 - (void)setDisableMenus:(BOOL)disable
 {
     
-    if (ribbonView) {
-        [ribbonView setHidden:disable];
-    }
-    NSLog(@"ribbioView %@",ribbonView);
+    if (ribbonView)  [ribbonView setHidden:disable];
     disableMenu = disable;
 }
 
@@ -202,26 +178,20 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 {
     [self.ribbonView setHidden:disable];
     disableRibbon = disable;
-    
 }
 
 
 - (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-    if (disableMenu) {
-        return;
-    }
-    if (disableRibbon) {
-        //        [super setNavigationBarHidden:hidden animated:animated];
-        return;
-    }
+    if (disableMenu)    return;
+    if (disableRibbon)  return;
+    
     if (!animated) {
         [super setNavigationBarHidden:hidden animated:animated];
         return;
     }
-    if (menuManager.isMoving) {
-        return;
-    }
+    if (menuManager.isMoving)  return;
+    
     if (hidden) {
         if (menuManager.isMenuShowing) {
             // 隐藏Menu和ribbon
@@ -232,31 +202,25 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
         }
     } else {
         NSLog(@"[self.ribbonViewFake setHidden:NO];");
-        
         if (!menuManager.isMenuShowing) {
             [menuManager showRibbonWithAnimation:YES];
-            [self performSelector:@selector(hideFake) withObject:nil afterDelay:0.3];
+            [self performSelector:@selector(restMenuViewLayer:) withObject:nil afterDelay:0.3];
         }
     }
     [super setNavigationBarHidden:hidden animated:animated];
 }
-
-- (void)hideFake
+- (void)restMenuViewLayer:(id)sendre
 {
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
-    //    [self.ribbonView setHidden:NO];
 }
-
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    [self hideFake];
     [self.menuManager hideMenuWithRibbon:NO];
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    
     [super pushViewController:viewController animated:animated];
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
 }
@@ -267,5 +231,10 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
     return vc;
 }
-
+- (void)resetMenu
+{
+    if ([self.menuManager isMenuShowing]) [self hideMenu];
+    [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
+    [self.menuManager resetMenu];
+}
 @end

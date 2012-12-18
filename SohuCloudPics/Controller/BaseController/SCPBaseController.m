@@ -34,7 +34,6 @@
         naviRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideNavigationBar)];
         naviRecognizerUp.direction = UISwipeGestureRecognizerDirectionUp;
         naviRecognizerUp.delegate = self;
-        
 //        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera)];
 //        slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
     }
@@ -57,12 +56,16 @@
 //    [self.view addGestureRecognizer:slideRecognizerR2L];
     needHideNavigationBar = FALSE;
 }
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
 //    [self showNavigationBar];
+//}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self showNavigationBar];
 }
-
 - (void)onBackBtnClicked:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -101,12 +104,10 @@
 
 - (void)showNavigationBar
 {
-    
-    if (self.navigationController.navigationBarHidden) {
+    if (self.navigationController.navigationBarHidden)
         [self.navigationController setNavigationBarHidden:NO animated:YES];
-    }
+    [((SCPMenuNavigationController *)self.navigationController) resetMenu];
 }
-
 - (void)hideNavigationBar {
     if ((!self.navigationController.navigationBarHidden)) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];

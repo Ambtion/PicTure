@@ -11,7 +11,7 @@
 #import "SCPPhotoDetailViewController.h"
 #import "SCPMenuNavigationController.h"
 
-#import "SCPWatiAlterView.h"
+//#import "SCPWatiAlterView.h"
 
 #define OFFSET 20
 
@@ -89,13 +89,12 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame useInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
+- (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         
         self.view.backgroundColor = [UIColor redColor];
-        
         _dataManager = dataManager;
         imageArray = [[NSMutableArray alloc] initWithCapacity:0];
         curImages = [[NSMutableArray alloc] initWithCapacity:0];

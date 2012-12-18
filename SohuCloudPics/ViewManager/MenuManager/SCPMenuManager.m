@@ -201,9 +201,6 @@ static NSString *menuPress[6] = {
 
 - (void)resetMenu
 {
-    [rootView setHidden:YES];
-    ribbon.frame = CGRectMake(260, -5, 55, 65);
-    [ribbon setHidden:NO];
     isMoving = FALSE;
     isMenuShowing = FALSE;
 }
@@ -245,7 +242,6 @@ static NSString *menuPress[6] = {
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (animated && isMenudone) {
-        
         SCPMainTabController *tabCtrl = [navController.childViewControllers objectAtIndex:0];
         [self hideMenuWithRibbon:NO];
         isMenudone = NO;
@@ -283,7 +279,6 @@ static NSString *menuPress[6] = {
 {
     [self hideMenuWithRibbon:NO];
     [self restIcon:1];
-    
     if (![SCPLoginPridictive isLogin]) {
         SCPLoginViewController * login = [[[SCPLoginViewController alloc] init] autorelease];
         login.delegate = self;
@@ -371,9 +366,7 @@ static NSString *menuPress[6] = {
 #pragma ribbion target
 - (void)showMenuWithRibbon
 {
-    if (isMenuShowing || isMoving) {
-        return;
-    }
+    if (isMenuShowing || isMoving) return;
     
     NSLog(@"showMenu");
     isMoving = TRUE;
@@ -467,9 +460,8 @@ static NSString *menuPress[6] = {
 }
 - (void)hideMenuWithRibbon:(BOOL)hideRibbon
 {
-    if (!isMenuShowing || isMoving) {
-        return;
-    }
+    NSLog(@"isMenudone :%d,isMoving :%d ",isMenudone, isMoving);
+    if (!isMenuShowing || isMoving)  return;
     NSLog(@"hideMenu");
     isMoving = TRUE;
     isMenuShowing = NO;

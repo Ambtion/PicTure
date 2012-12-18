@@ -80,31 +80,22 @@
     [view addSubview:_footView];
     _tableView.tableFooterView = view;
     [self.manager dataSourcewithRefresh:YES];
-    
-//    [self.manager showLoadingMore];
-//    [self.manager loadingMore:nil];
 }
 
 #pragma mark -
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
     [self.navigationItem setHidesBackButton:YES];
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(navigationBack:) forControlEvents:UIControlEventTouchUpInside];
     backButton.frame = CGRectMake(0, 0, 26, 26);
-    
-    UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
+    UIBarButtonItem * left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
-    
-    [((SCPMenuNavigationController *)self.navigationController) hideMenu];
-
+    [super viewWillAppear:animated];
 }
-
-
 - (void)navigationBack:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -112,13 +103,6 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    
-    self.tableView = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

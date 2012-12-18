@@ -27,8 +27,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         
-        
-        
         slideRecognizerL2R = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(switchTab)];
         slideRecognizerL2R.direction = UISwipeGestureRecognizerDirectionRight;
         [self.view addGestureRecognizer:slideRecognizerL2R];
@@ -171,7 +169,6 @@
         [menu restIcon:2];
     }
     [menu hideMenuWithRibbon:NO];
-
 }
 - (BOOL)shouldAutorotate
 {

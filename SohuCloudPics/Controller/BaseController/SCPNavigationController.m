@@ -14,8 +14,6 @@
 
 @implementation SCPNavigationController
 
-//@synthesize movableTitle;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -36,12 +34,6 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     //    if (animated) {

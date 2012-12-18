@@ -50,32 +50,28 @@
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationItem.hidesBackButton = YES;
+    [super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
     
     _refreshButton = [[RefreshButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
     [_refreshButton addTarget:self.manager action:@selector(refreshData:) forControlEvents:UIControlEventTouchUpInside];
-    
     UIBarButtonItem * right = [[[UIBarButtonItem alloc] initWithCustomView:_refreshButton] autorelease];
     self.navigationItem.rightBarButtonItem = right;
-    
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(navigationBack:) forControlEvents:UIControlEventTouchUpInside];
     backButton.frame = CGRectMake(0, 0, 26, 26);
-    
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
     
 }
-
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:NO];
-    [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];}
-
+//    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:NO]; menu应该保持隐藏状态
+    [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];
+}
 - (void)navigationBack:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];

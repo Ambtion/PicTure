@@ -57,7 +57,6 @@
     _emailLabel.textColor = [UIColor colorWithRed:0 green:0.4392 blue:0.8471 alpha:1];
     _emailLabel.backgroundColor = [UIColor clearColor];
     _emailLabel.text = _emailAddr;
-    
     _emailButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _emailButton.frame = CGRectMake(47, 237, 225, 35);
     [_emailButton setBackgroundImage:[UIImage imageNamed:@"linkin_email_btn_normal.png"] forState:UIControlStateNormal];
@@ -66,7 +65,6 @@
     _emailButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_emailButton setTitle:@"查看邮箱" forState:UIControlStateNormal];
     [_emailButton addTarget:self action:@selector(gotoEmail) forControlEvents:UIControlEventTouchUpInside];
-    
     [self.view addSubview:_backgroundImageView];
     [self.view addSubview:_emailLabel];
     [self.view addSubview:_emailButton];
@@ -76,7 +74,6 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-    
     self.backgroundImageView = nil;
     self.emailLabel = nil;
     self.emailButton = nil;

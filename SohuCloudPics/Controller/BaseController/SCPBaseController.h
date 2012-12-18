@@ -5,7 +5,7 @@
 //  Created by mysohu on 12-8-17.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
-
+// 定义手势,定义彩带总是出现(viewDidAppear)
 #import <UIKit/UIKit.h>
 
 #import "SCPLoginPridictive.h"

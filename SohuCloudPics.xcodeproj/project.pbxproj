@@ -289,7 +289,6 @@
 		C580281C164A3EE600A840D9 /* title_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = C5802813164A3EE600A840D9 /* title_settings.png */; };
 		C580281D164A3EE600A840D9 /* title_share_photos.png in Resources */ = {isa = PBXBuildFile; fileRef = C5802814164A3EE600A840D9 /* title_share_photos.png */; };
 		C585F78A163E19D4003C2303 /* EdtingShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = C585F789163E19D4003C2303 /* EdtingShadow.png */; };
-		C586413E1611B2A70048DDA6 /* PhotoDetailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C586413D1611B2A70048DDA6 /* PhotoDetailManager.m */; };
 		C586415F1611B8380048DDA6 /* SCPUploadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C586415B1611B8380048DDA6 /* SCPUploadCell.m */; };
 		C58641601611B8380048DDA6 /* SCPUploadHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = C586415D1611B8380048DDA6 /* SCPUploadHeader.m */; };
 		C586416B1611BAFB0048DDA6 /* MenuButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58641681611BAFB0048DDA6 /* MenuButtonView.m */; };
@@ -342,7 +341,6 @@
 		C58AD468163A330000D59675 /* SCPALter_WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58AD467163A330000D59675 /* SCPALter_WaitView.m */; };
 		C58AD46A163A33B500D59675 /* pop_alert.png in Resources */ = {isa = PBXBuildFile; fileRef = C58AD469163A33B500D59675 /* pop_alert.png */; };
 		C58AD512163ABCFC00D59675 /* UICliper.m in Sources */ = {isa = PBXBuildFile; fileRef = C58AD511163ABCFC00D59675 /* UICliper.m */; };
-		C58BD834166D8F0A00BEBA9E /* SCPPhotoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58BD833166D8F0A00BEBA9E /* SCPPhotoListController.m */; };
 		C58BD83E166E01B700BEBA9E /* end_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C58BD83D166E01B700BEBA9E /* end_bg.png */; };
 		C58D865C1612CB9F006FE9EF /* SCPLoginPridictive.m in Sources */ = {isa = PBXBuildFile; fileRef = C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */; };
 		C58D86631612F45A006FE9EF /* MainFeedBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = C58D86621612F45A006FE9EF /* MainFeedBanner.m */; };
@@ -375,6 +373,8 @@
 		C59198EE167F23A20019E947 /* SCPMenuNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198E7167F23A20019E947 /* SCPMenuNavigationController.m */; };
 		C59198EF167F23A20019E947 /* SCPNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198E9167F23A20019E947 /* SCPNavigationController.m */; };
 		C59198F0167F23A20019E947 /* SCPSecondLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198EB167F23A20019E947 /* SCPSecondLayerController.m */; };
+		C59198F6167F2DA60019E947 /* PhotoDetailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198F3167F2DA60019E947 /* PhotoDetailManager.m */; };
+		C59198F7167F2DA60019E947 /* SCPPhotoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198F5167F2DA60019E947 /* SCPPhotoListController.m */; };
 		C5923BE1162E5D1100B38605 /* dorp_down.png in Resources */ = {isa = PBXBuildFile; fileRef = C5923BE0162E5D1100B38605 /* dorp_down.png */; };
 		C5928E0B164BC780003A6D68 /* bg_soul.png in Resources */ = {isa = PBXBuildFile; fileRef = C5928E0A164BC780003A6D68 /* bg_soul.png */; };
 		C594B83A1659C72600DC85AF /* SCPGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = C594B8391659C72600DC85AF /* SCPGuideView.m */; };
@@ -815,8 +815,6 @@
 		C5802813164A3EE600A840D9 /* title_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_settings.png; sourceTree = "<group>"; };
 		C5802814164A3EE600A840D9 /* title_share_photos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_share_photos.png; sourceTree = "<group>"; };
 		C585F789163E19D4003C2303 /* EdtingShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EdtingShadow.png; sourceTree = "<group>"; };
-		C586413C1611B2A70048DDA6 /* PhotoDetailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailManager.h; sourceTree = "<group>"; };
-		C586413D1611B2A70048DDA6 /* PhotoDetailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailManager.m; sourceTree = "<group>"; };
 		C586415A1611B8380048DDA6 /* SCPUploadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPUploadCell.h; sourceTree = "<group>"; };
 		C586415B1611B8380048DDA6 /* SCPUploadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPUploadCell.m; sourceTree = "<group>"; };
 		C586415C1611B8380048DDA6 /* SCPUploadHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPUploadHeader.h; sourceTree = "<group>"; };
@@ -890,8 +888,6 @@
 		C58AD469163A33B500D59675 /* pop_alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_alert.png; sourceTree = "<group>"; };
 		C58AD510163ABCFC00D59675 /* UICliper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICliper.h; sourceTree = "<group>"; };
 		C58AD511163ABCFC00D59675 /* UICliper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICliper.m; sourceTree = "<group>"; };
-		C58BD832166D8F0A00BEBA9E /* SCPPhotoListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPPhotoListController.h; sourceTree = "<group>"; };
-		C58BD833166D8F0A00BEBA9E /* SCPPhotoListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPhotoListController.m; sourceTree = "<group>"; };
 		C58BD83D166E01B700BEBA9E /* end_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = end_bg.png; sourceTree = "<group>"; };
 		C58D865A1612CB9F006FE9EF /* SCPLoginPridictive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPLoginPridictive.h; sourceTree = "<group>"; };
 		C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPLoginPridictive.m; sourceTree = "<group>"; };
@@ -936,6 +932,10 @@
 		C59198E9167F23A20019E947 /* SCPNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPNavigationController.m; sourceTree = "<group>"; };
 		C59198EA167F23A20019E947 /* SCPSecondLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPSecondLayerController.h; sourceTree = "<group>"; };
 		C59198EB167F23A20019E947 /* SCPSecondLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPSecondLayerController.m; sourceTree = "<group>"; };
+		C59198F2167F2DA60019E947 /* PhotoDetailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailManager.h; sourceTree = "<group>"; };
+		C59198F3167F2DA60019E947 /* PhotoDetailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailManager.m; sourceTree = "<group>"; };
+		C59198F4167F2DA60019E947 /* SCPPhotoListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPPhotoListController.h; sourceTree = "<group>"; };
+		C59198F5167F2DA60019E947 /* SCPPhotoListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPhotoListController.m; sourceTree = "<group>"; };
 		C5923BE0162E5D1100B38605 /* dorp_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dorp_down.png; sourceTree = "<group>"; };
 		C5928E0A164BC780003A6D68 /* bg_soul.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_soul.png; sourceTree = "<group>"; };
 		C594B8381659C72600DC85AF /* SCPGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPGuideView.h; sourceTree = "<group>"; };
@@ -1695,7 +1695,7 @@
 		B7D83AD615F99FD800569900 /* PhotoDetailController */ = {
 			isa = PBXGroup;
 			children = (
-				C586413B1611B2A70048DDA6 /* Managers */,
+				C59198F1167F2DA50019E947 /* Manager */,
 				B7D83ADA15F99FF400569900 /* Views */,
 				B7D83AD715F99FEA00569900 /* SCPPhotoDetailViewController.h */,
 				B7D83AD815F99FEA00569900 /* SCPPhotoDetailViewController.m */,
@@ -2093,18 +2093,6 @@
 			path = Resource/image/ImageOfTitle;
 			sourceTree = "<group>";
 		};
-		C586413B1611B2A70048DDA6 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				C586413C1611B2A70048DDA6 /* PhotoDetailManager.h */,
-				C586413D1611B2A70048DDA6 /* PhotoDetailManager.m */,
-				C58BD832166D8F0A00BEBA9E /* SCPPhotoListController.h */,
-				C58BD833166D8F0A00BEBA9E /* SCPPhotoListController.m */,
-			);
-			name = Managers;
-			path = Controller/PhotoDetailController/Managers;
-			sourceTree = "<group>";
-		};
 		C58641721611C5DF0048DDA6 /* follweing */ = {
 			isa = PBXGroup;
 			children = (
@@ -2303,19 +2291,31 @@
 		C59198E1167F23A20019E947 /* BaseController */ = {
 			isa = PBXGroup;
 			children = (
-				C59198E2167F23A20019E947 /* SCPBaseController.h */,
-				C59198E3167F23A20019E947 /* SCPBaseController.m */,
-				C59198E4167F23A20019E947 /* SCPBaseNavigationItem.h */,
-				C59198E5167F23A20019E947 /* SCPBaseNavigationItem.m */,
-				C59198E6167F23A20019E947 /* SCPMenuNavigationController.h */,
-				C59198E7167F23A20019E947 /* SCPMenuNavigationController.m */,
 				C59198E8167F23A20019E947 /* SCPNavigationController.h */,
 				C59198E9167F23A20019E947 /* SCPNavigationController.m */,
+				C59198E6167F23A20019E947 /* SCPMenuNavigationController.h */,
+				C59198E7167F23A20019E947 /* SCPMenuNavigationController.m */,
+				C59198E4167F23A20019E947 /* SCPBaseNavigationItem.h */,
+				C59198E5167F23A20019E947 /* SCPBaseNavigationItem.m */,
+				C59198E2167F23A20019E947 /* SCPBaseController.h */,
+				C59198E3167F23A20019E947 /* SCPBaseController.m */,
 				C59198EA167F23A20019E947 /* SCPSecondLayerController.h */,
 				C59198EB167F23A20019E947 /* SCPSecondLayerController.m */,
 			);
 			name = BaseController;
 			path = Controller/BaseController;
+			sourceTree = "<group>";
+		};
+		C59198F1167F2DA50019E947 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				C59198F2167F2DA60019E947 /* PhotoDetailManager.h */,
+				C59198F3167F2DA60019E947 /* PhotoDetailManager.m */,
+				C59198F4167F2DA60019E947 /* SCPPhotoListController.h */,
+				C59198F5167F2DA60019E947 /* SCPPhotoListController.m */,
+			);
+			name = Manager;
+			path = Controller/PhotoDetailController/Manager;
 			sourceTree = "<group>";
 		};
 		C594B8371659C70F00DC85AF /* GuideView */ = {
@@ -2758,7 +2758,6 @@
 				DFED892B1610438900890069 /* SCPPhotoGridController.m in Sources */,
 				C5ECD34516106E70000AE4F9 /* PersonalPageCell.m in Sources */,
 				C5ECD35416106F59000AE4F9 /* FeedDescription.m in Sources */,
-				C586413E1611B2A70048DDA6 /* PhotoDetailManager.m in Sources */,
 				C586415F1611B8380048DDA6 /* SCPUploadCell.m in Sources */,
 				C58641601611B8380048DDA6 /* SCPUploadHeader.m in Sources */,
 				C586416B1611BAFB0048DDA6 /* MenuButtonView.m in Sources */,
@@ -2842,7 +2841,6 @@
 				4AB7B8AC166CEAB8002A2E91 /* ELCAssetTablePicker.m in Sources */,
 				4AB7B8AE166CEAB8002A2E91 /* ELCImagePickerController.m in Sources */,
 				4AB7B8B2166CEAB8002A2E91 /* TabCell.m in Sources */,
-				C58BD834166D8F0A00BEBA9E /* SCPPhotoListController.m in Sources */,
 				C5A9D809166F3BAA00494794 /* MoreAlertView.m in Sources */,
 				C58AB44416757AA900C96450 /* SCPAlert_DeletView.m in Sources */,
 				C5410547167595CE0063A1BD /* SCPAlert_Rename.m in Sources */,
@@ -2856,6 +2854,8 @@
 				C59198EE167F23A20019E947 /* SCPMenuNavigationController.m in Sources */,
 				C59198EF167F23A20019E947 /* SCPNavigationController.m in Sources */,
 				C59198F0167F23A20019E947 /* SCPSecondLayerController.m in Sources */,
+				C59198F6167F2DA60019E947 /* PhotoDetailManager.m in Sources */,
+				C59198F7167F2DA60019E947 /* SCPPhotoListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

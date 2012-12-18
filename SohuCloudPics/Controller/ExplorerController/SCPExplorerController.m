@@ -22,7 +22,6 @@
     [_manager release];
     [super dealloc];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -45,7 +44,6 @@
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
     [self.view addSubview:self.pullingController.view];
-     
 }
 
 - (void)viewDidUnload
@@ -55,7 +53,6 @@
 }
 - (void)refreshButton:(UIButton *)button
 {
-//    [self.pullingController refreshProgrammatically];
     [self.manager refreshData:nil];
 }
 #pragma mark -
@@ -66,9 +63,10 @@
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
         [_item addRefreshtarget:self action:@selector(refreshButton:)];
     }
-    if (!_item.superview) {
+    if (!_item.superview)
         [self.navigationController.navigationBar addSubview:_item];
-    }
+    
+    [super viewDidAppear:animated];
 //    SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
 //    view.image = [UIImage imageNamed:@"广场导引.png"];
 //    [view show];

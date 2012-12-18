@@ -100,7 +100,6 @@
     //teamp
     self.imageForTemp = nil;
     [super dealloc];
-
 }
 #pragma customize NavigationBar
 -(void)viewWillAppear:(BOOL)animated

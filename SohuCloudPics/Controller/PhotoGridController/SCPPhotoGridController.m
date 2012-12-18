@@ -554,7 +554,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:NO];
+//    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:NO];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];
     [self removeObserverOnCenter];
 }

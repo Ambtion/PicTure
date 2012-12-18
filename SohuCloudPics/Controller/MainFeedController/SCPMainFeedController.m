@@ -71,18 +71,15 @@
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
         [_item addRefreshtarget:self.manager action:@selector(refreshData:)];
     }
-    if (!_item.superview) {
-        [self.navigationController.navigationBar addSubview:_item];
-    }
+    if (!_item.superview)    [self.navigationController.navigationBar addSubview:_item];
+    
+    [super viewDidAppear:animated];
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
     if (_item.superview)
         [_item removeFromSuperview];
-    
-//    if (_manager) {
-//        [_manager dataSourcewithRefresh:YES];
-//    }
+    [super viewWillAppear:animated]; //规定彩带行为
 }
 - (void)viewDidUnload
 {

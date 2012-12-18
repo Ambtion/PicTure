@@ -72,27 +72,17 @@
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated
 {
-    
-    [super viewWillAppear:animated];
     self.navigationItem.hidesBackButton = YES;
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(navigationBack:) forControlEvents:UIControlEventTouchUpInside];
     backButton.frame = CGRectMake(0, 0, 26, 26);
-    
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
-    
-    if ([((SCPMenuNavigationController *)self.navigationController).menuManager isMenuShowing]) {
-        [((SCPMenuNavigationController *)self.navigationController) hideMenu];
-    }
+    [super viewWillAppear:animated];
 }
 
-- (void)navigationIteamRefreshClick:(UIButton*)button
-{
-    NSLog(@"%@ navigationIteamRefreshClick",[self class]);
-}
 - (void)navigationBack:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];

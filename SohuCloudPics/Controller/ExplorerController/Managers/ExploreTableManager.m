@@ -9,6 +9,7 @@
 #import "ExploreTableManager.h"
 
 #import "SCPExplorerController.h"
+//#import "SCPPhotoDetailViewController.h"
 #import "SCPPhotoDetailViewController.h"
 #import "MoreAlertView.h"
 

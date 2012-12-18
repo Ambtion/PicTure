@@ -11,6 +11,7 @@
 #import "SCPRequestManager.h"
 #import "PhotoDetailManager.h"
 
+@class PhotoDetailManager;
 @interface InfoImageView : UIImageView
 @property(nonatomic,retain)NSDictionary * info;
 @property(nonatomic,assign)UIActivityIndicatorView * actV;
@@ -50,7 +51,7 @@
 @property (nonatomic,retain) UIScrollView * scrollView;
 
 
-- (id)initWithFrame:(CGRect)frame useInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager;
+- (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager;
 - (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect;
 - (UIImageView *)getCurrentImageView;
 @end
