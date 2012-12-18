@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 #import "PullingRefreshController.h"
-#import "PhotoDetailManager.h"
 #import "CommentPostBar.h"
 #import "SCPSecondLayerController.h"
+#import "PhotoDetailManager.h"
 
 @class PhotoDetailManager;
 @interface SCPPhotoDetailViewController : SCPSecondLayerController <CommentPostBarDelegate>

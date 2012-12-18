@@ -6,8 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "SCPPhotoDetailViewController.h"
 #import "SCPMenuNavigationController.h"
+#import "SCPPhotoDetailViewController.h"
 
 @implementation SCPPhotoDetailViewController
 
