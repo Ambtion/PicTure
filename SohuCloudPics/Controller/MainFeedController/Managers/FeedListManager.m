@@ -136,12 +136,12 @@
     if(isRefresh || !_dataArray.count){
         [_requestManager getUserFollwesNumWithID:[SCPLoginPridictive currentUserId]];
     }else{
-        if (MAXPICTURE < _dataArray.count || _dataArray.count % 20) {
-            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-            [moreView show];
-            [self feedMoreDataFinishLoad];
-            return;
-        }
+//        if (MAXPICTURE < _dataArray.count || _dataArray.count % 20) {
+//            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
+//            [moreView show];
+//            [self feedMoreDataFinishLoad];
+//            return;
+//        }
         NSInteger pagenum = [_dataArray count] / 20;
         [_requestManager getUserFollowFeedWithUserID:[SCPLoginPridictive currentUserId] page:pagenum + 1 only:YES];
     }
@@ -250,10 +250,11 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ((MAXPICTURE < _dataArray.count || _dataArray.count % 20) && !_isInit) {
+    
+    if (MAXPICTURE < _dataArray.count|| !_dataArray.count || _dataArray.count % 20) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
-        [self.controller.pullingController.footView setHidden:YES];
+        [self.controller.pullingController.footView setHidden:NO];
     }
     return _dataArray.count;
 }

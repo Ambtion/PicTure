@@ -79,7 +79,7 @@
 {
     if (_item.superview)
         [_item removeFromSuperview];
-    [super viewWillAppear:animated]; //规定彩带行为
+//    [super viewWillDisappear:animated]; //规定彩带行为
 }
 - (void)viewDidUnload
 {

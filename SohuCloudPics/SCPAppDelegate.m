@@ -61,15 +61,24 @@ void customedExceptionHandler(NSException *exception)
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     _window.rootViewController = nav;
-        //    _fgc = [[FunctionguideScroll alloc] init];
+        
     [_window makeKeyAndVisible];
-    //    [_window addSubview:_fgc.view];
+    [self showfunctionGuide];
     [mainTab release];
     [nav release];
     return YES;
 }
 
-
+- (void)showfunctionGuide
+{
+    NSNumber * num  = [[NSUserDefaults standardUserDefaults] objectForKey:@"FunctionShowed"];
+    if (!num ||![num boolValue]) {
+        _fgc = [[FunctionguideScroll alloc] init];
+        [_window addSubview:_fgc.view];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"FunctionShowed"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
 - (void)removeFromWindows
 {
     CATransition * animation = [CATransition animation];
@@ -79,6 +88,7 @@ void customedExceptionHandler(NSException *exception)
     [_fgc.view removeFromSuperview];
     animation.delegate = self;
     [self.window.layer addAnimation:animation forKey:@"KO"];
+    [_fgc release];
 }
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {

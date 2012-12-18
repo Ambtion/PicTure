@@ -11,8 +11,6 @@
 #import "SCPPhotoDetailViewController.h"
 #import "SCPMenuNavigationController.h"
 
-//#import "SCPWatiAlterView.h"
-
 #define OFFSET 20
 
 
@@ -22,11 +20,12 @@
 
 @synthesize info;
 @synthesize actV;
+
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-    
-        self.actV = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        
+        self.actV = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
         actV.center = CGPointMake(self.frame.size.width/ 2.f, self.frame.size.height/2.f);
         actV.hidesWhenStopped = YES;
         [self addSubview:actV];
@@ -36,7 +35,7 @@
 - (id)initWithImage:(UIImage *)image
 {
     if (self = [super initWithImage:image]) {
-        self.actV = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.actV = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
         actV.center = CGPointMake(self.frame.size.width/ 2.f, self.frame.size.height/2.f);
         actV.hidesWhenStopped = YES;
         [self addSubview:actV];
@@ -56,7 +55,7 @@
 }
 
 @end
- 
+
 
 
 @implementation SCPPhotoListController
@@ -74,6 +73,9 @@
 
 - (void)dealloc
 {
+    
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    
     [_requestManger release];
     self.bgView = nil;
     self.scrollView = nil;
@@ -86,6 +88,7 @@
     [imageArray release];
     [curImages release];
     self.info = nil;
+    
     [super dealloc];
 }
 
@@ -100,12 +103,49 @@
         curImages = [[NSMutableArray alloc] initWithCapacity:0];
         curPage = 0;
         Pagenum = 1;
+        animation = NO;
         self.info = info;
         
         _requestManger = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
+        
         [self initSubViews];
+        
         [_requestManger getPhotosWithUserID:[self.info objectForKey:@"creatorId"] FolderID:[info objectForKey:@"folderShowId"] page:Pagenum++];
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(listOrientationChanged:)
+                                                     name:UIDeviceOrientationDidChangeNotification
+                                                   object:nil];
+    }
+    return self;
+}
+- (id)initWithUseInfo:(NSDictionary *)info
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        
+        self.view.backgroundColor = [UIColor redColor];
+        
+        imageArray = [[NSMutableArray alloc] initWithCapacity:0];
+        curImages = [[NSMutableArray alloc] initWithCapacity:0];
+        curPage = 0;
+        Pagenum = 1;
+        animation = NO;
+        self.info = info;
+        
+        _requestManger = [[SCPRequestManager alloc] init];
+        _requestManger.delegate = self;
+        
+        [self initSubViews];
+        
+        [_requestManger getPhotosWithUserID:[self.info objectForKey:@"creatorId"] FolderID:[info objectForKey:@"folderShowId"] page:Pagenum++];
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(listOrientationChanged:)
+                                                     name:UIDeviceOrientationDidChangeNotification
+                                                   object:nil];
+        
     }
     return self;
 }
@@ -113,19 +153,75 @@
 {
     self.navigationItem.hidesBackButton = YES;
 }
+
 #pragma mark Ratation
-- (BOOL)shouldAutorotate
+- (CGAffineTransform )getTransfrom
 {
-    return YES;
+    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if (UIInterfaceOrientationIsPortrait(orientation))
+        return CGAffineTransformIdentity;
+    if (orientation == UIInterfaceOrientationLandscapeLeft)
+        return CGAffineTransformRotate(CGAffineTransformIdentity, -M_PI_2);
+    if (orientation == UIInterfaceOrientationLandscapeRight)
+        return CGAffineTransformRotate(CGAffineTransformIdentity, M_PI_2);
+    return CGAffineTransformIdentity;
 }
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+
+- (void)listOrientationinit
 {
     
+    if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
+        self.view.frame = [UIScreen mainScreen].bounds;
+        [self initSubViews];
+    }else{
+        self.view.frame = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
+        [self initSubViews];
+        self.view.transform = [self getTransfrom];
+    }
 }
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)listOrientationChanged:(NSNotification *)notification
 {
-    [self initSubViews];
+    [self.view setUserInteractionEnabled:NO];
+    animation = YES;
+    CGFloat scale = 1.0;
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    
+    if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
+        transform = CGAffineTransformInvert(self.view.transform);
+        if ([self getCurrentImageView].image.size.height > self.view.frame.size.height ||
+            [self getCurrentImageView].image.size.width > self.view.frame.size.width) {
+            scale = MIN( 320.f / [self getCurrentImageView].frame.size.width, 480.f / [self getCurrentImageView].frame.size.height);
+        }else{
+            scale = 1.0f;
+        }
+    }else{
+        if ([self getCurrentImageView].image.size.height > self.view.frame.size.height ||
+            [self getCurrentImageView].image.size.width > self.view.frame.size.width) {
+            scale = MIN( 480.f / [self getCurrentImageView].frame.size.width, 320.f / [self getCurrentImageView].frame.size.height);
+        }else{
+            scale = 1.0f;
+        }
+        transform = [self getTransfrom];
+    }
+    transform  = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(scale, scale));
+    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut    animations:^{
+        [self getCurrentImageView].transform = transform;
+    } completion:^(BOOL finished) {
+        self.view.transform = [self getTransfrom];
+        if (CGAffineTransformEqualToTransform(self.view.transform, CGAffineTransformIdentity))
+            self.view.frame = [UIScreen mainScreen].bounds;
+        [self initSubViews];
+        [self.view setUserInteractionEnabled:YES];
+        animation = NO;
+    }];
+    
 }
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 
 #pragma mark - Delegate
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
@@ -136,8 +232,6 @@
     if (curPage == -1) {
         [self getMoreImage];
     }else{
-        NSLog(@"curImage %d",curPage);
-        NSLog(@"photo image : %d",photoNum);
         [self refreshScrollView];
     }
 }
@@ -147,7 +241,8 @@
     int i = 0;
     for (i = 0; i < imageArray.count; i++) {
         NSDictionary * dic = [imageArray objectAtIndex:i];
-        if ([[dic objectForKey:@"originUrl"] isEqual:[self.info objectForKey:@"originUrl"]]) {
+
+        if ([[dic objectForKey:@"bigUrl"] isEqual:[self.info objectForKey:@"bigUrl"]]) {
             isFound = YES;
             NSLog(@"hello");
             break;
@@ -158,7 +253,7 @@
     }
     return -1;
 }
-- (void)requestFailed:(SCPRequestManager *)mangeger
+- (void)requestFailed:(ASIHTTPRequest *)mangeger
 {
     NSLog(@"failed");
 }
@@ -177,11 +272,11 @@
     rect.size.width += OFFSET * 2;
     rect.origin.x -= OFFSET;
     
-    self.bgView = [[UIView alloc] initWithFrame:rect];
+    self.bgView = [[[UIView alloc] initWithFrame:rect] autorelease];
     self.bgView.backgroundColor = [UIColor greenColor];
     [self.view  addSubview:self.bgView];
-
-    self.scrollView = [[UIScrollView alloc] initWithFrame:self.bgView.bounds];
+    
+    self.scrollView = [[[UIScrollView alloc] initWithFrame:self.bgView.bounds] autorelease];
     self.scrollView.delegate = self;
     self.scrollView.backgroundColor = [UIColor blackColor];
     [self.bgView addSubview:self.scrollView];
@@ -190,39 +285,38 @@
     [self addCurScrollView];
     [self addrearScrollView];
     [self setScrollViewProperty];
+    [self refreshScrollView];
     
 }
 - (void)addFontScrollView
 {
-    self.fontScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.bounds.size.height)];
+    self.fontScrollview = [[[UIScrollView alloc] initWithFrame:CGRectMake(OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.bounds.size.height)] autorelease];
     self.fontScrollview.delegate = self;
     self.fontScrollview.minimumZoomScale = 1.f;
-    self.fontScrollview.maximumZoomScale = 2.f;
     self.fontScrollview.backgroundColor = [UIColor clearColor];
     self.fontScrollview.contentMode = UIViewContentModeCenter;
     
-    self.fontImageView = [[InfoImageView alloc] initWithFrame:self.fontScrollview.bounds];
+    [self.scrollView addSubview:self.fontScrollview];
+    self.fontImageView = [[[InfoImageView alloc] initWithFrame:self.fontScrollview.bounds] autorelease];
     self.fontImageView.backgroundColor = [UIColor clearColor];
     [self addGestureRecognizeronView:self.fontScrollview];
     
     [self.fontScrollview  addSubview:self.fontImageView];
     self.curscrollView.showsHorizontalScrollIndicator = NO;
     self.curscrollView.showsVerticalScrollIndicator = NO;
-    [self.scrollView addSubview:self.fontScrollview];
     
 }
 - (void)addCurScrollView
 {
-    self.curscrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width + OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.frame.size.height)];
+    self.curscrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width + OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.frame.size.height)] autorelease];
     self.curscrollView.delegate = self;
     self.curscrollView.minimumZoomScale  = 1.f;
     self.curscrollView.backgroundColor = [UIColor clearColor];
     self.curscrollView.contentMode = UIViewContentModeCenter;
     
     [self.scrollView addSubview:self.curscrollView];
-    self.currentImageView = [[InfoImageView alloc] initWithFrame:self.curscrollView.bounds];
+    self.currentImageView = [[[InfoImageView alloc] initWithFrame:self.curscrollView.bounds] autorelease];
     self.currentImageView.backgroundColor = [UIColor clearColor];
-    
     [self addGestureRecognizeronView:self.curscrollView];
     
     [self.curscrollView addSubview:self.currentImageView];
@@ -237,16 +331,13 @@
 - (void)addrearScrollView
 {
     
-    self.rearScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width * 2 + OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.frame.size.height)];
+    self.rearScrollview = [[[UIScrollView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width * 2 + OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.frame.size.height)] autorelease];
     self.rearScrollview.delegate = self;
-    
     self.rearScrollview.minimumZoomScale = 1.f;
-    self.rearScrollview.maximumZoomScale  = 2.f;
-    
     self.rearScrollview.backgroundColor = [UIColor clearColor];
     self.rearScrollview.contentMode = UIViewContentModeCenter;
     
-    self.rearImageView = [[InfoImageView alloc] initWithFrame:self.rearScrollview.bounds];
+    self.rearImageView = [[[InfoImageView alloc] initWithFrame:self.rearScrollview.bounds] autorelease];
     self.rearImageView.backgroundColor = [UIColor clearColor];
     [self addGestureRecognizeronView:self.rearScrollview];
     [self.rearScrollview  addSubview:self.rearImageView];
@@ -270,15 +361,25 @@
     [view addGestureRecognizer:gesture];
 }
 #pragma mark TapGesture
+- (void)setZooming:(UIScrollView *)scrollview
+{
+    if (scrollview.zoomScale != scrollview.minimumZoomScale)
+        [scrollview  setZoomScale:scrollview.minimumZoomScale animated:YES];
+}
 - (void)handlesignalGesture:(UITapGestureRecognizer *)gesture
 {
+    [self.view setUserInteractionEnabled:NO];
+    animation = YES;
     
     _dataManager.photo_ID = [self.info objectForKey:@"showId"];
     [_dataManager dataSourcewithRefresh:YES];
     
-    UIImageView * imageView = [[[UIImageView alloc] initWithFrame:[self getCurrentImageView].bounds] autorelease];
-    imageView.image = [self getCurrentImageView].image;    
+    [self setZooming:_fontScrollview];
+    [self setZooming:_curscrollView];
+    [self setZooming:_rearScrollview];
     
+    UIImageView * imageView = [[[UIImageView alloc] initWithFrame:[self getCurrentImageView].bounds] autorelease];
+    imageView.image = [self getCurrentImageView].image;
     UIView * boundsView = [[[UIView alloc] initWithFrame:[self getCurrentImageView].frame] autorelease];
     boundsView.backgroundColor = [UIColor clearColor];
     boundsView.clipsToBounds = YES;
@@ -287,13 +388,14 @@
     CGFloat heigth = [self getHeightofImage:[[self.info objectForKey:@"height"] floatValue] :[[self.info objectForKey:@"width"] floatValue]];
     CGRect photoRect = CGRectZero;
     CGRect boundsRect = CGRectZero;
-    
     [self setTempRect:&boundsRect PhotoRect:&photoRect with:heigth];
     
     self.view.alpha = 0;
+    boundsView.transform = [self getTransfrom];
+    boundsView.center = CGPointMake(160, 240);
     
     SCPAppDelegate * app = (SCPAppDelegate *)[UIApplication sharedApplication].delegate;
-    UIView * bgview = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
+    UIView * bgview = [[[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds] autorelease];
     bgview.backgroundColor = [UIColor blackColor];
     
     [app.window addSubview:bgview];
@@ -303,13 +405,16 @@
     [self.navigationController popViewControllerAnimated:NO];
     
     [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        
+        boundsView.transform =CGAffineTransformIdentity;
         boundsView.frame = boundsRect;
         imageView.frame = photoRect;
         bgview.alpha = 0;
     } completion:^(BOOL finished) {
+        
         [boundsView removeFromSuperview];
         [bgview removeFromSuperview];
+        [self.view setUserInteractionEnabled:YES];
+        animation = NO;
     }];
 }
 - (void)setTempRect:(CGRect *)tempRect PhotoRect:(CGRect *)photoRect with:(CGFloat)heigth
@@ -344,16 +449,18 @@
 - (UIImageView *)getCurrentImageView
 {
     UIImageView * view = nil;
-    if (self.scrollView.contentOffset.x == self.scrollView.frame.size.width)
-        view =  self.currentImageView;
     if (self.scrollView.contentOffset.x == 0)
         view = self.fontImageView;
+    if (self.scrollView.contentOffset.x == self.scrollView.frame.size.width)
+        view =  self.currentImageView;
     if (self.scrollView.contentOffset.x == self.scrollView.frame.size.width * 2)
         view = self.rearImageView;
     return view;
 }
-- (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect 
+- (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect
 {
+    [self.view setUserInteractionEnabled:NO];
+    animation = YES;
     
     UIView * boundsView = [[[UIView alloc] initWithFrame:temRect] autorelease];
     boundsView.backgroundColor = [UIColor clearColor];
@@ -371,21 +478,30 @@
     [app.window addSubview:view];
     [app.window addSubview:boundsView];
     
-    CGRect finRect = [self getCurrentImageView].frame;
+    [self listOrientationinit];
+    CGRect finRect = [self getCurrentImageView].bounds;
+    finRect.origin.x = (self.view.frame.size.width - finRect.size.width)/2;
+    finRect.origin.y = (self.view.frame.size.height - finRect.size.height)/2;
+    
     [UIView animateWithDuration:.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
         boundsView.frame = finRect;
         imageView.frame = [self getCurrentImageView].bounds;
+        boundsView.transform = [self getTransfrom];
         view.alpha = 1;
         
     } completion:^(BOOL finished) {
-        
         [((SCPMenuNavigationController *) (nav_ctrller)).menuManager.ribbon setHidden:YES];
         [nav_ctrller pushViewController:self animated:NO];
+        [self listOrientationinit];
         [view removeFromSuperview];
         [boundsView removeFromSuperview];
+        [self.view setUserInteractionEnabled:YES];
+        animation = NO;
+        
     }];
     
 }
+
 - (void)handleTapGesture:(UITapGestureRecognizer *)gesture
 {
     if ([[gesture view] isEqual:self.fontScrollview]) {
@@ -446,7 +562,9 @@
 }
 - (void)resetImageFrame:(InfoImageView*)imageView
 {
-    
+    if (!imageView.info) {
+        return;
+    }
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
     CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
     
@@ -500,27 +618,53 @@
         [self.rearScrollview setContentOffset:CGPointMake(0, 0)];
     }
     
-    [imageView cancelCurrentImageLoad];
-    [imageView.actV startAnimating];
-    [imageView setImageWithURL:[NSURL URLWithString:[[imageView info] objectForKey:@"originUrl"]] placeholderImage:nil options:0  success:^(UIImage *image) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [imageView.actV stopAnimating];
-        });
-        
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-    }];
-    
+    if ([[imageView info] objectForKey:@"bigUrl"]);
+    {
+        [imageView cancelCurrentImageLoad];
+        [imageView.actV startAnimating];
+        [imageView setImageWithURL:[NSURL URLWithString:[[imageView info] objectForKey:@"bigUrl"]] placeholderImage:nil options: 0   success:^(UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [imageView.actV stopAnimating];
+            });
+            
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    }
 }
 - (void)refreshScrollviewOnMinBounds
 {
     self.fontImageView.info = [imageArray objectAtIndex:0];
-    if (imageArray.count > 2) {
-        self.rearImageView.info = [imageArray objectAtIndex:2];
-    }else{
-        self.rearImageView.info = nil;
-    }
-    if (imageArray.count > 1) {
+    self.currentImageView.info = [imageArray objectAtIndex:1];
+    self.rearImageView.info = [imageArray objectAtIndex:2];
+    
+    self.info = self.fontImageView.info;
+    [self resetImageFrame:self.fontImageView];
+    [self resetImageFrame:self.currentImageView];
+    [self resetImageFrame:self.rearImageView];
+    
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
+    [self.scrollView setContentOffset:CGPointZero];
+    curPage++;
+}
+- (void)refreshScrollviewOnMaxBounds
+{
+    
+    self.rearImageView.info = [imageArray objectAtIndex:imageArray.count - 1];
+    self.currentImageView.info = [imageArray objectAtIndex:imageArray.count - 2];
+    self.fontImageView.info = [imageArray objectAtIndex:imageArray.count - 3];
+    self.info = self.rearImageView.info;
+    [self resetImageFrame:self.fontImageView];
+    [self resetImageFrame:self.currentImageView];
+    [self resetImageFrame:self.rearImageView];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
+    [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2,0)];
+    curPage--;
+}
+- (void)refreshScrollviewWhenPhotonumLessThree
+{
+    self.fontImageView.info = [imageArray objectAtIndex:0];
+    if (imageArray.count == 2) {
         self.currentImageView.info = [imageArray objectAtIndex:1];
     }else{
         self.currentImageView.info  = nil;
@@ -528,56 +672,18 @@
     self.info = self.fontImageView.info;
     [self resetImageFrame:self.fontImageView];
     [self resetImageFrame:self.currentImageView];
-    [self resetImageFrame:self.rearImageView];
     
-    if (photoNum < 3) {
-        [self.scrollView setContentInset:UIEdgeInsetsMake(0, self.scrollView.frame.size.width, 0, 0)];
-        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * photoNum, self.scrollView.frame.size.height)];
-    }else{
-        [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2, 0)];
+    if (photoNum == 2) {
+        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 2, self.scrollView.frame.size.height)];
     }
-    if (photoNum < 3) {
-        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * photoNum, self.scrollView.frame.size.height)];
+    if (photoNum == 1) {
+        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
     }
+    [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * curPage, 0)];
     
-    [self.scrollView setContentOffset:CGPointZero];
 }
-- (void)refreshScrollviewOnMaxBounds
+- (void)refreshScrollViewNormal
 {
-    self.rearImageView.info = [imageArray lastObject];
-    if (imageArray.count > 2) {
-        self.fontImageView.info = [imageArray objectAtIndex:imageArray.count - 3];
-    }else{
-        self.fontImageView.info = nil;
-    }
-    if (imageArray.count > 1) {
-        self.currentImageView.info = [imageArray objectAtIndex:imageArray.count - 2];
-    }else{
-        self.currentImageView.info  = nil;
-    }
-    self.info = self.fontImageView.info;
-    [self resetImageFrame:self.fontImageView];
-    [self resetImageFrame:self.currentImageView];
-    [self resetImageFrame:self.rearImageView];
-    if (photoNum < 3) {
-        [self.scrollView setContentInset:UIEdgeInsetsMake(0, self.scrollView.frame.size.width, 0, 0)];
-        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * photoNum, self.scrollView.frame.size.height)];
-    }
-    [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2, 0)];
-    
-}
-- (void)refreshScrollView {
-    
-    NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
-    if (curPage == 0) {
-        [self refreshScrollviewOnMinBounds];
-        return;
-    }
-    if (curPage == imageArray.count - 1) {
-        [self refreshScrollviewOnMaxBounds];
-        return;
-    }
-    
     if ([self getDisplayImagesWithCurpage:curPage]) {
         
         self.fontImageView.info = [curImages objectAtIndex:0];
@@ -588,25 +694,49 @@
         [self resetImageFrame:self.fontImageView];
         [self resetImageFrame:self.currentImageView];
         [self resetImageFrame:self.rearImageView];
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
+    }
+}
+- (void)refreshScrollView {
+    
+    if (!imageArray || imageArray.count == 0) {
+        return;
+    }
+    NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
+    if (photoNum < 3) {
+        [self refreshScrollviewWhenPhotonumLessThree];
+        return;
+    }
+    if (curPage == 0) {
+        [self refreshScrollviewOnMinBounds];
+        return;
     }
     
-    [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
+    if (curPage == imageArray.count - 1) {
+        [self refreshScrollviewOnMaxBounds];
+        return;
+    }
+    [self refreshScrollViewNormal];
 }
 
 #pragma mark scrollView  Delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
-    if (![scrollView isEqual:self.scrollView]) {
+    if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging]|| animation) {
         return;
     }
-    int x = scrollView.contentOffset.x;
+    if (photoNum < 3) {
+        curPage = self.scrollView.contentOffset.x / self.view.frame.size.width;
+        NSLog(@"curpage:%d",curPage);
+        return;
+    }
+    int x = self.scrollView.contentOffset.x;
     if(x >= (self.scrollView.frame.size.width * 2)) {
         
         if (curPage >= photoNum - 2) {
-            self.info = self.rearImageView.info;
-            [self resetImageFrame:self.rearImageView];
+            curPage = photoNum - 1;
+            [self initSubViews];
             return;
         }
         if (curPage == imageArray.count - 2) {
@@ -619,8 +749,8 @@
     if(x <= 0) {
         
         if (curPage <= 1) {
-            self.info = self.fontImageView.info;
-            [self resetImageFrame:self.fontImageView];
+            curPage = 0;
+            [self initSubViews];
             return;
         }
         curPage = [self validPageValue:curPage-1];
@@ -660,32 +790,28 @@
 }
 - (void)resetImagetView:(UIScrollView *)scrollView
 {
-    UIView * view = [[scrollView subviews] lastObject];
-    if ([scrollView isEqual:self.curscrollView]) {
-        
-        CGFloat offsetX = 0;
-        CGFloat offsetY = 0;
-        CGFloat x = 0;
-        CGFloat y = 0;
-        if (view.frame.size.width > scrollView.frame.size.width){
-            x = 0;
-            offsetX = (view.frame.size.width - scrollView.frame.size.width)/2.f;
-        }else{
-            offsetX = 0;
-            x = (scrollView.frame.size.width - view.frame.size.width)/ 2;
-        }
-        if (view.frame.size.height > scrollView.frame.size.height){
-            y = 0;
-            offsetY = ( view.frame.size.height - scrollView.frame.size.height)/2.f;
-        }else{
-            offsetY = 0;
-            y = (scrollView.frame.size.height - view.frame.size.height)/2.f;
-        }
-        scrollView.contentOffset = CGPointMake(offsetX , offsetY);
-        view.frame = CGRectMake(x, y, view.frame.size.width, view.frame.size.height);
-        scrollView.contentSize = view.frame.size;
-        
-    }
     
+    UIImageView * view = [self getCurrentImageView];
+    CGFloat offsetX = 0;
+    CGFloat offsetY = 0;
+    CGFloat x = 0;
+    CGFloat y = 0;
+    if (view.frame.size.width > scrollView.frame.size.width){
+        x = 0;
+        offsetX = (view.frame.size.width - scrollView.frame.size.width)/2.f;
+    }else{
+        offsetX = 0;
+        x = (scrollView.frame.size.width - view.frame.size.width)/ 2;
+    }
+    if (view.frame.size.height > scrollView.frame.size.height){
+        y = 0;
+        offsetY = ( view.frame.size.height - scrollView.frame.size.height)/2.f;
+    }else{
+        offsetY = 0;
+        y = (scrollView.frame.size.height - view.frame.size.height)/2.f;
+    }
+    scrollView.contentOffset = CGPointMake(offsetX , offsetY);
+    view.frame = CGRectMake(x, y, view.frame.size.width, view.frame.size.height);
+    scrollView.contentSize = view.frame.size;
 }
 @end

@@ -75,6 +75,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
 //    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:NO]; menu应该保持隐藏状态
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];
 }

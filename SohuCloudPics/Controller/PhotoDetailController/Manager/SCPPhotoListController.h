@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "UIImageView+WebCache.h"
 #import "SCPRequestManager.h"
-#import "PhotoDetailManager.h"
+//#import "PhotoDetailManager.h"
 
 @class PhotoDetailManager;
+
 @interface InfoImageView : UIImageView
 @property(nonatomic,retain)NSDictionary * info;
 @property(nonatomic,assign)UIActivityIndicatorView * actV;
@@ -37,8 +38,8 @@
     NSMutableArray * curImages;
     NSInteger photoNum;
     NSInteger Pagenum;
-    
     //for animation
+    BOOL animation;
 }
 @property (nonatomic,retain)NSDictionary * info;
 @property (nonatomic,retain)UIView * bgView;
@@ -50,8 +51,9 @@
 @property (nonatomic,retain) UIScrollView * rearScrollview;
 @property (nonatomic,retain) UIScrollView * scrollView;
 
-
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager;
+- (id)initWithUseInfo:(NSDictionary *)info;
 - (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect;
 - (UIImageView *)getCurrentImageView;
+
 @end

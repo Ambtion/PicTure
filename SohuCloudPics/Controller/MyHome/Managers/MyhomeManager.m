@@ -200,12 +200,12 @@
     if(_willRefresh | !_dataArray.count){
         [_requestManager getUserInfoWithID:[SCPLoginPridictive currentToken]];
     }else{
-        if (MAXPICTURE < _dataArray.count || (_dataArray.count % 20)) {
-            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-            [moreView show];
-            [self loadingMoreFinished];
-            return;
-        }
+//        if (MAXPICTURE < _dataArray.count || _dataArray.count % 20) {
+//            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
+//            [moreView show];
+//            [self loadingMoreFinished];
+//            return;
+//        }
         NSInteger pagenum = [_dataArray count] / 20;
         [_requestManager getUserInfoFeedWithUserID:[SCPLoginPridictive currentUserId] page:pagenum + 1 only:YES];
         
@@ -221,7 +221,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ((MAXPICTURE < _dataArray.count || _dataArray.count % 20) && !_isinit) {
+    if (MAXPICTURE < _dataArray.count|| !_dataArray.count || _dataArray.count % 20) {
         [self.controller.footView setHidden:YES];
     }else{
         [self.controller.footView setHidden:NO];

@@ -9,7 +9,6 @@
 #import "AlbumControllerManager.h"
 
 
-
 @implementation AlbumControllerManager
 
 - (id)initWithpresentController:(id)controller
@@ -17,7 +16,6 @@
        
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    
     ELCAlbumPickerController *albumController = [[[ELCAlbumPickerController alloc] initWithNibName:@"ELCAlbumPickerController" bundle:[NSBundle mainBundle]] autorelease];
     ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initWithRootViewController:albumController];
     [albumController setParent:elcPicker];

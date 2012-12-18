@@ -67,14 +67,22 @@
         [self.navigationController.navigationBar addSubview:_item];
     
     [super viewDidAppear:animated];
-//    SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
-//    view.image = [UIImage imageNamed:@"广场导引.png"];
-//    [view show];
-    
+    [self showGuideView];
 }
-
+- (void)showGuideView
+{
+    NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowde"];
+    if (!num || ![num boolValue]) {
+        SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
+        view.image = [UIImage imageNamed:@"广场导引.png"];
+        [view show];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"GuideViewShowed"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
 - (void)viewWillDisappear:(BOOL)animated
 {
+//    [super viewWillDisappear:animated];
     if (_item.superview) {
         [_item removeFromSuperview];
     }

@@ -34,8 +34,8 @@
         naviRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideNavigationBar)];
         naviRecognizerUp.direction = UISwipeGestureRecognizerDirectionUp;
         naviRecognizerUp.delegate = self;
-//        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera)];
-//        slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
+        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera)];
+        slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
     }
     return self;
 }
@@ -53,14 +53,14 @@
     [super viewDidLoad];
     [self.view addGestureRecognizer:naviRecognizerDown];
     [self.view addGestureRecognizer:naviRecognizerUp];
-//    [self.view addGestureRecognizer:slideRecognizerR2L];
+    [self.view addGestureRecognizer:slideRecognizerR2L];
     needHideNavigationBar = FALSE;
 }
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    [self showNavigationBar];
-//}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self showNavigationBar];
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -79,14 +79,13 @@
 }
 #pragma mark -
 #pragma mark delegate
-
-//- (void)showCamera
-//{
-//    CameraViewController *phc = [[CameraViewController alloc] init];
-//    [self hideNavigationBar];
-//    [self.navigationController pushViewController:phc animated:YES];
-//    [phc release];
-//}
+- (void)showCamera
+{
+    CameraViewController *phc = [[CameraViewController alloc] init];
+    [self hideNavigationBar];
+    [self.navigationController pushViewController:phc animated:YES];
+    [phc release];
+}
 #pragma mark -
 #pragma switchNavigationBar
 - (void)switchNavigationBar:(float)yOffset scrollView:(UIScrollView *)scrollView

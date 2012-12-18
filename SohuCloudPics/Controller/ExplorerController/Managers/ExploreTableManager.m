@@ -250,13 +250,13 @@ static NSInteger lastNum = -1;
         _lastCount = 0;
         [_requestManager getExploreFrom:0 maxresult:60];
     }else{
-        if([self offsetOfDataSouce] > MAXPICTURE) {
-            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-            [moreView show];
-            [self moreDataFinishLoad];
-            return;
-        }
-        NSLog(@"%s getMore ",__FUNCTION__);
+//        if([self offsetOfDataSouce] > MAXPICTURE) {
+//            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
+//            [moreView show];
+//            [self moreDataFinishLoad];
+//            return;
+//        }
+//        NSLog(@"%s getMore ",__FUNCTION__);
         [_requestManager getExploreFrom:[self offsetOfDataSouce] maxresult:60];
     }
 }

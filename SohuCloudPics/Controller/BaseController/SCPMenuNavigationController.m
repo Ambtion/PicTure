@@ -62,9 +62,9 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 
 - (void)customeNavigationBar
 {
-    //    self.view.backgroundColor = [UIColor clearColor];
-    //    [self.navigationBar setBackgroundImage:[[UIImage imageNamed:@"navigation_bar.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forBarMetrics:UIBarMetricsDefault];
-    //    [self.navigationBar setTranslucent:YES];
+    self.view.backgroundColor = [UIColor clearColor];
+    [self.navigationBar setBackgroundImage:[[UIImage imageNamed:@"navigation_bar.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setTranslucent:YES];
 }
 
 - (void)viewDidUnload
@@ -90,7 +90,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [menuManager prepareView];
     menuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
     menuView.layer.sublayerTransform = CATransform3DMakePerspective(1000);
-    menuView.backgroundColor = [UIColor redColor];
+    menuView.backgroundColor = [UIColor clearColor];
     menuManager.naviView = self.view;
     
     [menuView setHidden:YES];
@@ -221,6 +221,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    [self resetMenu];
     [super pushViewController:viewController animated:animated];
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
 }
@@ -237,4 +238,5 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
     [self.menuManager resetMenu];
 }
+
 @end

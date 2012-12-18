@@ -374,9 +374,9 @@
 		C59198EF167F23A20019E947 /* SCPNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198E9167F23A20019E947 /* SCPNavigationController.m */; };
 		C59198F0167F23A20019E947 /* SCPSecondLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198EB167F23A20019E947 /* SCPSecondLayerController.m */; };
 		C59198F6167F2DA60019E947 /* PhotoDetailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198F3167F2DA60019E947 /* PhotoDetailManager.m */; };
-		C59198F7167F2DA60019E947 /* SCPPhotoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59198F5167F2DA60019E947 /* SCPPhotoListController.m */; };
 		C5923BE1162E5D1100B38605 /* dorp_down.png in Resources */ = {isa = PBXBuildFile; fileRef = C5923BE0162E5D1100B38605 /* dorp_down.png */; };
 		C5928E0B164BC780003A6D68 /* bg_soul.png in Resources */ = {isa = PBXBuildFile; fileRef = C5928E0A164BC780003A6D68 /* bg_soul.png */; };
+		C593B616168012FF0076FBC6 /* SCPPhotoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C593B615168012FF0076FBC6 /* SCPPhotoListController.m */; };
 		C594B83A1659C72600DC85AF /* SCPGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = C594B8391659C72600DC85AF /* SCPGuideView.m */; };
 		C5958B2216362C4B00BDFEC8 /* menu_camera_press.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958B2016362C4B00BDFEC8 /* menu_camera_press.png */; };
 		C5958B2316362C4B00BDFEC8 /* menu_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958B2116362C4B00BDFEC8 /* menu_camera.png */; };
@@ -934,10 +934,10 @@
 		C59198EB167F23A20019E947 /* SCPSecondLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPSecondLayerController.m; sourceTree = "<group>"; };
 		C59198F2167F2DA60019E947 /* PhotoDetailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailManager.h; sourceTree = "<group>"; };
 		C59198F3167F2DA60019E947 /* PhotoDetailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailManager.m; sourceTree = "<group>"; };
-		C59198F4167F2DA60019E947 /* SCPPhotoListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPPhotoListController.h; sourceTree = "<group>"; };
-		C59198F5167F2DA60019E947 /* SCPPhotoListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPhotoListController.m; sourceTree = "<group>"; };
 		C5923BE0162E5D1100B38605 /* dorp_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dorp_down.png; sourceTree = "<group>"; };
 		C5928E0A164BC780003A6D68 /* bg_soul.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_soul.png; sourceTree = "<group>"; };
+		C593B614168012FF0076FBC6 /* SCPPhotoListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPPhotoListController.h; sourceTree = "<group>"; };
+		C593B615168012FF0076FBC6 /* SCPPhotoListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPhotoListController.m; sourceTree = "<group>"; };
 		C594B8381659C72600DC85AF /* SCPGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPGuideView.h; sourceTree = "<group>"; };
 		C594B8391659C72600DC85AF /* SCPGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPGuideView.m; sourceTree = "<group>"; };
 		C5958B2016362C4B00BDFEC8 /* menu_camera_press.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_camera_press.png; sourceTree = "<group>"; };
@@ -2309,10 +2309,10 @@
 		C59198F1167F2DA50019E947 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				C593B614168012FF0076FBC6 /* SCPPhotoListController.h */,
+				C593B615168012FF0076FBC6 /* SCPPhotoListController.m */,
 				C59198F2167F2DA60019E947 /* PhotoDetailManager.h */,
 				C59198F3167F2DA60019E947 /* PhotoDetailManager.m */,
-				C59198F4167F2DA60019E947 /* SCPPhotoListController.h */,
-				C59198F5167F2DA60019E947 /* SCPPhotoListController.m */,
 			);
 			name = Manager;
 			path = Controller/PhotoDetailController/Manager;
@@ -2855,7 +2855,7 @@
 				C59198EF167F23A20019E947 /* SCPNavigationController.m in Sources */,
 				C59198F0167F23A20019E947 /* SCPSecondLayerController.m in Sources */,
 				C59198F6167F2DA60019E947 /* PhotoDetailManager.m in Sources */,
-				C59198F7167F2DA60019E947 /* SCPPhotoListController.m in Sources */,
+				C593B616168012FF0076FBC6 /* SCPPhotoListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
