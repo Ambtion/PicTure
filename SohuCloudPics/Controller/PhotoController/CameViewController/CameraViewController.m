@@ -114,7 +114,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.navigationController.navigationBar setHidden:NO];
-    [((SCPMenuNavigationController *)self.navigationController).menuView setHidden:NO];
+//    [((SCPMenuNavigationController *)self.navigationController).menuView setHidden:NO];
     [((SCPMenuNavigationController *)self.navigationController).ribbonView setHidden:NO];
 }
 #pragma mark -

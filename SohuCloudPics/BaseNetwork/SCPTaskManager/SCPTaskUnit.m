@@ -17,14 +17,18 @@
 @synthesize thumbnail = _thumbnail;
 //@synthesize keyValue = _keyValue;
 @synthesize request = _request;
+@synthesize data = _data;
+
 - (void)dealloc
 {
     self.asseetUrl = nil;
     self.thumbnail = nil;
     self.description = nil;
     self.request = nil;
+    self.data = nil;
     [super dealloc];
 }
+
 - (id)init
 {
     self = [super init];
@@ -41,12 +45,16 @@
 
 - (void)getImageSucess:(void (^)(NSData * imageData,SCPTaskUnit * unit))resultBlock failture:(void(^)(NSError * error,SCPTaskUnit * unit))myfailtureBlock;
 {
+    if (self.data) {
+        resultBlock(self.data,self);
+        return;
+    }
     ALAssetsLibrary * lib = [[ALAssetsLibrary alloc] init];
     [lib assetForURL:_asseetUrl resultBlock:^(ALAsset *asset) {
         CGImageRef  cgimage =[[asset defaultRepresentation] fullResolutionImage];
         UIImage * image = [UIImage imageWithCGImage:cgimage];
-        NSData * data = UIImagePNGRepresentation(image);
-//        NSData * data = UIImageJPEGRepresentation(image, 1.f);
+//        NSData * data = UIImagePNGRepresentation(image);
+        NSData * data = UIImageJPEGRepresentation(image, 1.f);
         dispatch_async(dispatch_get_main_queue(), ^{
             resultBlock(data,self);
             [lib release];

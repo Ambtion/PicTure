@@ -29,6 +29,7 @@
         actV.center = CGPointMake(self.frame.size.width/ 2.f, self.frame.size.height/2.f);
         actV.hidesWhenStopped = YES;
         [self addSubview:actV];
+    
     }
     return self;
 }
@@ -88,8 +89,8 @@
     [imageArray release];
     [curImages release];
     self.info = nil;
-    
     [super dealloc];
+    
 }
 
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
@@ -105,10 +106,9 @@
         Pagenum = 1;
         animation = NO;
         self.info = info;
-        
+        isInit = YES;
         _requestManger = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
-        
         [self initSubViews];
         
         [_requestManger getPhotosWithUserID:[self.info objectForKey:@"creatorId"] FolderID:[info objectForKey:@"folderShowId"] page:Pagenum++];
@@ -133,10 +133,9 @@
         Pagenum = 1;
         animation = NO;
         self.info = info;
-        
+        isInit = YES;
         _requestManger = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
-        
         [self initSubViews];
         
         [_requestManger getPhotosWithUserID:[self.info objectForKey:@"creatorId"] FolderID:[info objectForKey:@"folderShowId"] page:Pagenum++];
@@ -149,11 +148,11 @@
     }
     return self;
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
 }
-
 #pragma mark Ratation
 - (CGAffineTransform )getTransfrom
 {
@@ -244,7 +243,6 @@
 
         if ([[dic objectForKey:@"bigUrl"] isEqual:[self.info objectForKey:@"bigUrl"]]) {
             isFound = YES;
-            NSLog(@"hello");
             break;
         }
     }
@@ -313,20 +311,16 @@
     self.curscrollView.minimumZoomScale  = 1.f;
     self.curscrollView.backgroundColor = [UIColor clearColor];
     self.curscrollView.contentMode = UIViewContentModeCenter;
-    
     [self.scrollView addSubview:self.curscrollView];
     self.currentImageView = [[[InfoImageView alloc] initWithFrame:self.curscrollView.bounds] autorelease];
     self.currentImageView.backgroundColor = [UIColor clearColor];
     [self addGestureRecognizeronView:self.curscrollView];
-    
     [self.curscrollView addSubview:self.currentImageView];
     self.curscrollView.showsHorizontalScrollIndicator = NO;
     self.curscrollView.showsVerticalScrollIndicator = NO;
-    
     self.currentImageView.info =  self.info;
     [self resetImageFrame:self.currentImageView];
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
-    
 }
 - (void)addrearScrollView
 {
@@ -551,13 +545,8 @@
     return YES;
 }
 - (int)validPageValue:(NSInteger)value {
-    
-    
-    //    if(value == -1) value = imageArray.count - 1;                   // value＝1为第一张，value = 0为前面一张
-    //    if(value == imageArray.count){
-    //        if (imageArray.count == photoNum ) value = 0;
-    //
-    //    }
+//    if(value == -1) value = 0;                   // value＝1为第一张，value = 0为前面一张
+//    if(value == imageArray.count) value = imageArray.count - 1;
     return value;
 }
 - (void)resetImageFrame:(InfoImageView*)imageView
@@ -657,6 +646,7 @@
     [self resetImageFrame:self.fontImageView];
     [self resetImageFrame:self.currentImageView];
     [self resetImageFrame:self.rearImageView];
+    
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2,0)];
     curPage--;
@@ -697,9 +687,14 @@
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
     }
 }
+
 - (void)refreshScrollView {
     
     if (!imageArray || imageArray.count == 0) {
+        return;
+    }
+    if (isInit){
+        isInit = NO;
         return;
     }
     NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
@@ -723,18 +718,17 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging]|| animation) {
-        return;
-    }
+    if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging]|| animation )      return;
     if (photoNum < 3) {
         curPage = self.scrollView.contentOffset.x / self.view.frame.size.width;
         NSLog(@"curpage:%d",curPage);
         return;
     }
     int x = self.scrollView.contentOffset.x;
+    
     if(x >= (self.scrollView.frame.size.width * 2)) {
         
-        if (curPage >= photoNum - 2) {
+        if (curPage == photoNum - 2) {
             curPage = photoNum - 1;
             [self initSubViews];
             return;
@@ -746,6 +740,7 @@
         curPage = [self validPageValue:curPage+1];
         [self refreshScrollView];
     }
+    
     if(x <= 0) {
         
         if (curPage <= 1) {
@@ -756,6 +751,7 @@
         curPage = [self validPageValue:curPage-1];
         [self refreshScrollView];
     }
+    
     if (x == self.scrollView.frame.size.width) {
         self.info = self.currentImageView.info;
         [self resetImageFrame:self.currentImageView];

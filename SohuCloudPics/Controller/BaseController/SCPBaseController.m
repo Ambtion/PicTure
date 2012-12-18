@@ -34,7 +34,7 @@
         naviRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideNavigationBar)];
         naviRecognizerUp.direction = UISwipeGestureRecognizerDirectionUp;
         naviRecognizerUp.delegate = self;
-        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera)];
+        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera:)];
         slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
     }
     return self;
@@ -79,7 +79,7 @@
 }
 #pragma mark -
 #pragma mark delegate
-- (void)showCamera
+- (void)showCamera:(id)gesture
 {
     CameraViewController *phc = [[CameraViewController alloc] init];
     [self hideNavigationBar];

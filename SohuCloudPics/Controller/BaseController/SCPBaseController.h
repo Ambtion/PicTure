@@ -24,5 +24,6 @@
 - (void)switchNavigationBar:(float)yOffset scrollView:(UIScrollView *)scrollView;
 - (void)showNavigationBar;
 - (void)hideNavigationBar;
+- (void)showCamera:(id)gesture;
 - (NSString *)getTimeString;
 @end

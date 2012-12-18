@@ -40,6 +40,7 @@
     NSInteger Pagenum;
     //for animation
     BOOL animation;
+    BOOL isInit;
 }
 @property (nonatomic,retain)NSDictionary * info;
 @property (nonatomic,retain)UIView * bgView;

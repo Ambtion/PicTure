@@ -65,13 +65,12 @@
     }
     if (!_item.superview)
         [self.navigationController.navigationBar addSubview:_item];
-    
     [super viewDidAppear:animated];
     [self showGuideView];
 }
 - (void)showGuideView
 {
-    NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowde"];
+    NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
     if (!num || ![num boolValue]) {
         SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
         view.image = [UIImage imageNamed:@"广场导引.png"];

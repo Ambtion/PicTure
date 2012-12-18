@@ -62,7 +62,7 @@
         
     }
 }
--(void)toggleSelection:(id)sender {
+-(void)toggleSelection {
     
     //图片点击的时候
     NSLog(@"self %@",_asset);
