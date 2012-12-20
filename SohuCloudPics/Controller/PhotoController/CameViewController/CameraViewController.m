@@ -206,7 +206,6 @@
 //    [_photoBook setImage:[UIImage imageNamed:@"album_btn.png"] forState:UIControlStateNormal];
 //    [_photoBook setImage:[UIImage imageNamed:@"album_btn_press.png"] forState:UIControlStateHighlighted];
 //    [_tabBarView addSubview:_photoBook];
-    
 }
 
 #pragma mark-

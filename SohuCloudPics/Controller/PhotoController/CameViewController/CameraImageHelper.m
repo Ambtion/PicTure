@@ -278,7 +278,7 @@ static CameraImageHelper *sharedInstance = nil;
     }else {
 		//Start recording
         [movieFileOutPut startRecordingToOutputFileURL:outUrl  recordingDelegate:self];
-    }
+    } 
 }
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
 {
@@ -308,7 +308,6 @@ static CameraImageHelper *sharedInstance = nil;
 	if(!sharedInstance) sharedInstance = [[self alloc] init];
     return sharedInstance;
 }
-
 + (void) startRunning
 {
 	[[[self sharedInstance] session] startRunning];	
