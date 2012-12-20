@@ -17,7 +17,8 @@
 
 @synthesize photoImage = _photoImage, portrailImage = _portrailImage, name = _name,
 update = _update, favourtecount = _favourtecount;
-@synthesize allInfo = _allInfo;
+@synthesize isGif = _isGif;
+//@synthesize allInfo = _allInfo;
 @synthesize heigth = _heigth;
 - (void)dealloc
 {
@@ -50,8 +51,8 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     [_positionTimeLabel release];
     [_favorButton release];
     [_commentButton release];
-    
     [_dataSource release];
+    [_gifPlayView release];
     [super dealloc];
 }
 
@@ -82,13 +83,13 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     _photoImageView.userInteractionEnabled = YES;
     [_photoImageView addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoImageViewClicked)] autorelease]];
     [view addSubview:_photoImageView];
-    
     [self.contentView addSubview:view];
 }
 
 - (void)addtailer
 {
-    tailerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 320, 320, 70)] autorelease]; 
+    
+    tailerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 320, 320, 70)] autorelease];
     tailerView.backgroundColor = [UIColor clearColor];
     UIImageView * bg_imageview = [[[UIImageView alloc] initWithFrame:tailerView.bounds] autorelease];
     bg_imageview.image = [UIImage imageNamed:@"photo_user_info.png"];
@@ -133,9 +134,29 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 
 #pragma mark -
 #pragma mark updataData
+- (void)showGifButton
+{
+    if (_dataSource.isGif) {
+        if (!_gifPlayView) {
+            _gifPlayView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,55, 55)];
+            _gifPlayView.image = [UIImage imageNamed:@"play_normal.png"];
+        }
+        _gifPlayView.center = CGPointMake(_photoImageView.bounds.size.width /2.f, _photoImageView.bounds.size.height/ 2.f);
+        if (!_gifPlayView.superview)
+            [_photoImageView addSubview:_gifPlayView];
+    }else{
+        if (_gifPlayView.superview)
+            [_gifPlayView removeFromSuperview];
+    }
+}
 
 - (void)updataData
 {
+    
+    //图片安装320压缩获得高度
+    //小于320,高度扩大到320;图片居中,左右两边截掉;
+    //大于固定的高度Max...,上下图片截掉;
+    
     CGFloat maxHeigth = self.maxImageHeigth;
     if (!maxHeigth)
         maxHeigth = 320;
@@ -158,6 +179,8 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     frame.origin.y = _photoImageView.superview.frame.size.height;
     tailerView.frame = frame;
     
+    [self showGifButton];
+    
     [_photoImageView setImageWithURL:[NSURL URLWithString:_dataSource.photoImage]];
     [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
       
@@ -171,9 +194,7 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     }else{
         _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
     }
-    
 //    [_commentButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.commontcount]];
-    
     [self setFavorButtonImage];
     [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
     
@@ -224,7 +245,6 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 
 - (void)favorButtonClicked
 {
-   
 //    [self setFavorButtonImage];
 //     _dataSource.ismyLike = !_dataSource.ismyLike;
     if ([_delegate respondsToSelector:@selector(feedCell:clickedAtFavorButton:)]) {

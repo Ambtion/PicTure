@@ -6,8 +6,8 @@
 //  Copyright 2010 Up To No Good, Inc. All rights reserved.
 //
 
-#import <CoreVideo/CoreVideo.h>
-#import <CoreMedia/CoreMedia.h>
+//#import <CoreVideo/CoreVideo.h>
+//#import <CoreMedia/CoreMedia.h>
 #import <ImageIO/ImageIO.h>
 #import "CameraImageHelper.h"
 
@@ -24,22 +24,18 @@ static CameraImageHelper *sharedInstance = nil;
     self.session = [[[AVCaptureSession alloc] init] autorelease];
     [self.session setSessionPreset:AVCaptureSessionPresetPhoto];
     
-    
     //2.创建、配置输入设备
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 	NSError *error;
 	AVCaptureDeviceInput *captureInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
-    
 	if (!captureInput)
 	{
 		NSLog(@"Error: %@", error);
 		return;
 	}
     [self.session addInput:captureInput];
-    
     [self initconfigurationInput];
     //配置输出
-    
     //3.1 图片输出
     imagecaptureOutput = [[[AVCaptureStillImageOutput alloc] init] autorelease];
     NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey,nil];
@@ -95,11 +91,8 @@ static CameraImageHelper *sharedInstance = nil;
     [movieConnection setEnabled:NO];
     if (movieConnection.isVideoOrientationSupported) 
         movieConnection.videoOrientation = UIInterfaceOrientationPortrait;
-    
     movieConnection.videoMaxFrameDuration = CMTimeMake(150, 15);
     movieConnection.videoMinFrameDuration = CMTimeMake(150, 15);
-    
-    
 
 }
 - (id) init
@@ -110,7 +103,6 @@ static CameraImageHelper *sharedInstance = nil;
 
 -(void) embedPreviewInView: (UIView *) aView {
     if (!session) return;
-    
     preview = [AVCaptureVideoPreviewLayer layerWithSession: session];
 //    preview.orientation = UIInterfaceOrientationPortrait;
     preview.frame = aView.bounds;
@@ -163,15 +155,11 @@ static CameraImageHelper *sharedInstance = nil;
         NSLog(@"Image::%@",imageCaptureconnection);
         [imagecaptureOutput captureStillImageAsynchronouslyFromConnection:imageCaptureconnection completionHandler:
          ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
-             
             NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-             
                  NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-             
                  UIImage *t_image = [[UIImage alloc] initWithData:imageData]  ;   
                  self.image = [[[UIImage alloc]initWithCGImage:t_image.CGImage scale:1.0 orientation:UIImageOrientationRight] autorelease];
                 [t_image release],t_image = nil;
-             
                 //t_image is  same  to self.image
                  dispatch_async(dispatch_get_main_queue(), ^{
                      sucecces(self.image);

@@ -43,6 +43,7 @@
 }
 - (void)goNextTask
 {
+    NSLog(@"%s",__FUNCTION__);
     [self addTaskUnitToQuene];
 }
 - (void)addTaskUnitToQuene
@@ -94,6 +95,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    NSLog(@"%s",__FUNCTION__);
     [request cancel];
     [request clearDelegatesAndCancel];
     if (self.taskList.count)
@@ -113,6 +115,7 @@
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+    NSLog(@"%s %@",__FUNCTION__,[request responseString]);
     [request cancel];
     [request clearDelegatesAndCancel];
     [self.taskList removeObjectAtIndex:0];
@@ -136,7 +139,7 @@
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
     [request addRequestHeader:@"accept" value:@"application/json"];
-    request.delegate = self;
+    [request setDelegate:self];
 //    [request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
     [request setTimeOutSeconds:10];
     [request setShowAccurateProgress:YES];

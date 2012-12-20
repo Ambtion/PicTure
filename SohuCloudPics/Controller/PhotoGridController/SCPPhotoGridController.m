@@ -281,14 +281,12 @@
 - (BOOL)removeTask:(NSArray *)array
 {
     if ([[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:_albumData.albumId].taskList.count == 0) return NO;
-    NSLog(@"Remove Count:%d",array.count);
     //获得任务unit
     NSMutableArray * unitArray = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < array.count; i++) {
         SCPPhoto * photo = [array objectAtIndex:i];
         NSInteger index = [_photoList indexOfObject:photo];
         SCPTaskUnit * unit = [self.uploadTaskList.taskList objectAtIndex:self.uploadTaskList.taskList.count - index - 1];
-        NSLog(@"task index::%d",index);
         [unitArray addObject:unit];
         //删除对应照片
         [self.thumbnailArray removeObject:unit.thumbnail];
@@ -297,9 +295,7 @@
     if (unitArray.count){
         [[SCPUploadTaskManager currentManager] cancelupLoadWithAlbumID:_albumData.albumId WithUnit:unitArray];
     }
-    for (UIImage * image in self.thumbnailArray) {
-        NSLog(@"after Remvoe thunmnail:%@",image);
-    }
+  
     taskTotal = self.thumbnailArray.count;
     self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:_albumData.albumId];
     [_photoList removeObjectsInArray:array];
@@ -310,12 +306,9 @@
 - (void)deletePhoto:(NSArray *)photoArray
 {
     if (photoArray.count) {
-        NSLog(@"%s start",__FUNCTION__);
         NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
         for (SCPPhoto * photo in photoArray)
             [array addObject:photo.photoID];
-        NSLog(@"%@",array);
-        NSLog(@"%s end",__FUNCTION__);
         [_request deletePhotosWithUserId:[SCPLoginPridictive currentUserId] folderId:self.albumData.albumId photoIds:array success:^(NSString *response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 for (SCPPhoto * photo in photoArray){
@@ -425,7 +418,6 @@
             }
             //设置图片
             [[cell imageViewAt:i] setImage:[self.thumbnailArray objectAtIndex:taskTotal - tag.integerValue - 1]];
-            NSLog(@"Cell Image:%@ %d",[self.thumbnailArray objectAtIndex:taskTotal - tag.integerValue - 1],tag.integerValue);
             //当前任务 设置进度条
             if (tag.integerValue == _uploadTaskList.taskList.count - 1) {
                 [self.uploadTaskList.currentTask.request setUploadProgressDelegate:[cell.progViewList objectAtIndex:i]];
@@ -510,7 +502,6 @@
 {
     if (buttonIndex) {
         if ([[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:_albumData.albumId].taskList.count == 0) return;
-        NSLog(@"%d",self.uploadTaskList.taskList.count - alertView.tag);
         SCPTaskUnit * unit = [self.uploadTaskList.taskList objectAtIndex:self.uploadTaskList.taskList.count - alertView.tag - 1];
         [[SCPUploadTaskManager currentManager] cancelupLoadWithAlbumID:_albumData.albumId WithUnit:[NSArray arrayWithObject:unit]];
         [self.photoList removeObjectAtIndex:alertView.tag];

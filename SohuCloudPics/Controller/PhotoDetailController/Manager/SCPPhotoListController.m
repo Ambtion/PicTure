@@ -20,6 +20,7 @@
 
 @synthesize info;
 @synthesize actV;
+@synthesize webView;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -48,10 +49,31 @@
     [super setFrame:frame];
     actV.center = CGPointMake(self.frame.size.width/ 2.f, self.frame.size.height/2.f);
 }
+- (void)playGif:(NSURL *)url
+{
+//    使用UIWebView播放
+    // 设定位置和大小
+    CGRect frame = CGRectZero;
+    frame = self.bounds;
+    // 读取gif图片数据
+    NSData *gif = [NSData dataWithContentsOfURL:url];
+    // view生成
+    self.webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
+    self.webView.backgroundColor = [UIColor clearColor];
+    self.webView.userInteractionEnabled = NO;//用户不可交互
+    [self.webView loadData:gif MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
+    [self addSubview:self.webView];
+}
+- (void)resetGigView
+{
+    [self.webView removeFromSuperview];
+    self.webView = nil;
+}
 - (void)dealloc
 {
     self.info = nil;
     self.actV = nil;
+    self.webView = nil;
     [super dealloc];
 }
 
@@ -227,6 +249,7 @@
 {
     photoNum = [[[info objectForKey:@"folder"] objectForKey:@"photoNum"] intValue];
     [imageArray addObjectsFromArray:[info objectForKey:@"photoList"]];
+    NSLog(@"%@",[imageArray lastObject]);
     curPage =  [self getindexofImages];
     if (curPage == -1) {
         [self getMoreImage];
@@ -371,6 +394,7 @@
     [self setZooming:_fontScrollview];
     [self setZooming:_curscrollView];
     [self setZooming:_rearScrollview];
+    [[self currentImageView] resetGigView];
     
     UIImageView * imageView = [[[UIImageView alloc] initWithFrame:[self getCurrentImageView].bounds] autorelease];
     imageView.image = [self getCurrentImageView].image;
@@ -619,6 +643,12 @@
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
         }];
+        if (![[[imageView info] objectForKey:@"multipleFrames"] floatValue]) {
+            [imageView resetGigView];
+        }else{
+            [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"originUrl"]]];
+        }
+       
     }
 }
 - (void)refreshScrollviewOnMinBounds
@@ -771,7 +801,6 @@
     }
     return nil;
 }
-
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
     [self resetImagetView:scrollView];

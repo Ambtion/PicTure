@@ -70,6 +70,7 @@
         
         [_dataSourceArray removeAllObjects];
         NSLog(@"%@",info);
+        
         NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:@"photo"]];
         [dic setObject:[[info objectForKey:@"folder"]objectForKey:@"name"] forKey:@"folderName"];
         self.infoFromSuper = dic;
@@ -77,14 +78,15 @@
         fAdapter.allInfo = self.infoFromSuper;
         fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
         fAdapter.name = [self.infoFromSuper objectForKey:@"creatorNick"];
-        
         fAdapter.portrailImage = [self.infoFromSuper objectForKey:@"creatorIcon"];
-        
+        //图像信息
         fAdapter.photoImage = [self.infoFromSuper objectForKey:@"bigUrl"];
+        fAdapter.isGif = [[self.infoFromSuper objectForKey:@"multipleFrames"] intValue];
+        
         fAdapter.update = [self.infoFromSuper objectForKey:@"uploadAtDesc"];
         fAdapter.favourtecount = [[self.infoFromSuper objectForKey:@"likes"] intValue];
-        //        fAdapter.commontcount = 113;
         fAdapter.ismyLike = NO;
+        // fAdapter.commontcount = 113;
         
         [_dataSourceArray addObject:fAdapter];
         [fAdapter release];

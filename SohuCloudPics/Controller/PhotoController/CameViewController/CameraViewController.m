@@ -110,6 +110,7 @@
 
     self.navigationItem.hidesBackButton = YES;
     [self performSelector:@selector(openCamera) withObject:nil afterDelay:0.5];
+    
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -197,13 +198,14 @@
     _photoSwitch.center = CGPointMake(160, 25.5);
     [_tabBarView addSubview:_photoSwitch];
     
-    //add photoBook tabBarView
-    _photoBook = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _photoBook.frame = CGRectMake(247, 0, 73, 49);
-    [_photoBook addTarget:self action:@selector(photoBookClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_photoBook setImage:[UIImage imageNamed:@"album_btn.png"] forState:UIControlStateNormal];
-    [_photoBook setImage:[UIImage imageNamed:@"album_btn_press.png"] forState:UIControlStateHighlighted];
-    [_tabBarView addSubview:_photoBook];
+    //去点相机进入照片接口
+//    //add photoBook tabBarView
+//    _photoBook = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+//    _photoBook.frame = CGRectMake(247, 0, 73, 49);
+//    [_photoBook addTarget:self action:@selector(photoBookClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [_photoBook setImage:[UIImage imageNamed:@"album_btn.png"] forState:UIControlStateNormal];
+//    [_photoBook setImage:[UIImage imageNamed:@"album_btn_press.png"] forState:UIControlStateHighlighted];
+//    [_tabBarView addSubview:_photoBook];
     
 }
 

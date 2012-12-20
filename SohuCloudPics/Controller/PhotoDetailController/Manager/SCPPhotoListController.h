@@ -14,8 +14,12 @@
 @class PhotoDetailManager;
 
 @interface InfoImageView : UIImageView
+
 @property(nonatomic,retain)NSDictionary * info;
 @property(nonatomic,assign)UIActivityIndicatorView * actV;
+@property(nonatomic,retain)UIWebView * webView;
+- (void)playGif:(NSURL *)url;
+- (void)resetGigView;
 @end
 
 @interface SCPPhotoListController : UIViewController <UIScrollViewDelegate,SCPRequestManagerDelegate>

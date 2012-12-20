@@ -50,14 +50,14 @@
             /* progressView */
             UIProgressView *prog = [[UIProgressView alloc] initWithFrame:CGRectMake(i * 79 + 8, 60, 64, 8)];
             [prog setProgressImage:[UIImage imageNamed:@"prog_done.png"]];
-            [prog setTrackImage:[[UIImage imageNamed:@"prog_wait.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0]];
+            [prog setTrackImage:[UIImage imageNamed:@"prog_wait.png"]];
+            
             prog.layer.borderColor = [[UIColor blackColor] CGColor];
             prog.progress = 0;
-        
             [_progViewList addObject:prog];
             [self addSubview:prog];
             [prog release];
-            
+
             /* deleteView */
             UIImageView *deleteFrameImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_box_select_image.png"]];
             deleteFrameImageView.frame = imageView.frame;

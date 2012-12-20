@@ -579,15 +579,17 @@ static NSString *menuPress[6] = {
 - (void)showRibbonWithAnimation:(BOOL)animation
 
 {
+    
     CGPoint toPoint = CGPointMake(ribbon.layer.position.x, 27.5);
     if (animation) {
+        
         CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
         opacityAnimation.duration = animationDuration;
         opacityAnimation.fromValue = [NSNumber numberWithFloat:0.0];
         opacityAnimation.toValue = [NSNumber numberWithFloat:1.0];
         opacityAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
         
-        CABasicAnimation *translateAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+        CABasicAnimation * translateAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         translateAnimation.fromValue = [NSValue valueWithCGPoint:ribbon.layer.position];
         translateAnimation.toValue = [NSValue valueWithCGPoint:toPoint];
         translateAnimation.duration = animationDuration;
@@ -602,7 +604,7 @@ static NSString *menuPress[6] = {
    
     ribbon.layer.position = toPoint;
     ribbon.layer.opacity = 1.0;
-
+    
 }
 
 - (CAMediaTimingFunction *)getMoveTimingFunc

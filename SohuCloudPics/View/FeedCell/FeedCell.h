@@ -24,12 +24,15 @@
 
 @interface FeedCellDataSource : NSObject
 
-@property(nonatomic,retain)NSDictionary * allInfo;
+@property(nonatomic,retain)NSDictionary * allInfo;//为了更好的传参,代价是内存占用
+
 @property(nonatomic,assign)CGFloat  heigth;
 @property(nonatomic,retain)NSString * photoImage;
+@property(nonatomic,assign)BOOL isGif;
 @property(nonatomic,retain)NSString * portrailImage;
 @property(nonatomic,retain)NSString * name;
 @property(nonatomic,retain)NSString * update;
+
 //@property(nonatomic,retain)NSString * position;
 @property(nonatomic,assign)NSInteger favourtecount;
 //@property(nonatomic,assign)NSInteger commontcount;
@@ -38,8 +41,8 @@
 
 @interface FeedCell : UITableViewCell
 {
-    UIImageView* _photoImageView;
     
+    UIImageView* _photoImageView;
     //tailerview
     UIView * tailerView;
     UIImageView* _portraitView;
@@ -47,8 +50,10 @@
     UILabel * _positionTimeLabel;
     MyFavouriteView * _favorButton;
     MyFavouriteView * _commentButton;
-    
     FeedCellDataSource * _dataSource;
+    UIImageView * _gifPlayView;
+    UIWebView * _webView;
+
 }
 //@property (strong, nonatomic) NSObject <FeedCellDataSource> *dataSource;
 @property (assign, nonatomic) id <FeedCellDelegate> delegate;

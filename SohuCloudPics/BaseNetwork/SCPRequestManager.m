@@ -548,6 +548,7 @@
             [self showWhenRequsetFailed:request];
         });
     }];
+    
     [request startAsynchronous];
 }
 - (void)friendshipsFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success
@@ -569,6 +570,7 @@
             [self showWhenRequsetFailed:request];
         });
     }];
+    
     [request startAsynchronous];
 }
 @end

@@ -63,6 +63,7 @@
 -(void)buttonDrag:(UISwipeGestureRecognizer *)gesture
 {
     NSLog(@"buttonDrag");
+
     sectionOfImage = !sectionOfImage;
     [self setbuttinImage];
     [_button setUserInteractionEnabled:NO];
