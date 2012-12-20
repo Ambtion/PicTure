@@ -33,7 +33,6 @@
 + (UIImage *) image;
 + (id) sharedInstance; 
 + (void)embedPreviewInView: (UIView *) aView;
-
 //imageOutPut
 +(void)CaptureStillImage;
 +(void)CaptureStillImageWithblockSucecces:(void(^)(UIImage* image))sucecces;

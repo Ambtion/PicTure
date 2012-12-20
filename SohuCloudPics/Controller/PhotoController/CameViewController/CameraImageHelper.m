@@ -170,7 +170,6 @@ static CameraImageHelper *sharedInstance = nil;
         }];
     }
 }
-
 #pragma  mark -
 #pragma  mark Mode function
 -(void)setFlashMode:(AVCaptureFlashMode)mode
@@ -308,6 +307,7 @@ static CameraImageHelper *sharedInstance = nil;
 	if(!sharedInstance) sharedInstance = [[self alloc] init];
     return sharedInstance;
 }
+
 + (void) startRunning
 {
 	[[[self sharedInstance] session] startRunning];	
