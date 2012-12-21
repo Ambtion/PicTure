@@ -10,6 +10,7 @@
 #import "MenuButtonView.h"
 #import "RefreshButton.h"
 #import "UIImageView+WebCache.h"
+#import "HomeBackContainer.h"
 
 @class MyPersonalCell;
 
@@ -37,7 +38,7 @@
 
 @end
 
-@interface MyPersonalCell : UITableViewCell<MenuButtonViewDelegate>
+@interface MyPersonalCell : UITableViewCell<MenuButtonViewDelegate,HomeBackContainerDelegate>
 {
     MyPersonalCelldataSource * _dataSource;
     UIImageView * _backgroundImageView;

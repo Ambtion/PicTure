@@ -9,7 +9,6 @@
 #import "MyPersonalCell.h"
 #import <QuartzCore/QuartzCore.h>
 
-
 @implementation MyPersonalCelldataSource
 @synthesize allInfo = _allInfo;
 @synthesize portrait = _portrait;
@@ -66,18 +65,17 @@
         [self addUserPhotoLabel];
         [self addMenuView];
     }
-    
     return self;
 }
 -(void)addUesrphotoView
 {
-    
     //backGroud
     _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 367 - 480, 320, 480)];
-    _backgroundImageView.image = [UIImage imageNamed:@"bg_soul.png"];
-    // _backgroundImageView.backgroundColor = [UIColor redColor];
     [self.contentView addSubview:_backgroundImageView];
-    
+    UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeBack:)] autorelease];
+    [_backgroundImageView addGestureRecognizer:gesture];
+    [_backgroundImageView setUserInteractionEnabled:YES];
+    [self setHomeBackGroudImage];
     //portrait Image
     _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(118 , 109, 85, 85)];
     _portraitImageView.layer.cornerRadius = 42.5;
@@ -97,6 +95,24 @@
     //    maskLayer.path = bi.CGPath;
     //    _portraitImageView.layer.mask = maskLayer;
     
+}
+- (void)setHomeBackGroudImage
+{
+    NSString * bgname = [[NSUserDefaults standardUserDefaults] objectForKey:@"HomeBackImage"];
+    if (bgname) {
+        _backgroundImageView.image = [UIImage imageNamed:bgname];
+    }else{
+        _backgroundImageView.image = [UIImage imageNamed:@"bg_soul.png"];
+    }
+}
+- (void)changeBack:(UITapGestureRecognizer *)gesture
+{
+    HomeBackContainer * hc = [[[HomeBackContainer alloc] initWithDelegate:self] autorelease];
+    [hc show];
+}
+- (void)homeBackContainerSeleced:(UIImage *)image
+{
+    _backgroundImageView.image = image;
 }
 -(void)addUserPhotoLabel
 {
@@ -147,7 +163,7 @@
     [self.contentView addSubview:bg_menu];
     
     
-    _albumButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(0, 0, 80, 60)];
+    _albumButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(0, 0, 106, 60)];
     _albumButton.nameLabel.text = @"相册";
     _albumButton.delegate = self;
     [bg_menu addSubview:_albumButton];
@@ -156,13 +172,12 @@
 //    _favorButton.nameLabel.text = @"喜欢";
 //    _favorButton.delegate = self;
 //    [bg_menu addSubview:_favorButton];
-    
-    _followingButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(160, 0, 80, 60)];
+    _followingButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106, 0, 106, 60)];
     _followingButton.nameLabel.text = @"跟随";
     _followingButton.delegate = self;
     [bg_menu addSubview:_followingButton];
     
-    _followedButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(240, 0, 80, 60)];
+    _followedButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106 * 2, 0, 106, 60)];
     _followedButton.nameLabel.text = @"跟随者";
     _followedButton.delegate = self;
     [bg_menu addSubview:_followedButton];

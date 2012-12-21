@@ -173,9 +173,9 @@
 {
     //after login
     if ([button isEqual:_loginButton]) {
-//        [SCPLoginPridictive storeData:@"Login" forKey:nil];
+        
         [SCPLoginPridictive loginUserId:@"123" withToken:@"123"];
-
+        
         if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)]) {
             [_delegate SCPLogin:self doLogin:button];
         }
@@ -219,6 +219,7 @@
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
     view.contentOffset = point;
     [UIView commitAnimations];
+    
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -238,11 +239,6 @@
     CGSize size = view.contentSize;
     size.height -= keyboardSize.height;
     view.contentSize = size;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

@@ -68,6 +68,7 @@
     [self.view addSubview:_backgroundImageView];
     [self.view addSubview:_emailLabel];
     [self.view addSubview:_emailButton];
+    
 }
 
 - (void)viewDidUnload

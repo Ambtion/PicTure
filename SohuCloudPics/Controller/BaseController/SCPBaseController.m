@@ -105,7 +105,8 @@
 {
     if (self.navigationController.navigationBarHidden)
         [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [((SCPMenuNavigationController *)self.navigationController) resetMenu];
+    if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
+        [((SCPMenuNavigationController *)self.navigationController) resetMenu];
 }
 - (void)hideNavigationBar {
     if ((!self.navigationController.navigationBarHidden)) {

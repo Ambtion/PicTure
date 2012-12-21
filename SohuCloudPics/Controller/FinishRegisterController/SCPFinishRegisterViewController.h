@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCPSecondLayerController.h"
 
-@interface SCPFinishRegisterViewController : SCPSecondLayerController
+@interface SCPFinishRegisterViewController : UIViewController
 
 @property (strong, nonatomic) NSString *emailAddr;
 

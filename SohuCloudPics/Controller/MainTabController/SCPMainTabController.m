@@ -12,7 +12,6 @@
 
 #import "SCPMainFeedController.h"
 #import "SCPExplorerController.h"
-#import "SCPMyInfoController.h"
 #import "SCPFirstIntroController.h"
 #import "SCPMenuNavigationController.h"
 
@@ -30,7 +29,6 @@
         slideRecognizerL2R = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(switchTab)];
         slideRecognizerL2R.direction = UISwipeGestureRecognizerDirectionRight;
         [self.view addGestureRecognizer:slideRecognizerL2R];
-        
         self.delegate = self;
         
         // Explorer

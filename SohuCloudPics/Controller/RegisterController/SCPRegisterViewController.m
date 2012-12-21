@@ -141,25 +141,6 @@
     [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    
-    self.backgroundImageView = nil;
-    self.backgroundControl = nil;
-    self.usernameTextField = nil;
-    self.passwordTextField = nil;
-    self.nicknameTextField = nil;
-    self.displayPasswordButton = nil;
-    self.registerButton = nil;
-    
-    [_checked release];
-    _checked = nil;
-    [_noChecked release];
-    _noChecked = nil;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -204,6 +185,7 @@
     [nav popViewControllerAnimated:NO];
     [nav pushViewController:ctrl animated:YES];
     [ctrl release];
+    
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
