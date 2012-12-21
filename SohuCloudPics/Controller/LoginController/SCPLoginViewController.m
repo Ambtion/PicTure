@@ -51,11 +51,12 @@
 {
     [super loadView];
     self.view.backgroundColor = [UIColor colorWithRed:244.0f/255.f green:244.0f/255.f blue:244.0f/255.f alpha:1];
-    CGRect frame = CGRectMake(0, 0, 320, 480);
+    CGRect frame = [[UIScreen mainScreen] bounds];
     UIScrollView *view = [[[UIScrollView alloc] initWithFrame:frame] autorelease];
     view.bounces = NO;
     view.contentSize = frame.size;
-    [self.view addSubview:view];
+    self.view = view;
+    
 }
 
 - (void)viewDidLoad
@@ -72,21 +73,19 @@
 -(void)addsubViews
 {
     CGRect frame = CGRectMake(0, 0, 320, 480);
-    
     _backgroundImageView = [[UIImageView alloc] initWithFrame:frame];
     _backgroundImageView.image = [UIImage imageNamed:@"login_bg.png"];
-    
     _backgroundControl = [[UIControl alloc] initWithFrame:frame];
     [_backgroundControl addTarget:self action:@selector(allTextFieldsResignFirstResponder) forControlEvents:UIControlEventTouchDown];
     
-
+    //登陆用户名
     _usernameTextField = [[EmailTextField alloc] initWithFrame:CGRectMake(79, 131, 200, 22) dropDownListFrame:CGRectMake(69, 160, 214, 200) domainsArray:EMAIL_ARRAY];
     _usernameTextField.font = [UIFont systemFontOfSize:15];
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     _usernameTextField.returnKeyType = UIReturnKeyNext;
     _usernameTextField.placeholder = @"通行证/手机号";
     [_usernameTextField addTarget:self action:@selector(usernameDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
-    
+    //输入密码
     _passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(79, 189, 200, 22)];
     _passwordTextField.font = [UIFont systemFontOfSize:15];
     _passwordTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
@@ -97,7 +96,7 @@
     _passwordTextField.secureTextEntry = YES;
     _passwordTextField.placeholder = @"密码";
     [_passwordTextField addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventEditingDidEndOnExit];
-    
+    //注册
     _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _registerButton.frame = CGRectMake(35, 239, 110, 35);
     [_registerButton setBackgroundImage:[UIImage imageNamed:@"login_btn_normal"] forState:UIControlStateNormal];
@@ -107,7 +106,7 @@
     _registerButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_registerButton addTarget:self action:@selector(registerButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    
+    //登陆按钮
     _loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _loginButton.frame = CGRectMake(175, 239, 110, 35);
     [_loginButton setBackgroundImage:[UIImage imageNamed:@"login_btn_normal"] forState:UIControlStateNormal];
@@ -123,89 +122,94 @@
     [self.view addSubview:_passwordTextField];
     [self.view addSubview:_registerButton];
     [self.view addSubview:_loginButton];
-    
+    //返回按钮
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(10, 8, 28, 28);
     [backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(loginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton addTarget:self action:@selector(cancelLogin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
     
-}
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+    //第三方登陆
+    UIButton * qqbutton = [UIButton buttonWithType:UIButtonTypeCustom];
+    qqbutton.frame = CGRectMake(35, 319, 42, 42);
+    [qqbutton setImage:[UIImage imageNamed:@"qqLogin.png"] forState:UIControlStateNormal];
+    [qqbutton addTarget:self action:@selector(qqLogin:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:qqbutton];
     
-    self.backgroundImageView = nil;
-    self.backgroundControl = nil;
-    self.usernameTextField = nil;
-    self.passwordTextField = nil;
-    self.registerButton = nil;
-    self.loginButton = nil;
+    UIButton * sinabutton = [UIButton buttonWithType:UIButtonTypeCustom];
+    sinabutton.frame = CGRectMake(35 + 42 + 15, 319, 42, 42);
+    [sinabutton setImage:[UIImage imageNamed:@"sinaLogin.png"] forState:UIControlStateNormal];
+    [sinabutton addTarget:self action:@selector(sinaLogin:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sinabutton];
+    
+    UIButton * renrenbutton = [UIButton buttonWithType:UIButtonTypeCustom];
+    renrenbutton.frame = CGRectMake(35 + 42 + 15 + 42 + 15, 319, 42, 42);
+    [renrenbutton setImage:[UIImage imageNamed:@"renrenLogin.png"] forState:UIControlStateNormal];
+    [renrenbutton addTarget:self action:@selector(renrenLogin:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:renrenbutton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.navigationController setNavigationBarHidden:YES];
-
     if ([self.navigationController class] == [SCPMenuNavigationController class]) {
         [((SCPMenuNavigationController *) self.navigationController) setDisableMenu:YES];
     }
 }
-
 - (void)allTextFieldsResignFirstResponder
 {
     [_usernameTextField resignFirstResponder];
     [_passwordTextField resignFirstResponder];
 }
 
-#pragma mark -
-#pragma mark buttonClick
 - (void)usernameDidEndOnExit
 {
     [_passwordTextField becomeFirstResponder];
 }
 
+#pragma mark -
+#pragma mark buttonClick
+- (void)cancelLogin:(UIButton *)button
+{
+    if ([_delegate respondsToSelector:@selector(SCPLogin:cancelLogin:)]) {
+        [_delegate SCPLogin:self cancelLogin:button];
+    }
+}
 - (void)loginButtonClicked:(UIButton*)button
 {
     //after login
-    if ([button isEqual:_loginButton]) {
-        
-        [SCPLoginPridictive loginUserId:@"123" withToken:@"123"];
-        
-        if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)]) {
-            [_delegate SCPLogin:self doLogin:button];
-        }
-    }else {
-        if ([_delegate respondsToSelector:@selector(SCPLogin:cancelLogin:)]) {
-            [_delegate SCPLogin:self cancelLogin:button];
-        }
+    [SCPLoginPridictive loginUserId:@"123" withToken:@"123"];
+    if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)]) {
+        [_delegate SCPLogin:self doLogin:button];
     }
+}
+- (void)sinaLogin:(UIButton*)button
+{
+    
+}
+- (void)qqLogin:(UIButton *)button
+{
+    
+}
+- (void)renrenLogin:(UIButton *)button
+{
     
 }
 
 - (void)registerButtonClicked:(UIButton *)button
 {
-    
     NSLog(@"registerButtonClicked start");
     SCPRegisterViewController *reg = [[[SCPRegisterViewController alloc] init] autorelease];
     [self.navigationController pushViewController:reg animated:YES];
     NSLog(@"registerButtonClicked end");
-
-}
-
-- (void)doLogin
-{
-    // TODO
 }
 
 #pragma mark keyboard
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    UIScrollView *view = (UIScrollView *) self.view;
+    UIScrollView * view = (UIScrollView *) self.view;
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGSize size = view.contentSize;
     size.height += keyboardSize.height;
@@ -235,10 +239,11 @@
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
     view.contentOffset = point;
     [UIView commitAnimations];
-    
     CGSize size = view.contentSize;
     size.height -= keyboardSize.height;
     view.contentSize = size;
+    UIScrollView * views = (UIScrollView *) self.view;
+    views.contentSize = self.view.bounds.size;
 }
 
 @end

@@ -57,7 +57,6 @@
 #pragma mark initData
 -(id)initWithUIImage:(UIImage *)image controller: (id)Acontroller
 {
-    
     self = [super init];
     if (self) {
         controller = Acontroller;
@@ -115,7 +114,6 @@
         scaleX = image.size.width / 600;
         scaleY = image.size.height / 800;
     }
-    
     _scale_compress = MAX(scaleX, scaleY);
     if (_scale_compress && _scale_compress != 1 ) {
         self.originalThumbImage = [ImageToolBox image:image ByScaling:_scale_compress]; // 4:3 - > 4:2.9
@@ -132,9 +130,7 @@
 -(void)writeImageToalbum:(UIImage*)image
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
         @autoreleasepool {
-            
             UIGraphicsBeginImageContext(image.size);
             [image drawInRect:(CGRect){0,0,image.size}];
             UIImage* N_image = UIGraphicsGetImageFromCurrentImageContext();
@@ -149,7 +145,7 @@
                     self.assetURL = asset.defaultRepresentation.url;
                     _writeEnd = YES;
                     NSLog(@"asset %@",asset.description);
-                    
+//                    [self stopWait];
                 } failureBlock:^(NSError *error) {
                     NSLog(@"asset ::%@",error);
                 }];
@@ -382,7 +378,6 @@
 
 -(void)fitterAction:(UIButton *)button
 {
-    
     if (button.tag == 500) {
         //originalImage
         _filternum = -1;
@@ -401,9 +396,7 @@
 -(void)outputImageWithfilter:(UIButton*)button :(NSInteger)number
 {
     
-    [self waitForMomentsWithTitle:@"制作中..."];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
         UIImage * image = [Filterlibrary cachedDataForName:number];
         if (image) {
             NSLog(@"Image not nill");
@@ -421,7 +414,6 @@
                 _imageview.image = self.filterImage;
                 if (_isBlured)
                     _imageview.image = [ImageToolBox image:self.filterImage addRadiuOnBlurimage:_clearPoint scale:1];
-                
                 [self stopWait];
                 [Filterlibrary storeCachedOAuthData:self.filterImage forName:number];
             });
@@ -458,8 +450,8 @@
     
     //考虑到文件写入速度和处理的先后问题??
     if (_writeEnd == NO) {
-        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"图像处理中,请稍等..." message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-        [alterView show];
+//        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"图像处理中,请稍等..." message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
+//        [alterView show];
         return;
     }
     [self renderDefaultImage];
@@ -525,11 +517,13 @@
 }
 -(void)writeToAlbum
 {
+    
     [_library writeImageToSavedPhotosAlbum:self.originalImage.CGImage orientation:(ALAssetOrientation)[self.originalImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
             NSLog(@"error%@",error);
             return ;
         }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([delegate respondsToSelector:@selector(imageEdtingDidSave:imageinfo:info:num:)]) {
                 [delegate imageEdtingDidSave:self imageinfo:assetURL info:_info num:infoNum];
@@ -570,12 +564,9 @@
 
 -(void)stopWait
 {
-    [_alterView dismissWithClickedButtonIndex:0 animated:YES];
+    if(_alterView)
+        [_alterView dismissWithClickedButtonIndex:0 animated:YES];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
 
 @end

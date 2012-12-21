@@ -12,7 +12,7 @@
 static NSString * IMAGENAME[4]  = {@"user_bg_plain.png",
                                     @"user_bg_sea.png",
                                     @"user_bg_soul.png",@"user_bg_stra.png"};
-static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_bg_sea.png",@"user_icon_bg_soul.png",@"user_icon_bg_stra.png"};
+static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_icon_soul.png",@"user_bg_stra.png"};
 @implementation HomeBackContainer
 @synthesize delegate;
 - (void)dealloc
@@ -27,6 +27,8 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_bg_sea.png",@"us
         self.frame = [[UIScreen mainScreen] bounds];
         self.image = [UIImage imageNamed:@"pop_bg.png"];
         [self setUserInteractionEnabled:YES];
+        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandle:)] autorelease];
+        [self addGestureRecognizer:gesture];
         [self addSubviews];
     }
     return self;
@@ -58,6 +60,14 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_bg_sea.png",@"us
     }
     [self setSelecteStateonButton];
 }
+- (void)tapGestureHandle:(id)gesture
+{
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        _boxViews.frame = CGRectMake(0, self.bounds.size.height, self.bounds.size.width, 120);
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
+}
 
 - (void)setSelecteStateonButton
 {
@@ -77,8 +87,13 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_bg_sea.png",@"us
         [self memoryBackImageWithName:bgName];
         [self setSelecteStateonButton];
     }
-    [self removeFromSuperview];
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        _boxViews.frame = CGRectMake(0, self.bounds.size.height, self.bounds.size.width, 120);
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
 }
+
 - (void)memoryBackImageWithName:(NSString *)name
 {
     if ([name isEqualToString:@""]) {

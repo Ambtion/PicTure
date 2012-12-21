@@ -66,11 +66,6 @@
     
     [self.preview  addSubview:_tampview];
 }
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-}
-
 - (void)dealloc {
     
     NSLog(@"%s",__FUNCTION__);
@@ -103,10 +98,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self openCamera];
-    NSLog(@"%s",__FUNCTION__);
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
     [self.navigationController.navigationBar setHidden:NO];
     [((SCPMenuNavigationController *)self.navigationController).ribbonView setHidden:NO];
 }
@@ -244,7 +239,8 @@
     NSLog(@"animationDidStop is %d",isForwardImage);
     if (isBack) {
         isBack = NO;
-        
+        [self.navigationController.navigationBar setHidden:NO];
+        [((SCPMenuNavigationController *)self.navigationController).ribbonView setHidden:NO];
         [self.navigationController popViewControllerAnimated:YES];
         
     }else if (isForwardImage){
