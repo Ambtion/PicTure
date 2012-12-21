@@ -76,7 +76,7 @@
         _personalDataSource.albumAmount = [[userInfo objectForKey:@"publicFolders"] intValue];
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followerCount"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followingCount"] intValue];
-        _personalDataSource.favouriteAmount = 0;
+//        _personalDataSource.favouriteAmount = 0;
     }
     
     NSArray * photoList = [info objectForKey:@"photoList"];
@@ -90,8 +90,8 @@
         adapter.portrailImage = [photo objectForKey:@"creatorIcon"];
         adapter.photoImage  = [photo objectForKey:@"bigUrl"];
 
-        adapter.favourtecount = i * 17;
-        adapter.ismyLike = YES;
+//        adapter.favourtecount = i * 17;
+//        adapter.ismyLike = YES;
         [_dataArray addObject:adapter];
         [adapter release];
     }

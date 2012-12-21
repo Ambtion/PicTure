@@ -75,7 +75,7 @@
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followerCount"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followingCount"] intValue];
         _personalDataSource.isFollowed = [_requestManager whetherFollowUs:_user_ID userID:[SCPLoginPridictive currentUserId] success:nil];
-        _personalDataSource.favouriteAmount = -1;
+//        _personalDataSource.favouriteAmount = -1;
     }
     
     NSArray * photoList = [info objectForKey:@"photoList"];
@@ -89,8 +89,8 @@
         adapter.portrailImage = [photo objectForKey:@"creatorIcon"];
         adapter.photoImage  = [photo objectForKey:@"bigUrl"];
 
-        adapter.favourtecount = i * 17;
-        adapter.ismyLike = YES;
+//        adapter.favourtecount = i * 17;
+//        adapter.ismyLike = YES;
         [_dataArray addObject:adapter];
         [adapter release];
     }

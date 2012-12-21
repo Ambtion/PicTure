@@ -22,7 +22,7 @@
 @property(nonatomic,retain)NSString* desc;
 
 @property(nonatomic,assign)NSInteger albumAmount;
-@property(nonatomic,assign)NSInteger favouriteAmount;
+//@property(nonatomic,assign)NSInteger favouriteAmount;
 @property(nonatomic,assign)NSInteger followedAmount;
 @property(nonatomic,assign)NSInteger followingAmount;
 @end
@@ -47,7 +47,7 @@
     UIButton * _followButton;
     
     MenuButtonView * _albumButton;
-    MenuButtonView * _favorButton;
+//    MenuButtonView * _favorButton;
     MenuButtonView * _followingButton;
     MenuButtonView * _followedButton;
 }

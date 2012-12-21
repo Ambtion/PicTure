@@ -84,8 +84,8 @@
         fAdapter.isGif = [[self.infoFromSuper objectForKey:@"multipleFrames"] intValue];
         
         fAdapter.update = [self.infoFromSuper objectForKey:@"uploadAtDesc"];
-        fAdapter.favourtecount = [[self.infoFromSuper objectForKey:@"likes"] intValue];
-        fAdapter.ismyLike = NO;
+//        fAdapter.favourtecount = [[self.infoFromSuper objectForKey:@"likes"] intValue];
+//        fAdapter.ismyLike = NO;
         // fAdapter.commontcount = 113;
         
         [_dataSourceArray addObject:fAdapter];
@@ -218,7 +218,7 @@
 }
 - (NSString*)bannerDataSouceRightLabel
 {
-    return [NSString stringWithFormat:@"%@上传",[self.infoFromSuper objectForKey:@"uploadAtDesc"]];
+    return [self.controller getTimeString];
 }
 #pragma mark -
 #pragma mark Tableview DataSource
@@ -334,16 +334,16 @@
         [alert show];
         return;
     }
-    if (!cell.dataSource.ismyLike){
-        
-        [_requestManger makeUser:[SCPLoginPridictive currentUserId] likephotoWith:_user_ID :_photo_ID success:^(NSString *response) {
-            NSLog(@"%@",response);
-        }];
-    }else{
-        [_requestManger makeUser:[SCPLoginPridictive currentUserId] unLikephotoWith:_user_ID :_photo_ID success:^(NSString *response) {
-            NSLog(@"%@",response);
-        }];
-    }
+//    if (!cell.dataSource.ismyLike){
+//        
+//        [_requestManger makeUser:[SCPLoginPridictive currentUserId] likephotoWith:_user_ID :_photo_ID success:^(NSString *response) {
+//            NSLog(@"%@",response);
+//        }];
+//    }else{
+//        [_requestManger makeUser:[SCPLoginPridictive currentUserId] unLikephotoWith:_user_ID :_photo_ID success:^(NSString *response) {
+//            NSLog(@"%@",response);
+//        }];
+//    }
 }
 
 - (void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx

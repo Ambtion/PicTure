@@ -21,7 +21,7 @@
 @synthesize isFollowed = _isFollowed;
 
 @synthesize albumAmount = _albumAmount;
-@synthesize favouriteAmount = _favouriteAmount;
+//@synthesize favouriteAmount = _favouriteAmount;
 @synthesize followedAmount = _followedAmount;
 @synthesize followingAmount = _followingAmount;
 
@@ -49,7 +49,7 @@
     [_descLabel release];
     
     [_albumButton release];
-    [_favorButton release];
+//    [_favorButton release];
     [_followingButton release];
     [_followedButton release];
     
@@ -151,22 +151,22 @@
     [self.contentView addSubview:bg_menu];
     
 
-    _albumButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(0, 0, 80, 60)];
+    _albumButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(0, 0, 106, 60)];
     _albumButton.nameLabel.text = @"相册";
     _albumButton.delegate = self;
     [bg_menu addSubview:_albumButton];
     
-    _favorButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(80, 0, 80, 60)];
-    _favorButton.nameLabel.text = @"喜欢";
-    _favorButton.delegate = self;
-    [bg_menu addSubview:_favorButton];
+//    _favorButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(80, 0, 80, 60)];
+//    _favorButton.nameLabel.text = @"喜欢";
+//    _favorButton.delegate = self;
+//    [bg_menu addSubview:_favorButton];
     
-    _followingButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(160, 0, 80, 60)];
+    _followingButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106, 0, 106, 60)];
     _followingButton.nameLabel.text = @"跟随";
     _followingButton.delegate = self;
     [bg_menu addSubview:_followingButton];
     
-    _followedButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(240, 0, 80, 60)];
+    _followedButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106 * 2, 0, 106, 60)];
     _followedButton.nameLabel.text = @"跟随者";
     _followedButton.delegate = self;
     [bg_menu addSubview:_followedButton];
@@ -195,7 +195,7 @@
         [_followButton setTitle:@"跟随对方" forState:UIControlStateNormal];
     }
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
-    _favorButton.numlabel.text = [NSString stringWithFormat:@"%d",self.datasource.favouriteAmount];
+//    _favorButton.numlabel.text = [NSString stringWithFormat:@"%d",self.datasource.favouriteAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
 }
@@ -236,9 +236,11 @@
 {
     if ([menuView isEqual:_albumButton]) {
         [self photoBookClick:gesture];
-    }else if ([menuView isEqual:_favorButton]) {
-        [self favoriteButtonClicked:gesture];
-    }else if ([menuView isEqual:_followedButton]) {
+    }else
+//        if ([menuView isEqual:_favorButton]) {
+//        [self favoriteButtonClicked:gesture];
+//    }else
+        if ([menuView isEqual:_followedButton]) {
         [self followedButtonClicked:gesture];
     }else {
         [self followingButtonClicked:gesture];

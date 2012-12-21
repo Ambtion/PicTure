@@ -11,21 +11,19 @@
 #import "SCPMenuNavigationController.h"
 #import "SCPUploadController.h"
 
-@interface GiFViewController ()
-
-@end
+#import "SCPALter_WaitView.h"
 
 @implementation GiFViewController
 @synthesize imageArray = _imageArray;
-@synthesize delegate = _delegate;
 - (void)dealloc
 {
-    
+    NSLog(@"%s start",__FUNCTION__);
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    self.imageArray = nil;
     [_gifResize release];
     [_gifDuration release];
     [_gifFitterBar release];
 
-    self.imageArray = nil;
     [_imageview release];
     [_boundsView release];
     [_playButton release];
@@ -33,26 +31,34 @@
     [_waitView release];
     [_saveButton release];
     [super dealloc];
+    NSLog(@"%s start end",__FUNCTION__);
+ 
 }
-#pragma mark -  
+#pragma mark -
 #pragma mark init
--(id)initWithImages:(NSArray*) array andDurationTimer:(Float64)time
+-(id)initWithImages:(NSArray*) array andDurationTimer:(Float64)time :(id)controller
 {
+    
     if (self = [super init]) {
+        _controller = controller;
         self.imageArray = array;
         _durationTime = time;
         _rotate = 0;
         isHiddenFitter = YES;
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        
     }
     return self;
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"camera_bg.png"]];
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"camera_bg.png"]];
     
     //reload gesture
+    UIImageView *bgView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"camera_bg.png"]] autorelease];
+    bgView.frame = self.view.bounds;
+    [self.view addSubview:bgView];
     UISwipeGestureRecognizer * right = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(gifbackTop:)];
     right.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:right];
@@ -63,14 +69,14 @@
     [self addViewBar];
     [self addTabBar];
     NSLog(@"self Frame:%@",NSStringFromCGRect(self.view.frame));
+    
 }
 -(void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController.navigationBar setHidden:YES];
-    [(SCPMenuNavigationController *)self.navigationController setDisableRibbon:NO];
-    
 }
+
 #pragma addSubViews
 -(void)addboundsView
 {
@@ -95,7 +101,7 @@
 }
 -(void)addPlayButton
 {
-    _playButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _playButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     _playButton.frame = CGRectMake(0, 0, 55, 55);
     [_playButton setBackgroundImage:[UIImage imageNamed:@"play_normal.png"] forState:UIControlStateNormal];
     [_playButton setBackgroundImage:[UIImage imageNamed:@"play_press.png"] forState:UIControlStateHighlighted];
@@ -134,6 +140,7 @@
     [_saveButton addTarget:self action:@selector(saveGif:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_saveButton];
 }
+
 -(void)addTabBar
 {
     UIImageView * bgview = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 431, 320, 49)] autorelease];
@@ -191,13 +198,13 @@
 #pragma mark tabBarAction
 -(void)resetButtonView
 {
+    
     UIImageView*bgview = (UIImageView*)[self.view viewWithTag:5000];
     UIButton* reszie = (UIButton*)[bgview viewWithTag:1000];
     UIButton* fpbutton =(UIButton*) [bgview viewWithTag:1002];
-    
     [reszie setBackgroundImage:[UIImage imageNamed:@"resize_normal.png"] forState:UIControlStateNormal];
     [reszie setBackgroundImage:[UIImage imageNamed:@"resize_normal.png"] forState:UIControlStateHighlighted];
-
+    
     [fpbutton setBackgroundImage:[UIImage imageNamed:@"speed_normal.png"] forState:UIControlStateNormal];
     [fpbutton setBackgroundImage:[UIImage imageNamed:@"speed_normal.png"] forState:UIControlStateHighlighted];
 
@@ -302,6 +309,7 @@
 -(void)initGifDuration
 {
     if (_gifDuration == nil) {
+        
         NSArray* Narray = [NSArray arrayWithObjects:@"speed_10_normal.png",@"speed_15_normal.png",@"speed_20_normal.png", nil];
         NSArray* Sarray = [NSArray arrayWithObjects:@"speed_10_press.png",@"speed_15_press.png",@"speed_20_press.png", nil];
         CGRect rect = CGRectMake(92, self.view.frame.size.height - 112, 223, 62);
@@ -374,7 +382,6 @@
         [_activity startAnimating];
         [button addSubview:_activity];
         [self fitterwithFittername:button.tag - 1000];
-
     }
 }
 
@@ -414,47 +421,31 @@
 #pragma mark gif Function TopBar
 -(void)gifbackTop:(UIButton*)button
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [_controller dismissModalViewControllerAnimated:YES];
 }
+
 -(void)saveGif:(UIButton*)button
 {
-    UIActivityIndicatorView * aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    aiv.center = CGPointMake(160, 200);
-    [aiv startAnimating];
-    [self.view addSubview:aiv];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
-        [self.view setUserInteractionEnabled:NO];
-        [self makeRation];
-        [self makeResize];
-        _imageview.image = [_imageview.animationImages objectAtIndex:0];
-        
-        //make gif
-        FreeGifMaker * gifmaker = [[FreeGifMaker alloc]init];
-        CGFloat delay = _imageview.animationDuration / _imageview.animationImages.count;
-        [gifmaker setGifFrame:_imageview.animationImages delay:delay];
-        NSData * data = [[NSData alloc] initWithData:[gifmaker saveAnimatedGif]];
-        
-        if ([_delegate respondsToSelector:@selector(GiFViewController:saveGif:)]) {
-            [_delegate GiFViewController:self saveGif:data];
-        }
-        [gifmaker release];
-        
-        [aiv stopAnimating];
-        [aiv release];
-        [data release];
-        [self.view setUserInteractionEnabled:YES];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            SCPUploadController *ctrl = [[SCPUploadController alloc] init];
-            [self.navigationController pushViewController:ctrl animated:YES];
-            [ctrl release];
-            
-        });
-
-    });
-    // edting imageviews
-   
+    SCPAlert_WaitView *  _alterView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"制作中"] autorelease];
+    [_alterView show];
+    
+    [self.view setUserInteractionEnabled:NO];
+    [self makeRation];
+    [self makeResize];
+    _imageview.image = [_imageview.animationImages objectAtIndex:0];
+    //make gif
+    FreeGifMaker * gifmaker = [[[FreeGifMaker alloc]init] autorelease];
+    CGFloat delay = _imageview.animationDuration / _imageview.animationImages.count;
+    [gifmaker setGifFrame:_imageview.animationImages delay:delay];
+    NSData * data = [[[NSData alloc] initWithData:[gifmaker saveAnimatedGif]] autorelease];
+    NSDictionary * dic = [NSDictionary dictionaryWithObjectsAndKeys:data,@"ImageData",_imageview.image,@"UIImagePickerControllerThumbnail",nil];
+    [self.view setUserInteractionEnabled:YES];
+    
+    SCPUploadController *ctrl = [[[SCPUploadController alloc] initWithImageToUpload:[NSArray arrayWithObject:dic]:_controller] autorelease];
+    [self.navigationController pushViewController:ctrl animated:YES];
+    [_alterView dismissWithClickedButtonIndex:0 animated:YES];
+    
 }
 -(void)makeRation
 {

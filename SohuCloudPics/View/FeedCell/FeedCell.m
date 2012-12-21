@@ -16,7 +16,8 @@
 @implementation FeedCellDataSource
 
 @synthesize photoImage = _photoImage, portrailImage = _portrailImage, name = _name,
-update = _update, favourtecount = _favourtecount;
+update = _update;
+//@synthesize favourtecount = _favourtecount;
 @synthesize isGif = _isGif;
 //@synthesize allInfo = _allInfo;
 @synthesize heigth = _heigth;
@@ -49,8 +50,8 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     [_portraitView release];
     [_nameLabel release];
     [_positionTimeLabel release];
-    [_favorButton release];
-    [_commentButton release];
+//    [_favorButton release];
+//    [_commentButton release];
     [_dataSource release];
     [_gifPlayView release];
     [super dealloc];
@@ -120,9 +121,9 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     
 //    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(205 - 7, 5 + OFFSETY, 51, 18)];
     
-    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
-    [_favorButton addtarget:self action:@selector(favorButtonClicked)];
-    [tailerView addSubview:_favorButton];
+//    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
+//    [_favorButton addtarget:self action:@selector(favorButtonClicked)];
+//    [tailerView addSubview:_favorButton];
 
 //    _commentButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
 //    [_commentButton addtarget:self action:@selector(commentButtonClicked)];
@@ -195,24 +196,24 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
         _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
     }
 //    [_commentButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.commontcount]];
-    [self setFavorButtonImage];
-    [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
+//    [self setFavorButtonImage];
+//    [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
     
 }
-- (void)setFavorButtonImage
-{
-    if (_dataSource.ismyLike) {
-        [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
-    }else{
-        [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
-    }
-    if (_dataSource.ismyLike) {
-        [_favorButton.imageView setImage:[UIImage imageNamed:LikeCover[MyLike]]];
-    }else{
-        [_favorButton.imageView setImage:[UIImage imageNamed:LikeCover[NotMyLick]]];
-    }
-
-}
+//- (void)setFavorButtonImage
+//{
+//    if (_dataSource.ismyLike) {
+//        [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
+//    }else{
+//        [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
+//    }
+//    if (_dataSource.ismyLike) {
+//        [_favorButton.imageView setImage:[UIImage imageNamed:LikeCover[MyLike]]];
+//    }else{
+//        [_favorButton.imageView setImage:[UIImage imageNamed:LikeCover[NotMyLick]]];
+//    }
+//
+//}
 - (FeedCellDataSource *)dataSource
 {
     return _dataSource;

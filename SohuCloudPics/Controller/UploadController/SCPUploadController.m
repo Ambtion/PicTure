@@ -33,24 +33,25 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s start",__FUNCTION__);
     [_requsetManager release];
     [_preLabelObjs release];
     [_imageList release];
     [_cells release];
     
-    //    [_labelList release];
     self.curAlbumID = nil;
     [_albumList release];
-    //    [_uploadAlbum release];
     
     [_uploadHeader release];
     [_uploadTableView release];
     [_labelBox release];
     [_labelChooser release];
     [_descCell release];
-    
     [super dealloc];
+    NSLog(@"%s end",__FUNCTION__);
+
 }
+
 #pragma mark - init
 - (id)initWithImageToUpload:(NSArray *)imageList : (id)decontrller
 {
@@ -58,75 +59,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         controller = decontrller;
-        //        if (_preLabelObjs == nil) {
-        //            _preLabelObjs = [[NSMutableArray alloc] init];
-        //            SCPLabelObject *obj = nil;
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"快乐树" colorStyle:SCPLabelColorStyleBlue];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"生活" colorStyle:SCPLabelColorStyleGreen];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"春天" colorStyle:SCPLabelColorStyleRed];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"旅行" colorStyle:SCPLabelColorStyleGreen];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"自拍" colorStyle:SCPLabelColorStyleBlue];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"美女" colorStyle:SCPLabelColorStyleRed];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"帅哥" colorStyle:SCPLabelColorStyleRed];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"美食" colorStyle:SCPLabelColorStyleBlue];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"晒车" colorStyle:SCPLabelColorStyleGreen];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"运动" colorStyle:SCPLabelColorStyleBlue];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"随心畅拍" colorStyle:SCPLabelColorStyleGreen];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"手机" colorStyle:SCPLabelColorStyleRed];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"无极限" colorStyle:SCPLabelColorStyleGreen];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"动漫" colorStyle:SCPLabelColorStyleBlue];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"手绘插画" colorStyle:SCPLabelColorStyleRed];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //
-        //            obj = [[SCPLabelObject alloc] initWithContent:@"数码" colorStyle:SCPLabelColorStyleBlue];
-        //            [_preLabelObjs addObject:obj];
-        //            [obj release];
-        //        }
-        
+               
         _requsetManager = [[SCPRequestManager alloc] init];
         _imageList = [imageList retain];
         int count = _imageList.count;
@@ -151,22 +84,6 @@
     _uploadHeader = [[SCPUploadHeader alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _uploadHeader.selectionStyle = UITableViewCellEditingStyleNone;
     _uploadHeader.delegate = self;
-    //    _labelBox = [[SCPLabelBox alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    //    _labelBox.selectionStyle = UITableViewCellEditingStyleNone;
-    //    _labelBox.delegate = self;
-    
-    //    _displayingLabels = NO;
-    //    _labelChooser = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    //    _labelChooser.selectionStyle = UITableViewCellEditingStyleNone;
-    //    _labelChooser.clipsToBounds = YES;
-    //    SCPLabelChooser *chooser = [[SCPLabelChooser alloc] initWithLabels:_preLabelObjs];
-    //    chooser.clipsToBounds = YES;
-    //    chooser.autoresizesSubviews = YES;
-    //    chooser.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    //    chooser.delegate = self;
-    //    [_labelChooser addSubview:chooser];
-    //    _labelChooser.frame = CGRectZero;
-    //    [chooser release];
     
     _descCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _descCell.selectionStyle = UITableViewCellEditingStyleNone;
@@ -222,11 +139,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
-
 - (void)resignFirstResponderForAll
 {
     [_uploadHeader dismissAlbumChooseTable];
-    
     for (UIView *view in _uploadTableView.subviews) {
         if ([view class] == [SCPUploadCell class]) {
             for (view in view.subviews) {
@@ -237,30 +152,32 @@
             }
         }
     }
-    
 done:
     return;
 }
-
 - (void)onUploadTableViewTapped:(id)sender
 {
     [self resignFirstResponderForAll];
 }
+
 #pragma mark  UPData OK
 - (void)dismissModalView:(UIButton*)button
 {
-
+    
     if (!self.curAlbumID) {
         UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"请选择专辑" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterView show];
         return;
     }
-    
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < _imageList.count; i++) {
         SCPTaskUnit * unit = [[SCPTaskUnit alloc] init];
         NSDictionary * dic = [_imageList objectAtIndex:i];
-        unit.asseetUrl = [dic objectForKey:@"UIImagePickerControllerRepresentationURL"];
+        if ([dic objectForKey:@"UIImagePickerControllerRepresentationURL"]) {
+            unit.asseetUrl = [dic objectForKey:@"UIImagePickerControllerRepresentationURL"];
+        }else{
+            unit.data = [dic objectForKey:@"ImageData"];
+        }
         unit.thumbnail = [dic objectForKey:@"UIImagePickerControllerThumbnail"];
         [array addObject:unit];
         [unit release];
@@ -269,8 +186,7 @@ done:
     SCPAlbumTaskList * album = [[[SCPAlbumTaskList alloc] initWithTaskList:array album_id:self.curAlbumID] autorelease];
     [[SCPUploadTaskManager currentManager] addTaskList:album];
     
-    //为了给上传任务预留点时间;
-    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.0];
+    [controller performSelector:@selector(dismissModalViewControllerAnimated:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithBool:NO] waitUntilDone:YES];
 }
 #pragma mark Back
 - (void)backTotop:(UIButton*)button
@@ -284,78 +200,15 @@ done:
     self.curAlbumID = albumID;
 }
 #pragma mark -
-#pragma mark SCPLabelBox delegate
-//- (void)SCPLabelBox:(SCPLabelBox *)labelBox addLabelButtonClicked:(id)sender
-//{
-//    [_uploadHeader dismissAlbumChooseTable];
-//
-//    if (!_displayingLabels) {
-//        _displayingLabels = YES;
-//        _labelBox.addLabelButton.selected = YES;
-//        [UIView beginAnimations:nil context:nil];
-//        [UIView setAnimationDuration:0.3];
-//        [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:_uploadTableView cache:YES];
-//        _labelChooser.frame = CGRectMake(0, 0, 320, 137);
-//        [UIView commitAnimations];
-//    }
-//
-//    [_uploadTableView beginUpdates];
-//    [_uploadTableView endUpdates];
-//}
-//
-//- (void)SCPLabelChooser:(SCPLabelChooser *)chooser foldButtonClicked:(id)sender
-//{
-//    [_uploadHeader dismissAlbumChooseTable];
-//
-//    if (_displayingLabels) {
-//        _displayingLabels = NO;
-//        _labelBox.addLabelButton.selected = NO;
-//        [UIView beginAnimations:nil context:nil];
-//        [UIView setAnimationDuration:0.3];
-//        [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:_uploadTableView cache:YES];
-//        _labelChooser.frame = CGRectZero;
-//        [UIView commitAnimations];
-//    }
-//
-//    [_uploadTableView beginUpdates];
-//    [_uploadTableView endUpdates];
-//}
-//
-//// delete labels from the box
-//- (void)SCPLabelBox:(SCPLabelBox *)labelBox clickedAtIndex:(NSInteger)index label:(id)sender
-//{
-//    [_uploadHeader dismissAlbumChooseTable];
-//
-//    [labelBox removeLabelAtIndex:index];
-//
-//    [_uploadTableView beginUpdates];
-//    [_uploadTableView endUpdates];
-//}
-//
-//- (void)SCPLabelChooser:(SCPLabelChooser *)chooser clickedAtObj:(SCPLabelObject *)object
-//{
-//    [_uploadHeader dismissAlbumChooseTable];
-//
-//    if ([_labelBox labelObjectContains:object]) {
-//        return;
-//    }
-//
-//    [_labelBox addLabel:object];
-//
-//    [_uploadTableView beginUpdates];
-//    [_uploadTableView endUpdates];
-//
-//}
-
-#pragma mark -
 #pragma mark keyboard delegate
 - (void)keyboardWillShow:(NSNotification *)notification
 {
+    
     [_uploadHeader dismissAlbumChooseTable];
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     CGRect frame = self.view.frame;
-    frame.size.height -= keyboardSize.height;
     
+    frame.size.height -= keyboardSize.height;
     self.keyboardHeight = keyboardSize.height;
     
     [UIView beginAnimations:nil context:nil];

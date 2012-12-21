@@ -23,7 +23,8 @@
 
 void customedExceptionHandler(NSException *exception)
 {
-    NSLog(@"CRASH: %@\n", exception);
+    NSLog(@"CRASH name: %@\n", [exception name]);
+    NSLog(@"CRASH reason: %@\n", [exception reason]);
     NSLog(@"StackTrace: %@\n", [exception callStackSymbols]);
 }
 

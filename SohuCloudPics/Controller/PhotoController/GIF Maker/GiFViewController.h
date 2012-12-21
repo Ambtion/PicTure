@@ -14,10 +14,6 @@
 #import "GifDetail.h"
 #import "FreeGifMaker.h"
 
-@class GiFViewController;
-@protocol GifViewDelegate <NSObject>
--(void)GiFViewController:(GiFViewController *)Gifview saveGif:(NSData *)data;
-@end
 @interface GiFViewController : UIViewController<GifDetailDelegate,FitterDelegate>
 {
     NSArray *_imageArray;
@@ -31,15 +27,14 @@
     FitterTabBar * _gifFitterBar;
     
     NSInteger _rotate;
-    id<GifViewDelegate> _delegate;
     BOOL isHiddenFitter;
     
     UIButton* _playButton;
     UIActivityIndicatorView* _activity;
     UIAlertView* _waitView;
     UIButton* _saveButton;
+    id _controller;
 }
--(id)initWithImages:(NSArray*) array andDurationTimer:(Float64)time;
-@property(retain)NSArray * imageArray;
-@property(retain)id<GifViewDelegate> delegate;
+-(id)initWithImages:(NSArray*) array andDurationTimer:(Float64)time :(id)controller;
+@property(retain, nonatomic)NSArray * imageArray;
 @end

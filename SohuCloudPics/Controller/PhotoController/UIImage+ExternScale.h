@@ -12,6 +12,6 @@
 
 +(NSArray *)imageByScalingProportionallyToSize:(NSArray*)source :(CGSize)targetSize;
 +(NSArray *)imageByRotate:(NSArray*)imageArray:(NSInteger)interger;
-+(UIImage*)imageByResize:(CGImageRef)image;
++(UIImage*)imageByResize:(CGImageRef )image;
 
 @end

@@ -73,9 +73,9 @@
         
         adapter.photoImage  = [photo objectForKey:@"bigUrl"];
 
-        adapter.favourtecount = [[photo objectForKey:@"likes"] intValue];
+//        adapter.favourtecount = [[photo objectForKey:@"likes"] intValue];
         //        adapter.commontcount  = i * 13;
-        adapter.ismyLike = NO;
+//        adapter.ismyLike = NO;
         [_dataArray addObject:adapter];
         [adapter release];
     }

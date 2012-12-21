@@ -44,7 +44,8 @@
     
     [_nameLabel release];
     [_albumChooseLabel release];
-    [_albumChooseLabel release];
+    [_albumNameLabel release];
+    [_albumChooseButton release];
     [_labelBoxLabel release];
     [super dealloc];
 }
@@ -74,7 +75,7 @@
     
     _currentAlbum = 0;
     
-    _albumChooseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    _albumChooseButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
     _albumChooseButton.frame = CGRectMake(10, 111, 200, 40);
     _albumChooseButton.selected = NO;
     //    _albumChooseButton.titleLabel.font = [_albumChooseButton.titleLabel.font fontWithSize:15];
@@ -131,7 +132,7 @@
 {
     
     NSArray * array = [info objectForKey:@"folderList"];
-    NSLog(@"%@",info);
+//    NSLog(@"%@",info);
     for (NSDictionary * dic in array) {
         FoldersMode * mode = [[FoldersMode alloc] init];
         mode.foldrsName = [dic objectForKey:@"name"];
@@ -185,7 +186,6 @@
     _albumChooseButton.selected = NO;
     [_albumsTable removeFromSuperview];
 }
-
 //- (void)setAlbumsArray:(NSArray *)albumsArray
 //{
 //    if (_albumsArray != albumsArray) {

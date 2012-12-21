@@ -34,9 +34,9 @@
 @property(nonatomic,retain)NSString * update;
 
 //@property(nonatomic,retain)NSString * position;
-@property(nonatomic,assign)NSInteger favourtecount;
+//@property(nonatomic,assign)NSInteger favourtecount;
 //@property(nonatomic,assign)NSInteger commontcount;
-@property(nonatomic,assign)BOOL ismyLike;
+//@property(nonatomic,assign)BOOL ismyLike;
 @end
 
 @interface FeedCell : UITableViewCell
@@ -48,8 +48,8 @@
     UIImageView* _portraitView;
     UILabel*  _nameLabel;
     UILabel * _positionTimeLabel;
-    MyFavouriteView * _favorButton;
-    MyFavouriteView * _commentButton;
+//    MyFavouriteView * _favorButton;
+//    MyFavouriteView * _commentButton;
     FeedCellDataSource * _dataSource;
     UIImageView * _gifPlayView;
     UIWebView * _webView;

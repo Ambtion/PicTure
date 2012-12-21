@@ -16,10 +16,13 @@
 #import "FlashButton.h"
 #import "Time.h"
 
+#import "CameraImageBox.h"
+
 @class CameraViewController;
 
 @interface CameraViewController : UIViewController<phothswitchDelegate,UIAlertViewDelegate>
 {
+    CameraImageBox * camerBox;
     UIImageView * _preview;
     UIImageView * _tampview;
     UIImageView * _focusView;
@@ -31,7 +34,7 @@
     PhotoSwitch* _photoSwitch;
     UIButton* _photoBook;
     
-    AVAssetImageGenerator * imageGenerator;
+    AVAssetImageGenerator * _imageGenerator;
     NSMutableArray* _gifArray;
     UIActivityIndicatorView * _alview;
     Time * _timeLabel;
@@ -46,4 +49,5 @@
 }
 @property(retain,nonatomic)UIImageView* preview;
 @property(retain,nonatomic)UIImage * imageForTemp;
+@property(retain,nonatomic)AVAssetImageGenerator * imageGenerator;
 @end

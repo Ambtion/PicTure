@@ -50,7 +50,6 @@
     [self.navigationController.navigationBar setHidden:YES];
     if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
         [(SCPMenuNavigationController *)self.navigationController setDisableRibbon:NO];
-    
     [Filterlibrary removeCachedAllImageData];
     
 }

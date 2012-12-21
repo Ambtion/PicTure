@@ -17,7 +17,7 @@
 @synthesize position = _position;
 @synthesize desc = _desc;
 @synthesize albumAmount = _albumAmount;
-@synthesize favouriteAmount = _favouriteAmount;
+//@synthesize favouriteAmount = _favouriteAmount;
 @synthesize followedAmount = _followedAmount;
 @synthesize followingAmount = _followingAmount;
 
@@ -45,7 +45,7 @@
     [_descLabel release];
     
     [_albumButton release];
-    [_favorButton release];
+//    [_favorButton release];
     [_followingButton release];
     [_followedButton release];
     
@@ -152,10 +152,10 @@
     _albumButton.delegate = self;
     [bg_menu addSubview:_albumButton];
     
-    _favorButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(80, 0, 80, 60)];
-    _favorButton.nameLabel.text = @"喜欢";
-    _favorButton.delegate = self;
-    [bg_menu addSubview:_favorButton];
+//    _favorButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(80, 0, 80, 60)];
+//    _favorButton.nameLabel.text = @"喜欢";
+//    _favorButton.delegate = self;
+//    [bg_menu addSubview:_favorButton];
     
     _followingButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(160, 0, 80, 60)];
     _followingButton.nameLabel.text = @"跟随";
@@ -184,7 +184,7 @@
     }
     
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
-    _favorButton.numlabel.text = [NSString stringWithFormat:@"%d",self.datasource.favouriteAmount];
+//    _favorButton.numlabel.text = [NSString stringWithFormat:@"%d",self.datasource.favouriteAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
 }
@@ -203,9 +203,11 @@
 {
     if ([menuView isEqual:_albumButton]) {
         [self photoBookClick:gesture];
-    }else if ([menuView isEqual:_favorButton]) {
-        [self favoriteButtonClicked:gesture];
-    }else if ([menuView isEqual:_followedButton]) {
+    }else
+//        if ([menuView isEqual:_favorButton]) {
+//        [self favoriteButtonClicked:gesture];
+//    }else
+        if ([menuView isEqual:_followedButton]) {
         [self followedButtonClicked:gesture];
     }else {
         [self followingButtonClicked:gesture];
@@ -250,9 +252,5 @@
         [_delegate MyPersonalCell:self followedButtonClicked:sender];
     }
 }
-
-
-
-
 
 @end

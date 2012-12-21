@@ -10,9 +10,9 @@
 
 @implementation UIImage (GifTool)
 
-+(UIImage*)imageByResize:(CGImageRef)image
++(UIImage*)imageByResize:(CGImageRef )image
 {
-    UIImage *sourceImage = [UIImage imageWithCGImage:image];
+    UIImage * sourceImage = [UIImage imageWithCGImage:image];
     UIImage *newImage = nil;
     
     UIGraphicsBeginImageContext(CGSizeMake(256, 256));
@@ -23,6 +23,7 @@
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
+    
 }
 
 +(NSArray *)imageByScalingProportionallyToSize:(NSArray*)sourceArray :(CGSize)targetSize
