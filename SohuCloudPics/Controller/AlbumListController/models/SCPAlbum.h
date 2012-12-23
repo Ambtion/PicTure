@@ -13,7 +13,7 @@
 
 @property (strong, nonatomic) NSString *creatorId; 
 @property (strong, nonatomic) NSString *albumId;
-@property (strong, nonatomic) NSString *coverShowId;
+//@property (strong, nonatomic) NSString *coverShowId;
 @property (strong, nonatomic) NSString *coverURL;
 
 @property (strong, nonatomic) NSString *name;

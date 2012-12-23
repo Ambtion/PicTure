@@ -154,7 +154,7 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 - (void)updataData
 {
     
-    //图片安装320压缩获得高度
+    //图片按照320压缩获得高度
     //小于320,高度扩大到320;图片居中,左右两边截掉;
     //大于固定的高度Max...,上下图片截掉;
     
@@ -181,16 +181,17 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     tailerView.frame = frame;
     
     [self showGifButton];
-    
-    [_photoImageView setImageWithURL:[NSURL URLWithString:_dataSource.photoImage]];
+    NSString * str = [NSString stringWithFormat:@"%@_w283",_dataSource.photoImage];
+    [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
+//    [_photoImageView setImageWithURL:[NSURL URLWithString:_dataSource.photoImage]];
     [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
-      
-    if (!_dataSource ||[_dataSource.name isKindOfClass:[NSNull class]] || [_dataSource.name isEqualToString:@""]) {
+    
+    if (!_dataSource ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"佚名";
     }else{
         _nameLabel.text = [_dataSource name];
     }
-    if (!_dataSource.update ||[_dataSource.update isKindOfClass:[NSNull class]] || [_dataSource.update isEqualToString:@""]) {
+    if (!_dataSource.update ||![_dataSource.update isKindOfClass:[NSString class]] || [_dataSource.update isEqualToString:@""]) {
       _positionTimeLabel.text = @"时间未知";
     }else{
         _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];

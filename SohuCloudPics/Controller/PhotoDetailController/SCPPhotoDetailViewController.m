@@ -49,7 +49,6 @@
     
 	// Do any additional setup after loading the view.
     self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_photos.png"] frame:self.view.bounds] autorelease];
-    
     //customer for  scrollview
     
     self.pullingController.delegate = self.manager;

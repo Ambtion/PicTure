@@ -41,6 +41,8 @@ typedef enum {
 	
 	SCPRequestManager *_request;
     NSInteger taskTotal;
+    BOOL hasNextPage;
+    NSInteger curpage;
 }
 
 /* Data */

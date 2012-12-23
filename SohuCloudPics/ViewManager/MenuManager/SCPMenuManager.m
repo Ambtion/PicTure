@@ -216,7 +216,7 @@ static NSString *menuPress[6] = {
 - (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
     NSLog(@"SCPLogin");
-    [navController dismissModalViewControllerAnimated:YES];
+    [navController dismissModalViewControllerAnimated:NO];
     [self onAccountClicked:nil];
 }
 
@@ -277,6 +277,7 @@ static NSString *menuPress[6] = {
 }
 - (void)onAccountClicked:(id)sender
 {
+    
     [self hideMenuWithRibbon:NO];
     [self restIcon:1];
     if (![SCPLoginPridictive isLogin]) {
@@ -289,9 +290,7 @@ static NSString *menuPress[6] = {
     if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeViewController class]]) {
         return;
     }
-    
     SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
-    
     [self.navController pushViewController:myhome animated:YES];
 }
 

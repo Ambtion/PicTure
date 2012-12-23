@@ -94,10 +94,10 @@
 	}
     self.bannerLeftString = [NSString stringWithFormat:@"有%d个相册", count];
 	
-	if (!name || [name isKindOfClass:[NSNull class]] || name.length == 0) {
-		name = @"";
+	if (!name || name.length == 0) {
+		name = @"无名英雄";
 	}
-    self.bannerRightString = [NSString stringWithFormat:@"作者：%@", name];
+    self.bannerRightString = [NSString stringWithFormat:@"作者:%@", name];
 	
     [self.pullingController.headView BannerreloadDataSource];
 }
@@ -150,7 +150,7 @@
 	_hasNextPage = NO;
 	_currentPage = 0;
 	_loadedPage = 0;
-	[_request getFoldersWithID:_user_id page:1 yuntuToken:[SCPLoginPridictive currentUserId]];
+    [_request getFoldersinfoWithID:_user_id];
 }
 
 - (void)loadNextPage
@@ -158,8 +158,7 @@
 	if (_hasNextPage) {
 
 		if (_currentPage == _loadedPage) {
-			[_request getFoldersWithID:_user_id page:(_loadedPage = _currentPage + 1) yuntuToken:[SCPLoginPridictive currentUserId]];
-			NSLog(@"loading page %d", _currentPage + 1);
+            [_request getFoldersWithID:_user_id page:_currentPage + 1];
 		}
 	}
 }
@@ -212,83 +211,54 @@
 	[super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
-    [self refresh];
+//    [self refresh];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-//    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:NO];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];
 	
 }
 
-- (void)viewDidUnload
-{
-    self.bannerLeftString = nil;
-    self.bannerRightString = nil;
-    self.pullingController = nil;
-	
-    [super viewDidUnload];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark -
 #pragma mark SCPRequestManagerDelegate
-- (void)requestFailed:(ASIHTTPRequest*)mangeger
+- (void)requestFailed:(NSString *)error
 {
-	NSLog(@"request Failed");
-	// TODO
+	UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
+    [alterview show];
 }
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-	NSString *extra = [info objectForKey:@"__extra_info__"];
-	if (extra && ![extra isKindOfClass:[NSNull class]] && [extra isEqualToString:@"delete"]) {
-		return;
-	}
-	_currentPage = [[info objectForKey:@"currentPage"] intValue];
-	_loadedPage = _currentPage;
-	_hasNextPage = [[info objectForKey:@"hasNextPage"] boolValue];
+  
+    NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
+    NSLog(@"folderinfo %@",[folderinfo allKeys]);
+	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
+	_hasNextPage = [[folderinfo objectForKey:@"has_next"] boolValue];
+    _loadedPage = _currentPage;
+
 	if (_currentPage == 1) {
-		NSDictionary *creator = [info objectForKey:@"creator"];
-		int albumCount = [[creator objectForKey:@"publicFolders"] intValue];
-		NSString *nickname = [creator objectForKey:@"nickname"];
+		NSDictionary * creator = [info objectForKey:@"userInfo"];
+		int albumCount = [[creator objectForKey:@"public_folders"] intValue];
+		NSString * nickname = [creator objectForKey:@"nick"];
 		[self updateBannerWithAlbumCount:albumCount andAuthorName:nickname];
-		
 		[_albumList removeAllObjects];
 	}
-
-	NSArray *folderList = [info objectForKey:@"folderList"];    
+    
+	NSArray *folderList = [folderinfo  objectForKey:@"folders"];
+    NSLog(@"%@",[folderList lastObject]);
 	for (int i = 0; i < folderList.count; ++i) {
-		NSDictionary *folderInfo = [folderList objectAtIndex:i];
-        
+		NSDictionary *Afolder = [folderList objectAtIndex:i];
 		SCPAlbum *album = [[SCPAlbum alloc] init];
 		album.creatorId = _user_id;
-		album.albumId = [folderInfo objectForKey:@"showId"];
-		album.coverShowId = [folderInfo objectForKey:@"coverShowId"];
-		NSDictionary *cover = [folderInfo objectForKey:@"cover"];
-		if (cover && ![cover isKindOfClass:[NSNull class]]) {
-			album.coverURL = [cover objectForKey:@"url"];
-		} else {
-			album.coverURL = nil;
-		}
-        
-		album.name = [folderInfo objectForKey:@"name"];
-        album.permission = [[folderInfo objectForKey:@"permission"] intValue];
-		album.updatedAtDesc = [folderInfo objectForKey:@"updatedAtDesc"];
-		album.photoNum = [[folderInfo objectForKey:@"photoNum"] intValue];
-		album.viewCount = [[folderInfo objectForKey:@"viewCount"] intValue];
+		album.albumId = [Afolder objectForKey:@"folder_id"];
+        album.coverURL = [Afolder objectForKey:@"cover_url"];
+        album.name = [Afolder objectForKey:@"name"];
+        album.permission = [[Afolder objectForKey:@"is_public"] intValue];
+		album.updatedAtDesc = [Afolder objectForKey:@"updatedAtDesc"];
+		album.photoNum = [[Afolder objectForKey:@"photo_num"] intValue];
+		album.viewCount = [[Afolder objectForKey:@"view_count"] intValue];
 		[_albumList addObject:album];
 		[album release];
 	}
@@ -296,7 +266,6 @@
 	[_pullingController.tableView reloadData];
 	[_pullingController refreshDoneLoadingTableViewData];
 }
-
 #pragma mark -
 #pragma mark BannerDataSource
 - (NSString *)bannerDataSouceLeftLabel
@@ -312,13 +281,11 @@
 #pragma mark - SCPAlbumCellDelegate
 - (BOOL)loginPridecate
 {
-    if (![SCPLoginPridictive isLogin] ) {
-        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"请确认登陆" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
+    
+    if (![SCPLoginPridictive isLogin] || ![self.user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
+        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
         [alte show];
-    }
-    if (![self.user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
-        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
-        [alte show];
+        return NO;
     }
     return [SCPLoginPridictive isLogin] && [self.user_id isEqualToString:[SCPLoginPridictive currentUserId]];
 }
@@ -331,6 +298,7 @@
             /* go into the album */
 			NSLog(@"imageView.tag = %d", imageView.tag);
             SCPAlbum *album = [_albumList objectAtIndex:imageView.tag];
+            NSLog(@"%@ %@",album.albumId,album.creatorId);
             SCPPhotoGridController *ctrl = [[[SCPPhotoGridController alloc] initWithNibName:nil bundle:nil] autorelease];
             ctrl.albumData = album;
             [self.navigationController pushViewController:ctrl animated:YES];
@@ -351,8 +319,9 @@
 }
 - (void)onImageViewLongPressed:(UIImageView *)imageView
 {
-    if (![self loginPridecate]) return;
     
+    NSLog(@"%s",__FUNCTION__);
+    if (![self loginPridecate]) return;
     switch (_state) {
         case SCPAlbumControllerStateNormal:
         {
@@ -383,7 +352,6 @@
 
 - (void)onOKClicked:(id)sender
 {
-    
     _state = SCPAlbumControllerStateNormal;
     CATransition *animation = [CATransition animation];
     animation.type = kCATransitionMoveIn;
@@ -396,7 +364,6 @@
     [_rightBarView addSubview:_uploadButton];
     _backButton.hidden = NO;
     [_pullingController.tableView reloadData];
-    
 }
 
 
@@ -410,7 +377,6 @@
     // TODO
     [[SCPUploadTaskManager currentManager] cancelOperationWithAlbumID:album.albumId];
     // delete album
-//	[_request deleteFolderWithUserId:_user_id folderId:album.albumId];
     [_request deleteFolderWithUserId:_user_id folderId:album.albumId success:^(NSString *response) {
         CATransition *animation = [CATransition animation];
         animation.type = kCATransitionFade;

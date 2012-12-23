@@ -16,7 +16,6 @@
 #import "MoreAlertView.h"
 
 #define MAXIMAGEHEIGTH 320
-
 #define MAXPICTURE 200
 #define PAGEPHOTONUMBER 
 @implementation PersonalPageManager
@@ -47,7 +46,9 @@
         _willRefresh = YES;
         _isinit = YES;
         _loadingMore = NO;
-//        [self dataSourcewithRefresh:YES];
+        curPage = 0;
+        hasNextpage = YES;
+        
     }
     return self;
 }
@@ -65,40 +66,45 @@
 {
     
     if (_willRefresh) {
+        
         [_dataArray removeAllObjects];
-        NSDictionary * userInfo = [info objectForKey:@"userinfo"];
+        NSDictionary * userInfo = [info objectForKey:@"userInfo"];
         _personalDataSource.allInfo = userInfo;
-        _personalDataSource.portrait = [userInfo objectForKey:@"icon"];
-        _personalDataSource.name = [userInfo objectForKey:@"nickname"];
+        _personalDataSource.portrait = [userInfo objectForKey:@"small_avatar"];
+        _personalDataSource.name = [userInfo objectForKey:@"nick"];
         _personalDataSource.desc = [userInfo objectForKey:@"bio"];
-        _personalDataSource.albumAmount = [[userInfo objectForKey:@"publicFolders"] intValue];
-        _personalDataSource.followedAmount = [[userInfo objectForKey:@"followerCount"] intValue];
-        _personalDataSource.followingAmount = [[userInfo objectForKey:@"followingCount"] intValue];
-        _personalDataSource.isFollowed = [_requestManager whetherFollowUs:_user_ID userID:[SCPLoginPridictive currentUserId] success:nil];
-//        _personalDataSource.favouriteAmount = -1;
+        _personalDataSource.albumAmount = [[userInfo objectForKey:@"public_folders"] intValue];
+        _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
+        _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
+        _personalDataSource.isFollowByMe = [[userInfo objectForKey:@"is_followed"] boolValue];
+        _personalDataSource.isFollowMe = [[userInfo objectForKey:@"is_following"] boolValue];
     }
     
-    NSArray * photoList = [info objectForKey:@"photoList"];
+    NSDictionary * feedinfo = [info objectForKey:@"feedList"];
+    hasNextpage = [[feedinfo objectForKey:@"has_next"] boolValue];
+    curPage = [[feedinfo objectForKey:@"page"] intValue];
+    
+    NSArray * photoList = [[info objectForKey:@"feedList"] objectForKey:@"feed"];
+    
     for (int i = 0; i < photoList.count; ++i) {
         FeedCellDataSource *adapter = [[FeedCellDataSource alloc] init];
         NSDictionary * photo = [photoList objectAtIndex:i];
         adapter.allInfo = photo;
         adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
-        adapter.name = [photo objectForKey:@"creatorNick"];
-        adapter.update =[photo objectForKey:@"uploadAtDesc"];
-        adapter.portrailImage = [photo objectForKey:@"creatorIcon"];
-        adapter.photoImage  = [photo objectForKey:@"bigUrl"];
-
-//        adapter.favourtecount = i * 17;
-//        adapter.ismyLike = YES;
+        adapter.name = [photo objectForKey:@"user_nick"];
+        adapter.update =[photo objectForKey:@"upload_at_desc"];
+        adapter.portrailImage = [photo objectForKey:@"user_icon"];
+        adapter.photoImage  = [photo objectForKey:@"photo_url"];
         [_dataArray addObject:adapter];
         [adapter release];
     }
+    
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
         [self.controller.tableView reloadData];
     }
+    
     if (_willRefresh) {
         [self refreshFinished];
     }else{
@@ -137,14 +143,13 @@
     if(_willRefresh | !_dataArray.count){
         [_requestManager getUserInfoWithID:_user_ID];
     }else{
-//        if (MAXPICTURE < _dataArray.count || _dataArray.count % 20){
-//            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-//            [moreView show];
-//            [self loadingMoreFinished];
-//            return;
-//        }
-        NSInteger pagenum = [_dataArray count] / 20;
-        [_requestManager getUserInfoFeedWithUserID:_user_ID page:pagenum + 1 only:YES];
+        if (MAXPICTURE < _dataArray.count || !hasNextpage){
+            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
+            [moreView show];
+            [self loadingMoreFinished];
+            return;
+        }
+        [_requestManager getUserInfoFeedWithUserID:_user_ID page:curPage + 1];
     }
 }
 #pragma mark -
@@ -250,6 +255,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     NSInteger row = indexPath.row;
     if (row == 0) {
         PersonalPageCell* pageCell = [tableView dequeueReusableCellWithIdentifier:@"PAGECELL"];
@@ -261,7 +267,6 @@
         return pageCell;
     }
     else {
-        
         FeedCell * feedCell = [tableView dequeueReusableCellWithIdentifier:@"FEEDCELL"];
         if (feedCell == nil) {
             feedCell = [[[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FEEDCELL"] autorelease];
@@ -279,20 +284,47 @@
 #pragma mark Picture Method
 - (void)personalPageCell:(PersonalPageCell *)personal follwetogether:(id)sender
 {
-    NSLog(@"%s",__FUNCTION__);
-    if (personal.datasource.isFollowed) {
+    if (![SCPLoginPridictive isLogin]) {
+        SCPAlert_LoginView  * loginView = [[[SCPAlert_LoginView alloc] initWithMessage:LOGIN_HINT delegate:self] autorelease];
+        [loginView show];
+        return;
+    }
+    
+    if (personal.datasource.isFollowByMe) {
         [_requestManager destoryFollowing:_user_ID userID:[SCPLoginPridictive currentUserId] success:^(NSString *response) {
-            _personalDataSource.isFollowed = NO;
+            _personalDataSource.isFollowByMe = NO;
         }];
-        
     }else{
         
         [_requestManager friendshipsFollowing:_user_ID userID:[SCPLoginPridictive currentUserId] success:^(NSString *response) {
-            _personalDataSource.isFollowed = YES;
+            _personalDataSource.isFollowByMe = YES;
         }];
     }
     [self.controller.tableView reloadData];
+    
 }
+
+#pragma mark Login
+- (void)alertViewOKClicked:(SCPAlert_LoginView *)view
+{
+    SCPLoginViewController *loginCtrl = [[SCPLoginViewController alloc] init];
+    loginCtrl.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginCtrl];
+    [self.controller presentModalViewController:nav animated:YES];
+    [loginCtrl release];
+    [nav release];
+}
+
+- (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
+{
+    [self.controller dismissModalViewControllerAnimated:YES];
+}
+
+- (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
+{
+    [self.controller dismissModalViewControllerAnimated:YES];
+}
+
 #pragma mark -
 #pragma mark CELL - Method
 #pragma feedCell Method
@@ -323,7 +355,6 @@
 #pragma mark menu Delegate
 - (void)personalPageCell:(PersonalPageCell *)personal photoBookClicked:(id)sender
 {
-    NSLog(@"%@",_user_ID);
     SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:_user_ID];
     [_controller.navigationController pushViewController:alb animated:YES];
     [alb release];

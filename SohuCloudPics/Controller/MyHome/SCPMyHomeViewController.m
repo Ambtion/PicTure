@@ -47,10 +47,11 @@
     _homeTable.dataSource = _manager;
     _homeTable.delegate = _manager;
     [self.view addSubview:_homeTable];
-    
     [self addTableFootView];
-    [self.manager dataSourcewithRefresh:YES];
     
+    if ([SCPLoginPridictive isLogin]) {
+        [self.manager dataSourcewithRefresh:YES];
+    }
 }
 - (void)addTableFootView
 {
@@ -85,7 +86,7 @@
     [view addSubview:bg_imageview];
     [view addSubview:_footView];
     _homeTable.tableFooterView = view;
-    
+    [self.navigationItem setHidesBackButton:YES];
 }
 #pragma mark -
 #pragma mark customerNavigationIteam
@@ -101,7 +102,6 @@
     backButton.frame = CGRectMake(0, 0, 26, 26);
     UIBarButtonItem * left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
-    NSLog(@"H%s %d end",__FUNCTION__,self.navigationItem.hidesBackButton);
 
 }
 - (void)myHomeNavigationBack:(UIButton*)button
@@ -113,7 +113,6 @@
 {
     [super didReceiveMemoryWarning];
     NSLog(@"%s",__FUNCTION__);
-    // Dispose of any resources that can be recreated.
 }
 
 @end

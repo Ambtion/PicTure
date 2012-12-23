@@ -18,8 +18,9 @@
 @synthesize name = _name;
 //@synthesize position = _position;
 @synthesize desc = _desc;
-@synthesize isFollowed = _isFollowed;
 
+@synthesize isFollowMe = _isFollowMe;
+@synthesize isFollowByMe = _isFollowByMe;
 @synthesize albumAmount = _albumAmount;
 //@synthesize favouriteAmount = _favouriteAmount;
 @synthesize followedAmount = _followedAmount;
@@ -174,11 +175,9 @@
 }
 - (void)updataData
 {
-    if (self.datasource == nil )         return;
-    
+    if (self.datasource == nil )      return;
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"]];
-    
-    if (_dataSource.name ||[_dataSource.name isKindOfClass:[NSNull class]] || [_dataSource.name isEqualToString:@""]) {
+    if (!_dataSource.name || ![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"佚名";
     }else{
         _nameLabel.text = [_dataSource name];
@@ -188,12 +187,12 @@
     }else{
         _descLabel.text = self.datasource.desc;
     }
-
-    if (self.datasource.isFollowed) {
+    if (self.datasource.isFollowByMe) {
         [_followButton setTitle:@"取消跟随" forState:UIControlStateNormal];
     }else{
         [_followButton setTitle:@"跟随对方" forState:UIControlStateNormal];
     }
+    
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
 //    _favorButton.numlabel.text = [NSString stringWithFormat:@"%d",self.datasource.favouriteAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];

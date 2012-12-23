@@ -82,7 +82,14 @@
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
-//    [super viewWillDisappear:animated];
+    NSLog(@"%s",__FUNCTION__);
+    if (_item.superview) {
+        [_item removeFromSuperview];
+    }
+}
+- (void)viewDidDisappear:(BOOL)animated
+{
+    NSLog(@"%s",__FUNCTION__);
     if (_item.superview) {
         [_item removeFromSuperview];
     }

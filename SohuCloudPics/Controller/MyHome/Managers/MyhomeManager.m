@@ -44,7 +44,6 @@
         _requestManager.delegate = self;
         _willRefresh = YES;
         _isinit = YES;
-        // [self dataSourcewithRefresh:YES];
     }
     return self;
 }

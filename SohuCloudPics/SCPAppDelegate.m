@@ -20,6 +20,7 @@
 #import "SCPAlert_DetailView.h"
 #import "FunctionguideScroll.h"
 
+#import "ASIHTTPRequest.h"
 
 void customedExceptionHandler(NSException *exception)
 {
@@ -42,15 +43,32 @@ void customedExceptionHandler(NSException *exception)
 }
 - (void)pragramerSetting
 {
-    NSLog(@"home::%@",NSHomeDirectory());
-    NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
-    NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
-    NSUserDefaults *appUserDefaults = [[NSUserDefaults alloc] init];
-    NSLog(@"Start dumping userDefaults for %@", bundleId);
-    NSLog(@"userDefaults dump: %@", [appUserDefaults persistentDomainForName: bundleId]);
-    NSLog(@"Finished dumping userDefaults for %@", bundleId);
-    [appUserDefaults release];
+//    NSLog(@"home::%@",NSHomeDirectory());
+//    NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
+//    NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
+//    NSUserDefaults *appUserDefaults = [[NSUserDefaults alloc] init];
+//    NSLog(@"Start dumping userDefaults for %@", bundleId);
+//    NSLog(@"userDefaults dump: %@", [appUserDefaults persistentDomainForName: bundleId]);
+//    NSLog(@"Finished dumping userDefaults for %@", bundleId);
+//    [appUserDefaults release];
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
+
+}
+- (void)test
+{
+//    NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@];
+//    NSLog(@"%@",str);
+//    ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+//    [request setTimeOutSeconds:5.f];
+//    [request setCompletionBlock:^{
+////        [self photoDetailrequestFinished:request];
+//    }];
+//    [request setFailedBlock:^{
+//        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+//            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+//        }
+//    }];
+//    [request startAsynchronous];
 
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

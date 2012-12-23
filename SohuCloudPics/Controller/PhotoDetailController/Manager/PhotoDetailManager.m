@@ -34,6 +34,7 @@
     
 }
 - (id)initWithController:(SCPPhotoDetailViewController *)ctrl useId:(NSString*) useId photoId:(NSString*)photoId
+
 {
     
     if (self = [super init]) {
@@ -51,8 +52,9 @@
 
 - (id)initWithController:(SCPPhotoDetailViewController *)ctrl info:(NSDictionary*)info
 {
-    return [self initWithController:ctrl useId:[NSString stringWithFormat:@"%@",[info objectForKey:@"creatorId"]] photoId:[info objectForKey:@"showId"]];
+    return [self initWithController:ctrl useId:[NSString stringWithFormat:@"%@",[info objectForKey:@"user_id"]] photoId:[info objectForKey:@"photo_id"]];
 }
+
 #pragma mark  Request Finished
 - (CGFloat)getHeightofImage:(CGFloat)O_height :(CGFloat) O_width
 {
@@ -62,32 +64,26 @@
     if (!finalHeigth) {
         finalHeigth = 320;
     }
+    
     return finalHeigth;
 }
+
+
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     if (_willRefresh){
-        
         [_dataSourceArray removeAllObjects];
+        self.infoFromSuper = info;
         NSLog(@"%@",info);
-        
-        NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:@"photo"]];
-        [dic setObject:[[info objectForKey:@"folder"]objectForKey:@"name"] forKey:@"folderName"];
-        self.infoFromSuper = dic;
         FeedCellDataSource *fAdapter = [[FeedCellDataSource alloc] init];
         fAdapter.allInfo = self.infoFromSuper;
         fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
-        fAdapter.name = [self.infoFromSuper objectForKey:@"creatorNick"];
-        fAdapter.portrailImage = [self.infoFromSuper objectForKey:@"creatorIcon"];
+        fAdapter.name = [self.infoFromSuper objectForKey:@"user_nick"];
+        fAdapter.portrailImage = [self.infoFromSuper objectForKey:@"user_icon"];
         //图像信息
-        fAdapter.photoImage = [self.infoFromSuper objectForKey:@"bigUrl"];
-        fAdapter.isGif = [[self.infoFromSuper objectForKey:@"multipleFrames"] intValue];
-        
-        fAdapter.update = [self.infoFromSuper objectForKey:@"uploadAtDesc"];
-//        fAdapter.favourtecount = [[self.infoFromSuper objectForKey:@"likes"] intValue];
-//        fAdapter.ismyLike = NO;
-        // fAdapter.commontcount = 113;
-        
+        fAdapter.photoImage = [self.infoFromSuper objectForKey:@"photo_url"];
+        fAdapter.isGif = [[self.infoFromSuper objectForKey:@"multi_frames"] intValue];
+        fAdapter.update = [self.infoFromSuper objectForKey:@"upload_at_desc"];
         [_dataSourceArray addObject:fAdapter];
         [fAdapter release];
         
@@ -97,16 +93,6 @@
         [_dataSourceArray addObject:data];
         [data release];
     }
-    
-    //    for (int i = 0; i < N; ++i) {
-    //        CommentCellDataSource *cAdapter = [[CommentCellDataSource alloc] init];
-    //        cAdapter.name = [NSString stringWithFormat:@"冒险岛%d号", i];
-    //        cAdapter.portraitImage = [UIImage imageNamed:@"portrait.png"];
-    //        cAdapter.time = @"N小时前";
-    //        cAdapter.content = @"我是评论 我是评论我是评论我是评论我 是评论我是评论我是评论 我是评论我是评论我是 评论我是评论我是 评论我是评论我是评论";
-    //        [_dataSourceArray addObject:cAdapter];
-    //    }
-    
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
@@ -114,7 +100,6 @@
         [self refreshDataFinishLoad:nil];
         return;
     }
-    
     if (_willRefresh) {
         [self refreshDataFinishLoad:nil];
     }else{
@@ -212,9 +197,9 @@
 }
 - (NSString*)bannerDataSouceLeftLabel
 {
-    if ([self isNULL:[self.infoFromSuper objectForKey:@"folderName"]])
+    if ([self isNULL:[self.infoFromSuper objectForKey:@"folder_name"]])
         return [NSString stringWithFormat:@"来自未命名专辑"];
-    return [NSString stringWithFormat:@"来自%@专辑",[self.infoFromSuper objectForKey:@"folderName"]];
+    return [NSString stringWithFormat:@"来自%@专辑",[self.infoFromSuper objectForKey:@"folder_name"]];
 }
 - (NSString*)bannerDataSouceRightLabel
 {
@@ -320,7 +305,7 @@
         [ctrl release];
     }else{
         UINavigationController *nav = _controller.navigationController;
-        SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"creatorId"]]];
+        SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
         [nav pushViewController:ctrl animated:YES];
         [ctrl release];
     }
@@ -359,18 +344,7 @@
 #pragma mark Comment Method
 - (void)commentCell:(CommentCell *)cell portraitViewClickedWith:(id)object
 {
-    //暂不支持评论
-    //    // 假数据...
-    //    if (0) {
-    //        //用户自己的id
-    //
-    //    }else{
-    //
-    //        UINavigationController *nav = _controller.navigationController;
-    //        SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:(NSString *)[self.infoFromSuper objectForKey:@"creatorId"]];
-    //        [nav pushViewController:ctrl animated:YES];
-    //        [ctrl release];
-    //    }
+    
 }
 
 #pragma mark SCPAlertView Delegate

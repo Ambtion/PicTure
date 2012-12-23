@@ -127,7 +127,7 @@
         UIImageView *view = [self imageViewAt:position];
         [view setHidden:NO];
         
-        NSString *url = [NSString stringWithFormat:@"%@_c283", photo.photoUrl];
+        NSString *url = [NSString stringWithFormat:@"%@_c70", photo.photoUrl];
         [view cancelCurrentImageLoad];
         [view setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:0];
         UIProgressView *progView = [self progressViewAt:position];

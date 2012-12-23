@@ -99,38 +99,16 @@
         [self updateImageView];
     }
 }
-//- (void)setImageViewFrame:(UIImageView *)imageView :(NSDictionary *)dic
-//{
-//    CGRect superRect = imageView.superview.frame;
-//    
-//    CGFloat heigth = [[dic objectForKey:@"height"] floatValue];
-//    CGFloat wigth = [[dic objectForKey:@"width"] floatValue];
-//    if (!heigth || !wigth) {
-//        imageView.frame = imageView.superview.bounds;
-//        return;
-//    }
-//    CGFloat scale = MIN(heigth/superRect.size.height, wigth/superRect.size.width);
-//    CGRect frame = CGRectMake(0, 0, wigth/scale, heigth/scale);
-//  
-//    imageView.frame = frame;
-//    imageView.center = CGPointMake(imageView.superview.frame.size.width/2.f, imageView.superview.frame.size.height/2.f);
-//  
-////    NSLog(@"ImageViewFrame %@",NSStringFromCGRect(imageView.frame));
-////    NSLog(@"imageSize :%@ ",NSStringFromCGSize((CGSize){wigth,heigth}));
-////    NSLog(@"viewFrame : %@",NSStringFromCGRect(imageView.superview.bounds));
-//}
-
 - (void)updateImageView
 {
-    
     for (int i = 0; i < _dataSource.infoArray.count; i++) {
         NSDictionary * dic = [_dataSource.infoArray objectAtIndex:i];
         UIImageView * imageView = [_imageViewArray objectAtIndex:i];
-//        [self setImageViewFrame:imageView :dic];
         imageView.frame = [[_dataSource.imageFrame objectAtIndex:i] CGRectValue];
         
         //现在取图283w
-        NSURL * url = [NSURL URLWithString:[dic objectForKey:@"url"]];
+        NSString * imageUrl = [NSString stringWithFormat:@"%@_w283",[dic objectForKey:@"photo_url"]];
+        NSURL * url = [NSURL URLWithString:imageUrl];
         [imageView setImageWithURL:url placeholderImage:nil options:0];
     }
 }

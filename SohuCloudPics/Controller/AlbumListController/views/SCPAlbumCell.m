@@ -29,6 +29,7 @@ static UIImage *emptyFolderCoverImage = nil;
 #pragma mark - inner call
 - (void)onImageViewTapped:(UIGestureRecognizer *)gesture
 {
+
     if ([_delegate respondsToSelector:@selector(onImageViewClicked:)]) {
         [_delegate onImageViewClicked:(UIImageView *) gesture.view];
     }
@@ -36,9 +37,13 @@ static UIImage *emptyFolderCoverImage = nil;
 
 - (void)onImageViewLongPressed:(UILongPressGestureRecognizer *)gesture
 {
-    if ([_delegate respondsToSelector:@selector(onImageViewLongPressed:)]) {
-        [_delegate onImageViewLongPressed:(UIImageView *) gesture.view];
+    if (gesture.state != UIGestureRecognizerStateBegan) {
+        NSLog(@"%s",__FUNCTION__);
+        if ([_delegate respondsToSelector:@selector(onImageViewLongPressed:)]) {
+            [_delegate onImageViewLongPressed:(UIImageView *) gesture.view];
+        }
     }
+   
 }
 
 #pragma mark - PlaceHolderImage

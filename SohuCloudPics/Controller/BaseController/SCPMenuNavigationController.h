@@ -30,7 +30,6 @@
 @property (assign, nonatomic) BOOL disableRibbon;
 
 - (void)setDisableMenu:(BOOL)disable;
-
 // delegate call
 - (void)showMenu;
 - (void)hideMenu;

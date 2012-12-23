@@ -9,9 +9,10 @@
 #import "SCPRequestManager.h"
 #import "SCPURLLibaray.h"
 #import "ASIFormDataRequest.h"
-
+#import "SCPLoginPridictive.h"
 #import "JSON.h"
 
+#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
 
 @implementation SCPRequestManager (common)
 
@@ -39,18 +40,11 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    if (request) pageCount--;
-    NSLog(@"%d ", pageCount);
-	NSLog(@"__________________Request fail %@, %d code:%d", [request error],pageCount,[request responseStatusCode]);
-    if (request) isFailed = YES;
-    if (pageCount <= 0) return;
-    [operationQuene cancelAllOperations];
-    [tempDic removeAllObjects];
     
-//    [self commonShowWhenRequsetFailed:request];
     if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-        [_delegate performSelector:@selector(requestFailed:) withObject:request];
+        [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
     }
+    
 }
 - (void)commonShowWhenRequsetFailed:(ASIHTTPRequest *)request
 {
@@ -58,9 +52,8 @@
     [alter show];
     
 }
+
 @end
-
-
 
 
 @implementation SCPRequestManager
@@ -96,111 +89,257 @@
 }
 
 #pragma mark - Explore
-- (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult
-{
-    isFailed = NO;
-    [operationQuene cancelAllOperations];
-    [tempDic removeAllObjects];
-    
-    startPage = startIndex / 20;
-    startPageOffset = startIndex % 20;
-    endPage = ceil((startIndex +maxresult) / 20.f);
-    maxResult = maxresult;
-    pageCount = endPage - startPage;
-    
-    for (int i = 0; i < pageCount; i++) {
-        NSString * url_str = [NSString stringWithFormat:@"%@%d",URL_EXPLORE,startPage + i];
-        NSLog(@"explore:%@",url_str);
-        NSURL * url = [NSURL URLWithString:url_str];
-        [self addOperation:i URL:url action:@selector(explorerequestFinished:)];
-    }
-    [operationQuene go];
-}
-
-- (void)explorerequestFinished:(ASIHTTPRequest *)request
+- (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture
 {
     
-    NSString * str = [request responseString];
-    NSDictionary * dic = [str JSONValue];
-    NSArray * array = [dic objectForKey:@"photoList"];
-    pageCount--;
-    if (!array || ![array count]) {
-        isFailed = YES;
-    }
-    if (isFailed && pageCount == 0) {
-        [self requestFailed:nil];
-        return;
-    }
-    if(!isFailed) {
-        [tempDic setObject:array forKey:[NSNumber numberWithInt:request.tag]];
-        if (pageCount == 0) {
-            [self exploreoutputArray];
-		}
-    }
-}
-
-- (void)exploreoutputArray
-{
-    NSArray * finalarray = [NSArray arrayWithArray:nil];
-    for (int i = 0; i < [tempDic allKeys].count; i++) {
-        NSArray * array = [tempDic objectForKey:[NSNumber numberWithInt:i]];
-        finalarray = [finalarray arrayByAddingObjectsFromArray:array];
-    }
-    NSInteger length = MIN(maxResult, finalarray.count - startPageOffset);
-    finalarray  = [finalarray subarrayWithRange:(NSRange){startPageOffset,length}];
-    NSDictionary * dic = [NSDictionary  dictionaryWithObject:finalarray forKey:@"NetworkDataSouce"];
-    if ([_delegate respondsToSelector:@selector(requestFinished:output:)])
-        [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:dic];
-    [tempDic removeAllObjects];
+    NSString * str_url = [NSString stringWithFormat:@"%@/plaza?start=%d&count=%d",BASICURL_V1,startIndex,maxresult];
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
+    [request setTimeOutSeconds:5.f];
+    [request setCompletionBlock:^{
+        NSLog(@"sucess StatusCode : %d",[request responseStatusCode]);
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+//            NSLog(@"%@",[[[[request responseString] JSONValue] objectForKey:@"photos"] lastObject]);
+            success([[[request responseString] JSONValue] objectForKey:@"photos"]);
+        }else {
+            faiture([NSString stringWithFormat:@"请求失败"]);
+        }
+    }];
+    [request setFailedBlock:^{
+        faiture(@"连接失败");
+    }];
+    [request startAsynchronous];
 }
 
 #pragma mark - PhotoDetail
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID
 {
-    isFailed = NO;
-    pageCount = 1;
-    NSString * url_str = URL_PHOTOINFO(user_id, photo_ID);
-    NSURL * url = [NSURL URLWithString:url_str];
-    [self addOperation:0 URL:url action:@selector(photoDetailrequestFinished:)];
-    [operationQuene go];
+    NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@",BASICURL_V1,photo_ID,user_id];
+    NSLog(@"%@",str);
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:5.f];
+    [request setCompletionBlock:^{
+        [self photoDetailrequestFinished:request];
+    }];
+    [request setFailedBlock:^{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+        }
+    }];
+    [request startAsynchronous];
 }
-
 - (void)photoDetailrequestFinished:(ASIHTTPRequest *)request
 {
-    NSString * str = [request responseString];
-    NSDictionary * dic = [str JSONValue];
-    if (!dic || ![dic allKeys].count) {
-        [self requestFailed:nil];
-    }
-    if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
-        [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:dic];
+    
+    if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        NSString * str = [request responseString];
+        NSDictionary * dic = [str JSONValue];
+//        NSLog(@"%@",dic);
+        if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
+            [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:dic];
+        }
+    }else{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+        }
     }
 }
-
 #pragma mark - Personal Home
-
 - (void)getUserInfoWithID:(NSString *)user_ID
 {
-    isFailed = NO;
-    pageCount = 2;
-    NSString * str_info = URL_USERINFO(user_ID);
-    NSURL * url = [NSURL URLWithString:str_info];
-    [self addOperation:0 URL:url action:@selector(userInfoFeedrequestFinished:)];
-    [self getUserInfoFeedWithUserID:user_ID page:1 only:NO];
-}
-
-- (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page only:(BOOL)only
-{
-    if (only) {
-        isFailed = NO;
-        pageCount = 1;
+    
+    NSString  * str = nil;
+    if ([SCPLoginPridictive currentToken]) {
+        str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
+        NSLog(@"Login:%@", str);
+    }else{
+      str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
-    NSString * str_feed = URL_USERINFOFeed(user_ID, page);
-    NSURL * url = [NSURL URLWithString:str_feed];
-    [self addOperation:1 URL:url action:@selector(userInfoFeedrequestFinished:)];
-    [operationQuene go];
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:5.f];
+    [request setCompletionBlock:^{
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            [tempDic removeAllObjects];
+            [tempDic setObject:dic forKey:@"userInfo"];
+            [self getUserInfoFeedWithUserID:user_ID page:1];
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+            }
+        }
+    }];
+    
+    [request setFailedBlock:^{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+        }
+    }];
+    [request startAsynchronous];
+}
+- (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page
+{
+    NSString * str = [NSString stringWithFormat:@"%@/feed?user_id=%@&page=%d",BASICURL_V1,user_ID,page];
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:5.f];
+    [request setCompletionBlock:^{
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            [tempDic setObject:dic forKey:@"feedList"];
+            NSLog(@"tempdic %@",[tempDic objectForKey:@"userInfo"]);
+            if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
+                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
+                [tempDic removeAllObjects];
+            }
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+            }
+        }
+    }];
+    [request setFailedBlock:^{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+        }
+    }];
+    [request startAsynchronous];
+}
+#pragma mark - Folders
+- (void)getFoldersinfoWithID:(NSString *)uses_id
+{
+    NSString  * str = nil;
+    if ([SCPLoginPridictive isLogin]) {
+        str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,uses_id,[SCPLoginPridictive currentToken]];
+        NSLog(@"Login:%@", str);
+    }else{
+        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,uses_id];
+    }
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:5.f];
+    [request setCompletionBlock:^{
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            [tempDic removeAllObjects];
+            [tempDic setObject:dic forKey:@"userInfo"];
+            [self getFoldersWithID:uses_id page:1];
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+            }
+        }
+    }];
+    [request setFailedBlock:^{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+        }
+    }];
+    [request startAsynchronous];
+    
+}
+- (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page
+{
+    NSString * str = nil;
+    if ([SCPLoginPridictive isLogin]) {
+        str = [NSString stringWithFormat:@"%@/folders?owner_id=%@&page=%d?access_token=%@",BASICURL_V1,user_id,page,[SCPLoginPridictive currentToken]];
+    }else{
+        str = [NSString stringWithFormat:@"%@/folders?owner_id=%@&page=%d",BASICURL_V1,user_id,page];
+    }
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:5];
+    [request setCompletionBlock:^{
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            [tempDic setObject:dic forKey:@"folderinfo"];
+            NSLog(@"userinfo:%@",[tempDic objectForKey:@"userInfo"]);
+            if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
+                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
+                [tempDic removeAllObjects];
+            }
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+            }
+        }
+    }];
+    [request setFailedBlock:^{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+        }
+    }];
+    [request startAsynchronous];
 }
 
+#pragma mark - PhotosList
+- (void)getFolderinfoWihtUserID:(NSString *)user_id WithFolders:(NSString *)folder_id
+{
+    NSString  * str = nil;
+    if ([SCPLoginPridictive isLogin]) {
+        str = [NSString stringWithFormat:@"%@/folders/%@?owner_id=%@&access_token=%@",BASICURL_V1,folder_id,user_id,[SCPLoginPridictive currentToken]];
+        NSLog(@"Login:%@", str);
+    }else{
+        str = [NSString stringWithFormat:@"%@/folders/%@?owner_id=%@",BASICURL_V1,folder_id,user_id];
+    }
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:5.f];
+    [request setCompletionBlock:^{
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            [tempDic removeAllObjects];
+            [tempDic setObject:dic forKey:@"folderInfo"];
+            [self getPhotosWithUserID:user_id FolderID:folder_id page:1];
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+            }
+        }
+    }];
+    
+    [request setFailedBlock:^{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+        }
+    }];
+    [request startAsynchronous];
+    
+}
+- (void)getPhotosWithUserID:(NSString *)user_id FolderID:(NSString *)folder_id page:(NSInteger)page
+{
+    NSString  * str = nil;
+    if ([SCPLoginPridictive isLogin]) {
+        str = [NSString stringWithFormat:@"%@/folders/%@/photos?owner_id=%@&page=%d&access_token=%@",BASICURL_V1,folder_id,user_id,page,[SCPLoginPridictive currentToken]];
+    }else{
+        str = [NSString stringWithFormat:@"%@/folders/%@/photos?owner_id=%@&page=%d",BASICURL_V1,folder_id,user_id,page];
+    }
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:5.f];
+    [request setCompletionBlock:^{
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            [tempDic setObject:dic forKey:@"photoList"];
+            if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
+                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
+                [tempDic removeAllObjects];
+            }
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+            }
+        }
+    }];
+    [request setFailedBlock:^{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+        }
+    }];
+    [request startAsynchronous];
+}
+
+#pragma mark -
 - (void)userInfoFeedrequestFinished:(ASIHTTPRequest *)request
 {
     NSString * str = [request responseString];
@@ -250,7 +389,6 @@
         isFailed = NO;
         pageCount = 1;
     }
-    
     NSString * str_info = [NSString stringWithFormat:@"%@/%d/?yuntu_token=%@",URL_USERFEED,page,user_ID];
     NSURL * url = [NSURL URLWithString:str_info];
     [self addOperation:1 URL:url action:@selector(userFollowFeedrequestFinished:)];
@@ -260,6 +398,11 @@
 {
     [self userInfoFeedrequestFinished:request];
 }
+
+
+
+
+
 #pragma mark - Follow Info
 - (void)getUserFollowersWithUserID:(NSString *)user_ID page:(NSInteger)page
 {
@@ -276,7 +419,6 @@
     NSString * str_url = URL_USERFOLLOWINGS(user_ID,page);
     [self addOperation:0 URL:[NSURL URLWithString:str_url] action:@selector(followRequestFinished:)];
     [operationQuene go];
-    
 }
 - (void)followRequestFinished:(ASIHTTPRequest *)request
 {
@@ -290,31 +432,6 @@
         }
     }
 }
-#pragma mark Follow Action
-
-#pragma mark - Folders
-- (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page  yuntuToken:(NSString *)token
-{
-    NSString * foldersURL = nil;
-    pageCount = 1;
-    if (!token) {
-    	foldersURL = [NSString stringWithFormat:API_BASE "/u/%@/folders/%d", user_id, page];
-    }else{
-        foldersURL = [NSString stringWithFormat:API_BASE "/u/%@/folders/%d?yuntu_token=%@", user_id, page,token];
-    }
-	NSURL *url = [NSURL URLWithString:foldersURL];
-	[self addOperation:0 URL:url action:@selector(getFoldersFinished:)];
-	[operationQuene go];
-}
-
-- (void)getFoldersFinished:(ASIHTTPRequest *)request
-{
-    
-	if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
-        [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[[request responseString] JSONValue]];
-	}
-}
-
 #pragma mark - Covers
 - (void)getFolderCoverURLWithUserId:(NSString *)user_id folderID:(NSString *)folder_id coverShowId:(NSString *)cover_id tag:(int)tag
 {
@@ -358,23 +475,7 @@
 	}
 }
 
-#pragma mark - Photos
-- (void)getPhotosWithUserID:(NSString *)user_id FolderID:(NSString *)folder_id page:(NSInteger)page
-{
-	isFailed = NO;
-	pageCount = 1;
-	NSString *photosURL = [NSString stringWithFormat:API_BASE "/u/%@/f%@/%d", user_id, folder_id, page];
-	NSURL *url = [NSURL URLWithString:photosURL];
-	[self addOperation:0 URL:url action:@selector(getPhotosFinished:)];
-	[operationQuene go];
-}
 
-- (void)getPhotosFinished:(ASIHTTPRequest *)request
-{
-	if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
-        [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[[request responseString] JSONValue]];
-	}
-}
 #pragma mark  - Action
 #pragma mark Like_Unlike
 - (void)makeUser:(NSString *)user_ID likephotoWith:(NSString *)photo_useID :(NSString *)photo_ID success:(void (^) (NSString * response))success

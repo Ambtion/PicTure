@@ -81,7 +81,6 @@
     int offset = indexPath.row * _photoCount;
     for (int i = offset; i < offset + 3 && i < self.albumList.count; i++) {
         
-       
         int indexInCell = i - offset;
         SCPAlbum * album = [self.albumList objectAtIndex:i];
         [cell updateViewWithAlbum:album position:indexInCell preToDel:(_state == SCPAlbumControllerStateDelete)];
@@ -105,21 +104,22 @@
 	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 5) {
 		[self loadNextPage];
 	}
-    
-
     return cell;
 }
+
 #pragma mark -
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self addObserVerOnCenter];
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self removeObserverOnCenter];
 }
+
 #pragma mark -
 #pragma mark Notification
 
@@ -134,6 +134,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALBUMTASKCHANGE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALBUMUPLOADOVER  object:nil];
 }
+
 - (void)albumTaskOver:(NSNotification *)notification
 {
     [self.curProgreeeView setHidden:YES];

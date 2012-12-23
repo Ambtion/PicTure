@@ -187,10 +187,6 @@
 		C508A6D116846C08006D86B9 /* user_bg_plain.png in Resources */ = {isa = PBXBuildFile; fileRef = C508A6CD16846C07006D86B9 /* user_bg_plain.png */; };
 		C508A6D316846C60006D86B9 /* user_icon_stra.png in Resources */ = {isa = PBXBuildFile; fileRef = C508A6D216846C5F006D86B9 /* user_icon_stra.png */; };
 		C508A6D516846DE5006D86B9 /* user_image_check.png in Resources */ = {isa = PBXBuildFile; fileRef = C508A6D416846DE4006D86B9 /* user_image_check.png */; };
-		C517AB62167C756100C9705D /* SCPRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C517AB58167C756100C9705D /* SCPRequestManager.m */; };
-		C517AB6E167C832C00C9705D /* SCPAlbumTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = C517AB68167C832C00C9705D /* SCPAlbumTaskList.m */; };
-		C517AB6F167C832C00C9705D /* SCPTaskUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = C517AB6B167C832C00C9705D /* SCPTaskUnit.m */; };
-		C517AB70167C832C00C9705D /* SCPUploadTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C517AB6D167C832C00C9705D /* SCPUploadTaskManager.m */; };
 		C532480E16848EE50055F9B8 /* qqLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = C532480B16848EE50055F9B8 /* qqLogin.png */; };
 		C532480F16848EE50055F9B8 /* renrenLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = C532480C16848EE50055F9B8 /* renrenLogin.png */; };
 		C532481016848EE50055F9B8 /* sinaLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = C532480D16848EE50055F9B8 /* sinaLogin.png */; };
@@ -340,6 +336,11 @@
 		C5880407162BF58400249D8D /* settings_user.png in Resources */ = {isa = PBXBuildFile; fileRef = C5880401162BF58400249D8D /* settings_user.png */; };
 		C588040C162C045600249D8D /* MySettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C588040B162C045500249D8D /* MySettingCell.m */; };
 		C588040E162C120900249D8D /* settings_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C588040D162C120900249D8D /* settings_arrow.png */; };
+		C588DE42168559DF008744D1 /* SCPRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C588DE38168559DF008744D1 /* SCPRequestManager.m */; };
+		C588DE43168559DF008744D1 /* SCPAlbumTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = C588DE3B168559DF008744D1 /* SCPAlbumTaskList.m */; };
+		C588DE44168559DF008744D1 /* SCPTaskUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = C588DE3E168559DF008744D1 /* SCPTaskUnit.m */; };
+		C588DE45168559DF008744D1 /* SCPUploadTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C588DE40168559DF008744D1 /* SCPUploadTaskManager.m */; };
+		C588DE4E16858BC9008744D1 /* AccountSystemRequset.m in Sources */ = {isa = PBXBuildFile; fileRef = C588DE4D16858BC9008744D1 /* AccountSystemRequset.m */; };
 		C58950E91654C28C005865EE /* NoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58950E81654C28C005865EE /* NoticeViewController.m */; };
 		C58950EC1654C2D1005865EE /* NoticeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C58950EB1654C2D1005865EE /* NoticeManager.m */; };
 		C58950EF1654C7E2005865EE /* NoticeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C58950EE1654C7E2005865EE /* NoticeViewCell.m */; };
@@ -347,7 +348,7 @@
 		C589F45A15F98ACA00FAC5B1 /* GifDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C589F45915F98ACA00FAC5B1 /* GifDetail.m */; };
 		C58AB44416757AA900C96450 /* SCPAlert_DeletView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58AB44316757AA900C96450 /* SCPAlert_DeletView.m */; };
 		C58AB4461675838600C96450 /* pop_up_bg_delet.png in Resources */ = {isa = PBXBuildFile; fileRef = C58AB4451675838600C96450 /* pop_up_bg_delet.png */; };
-		C58AD468163A330000D59675 /* SCPALter_WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58AD467163A330000D59675 /* SCPALter_WaitView.m */; };
+		C58AD468163A330000D59675 /* SCPAlter_WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58AD467163A330000D59675 /* SCPAlter_WaitView.m */; };
 		C58AD46A163A33B500D59675 /* pop_alert.png in Resources */ = {isa = PBXBuildFile; fileRef = C58AD469163A33B500D59675 /* pop_alert.png */; };
 		C58AD512163ABCFC00D59675 /* UICliper.m in Sources */ = {isa = PBXBuildFile; fileRef = C58AD511163ABCFC00D59675 /* UICliper.m */; };
 		C58BD83E166E01B700BEBA9E /* end_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C58BD83D166E01B700BEBA9E /* end_bg.png */; };
@@ -700,16 +701,6 @@
 		C508A6CD16846C07006D86B9 /* user_bg_plain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_bg_plain.png; sourceTree = "<group>"; };
 		C508A6D216846C5F006D86B9 /* user_icon_stra.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_icon_stra.png; sourceTree = "<group>"; };
 		C508A6D416846DE4006D86B9 /* user_image_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_image_check.png; sourceTree = "<group>"; };
-		C517AB57167C756100C9705D /* SCPRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPRequestManager.h; sourceTree = "<group>"; };
-		C517AB58167C756100C9705D /* SCPRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPRequestManager.m; sourceTree = "<group>"; };
-		C517AB61167C756100C9705D /* SCPURLLibaray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPURLLibaray.h; sourceTree = "<group>"; };
-		C517AB67167C832C00C9705D /* SCPAlbumTaskList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAlbumTaskList.h; sourceTree = "<group>"; };
-		C517AB68167C832C00C9705D /* SCPAlbumTaskList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlbumTaskList.m; sourceTree = "<group>"; };
-		C517AB69167C832C00C9705D /* SCPTaskNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPTaskNotification.h; sourceTree = "<group>"; };
-		C517AB6A167C832C00C9705D /* SCPTaskUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPTaskUnit.h; sourceTree = "<group>"; };
-		C517AB6B167C832C00C9705D /* SCPTaskUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPTaskUnit.m; sourceTree = "<group>"; };
-		C517AB6C167C832C00C9705D /* SCPUploadTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPUploadTaskManager.h; sourceTree = "<group>"; };
-		C517AB6D167C832C00C9705D /* SCPUploadTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPUploadTaskManager.m; sourceTree = "<group>"; };
 		C532480B16848EE50055F9B8 /* qqLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqLogin.png; sourceTree = "<group>"; };
 		C532480C16848EE50055F9B8 /* renrenLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = renrenLogin.png; sourceTree = "<group>"; };
 		C532480D16848EE50055F9B8 /* sinaLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sinaLogin.png; sourceTree = "<group>"; };
@@ -885,6 +876,18 @@
 		C588040A162C045500249D8D /* MySettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingCell.h; sourceTree = "<group>"; };
 		C588040B162C045500249D8D /* MySettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingCell.m; sourceTree = "<group>"; };
 		C588040D162C120900249D8D /* settings_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_arrow.png; sourceTree = "<group>"; };
+		C588DE37168559DF008744D1 /* SCPRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPRequestManager.h; sourceTree = "<group>"; };
+		C588DE38168559DF008744D1 /* SCPRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPRequestManager.m; sourceTree = "<group>"; };
+		C588DE3A168559DF008744D1 /* SCPAlbumTaskList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAlbumTaskList.h; sourceTree = "<group>"; };
+		C588DE3B168559DF008744D1 /* SCPAlbumTaskList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlbumTaskList.m; sourceTree = "<group>"; };
+		C588DE3C168559DF008744D1 /* SCPTaskNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPTaskNotification.h; sourceTree = "<group>"; };
+		C588DE3D168559DF008744D1 /* SCPTaskUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPTaskUnit.h; sourceTree = "<group>"; };
+		C588DE3E168559DF008744D1 /* SCPTaskUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPTaskUnit.m; sourceTree = "<group>"; };
+		C588DE3F168559DF008744D1 /* SCPUploadTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPUploadTaskManager.h; sourceTree = "<group>"; };
+		C588DE40168559DF008744D1 /* SCPUploadTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPUploadTaskManager.m; sourceTree = "<group>"; };
+		C588DE41168559DF008744D1 /* SCPURLLibaray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPURLLibaray.h; sourceTree = "<group>"; };
+		C588DE4A16855C3D008744D1 /* AccountSystemRequset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountSystemRequset.h; sourceTree = "<group>"; };
+		C588DE4D16858BC9008744D1 /* AccountSystemRequset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountSystemRequset.m; sourceTree = "<group>"; };
 		C58950E71654C28C005865EE /* NoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeViewController.h; sourceTree = "<group>"; };
 		C58950E81654C28C005865EE /* NoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeViewController.m; sourceTree = "<group>"; };
 		C58950EA1654C2D1005865EE /* NoticeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeManager.h; sourceTree = "<group>"; };
@@ -897,8 +900,8 @@
 		C58AB44216757AA900C96450 /* SCPAlert_DeletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAlert_DeletView.h; sourceTree = "<group>"; };
 		C58AB44316757AA900C96450 /* SCPAlert_DeletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlert_DeletView.m; sourceTree = "<group>"; };
 		C58AB4451675838600C96450 /* pop_up_bg_delet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_up_bg_delet.png; sourceTree = "<group>"; };
-		C58AD466163A330000D59675 /* SCPALter_WaitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPALter_WaitView.h; sourceTree = "<group>"; };
-		C58AD467163A330000D59675 /* SCPALter_WaitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPALter_WaitView.m; sourceTree = "<group>"; };
+		C58AD466163A330000D59675 /* SCPAlter_WaitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAlter_WaitView.h; sourceTree = "<group>"; };
+		C58AD467163A330000D59675 /* SCPAlter_WaitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlter_WaitView.m; sourceTree = "<group>"; };
 		C58AD469163A33B500D59675 /* pop_alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_alert.png; sourceTree = "<group>"; };
 		C58AD510163ABCFC00D59675 /* UICliper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICliper.h; sourceTree = "<group>"; };
 		C58AD511163ABCFC00D59675 /* UICliper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICliper.m; sourceTree = "<group>"; };
@@ -1213,7 +1216,7 @@
 			children = (
 				61124E1315DE0BF6002C844F /* SCPAppDelegate.h */,
 				61124E1415DE0BF6002C844F /* SCPAppDelegate.m */,
-				C517AB56167C756100C9705D /* BaseNetwork */,
+				C588DE36168559DF008744D1 /* Network */,
 				C53BB10A1654D8C00043B7E7 /* FunctionGuide */,
 				C58D86591612CB78006FE9EF /* LoginPridictive */,
 				61124E1B15DE0BFF002C844F /* Controller */,
@@ -1637,8 +1640,8 @@
 		B7CFD3991615868300F348DE /* SCPAlertView */ = {
 			isa = PBXGroup;
 			children = (
-				C58AD466163A330000D59675 /* SCPALter_WaitView.h */,
-				C58AD467163A330000D59675 /* SCPALter_WaitView.m */,
+				C58AD466163A330000D59675 /* SCPAlter_WaitView.h */,
+				C58AD467163A330000D59675 /* SCPAlter_WaitView.m */,
 				B7CFD39A1615868300F348DE /* SCPAlert_LoginView.h */,
 				B7CFD39B1615868300F348DE /* SCPAlert_LoginView.m */,
 				C58AB44216757AA900C96450 /* SCPAlert_DeletView.h */,
@@ -1886,31 +1889,6 @@
 			);
 			name = HomeBackImage;
 			path = Resource/HomeBackImage;
-			sourceTree = "<group>";
-		};
-		C517AB56167C756100C9705D /* BaseNetwork */ = {
-			isa = PBXGroup;
-			children = (
-				C517AB66167C832C00C9705D /* SCPTaskManager */,
-				C517AB57167C756100C9705D /* SCPRequestManager.h */,
-				C517AB58167C756100C9705D /* SCPRequestManager.m */,
-				C517AB61167C756100C9705D /* SCPURLLibaray.h */,
-			);
-			path = BaseNetwork;
-			sourceTree = "<group>";
-		};
-		C517AB66167C832C00C9705D /* SCPTaskManager */ = {
-			isa = PBXGroup;
-			children = (
-				C517AB67167C832C00C9705D /* SCPAlbumTaskList.h */,
-				C517AB68167C832C00C9705D /* SCPAlbumTaskList.m */,
-				C517AB69167C832C00C9705D /* SCPTaskNotification.h */,
-				C517AB6A167C832C00C9705D /* SCPTaskUnit.h */,
-				C517AB6B167C832C00C9705D /* SCPTaskUnit.m */,
-				C517AB6C167C832C00C9705D /* SCPUploadTaskManager.h */,
-				C517AB6D167C832C00C9705D /* SCPUploadTaskManager.m */,
-			);
-			path = SCPTaskManager;
 			sourceTree = "<group>";
 		};
 		C53BB10A1654D8C00043B7E7 /* FunctionGuide */ = {
@@ -2221,6 +2199,41 @@
 			);
 			name = Setting;
 			path = Resource/image/Setting;
+			sourceTree = "<group>";
+		};
+		C588DE36168559DF008744D1 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				C588DE4616855A32008744D1 /* AccountSystem */,
+				C588DE41168559DF008744D1 /* SCPURLLibaray.h */,
+				C588DE37168559DF008744D1 /* SCPRequestManager.h */,
+				C588DE38168559DF008744D1 /* SCPRequestManager.m */,
+				C588DE39168559DF008744D1 /* SCPTaskManager */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		C588DE39168559DF008744D1 /* SCPTaskManager */ = {
+			isa = PBXGroup;
+			children = (
+				C588DE3A168559DF008744D1 /* SCPAlbumTaskList.h */,
+				C588DE3B168559DF008744D1 /* SCPAlbumTaskList.m */,
+				C588DE3C168559DF008744D1 /* SCPTaskNotification.h */,
+				C588DE3D168559DF008744D1 /* SCPTaskUnit.h */,
+				C588DE3E168559DF008744D1 /* SCPTaskUnit.m */,
+				C588DE3F168559DF008744D1 /* SCPUploadTaskManager.h */,
+				C588DE40168559DF008744D1 /* SCPUploadTaskManager.m */,
+			);
+			path = SCPTaskManager;
+			sourceTree = "<group>";
+		};
+		C588DE4616855A32008744D1 /* AccountSystem */ = {
+			isa = PBXGroup;
+			children = (
+				C588DE4A16855C3D008744D1 /* AccountSystemRequset.h */,
+				C588DE4D16858BC9008744D1 /* AccountSystemRequset.m */,
+			);
+			name = AccountSystem;
 			sourceTree = "<group>";
 		};
 		C58950E51654C26F005865EE /* NoticeController */ = {
@@ -2793,7 +2806,7 @@
 				C59793651634FBCB003C2206 /* PullingRefreshController.m in Sources */,
 				C597936C16353584003C2206 /* PullingRefreshTableView.m in Sources */,
 				C5D9A7DD1637DF3E004BD68D /* ImageToolBox.m in Sources */,
-				C58AD468163A330000D59675 /* SCPALter_WaitView.m in Sources */,
+				C58AD468163A330000D59675 /* SCPAlter_WaitView.m in Sources */,
 				C58AD512163ABCFC00D59675 /* UICliper.m in Sources */,
 				B7D72A8916420D270018ED30 /* SCPPhotoGridCell.m in Sources */,
 				C58FE9201643C76700E8CFB7 /* SCPAlbumGridController.m in Sources */,
@@ -2852,10 +2865,6 @@
 				C58AB44416757AA900C96450 /* SCPAlert_DeletView.m in Sources */,
 				C5410547167595CE0063A1BD /* SCPAlert_Rename.m in Sources */,
 				C54105511675DECE0063A1BD /* SCPAlert_DetailView.m in Sources */,
-				C517AB62167C756100C9705D /* SCPRequestManager.m in Sources */,
-				C517AB6E167C832C00C9705D /* SCPAlbumTaskList.m in Sources */,
-				C517AB6F167C832C00C9705D /* SCPTaskUnit.m in Sources */,
-				C517AB70167C832C00C9705D /* SCPUploadTaskManager.m in Sources */,
 				C59198EC167F23A20019E947 /* SCPBaseController.m in Sources */,
 				C59198ED167F23A20019E947 /* SCPBaseNavigationItem.m in Sources */,
 				C59198EE167F23A20019E947 /* SCPMenuNavigationController.m in Sources */,
@@ -2865,6 +2874,11 @@
 				C593B616168012FF0076FBC6 /* SCPPhotoListController.m in Sources */,
 				C508A68D16843B63006D86B9 /* CameraImageBox.m in Sources */,
 				C508A6BF16845BEB006D86B9 /* HomeBackContainer.m in Sources */,
+				C588DE42168559DF008744D1 /* SCPRequestManager.m in Sources */,
+				C588DE43168559DF008744D1 /* SCPAlbumTaskList.m in Sources */,
+				C588DE44168559DF008744D1 /* SCPTaskUnit.m in Sources */,
+				C588DE45168559DF008744D1 /* SCPUploadTaskManager.m in Sources */,
+				C588DE4E16858BC9008744D1 /* AccountSystemRequset.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,7 +14,7 @@
 
 @synthesize creatorId = _user_id;
 @synthesize albumId = _albumId;
-@synthesize coverShowId = _cover;
+//@synthesize coverShowId = _cover;
 @synthesize coverURL = _coverURL;
 
 @synthesize name = _title;
@@ -26,7 +26,6 @@
 - (void)dealloc
 {
 	self.creatorId = nil;
-	self.coverShowId = nil;
 	self.coverURL = nil;
 	self.albumId = nil;
 	self.name = nil;

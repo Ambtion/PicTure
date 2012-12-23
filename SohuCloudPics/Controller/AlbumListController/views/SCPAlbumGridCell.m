@@ -64,7 +64,7 @@
             /* cover image view */
             UIImageView *coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 15, 5, 75, 75)];
             coverImageView.userInteractionEnabled = YES;
-            
+
             UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
             [coverImageView addGestureRecognizer:gesture];
             [gesture release];
@@ -214,8 +214,8 @@
 
 - (void)updateViewWithAlbum:(SCPAlbum *)album position:(int)position preToDel:(BOOL)deleting
 {
+    
 	[_albumList setObject:album atIndexedSubscript:position];
-	
     /* set cover image view */
     UIImageView *coverImageView = [self coverImageViewAt:position];
     [coverImageView setHidden:NO];

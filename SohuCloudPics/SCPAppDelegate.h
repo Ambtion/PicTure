@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ASIFormDataRequest.h"
-
 @class FunctionguideScroll;
-@interface SCPAppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate,ASIHTTPRequestDelegate>
+@interface SCPAppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate>
 {
     FunctionguideScroll * _fgc;
 }

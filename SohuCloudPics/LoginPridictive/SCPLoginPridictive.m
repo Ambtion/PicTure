@@ -41,12 +41,11 @@
 @implementation SCPLoginPridictive
 + (BOOL)isLogin
 {
-    return [self dataForKey:USER_ID] != nil;
+    return [self dataForKey:USER_TOKEN] != nil;
 }
 
 + (void)loginUserId:(NSString *)uid withToken:(NSString *)token
 {
-    
     [self storeData:uid forKey:USER_ID];
     [self storeData:token forKey:USER_TOKEN];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginStateChange" object:nil userInfo:[NSDictionary dictionaryWithObject:@"Login" forKey:@"LogState"]];

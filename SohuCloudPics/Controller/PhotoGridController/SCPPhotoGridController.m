@@ -38,6 +38,8 @@
 		_request = [[SCPRequestManager alloc] init];
         _thumbnailArray = [[NSMutableArray arrayWithCapacity:0] retain];
 		_request.delegate = self;
+        hasNextPage = NO;
+        curpage = 1;
     }
     return self;
 }
@@ -144,35 +146,57 @@
 }
 - (void)refresh
 {
-    NSLog(@"%s",__FUNCTION__);
 	if (_photoList == nil) {
 		_photoList = [[NSMutableArray alloc] init];
 	}
-	[_request getPhotosWithUserID:_albumData.creatorId FolderID:_albumData.albumId page:1];
+    [_request getFolderinfoWihtUserID:_albumData.creatorId WithFolders:_albumData.albumId];
 }
-
-#pragma mark - SCPRequestManagerDelegate
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
+- (void)loadingNextPage
 {
-	NSLog(@"RequestFailed");
+    
+    if (hasNextPage)
+        [_request getPhotosWithUserID:_albumData.creatorId FolderID:_albumData.albumId page:curpage + 1];
 }
-
+#pragma mark - SCPRequestManagerDelegate
+- (void)requestFailed:(NSString *)error
+{
+    UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
+    [alterview show];
+}
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    [_photoList removeAllObjects];
+    NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
+    NSDictionary * photolistinfo = [info objectForKey:@"photoList"];
+    NSLog(@"%@",[photolistinfo allKeys]);
+          
+    if (folderinfo) {
+        NSLog(@"%@",folderinfo);
+        NSLog(@"folderinfo remove");
+        self.albumData.photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
+        self.albumData.viewCount = [[folderinfo objectForKey:@"view_count"] intValue];
+        self.albumData.creatorId = [folderinfo objectForKey:@"user_id"];
+        self.albumData.permission = [[folderinfo objectForKey:@"is_public"] intValue];
+        [_photoList removeAllObjects];
+    }
     [self updateUploadPhotoList];
-	NSArray * photoList = [info objectForKey:@"photoList"];
+    
+    hasNextPage = [[photolistinfo objectForKey:@"has_next"] boolValue];
+    curpage = [[photolistinfo objectForKey:@"page"] intValue];
+    NSLog(@"nextpage:%d,curpage:%d",hasNextPage ,curpage);
+
+	NSArray * photoList = [photolistinfo objectForKey:@"photos"];
 	for (int i = 0; i < photoList.count; ++i) {
 		NSDictionary *photoInfo = [photoList objectAtIndex:i];
 		SCPPhoto *photo = [[SCPPhoto alloc] init];
-		photo.photoID = [photoInfo objectForKey:@"showId"];
-        photo.photoUrl = [photoInfo objectForKey:@"bigUrl"];
-        
-		[_photoList addObject:photo];
+		photo.photoID = [photoInfo objectForKey:@"photo_id"];
+        photo.photoUrl = [photoInfo objectForKey:@"photo_url"];
+        [_photoList addObject:photo];
 		[photo release];
-	}    
+	}
+    
 	[_pullingController reloadDataSourceWithAniamtion:NO];
 	[_pullingController refreshDoneLoadingTableViewData];
+    
 }
 - (void)updateUploadPhotoList
 {
@@ -193,16 +217,15 @@
 
 - (BOOL)longinPridecate
 {
-    if (![SCPLoginPridictive isLogin] ) {
-        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"请确认登陆" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
-        [alte show];
-    }
-    if (![self.albumData.creatorId isEqualToString:[SCPLoginPridictive currentUserId]]) {
+    
+    if (![SCPLoginPridictive isLogin] || ![self.albumData.creatorId isEqualToString:[SCPLoginPridictive currentUserId]]) {
         UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
         [alte show];
+        return NO;
     }
-    return [SCPLoginPridictive isLogin] && [self.albumData.creatorId isEqualToString:[SCPLoginPridictive currentUserId]];
+    return YES;
 }
+
 #pragma mark Rename album
 - (void)onPenClicked:(id)sender
 {
@@ -219,6 +242,7 @@
         [self.pullingController reloadDataSourceWithAniamtion:NO];
     }];
 }
+
 #pragma mark trash
 - (void)onTrashClicked:(id)sender
 {
@@ -231,7 +255,6 @@
     animation.endProgress = 0.7;
     animation.duration = 0.2;
     [_rightBarView.layer addAnimation:animation forKey:nil];
-    
     [_iMarkButton removeFromSuperview];
     [_trashButton removeFromSuperview];
     [_penButton removeFromSuperview];
@@ -348,6 +371,7 @@
 }
 - (void)onDeleteOKClicked:(id)sender
 {
+    
     if (!_imagesToDel || !_imagesToDel.count) {
         return;
     }
@@ -407,7 +431,6 @@
     }
     static int photoCount = 4;
     int offset = photoCount * [indexPath row];
-    
     for (int i = 0; i < 4; i++) {
         NSNumber * tag = [NSNumber numberWithInt:i + offset];
         if (tag.integerValue < taskTotal) {
@@ -441,6 +464,10 @@
         } else {
             [cell hideViewWithPosition:i];
         }
+        
+    }
+    if (_photoList.count < offset + 12 ) {
+        [self loadingNextPage];
     }
     return cell;
 }
@@ -451,7 +478,6 @@
 {
 	NSNumber *tag = [NSNumber numberWithInt:imageView.tag];
     switch (_state) {
-            
         case PhotoGridStateNormal:
 		{
 			if (tag.intValue < _uploadTaskList.taskList.count) {

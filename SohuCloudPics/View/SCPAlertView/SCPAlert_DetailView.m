@@ -89,7 +89,7 @@
         permissionDe.backgroundColor = [UIColor clearColor];
         permissionDe.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         permissionDe.textAlignment = UITextAlignmentLeft;
-        if (!album.permission){
+        if (album.permission){
             permissionDe.text = @"公开相册";
         }else{
             permission.text = @"私有相册";

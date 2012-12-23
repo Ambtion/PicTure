@@ -18,7 +18,7 @@
 @protocol SCPRequestManagerDelegate <NSObject>
 @optional
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info;
-- (void)requestFailed:(ASIHTTPRequest *)mangeger;
+- (void)requestFailed:(NSString *)error;
 @end
 
 
@@ -40,21 +40,27 @@
 
 @property (nonatomic,assign) id<SCPRequestManagerDelegate> delegate;
 
-- (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult;
-
-- (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID ;
-
-
-//personal UserInfo
+- (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture;
+- (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID;
+//personal Home
 - (void)getUserInfoWithID:(NSString *)user_ID;
-- (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page only:(BOOL)only;
-//yuntu_token
+- (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page;
+
+//Folders
+- (void)getFoldersinfoWithID:(NSString *)uses_id;
+- (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page;
+//photoList
+- (void)getFolderinfoWihtUserID:(NSString *)user_id WithFolders:(NSString *)folder_id;
+- (void)getPhotosWithUserID:(NSString *)user_id FolderID:(NSString *)folder_id page:(NSInteger)page;
+
+
+- (void)getFolderCoverURLWithUserId:(NSString *)user_id folderID:(NSString *)folder_id coverShowId:(NSString *)cover_id tag:(int)tag;
+
 - (void)getUserFollwesNumWithID:(NSString *)user_ID;
 - (void)getUserFollowFeedWithUserID:(NSString *)user_ID page:(NSInteger)page only:(BOOL)only;
 
 
-- (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page  yuntuToken:(NSString *)token;
-- (void)getFolderCoverURLWithUserId:(NSString *)user_id folderID:(NSString *)folder_id coverShowId:(NSString *)cover_id tag:(int)tag;
+
 //- (void)deleteFolderWithUserId:(NSString *)user_id folderId:(NSString *)folder_id;
 
 - (void)getPhotosWithUserID:(NSString *)user_id FolderID:(NSString *)folder_id page:(NSInteger)page;
@@ -72,8 +78,8 @@
 - (void)deletePhotosWithUserId:(NSString *)user_id	folderId:(NSString *)folder_id photoIds:(NSArray *)photo_ids success:(void (^) (NSString * response))success;
 - (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName success:(void (^) (NSString * response))success;
 - (void)createAlbumWithUserId:(NSString *)user_id  name:(NSString *)newName success:(void (^) (NSString * response))success;
+
 #pragma Follwe_Action
-- (BOOL)whetherFollowUs:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success;
 - (void)destoryFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success;
 - (void)friendshipsFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success;
 @end

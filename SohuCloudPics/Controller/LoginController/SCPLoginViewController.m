@@ -13,12 +13,13 @@
 #import "SCPRegisterViewController.h"
 #import "SCPLoginPridictive.h"
 
+#import "AccountSystemRequset.h"
+#import "SCPAlter_WaitView.h"
+
 #define EMAIL_ARRAY ([NSArray arrayWithObjects:@"126.com", @"163.com", @"qq.com", @"sohu.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
 
 
-
 @implementation SCPLoginViewController
-
 @synthesize delegate = _delegate;
 @synthesize backgroundImageView = _backgroundImageView;
 @synthesize backgroundControl = _backgroundControl;
@@ -28,7 +29,7 @@
 @synthesize loginButton = _loginButton;
 
 - (void)dealloc
-{   
+{
     [_backgroundImageView release];
     [_backgroundControl release];
     [_usernameTextField release];
@@ -56,7 +57,6 @@
     view.bounces = NO;
     view.contentSize = frame.size;
     self.view = view;
-    
 }
 
 - (void)viewDidLoad
@@ -64,7 +64,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self addsubViews];
-    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -177,14 +176,38 @@
         [_delegate SCPLogin:self cancelLogin:button];
     }
 }
+
 - (void)loginButtonClicked:(UIButton*)button
 {
-    //after login
-    [SCPLoginPridictive loginUserId:@"123" withToken:@"123"];
-    if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)]) {
-        [_delegate SCPLogin:self doLogin:button];
+    if (!_usernameTextField.text) {
+        UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:@"请输入账号" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+        [alterview show];
+        return;
     }
+    
+    if (!_passwordTextField.text || [_passwordTextField.text isEqualToString:@""]) {
+        UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:@"请输入密码" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+        [alterview show];
+        return;
+    }
+    [_passwordTextField resignFirstResponder];
+    [_usernameTextField resignFirstResponder];
+    SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登陆中..."] autorelease];
+    [waitView show];
+    [AccountSystemRequset sohuLoginWithuseName:_usernameTextField.text password:_passwordTextField.text sucessBlock:^(NSDictionary *response) {
+        NSLog(@"%@",response);
+        [SCPLoginPridictive loginUserId:[response objectForKey:@"user_id"] withToken:[response objectForKey:@"access_token"]];
+        [waitView dismissWithClickedButtonIndex:0 animated:YES];
+        if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
+            [_delegate SCPLogin:self doLogin:button];
+        
+    } failtureSucess:^(NSString *error) {
+        [waitView dismissWithClickedButtonIndex:0 animated:NO];
+        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
+        [alterView show];
+    }];
 }
+
 - (void)sinaLogin:(UIButton*)button
 {
     
@@ -197,7 +220,6 @@
 {
     
 }
-
 - (void)registerButtonClicked:(UIButton *)button
 {
     NSLog(@"registerButtonClicked start");
@@ -211,7 +233,7 @@
 {
     UIScrollView * view = (UIScrollView *) self.view;
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    CGSize size = view.contentSize;
+    CGSize size = view.bounds.size;
     size.height += keyboardSize.height;
     view.contentSize = size;
     

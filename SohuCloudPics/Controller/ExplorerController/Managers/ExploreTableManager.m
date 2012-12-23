@@ -134,18 +134,15 @@ static NSInteger lastNum = -1;
     if (self) {
         _strategyArray = [[NSMutableArray alloc] init];
         _requestManager = [[SCPRequestManager alloc] init];
-        _requestManager.delegate = self;
         _isLoading = NO;
         _willRefresh = YES;
         _lastCount = 0;
-        //        [self dataSourcewithRefresh:YES];
     }
     return self;
 }
 
 - (NSArray *)urlArray:(NSArray *)frames info:(NSArray *)info
 {
-    
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < frames.count; i++) {
         NSDictionary * dic = [info objectAtIndex:[self offsetOfDataSouce] - _lastCount + i];
@@ -153,6 +150,7 @@ static NSInteger lastNum = -1;
     }
     return array;
 }
+
 - (NSUInteger)offsetOfDataSouce
 {
     if (!_strategyArray.count) {
@@ -164,6 +162,7 @@ static NSInteger lastNum = -1;
     }
     return i;
 }
+
 - (NSArray *)getImageViewFrameWithInfoArray:(NSArray *)infoArray : (NSArray *) viewFrame
 {
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
@@ -184,42 +183,55 @@ static NSInteger lastNum = -1;
         [array addObject:[NSValue valueWithCGRect:frame]];
     }
     return array;
-    
 }
-
-#pragma mark - NetWork
-- (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
+#pragma mark -
+- (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
-    NSArray * infoArray = [info objectForKey:@"NetworkDataSouce"];
-    if (_willRefresh) {
-        [_strategyArray removeAllObjects];
-    }
-    for (int i = 0; i < infoArray.count / 4 ; i++) {
-        ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
-        NSInteger num_strategy = [self randomNum];
-        NSMutableArray * frames = [[NSMutableArray alloc] init];
-        dataSouce.heigth = strategys[num_strategy](frames,nil);
-        dataSouce.viewRectFrame = frames;
-        dataSouce.infoArray = [self urlArray:frames info:infoArray];
-        dataSouce.imageFrame =[self getImageViewFrameWithInfoArray:dataSouce.infoArray :frames];
-        dataSouce.identify = [NSString stringWithFormat:@"startegy%d", num_strategy];
-        [_strategyArray addObject:dataSouce];
-        [frames release];
-        [dataSouce release];
-    }
-    NSLog(@"%s %d",__FUNCTION__ , _strategyArray.count);
-    _lastCount = [self offsetOfDataSouce];
-    if (_willRefresh) {
-        [self refreshDataFinishLoad];
+    _isLoading = YES;
+    _willRefresh = isRefresh;
+    if(isRefresh || !_strategyArray.count){
+        _lastCount = 0;
+        [self getExploreFrom:0 count:60];
     }else{
-        [self moreDataFinishLoad];
+        if([self offsetOfDataSouce] > MAXPICTURE) {
+            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
+            [moreView show];
+            [self moreDataFinishLoad];
+            return;
+        }
+        [self getExploreFrom:[self offsetOfDataSouce] count:60];
     }
 }
-#pragma networkFailed
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
+- (void)getExploreFrom:(NSInteger)startIndex count:(NSInteger)count
 {
-    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"访问失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
-    [alterView show];
+    [_requestManager getExploreFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
+        
+        if (startIndex == 0)
+            [_strategyArray removeAllObjects];
+        for (int i = 0; i < infoArray.count / 4 ; i++) {
+            
+            ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
+            NSInteger num_strategy = [self randomNum];
+            NSMutableArray * frames = [[NSMutableArray alloc] init];
+            dataSouce.heigth = strategys[num_strategy](frames,nil);
+            dataSouce.viewRectFrame = frames;
+            dataSouce.infoArray = [self urlArray:frames info:infoArray];
+            dataSouce.imageFrame =[self getImageViewFrameWithInfoArray:dataSouce.infoArray :frames];
+            dataSouce.identify = [NSString stringWithFormat:@"startegy%d", num_strategy];
+            [_strategyArray addObject:dataSouce];
+            [frames release];
+            [dataSouce release];
+        }
+        _lastCount = [self offsetOfDataSouce];
+        if (startIndex == 0) {
+            [self refreshDataFinishLoad];
+        }else{
+            [self moreDataFinishLoad];
+        }
+    } failture:^(NSString *error) {
+        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
+        [alterView show];
+    }];
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -239,28 +251,6 @@ static NSInteger lastNum = -1;
     _willRefresh = YES;
     _isLoading = NO;
 }
-#pragma mark -
-
-- (void)dataSourcewithRefresh:(BOOL)isRefresh
-{
-    NSLog(@"%s",__FUNCTION__);
-    _isLoading = YES;
-    _willRefresh = isRefresh;
-    if(isRefresh || !_strategyArray.count){
-        _lastCount = 0;
-        [_requestManager getExploreFrom:0 maxresult:60];
-    }else{
-//        if([self offsetOfDataSouce] > MAXPICTURE) {
-//            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-//            [moreView show];
-//            [self moreDataFinishLoad];
-//            return;
-//        }
-//        NSLog(@"%s getMore ",__FUNCTION__);
-        [_requestManager getExploreFrom:[self offsetOfDataSouce] maxresult:60];
-    }
-}
-
 #pragma mark - dataChange
 #pragma mark refresh
 //1 点击 2 下拉 3 结束
@@ -269,7 +259,6 @@ static NSInteger lastNum = -1;
     if (_isLoading) {
         return;
     }
-    NSLog(@"refreshData");
     [self dataSourcewithRefresh:YES];
 }
 
@@ -282,7 +271,6 @@ static NSInteger lastNum = -1;
     [item.refreshButton rotateButton];
     [self dataSourcewithRefresh:YES];
 }
-
 - (void)refreshDataFinishLoad
 {
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
@@ -300,11 +288,9 @@ static NSInteger lastNum = -1;
 }
 - (void)moreDataFinishLoad
 {
-    
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
     _isLoading = NO;
-    
 }
 #pragma mark -
 #pragma mark bannerDatasouce

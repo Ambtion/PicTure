@@ -17,8 +17,8 @@
 @property(nonatomic,retain)NSString* name;
 //@property(nonatomic,retain)NSString* position;
 @property(nonatomic,retain)NSString* desc;
-@property(nonatomic,assign)BOOL isFollowed;
-
+@property(nonatomic,assign)BOOL isFollowMe;
+@property(nonatomic,assign)BOOL isFollowByMe;
 @property(nonatomic,assign)NSInteger albumAmount;
 //@property(nonatomic,assign)NSInteger favouriteAmount;
 @property(nonatomic,assign)NSInteger followedAmount;

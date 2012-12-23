@@ -60,13 +60,15 @@
         _photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 75, 75)];
         _photoImageView.userInteractionEnabled = YES;
         
-        UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
+        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
         [_photoImageView addGestureRecognizer:gesture];
         [gesture release];
-        gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)];
-        [_photoImageView addGestureRecognizer:gesture];
-        [gesture release];
-        gesture = nil;
+        
+        UILongPressGestureRecognizer*  l_gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)];
+        l_gesture.minimumPressDuration = 0.5;
+        [_photoImageView addGestureRecognizer:l_gesture];
+        [l_gesture release];
+        l_gesture = nil;
         
         [self addSubview:_photoImageView];
         
