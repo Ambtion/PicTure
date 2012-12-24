@@ -17,6 +17,7 @@
 @interface FoldersMode : NSObject
 @property (nonatomic,retain)NSString * foldrsName;
 @property (nonatomic,retain)NSString * folders_Id;
+@property (nonatomic,assign)BOOL isPublic;
 @end
 @protocol UploadHeadDeleagte <NSObject>
 - (void)uploadHeader:(SCPUploadHeader *)header selectAlbum:(NSString *)albumID;

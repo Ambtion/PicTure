@@ -25,7 +25,6 @@
 @synthesize bannerLeftString = _bannerLeftString;
 @synthesize bannerRightString = _bannerRightString;
 @synthesize curProgreeeView = _curProgreeeView;
-
 @synthesize pullingController = _pullingController;
 
 - (void)dealloc
@@ -70,6 +69,7 @@
     _pullingController.delegate = self;
     _pullingController.tableView.dataSource = self;
     _pullingController.headView.datasouce = self;
+    _pullingController.tableView.separatorColor = [UIColor clearColor];
     [self.view addSubview:_pullingController.view];
     
 	[self updateBanner];
@@ -98,7 +98,6 @@
 		name = @"无名英雄";
 	}
     self.bannerRightString = [NSString stringWithFormat:@"作者:%@", name];
-	
     [self.pullingController.headView BannerreloadDataSource];
 }
 
@@ -107,13 +106,11 @@
     int rightBarWidth = 250;
     _rightBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rightBarWidth, 28)];
     _rightBarView.backgroundColor = [UIColor clearColor];
-    
     /* switch button */
     _switchButton = [[self switchButtonView] retain];
     _switchButton.frame = CGRectMake(rightBarWidth - 60, 0, 28, 28);
     [_switchButton addTarget:self action:@selector(onSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_rightBarView addSubview:_switchButton];
-    
     /* upload button */
     _uploadButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     _uploadButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
@@ -121,7 +118,6 @@
     [_uploadButton setImage:[UIImage imageNamed:@"header_upload_press.png"] forState:UIControlStateHighlighted];
     [_uploadButton addTarget:self action:@selector(onUploadClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_rightBarView addSubview:_uploadButton];
-    
     /* ok button, not added first */
     _okButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     _okButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
@@ -227,6 +223,7 @@
 {
 	UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
     [alterview show];
+    [self.pullingController refreshDoneLoadingTableViewData];
 }
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
@@ -282,12 +279,12 @@
 - (BOOL)loginPridecate
 {
     
-    if (![SCPLoginPridictive isLogin] || ![self.user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
+    if (![SCPLoginPridictive isLogin] || ![[NSString stringWithFormat:@"%@",self.user_id] isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
         UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
         [alte show];
         return NO;
     }
-    return [SCPLoginPridictive isLogin] && [self.user_id isEqualToString:[SCPLoginPridictive currentUserId]];
+    return YES;
 }
 - (void)onImageViewClicked:(UIImageView *)imageView
 {
@@ -371,7 +368,7 @@
 #pragma mark SCPAlertDelegate
 - (void)alertViewOKClicked:(SCPAlert_LoginView *)view
 {
-    
+
     SCPAlbum *album = [[_albumList objectAtIndex:view.tag] retain];
     [_albumList removeObjectAtIndex:view.tag];
     // TODO
@@ -381,10 +378,14 @@
         CATransition *animation = [CATransition animation];
         animation.type = kCATransitionFade;
         [_pullingController.tableView.layer addAnimation:animation forKey:nil];
-        [_pullingController.tableView reloadData];
+        [album release];
+        [self refresh];
+    } failure:^(NSString *error) {
+        UIAlertView * alterView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alterView show];
+        [alterView release];
         [album release];
     }];
-    
 }
 
 #pragma mark -

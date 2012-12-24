@@ -13,6 +13,8 @@
 #import "SCPPhotoDetailViewController.h"
 #import "SCPFollowingListViewController.h"
 #import "SCPFollowedListViewController.h"
+#import "SCPLoginPridictive.h"
+
 #import "MoreAlertView.h"
 
 #define MAXIMAGEHEIGTH 320
@@ -37,7 +39,7 @@
     
     self = [super init];
     if (self) {
-        _user_ID = [useID retain];
+        _user_ID = [useID copy];
         _controller = ctrl;
         _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
         _personalDataSource = [[PersonalPageCellDateSouce alloc] init];
@@ -78,7 +80,11 @@
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
         _personalDataSource.isFollowByMe = [[userInfo objectForKey:@"is_following"] boolValue];
         _personalDataSource.isFollowMe = [[userInfo objectForKey:@"is_followed"] boolValue];
-    }
+        if ([SCPLoginPridictive currentUserId]) {
+            _personalDataSource.isMe = [[NSString stringWithFormat:@"%@",_user_ID] isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
+        }else{
+            _personalDataSource.isMe = NO;
+        }    }
     
     NSDictionary * feedinfo = [info objectForKey:@"feedList"];
     hasNextpage = [[feedinfo objectForKey:@"has_next"] boolValue];
@@ -97,7 +103,6 @@
         [_dataArray addObject:adapter];
         [adapter release];
     }
-    
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
@@ -254,7 +259,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     NSInteger row = indexPath.row;
     if (row == 0) {
         PersonalPageCell* pageCell = [tableView dequeueReusableCellWithIdentifier:@"PAGECELL"];
@@ -289,10 +293,9 @@
         return;
     }
     if (personal.datasource.isFollowByMe) {
-        [_requestManager destoryFollowing:_user_ID userID:[SCPLoginPridictive currentUserId] success:^(NSString *response) {
+        [_requestManager destoryFollowing:_user_ID  success:^(NSString *response) {
             NSLog(@"%@",response);
             [self dataSourcewithRefresh:YES];
-
         } failure:^(NSString *error) {
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [alertView show];
@@ -301,8 +304,7 @@
         }];
     }else{
         
-        [_requestManager friendshipsFollowing:_user_ID userID:[SCPLoginPridictive currentUserId] success:^(NSString *response) {
-            NSLog(@"MMMMMMMM :%@",response);
+        [_requestManager friendshipsFollowing:_user_ID  success:^(NSString *response) {
             [self dataSourcewithRefresh:YES];
         } failure:^(NSString *error) {
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];

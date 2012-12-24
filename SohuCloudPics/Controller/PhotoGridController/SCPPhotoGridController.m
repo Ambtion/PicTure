@@ -162,6 +162,7 @@
 {
     UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
     [alterview show];
+    [self.pullingController refreshDoneLoadingTableViewData];
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
@@ -176,10 +177,12 @@
         self.albumData.viewCount = [[folderinfo objectForKey:@"view_count"] intValue];
         self.albumData.creatorId = [folderinfo objectForKey:@"user_id"];
         self.albumData.permission = [[folderinfo objectForKey:@"is_public"] intValue];
+        self.albumData.name = [folderinfo objectForKey:@"folder_name"];
+        self.pullingController.headView.labelName.text = self.albumData.name;
         [_photoList removeAllObjects];
     }
-    [self updateUploadPhotoList];
     
+    [self updateUploadPhotoList];
     hasNextPage = [[photolistinfo objectForKey:@"has_next"] boolValue];
     curpage = [[photolistinfo objectForKey:@"page"] intValue];
     NSLog(@"nextpage:%d,curpage:%d",hasNextPage ,curpage);
@@ -217,8 +220,7 @@
 
 - (BOOL)longinPridecate
 {
-    
-    if (![SCPLoginPridictive isLogin] || ![self.albumData.creatorId isEqualToString:[SCPLoginPridictive currentUserId]]) {
+    if (![SCPLoginPridictive isLogin] || ![[NSString stringWithFormat:@"%@",self.albumData.creatorId] isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
         UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
         [alte show];
         return NO;
@@ -240,6 +242,10 @@
         self.albumData.name = str;
         self.pullingController.headView.labelName.text = str;
         [self.pullingController reloadDataSourceWithAniamtion:NO];
+    } failure:^(NSString *error) {
+        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+        [alterView show];
+        
     }];
 }
 
@@ -348,6 +354,10 @@
                 [item release];
                 [self.pullingController reloadDataSourceWithAniamtion:NO];
             });
+        } failure:^(NSString *error) {
+            UIAlertView * alterview = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alterview show];
+            [alterview release];
         }];
     }
 }

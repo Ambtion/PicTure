@@ -252,13 +252,11 @@
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
-
     NSDictionary * photolist = [info objectForKey:@"photoList"];
     if ([folderinfo allKeys]) {
         photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
     }
     [imageArray addObjectsFromArray:[photolist objectForKey:@"photos"]];
-    NSLog(@"%@",[imageArray lastObject]);
     curPage =  [self getindexofImages];
     if (curPage == -1) {
         [self getMoreImage];
@@ -266,14 +264,14 @@
         [self refreshScrollView];
     }
 }
+
 - (NSInteger)getindexofImages
 {
     BOOL isFound = NO;
     int i = 0;
     for (i = 0; i < imageArray.count; i++) {
         NSDictionary * dic = [imageArray objectAtIndex:i];
-
-        if ([[dic objectForKey:@"bigUrl"] isEqual:[self.info objectForKey:@"bigUrl"]]) {
+        if ([[dic objectForKey:@"photo_url"] isEqual:[self.info objectForKey:@"photo_url"]]) {
             isFound = YES;
             break;
         }

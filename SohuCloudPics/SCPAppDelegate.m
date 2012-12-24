@@ -54,23 +54,7 @@ void customedExceptionHandler(NSException *exception)
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
 
 }
-- (void)test
-{
-//    NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@];
-//    NSLog(@"%@",str);
-//    ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-//    [request setTimeOutSeconds:5.f];
-//    [request setCompletionBlock:^{
-////        [self photoDetailrequestFinished:request];
-//    }];
-//    [request setFailedBlock:^{
-//        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-//            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
-//        }
-//    }];
-//    [request startAsynchronous];
 
-}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self pragramerSetting];

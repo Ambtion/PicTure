@@ -58,14 +58,18 @@
     for (int i = 0; i < followingsArray.count; i++) {
         SCPFollowCommonCellDataSource * dataSource = [[SCPFollowCommonCellDataSource alloc] init];
         NSDictionary * dic = [followingsArray objectAtIndex:i];
-        dataSource.allInfo = dic;
+        dataSource.user_id = [dic objectForKey:@"user_id"];
         dataSource.title = [dic objectForKey:@"user_nick"];
         dataSource.coverImage = [dic objectForKey:@"user_icon"];
         dataSource.pictureCount = [[dic objectForKey:@"photo_num"] intValue];
         dataSource.albumCount = [[dic objectForKey:@"public_folders"] intValue];
         dataSource.following = [[dic objectForKey:@"is_following"] boolValue];
         dataSource.followed = [[dic objectForKey:@"is_followed"] boolValue];
-
+        if ([SCPLoginPridictive currentUserId]) {
+            dataSource.isMe = [[NSString stringWithFormat:@"%@",dataSource.user_id] isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
+        }else{
+            dataSource.isMe = NO;
+        }
         [_dataSource addObject:dataSource];
         [dataSource release];
     }
@@ -85,6 +89,7 @@
 {
     UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
     [alterView show];
+    [self.controller.pullingController refreshDoneLoadingTableViewData];
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -158,7 +163,6 @@
     _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-    
 }
 
 #pragma mark -
@@ -196,7 +200,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     SCPFollowCommonCell * commoncell = [tableView dequeueReusableCellWithIdentifier:@"COMMONCELL"];
     if (commoncell == nil) {
         commoncell = [[[SCPFollowCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"COMMONCELL"] autorelease];
@@ -213,13 +217,54 @@
 #pragma mark delegate For commonCell
 -(void)follweCommonCell:(SCPFollowCommonCell *)cell followButton:(UIButton *)button
 {
-    NSLog(@"followButton");
+    if (![SCPLoginPridictive isLogin]) {
+        SCPAlert_LoginView  * loginView = [[[SCPAlert_LoginView alloc] initWithMessage:LOGIN_HINT delegate:self] autorelease];
+        [loginView show];
+        return;
+    }
     
+    if (cell.dataSource.following) {
+        [_requestManger destoryFollowing:cell.dataSource.user_id success:^(NSString *response) {
+            [self dataSourcewithRefresh:YES];
+            
+        } failure:^(NSString *error) {
+            UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
+            [alterView show];
+        }];
+    }else{
+        [_requestManger friendshipsFollowing:cell.dataSource.user_id success:^(NSString *response) {
+            [self dataSourcewithRefresh:YES];
+        } failure:^(NSString *error) {
+            UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
+            [alterView show];
+        }];
+    }
 }
+#pragma mark Login
+- (void)alertViewOKClicked:(SCPAlert_LoginView *)view
+{
+    SCPLoginViewController *loginCtrl = [[SCPLoginViewController alloc] init];
+    loginCtrl.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginCtrl];
+    [self.controller presentModalViewController:nav animated:YES];
+    [loginCtrl release];
+    [nav release];
+}
+
+- (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
+{
+    [self.controller dismissModalViewControllerAnimated:YES];
+}
+
+- (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
+{
+    [self.controller dismissModalViewControllerAnimated:YES];
+}
+
+
 -(void)follweCommonCell:(SCPFollowCommonCell *)cell followImage:(id)image
 {
-    SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:[NSString stringWithFormat:@"%@",[cell.dataSource.allInfo objectForKey:@"user_id"]]]  autorelease];
-    [_controller.navigationController pushViewController:scp animated:YES];
+    SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:cell.dataSource.user_id] autorelease];    [_controller.navigationController pushViewController:scp animated:YES];
 }
 
 @end

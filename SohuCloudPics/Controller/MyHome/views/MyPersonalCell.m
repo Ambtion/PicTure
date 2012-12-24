@@ -60,10 +60,10 @@
         CGRect rect = self.frame;
         rect.size.height = 367 + 60;
         self.frame = rect;
-        
         [self addUesrphotoView];
         [self addUserPhotoLabel];
         [self addMenuView];
+
     }
     return self;
 }
@@ -86,15 +86,6 @@
     UIImageView * bg_portrait = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_bg_photo.png"]] autorelease];
     bg_portrait.frame = CGRectMake(109, 100, 102, 102);
     [self.contentView addSubview:bg_portrait];
-    //use bezier path instead of maskToBounds on image.layer
-    //    UIBezierPath *bi = [UIBezierPath bezierPathWithRoundedRect:_portraitImageView.bounds
-    //                                             byRoundingCorners:UIRectCornerAllCorners
-    //                                                   cornerRadii:CGSizeMake(42.5,42.5)];
-    //    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    //    maskLayer.frame = _portraitImageView.bounds;
-    //    maskLayer.path = bi.CGPath;
-    //    _portraitImageView.layer.mask = maskLayer;
-    
 }
 - (void)setHomeBackGroudImage
 {
@@ -102,7 +93,7 @@
     if (bgname) {
         _backgroundImageView.image = [UIImage imageNamed:bgname];
     }else{
-        _backgroundImageView.image = [UIImage imageNamed:@"bg_soul.png"];
+        _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
     }
 }
 - (void)changeBack:(UITapGestureRecognizer *)gesture
@@ -163,23 +154,18 @@
     bg_menu.userInteractionEnabled = YES;
     [self.contentView addSubview:bg_menu];
     
-    
     _albumButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(0, 0, 106, 60)];
     _albumButton.nameLabel.text = @"相册";
     _albumButton.delegate = self;
     [bg_menu addSubview:_albumButton];
-    
-//    _favorButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(80, 0, 80, 60)];
-//    _favorButton.nameLabel.text = @"喜欢";
-//    _favorButton.delegate = self;
-//    [bg_menu addSubview:_favorButton];
+
     _followingButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106, 0, 106, 60)];
-    _followingButton.nameLabel.text = @"跟随";
+    _followingButton.nameLabel.text = @"关注的人";
     _followingButton.delegate = self;
     [bg_menu addSubview:_followingButton];
     
     _followedButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106 * 2, 0, 106, 60)];
-    _followedButton.nameLabel.text = @"跟随者";
+    _followedButton.nameLabel.text = @"粉丝";
     _followedButton.delegate = self;
     [bg_menu addSubview:_followedButton];
     

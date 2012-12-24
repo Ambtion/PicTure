@@ -18,7 +18,7 @@
 @property (assign, nonatomic) SCPUploadHeader *header;
 @end
 @implementation FoldersMode
-@synthesize folders_Id,foldrsName;
+@synthesize folders_Id,foldrsName,isPublic;
 - (void)dealloc
 {
     self.foldrsName = nil;
@@ -125,32 +125,32 @@
 - (void)refreshData
 {
     [_foldersArray removeAllObjects];
-    [_requestmanager getFoldersWithID:[SCPLoginPridictive currentUserId] page:1 yuntuToken:[SCPLoginPridictive currentUserId]];
+    [_requestmanager getFoldersWithID:[SCPLoginPridictive currentUserId] page:1];
 }
 #pragma mark  Method Network
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    
-    NSArray * array = [info objectForKey:@"folderList"];
-//    NSLog(@"%@",info);
+    NSArray * array = [[info objectForKey:@"folderinfo"] objectForKey:@"folders"];
+    NSLog(@"%@",[array lastObject]);
+
     for (NSDictionary * dic in array) {
         FoldersMode * mode = [[FoldersMode alloc] init];
-        mode.foldrsName = [dic objectForKey:@"name"];
-        mode.folders_Id = [dic objectForKey:@"showId"];
+        mode.foldrsName = [dic objectForKey:@"folder_name"];
+        mode.folders_Id = [dic objectForKey:@"folder_id"];
+        mode.isPublic = [[dic objectForKey:@"is_public"] boolValue];
         [_foldersArray addObject:mode];
         [mode release];
     }
     
-    if ([[info objectForKey:@"hasNextPage"] intValue]){
-        [_requestmanager getFoldersWithID:[SCPLoginPridictive currentUserId] page:[[info objectForKey:@"currentPage"] intValue] + 1 yuntuToken:[SCPLoginPridictive currentUserId]];
+    if ([[info objectForKey:@"has_next"] intValue]){
+        [_requestmanager getFoldersWithID:[SCPLoginPridictive currentUserId] page:[[info objectForKey:@"page"] intValue] + 1];
     }else{
         [_albumsTable reloadData];
-        
     }
 }
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
+- (void)requestFailed:(NSString *)error
 {
-    UIAlertView * al = [[[UIAlertView alloc] initWithTitle:@"请求失败" message:[NSString stringWithFormat:@"%@",[mangeger error]] delegate:self cancelButtonTitle:@"ok" otherButtonTitles: nil] autorelease];
+    UIAlertView * al = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"ok" otherButtonTitles: nil] autorelease];
     [al show];
 }
 #pragma mark Create Folder
@@ -159,8 +159,12 @@
     if (!textField.text ||[textField.text isEqualToString:@""]) {
         return;
     }
-    [_requestmanager createAlbumWithUserId:[SCPLoginPridictive currentUserId] name:textField.text success:^(NSString *response) {
+    [_requestmanager createAlbumWithName:textField.text success:^(NSString *response) {
         [self refreshData];
+    } failure:^(NSString *error) {
+        UIAlertView * alterview = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alterview show];
+        [alterview release];
     }];
 }
 #pragma mark -
@@ -235,10 +239,12 @@
     } else {
         cell.textLabel.text = ((FoldersMode *)[_header.foldersArray objectAtIndex:(row - 1)]).foldrsName;
     }
-    
     return cell;
 }
-
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    cell.backgroundColor = [UIColor redColor];
+//}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _header.foldersArray.count + 1;

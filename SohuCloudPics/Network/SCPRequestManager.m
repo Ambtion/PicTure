@@ -254,7 +254,6 @@
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"folderinfo"];
-            NSLog(@"userinfo:%@",[tempDic objectForKey:@"userInfo"]);
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
                 [tempDic removeAllObjects];
@@ -518,109 +517,19 @@
     [request startAsynchronous];
 }
 
-#pragma mark -
-#pragma mark Delete
-- (void)deleteFolderWithUserId:(NSString *)user_id folderId:(NSString *)folder_id success:(void (^) (NSString * response))success 
+#pragma mark - Follow
+- (void)destoryFollowing:(NSString *)following_Id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
 {
-	NSString *url = [NSString stringWithFormat:API_BASE "/folders/%@?yuntu_token=%@", folder_id, user_id];
-    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-    request.requestMethod = @"DELETE";
-    [request addRequestHeader:@"accept" value:@"application/json"];
-	[request setCompletionBlock:^{
-        NSString * str = [request responseString];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            success(str);
-        });
-    }];
-    [request setFailedBlock:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showWhenRequsetFailed:request];
-        });
-    }];
-    [request startAsynchronous];
-}
-- (void)deletePhotosWithUserId:(NSString *)user_id	folderId:(NSString *)folder_id photoIds:(NSArray *)photo_ids success:(void (^) (NSString * response))success  
-{
-    
-    NSString *url = [NSString stringWithFormat:API_BASE "/photos/deletes?yuntu_token=%@", user_id];
-    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request addRequestHeader:@"accept" value:@"application/json"];
-    for (id ob in photo_ids)
-        [request setPostValue:ob withoutRemoveforKey:@"id"];
-    [request setPostValue:folder_id forKey:@"folder_id"];
-    
-	[request setCompletionBlock:^{
-        NSString * str = [request responseString];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            success(str);
-        });
-    }];
-    [request setFailedBlock:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showWhenRequsetFailed:request];
-        });
-    }];
-    [request startAsynchronous];
-    
-}
-- (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName success:(void (^) (NSString * response))success
-{
-    NSString *url = [NSString stringWithFormat:API_BASE "/folders/%@/rename?_method=PUT&yuntu_token=%@",folder_id,user_id];
-    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request addRequestHeader:@"accept" value:@"application/json"];
-    [request setPostValue:newName forKey:@"new_name"];
-    
-	[request setCompletionBlock:^{
-        NSString * str = [request responseString];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            success(str);
-        });
-    }];
-    
-    [request setFailedBlock:^{
-        NSLog(@"%s failture %d",__FUNCTION__, [request responseStatusCode]);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showWhenRequsetFailed:request];
-        });
-    }];
-    [request startAsynchronous];
-    
-}
-
-- (void)createAlbumWithUserId:(NSString *)user_id  name:(NSString *)newName success:(void (^) (NSString * response))success
-{
-    NSString *url = [NSString stringWithFormat:API_BASE "/folders?yuntu_token=%@",user_id];
-    
-    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request addRequestHeader:@"accept" value:@"application/json"];
-    
-    [request setPostValue:newName forKey:@"name"];
-    [request setPostValue:[NSNumber numberWithBool:YES] forKey:@"isPublic"];
-	[request setCompletionBlock:^{
-        NSString * str = [request responseString];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            success(str);
-        });
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"%s failture %d",__FUNCTION__, [request responseStatusCode]);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showWhenRequsetFailed:request];
-        });
-    }];
-    [request startAsynchronous];
-}
-- (void)destoryFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
-{
-    NSString * str = [NSString stringWithFormat:@"%@/friendships/destroy?user_id=%@&access_token=%@",BASICURL_V1,useId,[SCPLoginPridictive currentToken]];
+    NSString * str = [NSString stringWithFormat:@"%@/friendships/destroy?&access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"followed_id"];
+    [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];
 	[request setCompletionBlock:^{
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
             failure(@"请求失败");
-        }    }];
+        }
+    }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request error]);
         failure(@"连接失败");
@@ -628,11 +537,11 @@
     
     [request startAsynchronous];
 }
-- (void)friendshipsFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
-{ 
-    NSString * str = [NSString stringWithFormat:@"%@/friendships?user_id=%@&access_token=%@",BASICURL_V1,useId,[SCPLoginPridictive currentToken]];
+- (void)friendshipsFollowing:(NSString *)following_Id success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+{
+    NSString * str = [NSString stringWithFormat:@"%@/friendships?&access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"followed_id"];
+    [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];
 	[request setCompletionBlock:^{
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
@@ -642,9 +551,94 @@
     }];
     [request setFailedBlock:^{
         failure(@"连接失败");
+    }];
+    [request startAsynchronous];
+}
 
+#pragma mark Delete
+- (void)deleteFolderWithUserId:(NSString *)user_id folderId:(NSString *)folder_id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
+{
+	NSString *url = [NSString stringWithFormat:@"%@/folders/%@?access_token=%@", BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+    request.requestMethod = @"DELETE";
+	[request setCompletionBlock:^{
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+            success([request responseString]);
+        }else{
+            failure(@"请求失败");
+        }
+    }];
+    [request setFailedBlock:^{
+        failure(@"连接失败");
+    }];
+    [request startAsynchronous];
+}
+
+- (void)deletePhotosWithUserId:(NSString *)user_id	folderId:(NSString *)folder_id photoIds:(NSArray *)photo_ids success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
+{
+
+    NSString *url = [NSString stringWithFormat: @"%@/photos/batch_delete",BASICURL_V1];
+    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
+    for (id ob in photo_ids)
+        [request setPostValue:ob withoutRemoveforKey:@"photo_id"];
+    [request setPostValue:folder_id forKey:@"folder_id"];
+	[request setCompletionBlock:^{
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+            success([request responseString]);
+        }else{
+            failure(@"请求失败");
+        }
+    }];
+    [request setFailedBlock:^{
+        [request setFailedBlock:^{
+            failure(@"连接失败");
+        }];
+    }];
+    [request startAsynchronous];
+}
+- (void)createAlbumWithName:(NSString *)newName success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+{
+    
+    NSString *url = [NSString stringWithFormat:@"%@/folders",BASICURL_V1];
+    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setPostValue:newName forKey:@"name"];
+    [request setPostValue:[NSNumber numberWithBool:NO] forKey:@"is_public"];
+    [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
+	[request setCompletionBlock:^{
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+            success([request responseString]);
+        }else{
+            failure(@"请求失败");
+        }    }];
+    [request setFailedBlock:^{
+        failure(@"连接失败");
+    }];
+    [request startAsynchronous];
+}
+
+- (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+{
+    NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
+    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setPostValue:newName forKey:@"new_name"];
+    [request setRequestMethod:@"PUT"];
+	[request setCompletionBlock:^{
+        NSLog(@"%@",[request responseString]);
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+            success([request responseString]);
+        }else{
+            failure(@"请求失败");
+        }
+    }];
+    [request setFailedBlock:^{
+        failure(@"连接失败");
     }];
     
     [request startAsynchronous];
+    
 }
+
+
+
 @end

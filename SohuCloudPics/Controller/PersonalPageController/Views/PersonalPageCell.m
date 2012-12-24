@@ -25,13 +25,13 @@
 //@synthesize favouriteAmount = _favouriteAmount;
 @synthesize followedAmount = _followedAmount;
 @synthesize followingAmount = _followingAmount;
+@synthesize isMe = _isMe;
 
 - (void)dealloc
 {
     self.portrait = nil;
     self.name = nil;
     self.allInfo = nil;
-//    self.position = nil;
     self.desc = nil;
     [super dealloc];
 }
@@ -73,11 +73,10 @@
 }
 -(void)addUesrphotoView
 {
-    
     //backGroud
     _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 367 - 480, 320, 480)];
-    _backgroundImageView.image = [UIImage imageNamed:@"bg_soul.png"];
-   // _backgroundImageView.backgroundColor = [UIColor redColor];
+    NSLog(@"%s",__FUNCTION__);
+    _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
     [self.contentView addSubview:_backgroundImageView];
     
     //portrait Image
@@ -96,15 +95,6 @@
     UIImageView * bg_portrait = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_bg_photo.png"]] autorelease];
     bg_portrait.frame = CGRectMake(109, 100, 102, 102);
     [self.contentView addSubview:bg_portrait];
-    //use bezier path instead of maskToBounds on image.layer
-//    UIBezierPath *bi = [UIBezierPath bezierPathWithRoundedRect:_portraitImageView.bounds
-//                                             byRoundingCorners:UIRectCornerAllCorners
-//                                                   cornerRadii:CGSizeMake(42.5,42.5)];
-//    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-//    maskLayer.frame = _portraitImageView.bounds;
-//    maskLayer.path = bi.CGPath;
-//    _portraitImageView.layer.mask = maskLayer;
-
 }
 -(void)addUserPhotoLabel
 {
@@ -150,16 +140,10 @@
     bg_menu.userInteractionEnabled = YES;
     [self.contentView addSubview:bg_menu];
     
-
     _albumButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(0, 0, 106, 60)];
     _albumButton.nameLabel.text = @"相册";
     _albumButton.delegate = self;
     [bg_menu addSubview:_albumButton];
-    
-//    _favorButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(80, 0, 80, 60)];
-//    _favorButton.nameLabel.text = @"喜欢";
-//    _favorButton.delegate = self;
-//    [bg_menu addSubview:_favorButton];
     
     _followingButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106, 0, 106, 60)];
     _followingButton.nameLabel.text = @"关注的人";
@@ -175,6 +159,7 @@
 - (void)updataData
 {
     if (self.datasource == nil )      return;
+    
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"]];
     if (!_dataSource.name || ![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"佚名";
@@ -186,6 +171,7 @@
     }else{
         _descLabel.text = self.datasource.desc;
     }
+    
     if (self.datasource.isFollowByMe) {
         [_followButton setImage:[UIImage imageNamed:@"user_cancel_follow_normal-2.png"] forState:UIControlStateNormal];
         [_followButton setImage:[UIImage imageNamed:@"user_cancel_follow_press_2.png"] forState:UIControlStateHighlighted];
@@ -193,9 +179,10 @@
         [_followButton setImage:[UIImage imageNamed:@"user_add_following_normal.png"] forState:UIControlStateNormal];
         [_followButton setImage:[UIImage imageNamed:@"user_add_following_press.png"] forState:UIControlStateHighlighted];
     }
-    
+    if (self.datasource.isMe) {
+        [_followButton setHidden:YES];
+    }
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
-//    _favorButton.numlabel.text = [NSString stringWithFormat:@"%d",self.datasource.favouriteAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
 }

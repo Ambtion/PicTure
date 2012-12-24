@@ -97,7 +97,6 @@
 
 - (void)setPostValue:(id <NSObject>)value  withoutRemoveforKey:(NSString *)key
 {
-    NSString * str;
     [self addPostValue:value forKey:key];
 }
 #pragma mark custom

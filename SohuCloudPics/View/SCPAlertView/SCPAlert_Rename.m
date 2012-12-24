@@ -102,7 +102,6 @@
     NSLog(@"%@",[[notice userInfo] allKeys]);
     CGRect rect = [[[notice userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-//    CGFloat deley = [[[notice userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect finalRect = _alertboxImageView.frame;
     finalRect.origin.y -= (finalRect.origin.y +finalRect.size.height - rect.origin.y);
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{

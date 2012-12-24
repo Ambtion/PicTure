@@ -11,10 +11,11 @@
 #import "PullingRefreshController.h"
 #import "SCPFollowCommonCell.h"
 #import "SCPRequestManager.h"
-
+#import "SCPAlert_LoginView.h"
+#import "SCPLoginViewController.h"
 
 @class SCPFollowingListViewController;
-@interface SCPFollowingListManager : NSObject<PullingRefreshDelegate,BannerDataSoure,UITableViewDataSource,SCPFollowCommonCellDelegate,SCPRequestManagerDelegate>
+@interface SCPFollowingListManager : NSObject<PullingRefreshDelegate,BannerDataSoure,UITableViewDataSource,SCPFollowCommonCellDelegate,SCPRequestManagerDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate>
 {
     NSMutableArray * _dataSource;
     SCPRequestManager * _requestManger;

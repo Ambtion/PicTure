@@ -298,17 +298,11 @@
 }
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
-    if ([_user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
-        UINavigationController *nav = _controller.navigationController;
-        SCPMyHomeViewController *ctrl = [[SCPMyHomeViewController alloc] initWithNibName:nil bundle:nil useID:_user_ID];
-        [nav pushViewController:ctrl animated:YES];
-        [ctrl release];
-    }else{
-        UINavigationController *nav = _controller.navigationController;
-        SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
-        [nav pushViewController:ctrl animated:YES];
-        [ctrl release];
-    }
+    UINavigationController *nav = _controller.navigationController;
+    SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
+    [nav pushViewController:ctrl animated:YES];
+    [ctrl release];
+    
 }
 
 - (void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object
