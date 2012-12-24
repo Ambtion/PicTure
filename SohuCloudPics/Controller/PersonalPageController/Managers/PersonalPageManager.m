@@ -70,14 +70,14 @@
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
         _personalDataSource.allInfo = userInfo;
-        _personalDataSource.portrait = [userInfo objectForKey:@"small_avatar"];
+        _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
         _personalDataSource.name = [userInfo objectForKey:@"nick"];
         _personalDataSource.desc = [userInfo objectForKey:@"bio"];
         _personalDataSource.albumAmount = [[userInfo objectForKey:@"public_folders"] intValue];
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
-        _personalDataSource.isFollowByMe = [[userInfo objectForKey:@"is_followed"] boolValue];
-        _personalDataSource.isFollowMe = [[userInfo objectForKey:@"is_following"] boolValue];
+        _personalDataSource.isFollowByMe = [[userInfo objectForKey:@"is_following"] boolValue];
+        _personalDataSource.isFollowMe = [[userInfo objectForKey:@"is_followed"] boolValue];
     }
     
     NSDictionary * feedinfo = [info objectForKey:@"feedList"];
@@ -85,7 +85,6 @@
     curPage = [[feedinfo objectForKey:@"page"] intValue];
     
     NSArray * photoList = [[info objectForKey:@"feedList"] objectForKey:@"feed"];
-    
     for (int i = 0; i < photoList.count; ++i) {
         FeedCellDataSource *adapter = [[FeedCellDataSource alloc] init];
         NSDictionary * photo = [photoList objectAtIndex:i];
@@ -229,7 +228,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (MAXPICTURE < _dataArray.count|| !_dataArray.count || _dataArray.count % 20 ){
+    if (MAXPICTURE < _dataArray.count|| !hasNextpage){
         [self.controller.footView setHidden:YES];
     }else{
         [self.controller.footView setHidden:NO];
@@ -289,19 +288,29 @@
         [loginView show];
         return;
     }
-    
     if (personal.datasource.isFollowByMe) {
         [_requestManager destoryFollowing:_user_ID userID:[SCPLoginPridictive currentUserId] success:^(NSString *response) {
-            _personalDataSource.isFollowByMe = NO;
+            NSLog(@"%@",response);
+            [self dataSourcewithRefresh:YES];
+
+        } failure:^(NSString *error) {
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alertView show];
+            [alertView release];
+            return ;
         }];
     }else{
         
         [_requestManager friendshipsFollowing:_user_ID userID:[SCPLoginPridictive currentUserId] success:^(NSString *response) {
-            _personalDataSource.isFollowByMe = YES;
+            NSLog(@"MMMMMMMM :%@",response);
+            [self dataSourcewithRefresh:YES];
+        } failure:^(NSString *error) {
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alertView show];
+            [alertView release];
+            return ;
         }];
-    }
-    [self.controller.tableView reloadData];
-    
+    }    
 }
 
 #pragma mark Login

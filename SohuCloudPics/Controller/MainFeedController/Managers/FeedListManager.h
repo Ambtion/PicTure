@@ -26,6 +26,8 @@
     BOOL _isLoading;
     BOOL _isInit;
     NSInteger allFollowed;
+    BOOL hasNextPage;
+    BOOL curpage;
 }
 
 @property(assign,nonatomic)SCPMainFeedController*  controller;

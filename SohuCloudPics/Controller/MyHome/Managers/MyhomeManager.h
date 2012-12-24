@@ -24,6 +24,8 @@
     NSString * _user_ID;
     BOOL _loadingMore;
     MyPersonalCelldataSource * _personalDataSource;
+    BOOL hasNextpage;
+    NSInteger curPage;
 }
 @property (assign, nonatomic) SCPMyHomeViewController *controller;
 - (id)initWithController:(SCPMyHomeViewController *)ctrl useID:(NSString *)useID;

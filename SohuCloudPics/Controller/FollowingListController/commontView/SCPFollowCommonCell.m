@@ -15,7 +15,9 @@ static NSString * FLLOW_PICTURE[4] = {@"list_follow_me_icon.png",@"list_follower
 @synthesize allInfo = _allInfo;
 @synthesize coverImage = _coverImage;
 @synthesize title = _title;
-@synthesize pictureCount = _pictureCount,albumCount = _albumCount,followState = _followState;
+@synthesize pictureCount = _pictureCount,albumCount = _albumCount;
+@synthesize followed = _followed;
+@synthesize following = _following;
 - (void)dealloc
 {
     self.coverImage = nil;
@@ -90,7 +92,7 @@ static NSString * FLLOW_PICTURE[4] = {@"list_follow_me_icon.png",@"list_follower
         _titleLabel.text = @"用户没起名";
     }
     _descLabel.text = [NSString stringWithFormat:@"%d张图片, %d个相册",_dataSource.pictureCount,_dataSource.albumCount];
-    [_follweButton setBackgroundImage:[UIImage imageNamed:FLLOW_PICTURE[_dataSource.followState]] forState:UIControlStateNormal];
+//    [_follweButton setBackgroundImage:[UIImage imageNamed:FLLOW_PICTURE[_dataSource.followState]] forState:UIControlStateNormal];
 }
 -(void)setDataSource:(SCPFollowCommonCellDataSource *)dataSource
 {

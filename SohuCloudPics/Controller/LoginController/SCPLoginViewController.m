@@ -105,6 +105,13 @@
     _registerButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_registerButton addTarget:self action:@selector(registerButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
+    UILabel * externalLabel = [[[UILabel alloc] initWithFrame:CGRectMake(35, 290, 150, 15)] autorelease];
+    externalLabel.text = @"其他账号登陆";
+    externalLabel.textAlignment = UITextAlignmentLeft;
+    externalLabel.backgroundColor = [UIColor clearColor];
+    externalLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
+    externalLabel.font = [UIFont systemFontOfSize:15.f];
+    
     //登陆按钮
     _loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _loginButton.frame = CGRectMake(175, 239, 110, 35);
@@ -119,6 +126,8 @@
     [self.view addSubview:_backgroundControl];
     [self.view addSubview:_usernameTextField];
     [self.view addSubview:_passwordTextField];
+    [self.view addSubview:externalLabel];
+
     [self.view addSubview:_registerButton];
     [self.view addSubview:_loginButton];
     //返回按钮
@@ -170,6 +179,7 @@
 
 #pragma mark -
 #pragma mark buttonClick
+
 - (void)cancelLogin:(UIButton *)button
 {
     if ([_delegate respondsToSelector:@selector(SCPLogin:cancelLogin:)]) {
@@ -184,7 +194,6 @@
         [alterview show];
         return;
     }
-    
     if (!_passwordTextField.text || [_passwordTextField.text isEqualToString:@""]) {
         UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:@"请输入密码" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterview show];

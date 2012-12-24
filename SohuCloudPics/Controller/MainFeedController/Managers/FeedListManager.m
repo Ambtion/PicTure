@@ -38,6 +38,8 @@
         _requestManager.delegate = self;
         _willRefresh = YES;
         _isInit = YES;
+        hasNextPage = YES;
+        curpage = 1;
         self.controller = controller;
     }
     return self;
@@ -55,27 +57,28 @@
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    
     if (_willRefresh)
         [_dataArray removeAllObjects];
     NSLog(@"%@",info);
-    NSDictionary * creator = [info objectForKey:@"userinfo"];
-    allFollowed = [[creator objectForKey:@"followingCount"] intValue];
-    NSArray * photoList = [info objectForKey:@"photoList"];
+    
+    NSDictionary * creator = [info objectForKey:@"userInfo"];
+    if (creator) {
+        allFollowed = [[creator objectForKey:@"followings"] intValue];
+    }
+    NSArray * photoList = [[info objectForKey:@"feedList"] objectForKey:@"feed"];
+    hasNextPage = [[[info objectForKey:@"feedList"] objectForKey:@"has_next"] boolValue];
+    curpage = [[[info objectForKey:@"feedList"] objectForKey:@"page"] intValue];
+    
     for (int i = 0; i < photoList.count; ++i) {
         FeedCellDataSource *adapter = [[FeedCellDataSource alloc] init];
         NSDictionary * photo = [photoList objectAtIndex:i];
         adapter.allInfo = photo;
         adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
-        adapter.name = [photo objectForKey:@"creatorNick"];
-        adapter.update = [photo objectForKey:@"uploadAtDesc"];
-        adapter.portrailImage = [photo objectForKey:@"creatorIcon"];
-        
-        adapter.photoImage  = [photo objectForKey:@"bigUrl"];
+        adapter.name = [photo objectForKey:@"user_nick"];
+        adapter.update = [photo objectForKey:@"upload_at_desc"];
+        adapter.portrailImage = [photo objectForKey:@"user_icon"];
+        adapter.photoImage  = [photo objectForKey:@"photo_url"];
 
-//        adapter.favourtecount = [[photo objectForKey:@"likes"] intValue];
-        //        adapter.commontcount  = i * 13;
-//        adapter.ismyLike = NO;
         [_dataArray addObject:adapter];
         [adapter release];
     }
@@ -134,16 +137,15 @@
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(isRefresh || !_dataArray.count){
-        [_requestManager getUserFollwesNumWithID:[SCPLoginPridictive currentUserId]];
+        [_requestManager getFeedMineInfo];
     }else{
-//        if (MAXPICTURE < _dataArray.count || _dataArray.count % 20) {
-//            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-//            [moreView show];
-//            [self feedMoreDataFinishLoad];
-//            return;
-//        }
-        NSInteger pagenum = [_dataArray count] / 20;
-        [_requestManager getUserFollowFeedWithUserID:[SCPLoginPridictive currentUserId] page:pagenum + 1 only:YES];
+        if (MAXPICTURE < _dataArray.count || !hasNextPage) {
+            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
+            [moreView show];
+            [self feedMoreDataFinishLoad];
+            return;
+        }
+        [_requestManager getFeedMineWithPage:curpage + 1];
     }
     
 }
@@ -213,11 +215,9 @@
     UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:lvc] autorelease];
     [_controller presentModalViewController:nav animated:YES];
 }
-
 - (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
     
-    [SCPLoginPridictive loginUserId:@"123" withToken:@"123"];
     [self dismissLogin];
     //for temp  remove data
     [_controller dismissModalViewControllerAnimated:YES];
@@ -251,7 +251,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    if (MAXPICTURE < _dataArray.count|| !_dataArray.count || _dataArray.count % 20) {
+    if (MAXPICTURE < _dataArray.count || !hasNextPage) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
         [self.controller.pullingController.footView setHidden:NO];
@@ -300,7 +300,7 @@
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     // do nothing for it mainfeedPage
-    SCPPersonalPageViewController *controller = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:nil useID:[cell.dataSource.allInfo objectForKey:@"creatorId"]];
+    SCPPersonalPageViewController *controller = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:nil useID:[cell.dataSource.allInfo objectForKey:@"user_id"]];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -312,9 +312,9 @@
 
 -(void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx
 {
-    SCPPhotoDetailViewController *controller = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
-    [_controller.navigationController pushViewController:controller animated:YES];
-    [controller release];
+//    SCPPhotoDetailViewController *controller = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
+//    [_controller.navigationController pushViewController:controller animated:YES];
+//    [controller release];
 }
 
 @end

@@ -23,7 +23,8 @@ typedef  enum  {
 @property(nonatomic,retain)NSString * title;
 @property(nonatomic,assign)NSInteger pictureCount;
 @property(nonatomic,assign)NSInteger albumCount;
-@property(nonatomic,assign)FOLLOW_STATE followState;
+@property(nonatomic,assign)BOOL followed;
+@property(nonatomic,assign)BOOL following;
 @end
 
 @protocol SCPFollowCommonCellDelegate <NSObject>

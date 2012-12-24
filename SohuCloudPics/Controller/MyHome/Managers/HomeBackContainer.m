@@ -27,8 +27,8 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
         self.frame = [[UIScreen mainScreen] bounds];
         self.image = [UIImage imageNamed:@"pop_bg.png"];
         [self setUserInteractionEnabled:YES];
-        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandle:)] autorelease];
-        [self addGestureRecognizer:gesture];
+//        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandle:)] autorelease];
+//        [self addGestureRecognizer:gesture];
         [self addSubviews];
     }
     return self;
@@ -39,7 +39,7 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
     _boxViews.backgroundColor = [UIColor redColor];
     _boxViews.image = [UIImage imageNamed:@"ueser_image_change_bg.png"];
     [self addSubview:_boxViews];
-    //    [_boxViews setUserInteractionEnabled:YES];
+    [_boxViews setUserInteractionEnabled:YES];
     [self boxviewaddSubViews];
 }
 - (void)boxviewaddSubViews
@@ -49,14 +49,17 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
         
         UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(5 + 80 * i, 33, 75, 75)] autorelease];
         imageview.image = [UIImage imageNamed:ICON[i]];
+        [imageview setUserInteractionEnabled:YES];
+        
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:[UIImage imageNamed:@"user_image_check.png"] forState:UIControlStateSelected];
-        button.frame = CGRectMake(5 + 80 * i, 33, 34, 34);
+        button.frame = CGRectMake(5 + 80 * i, 33, 75, 75);
         button.center = imageview.center;
         button.tag = i + 1000;
         [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_boxViews addSubview:imageview];
         [_boxViews addSubview:button];
+        
     }
     [self setSelecteStateonButton];
 }

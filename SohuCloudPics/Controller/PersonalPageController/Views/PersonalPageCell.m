@@ -50,7 +50,6 @@
     [_descLabel release];
     
     [_albumButton release];
-//    [_favorButton release];
     [_followingButton release];
     [_followedButton release];
     
@@ -163,12 +162,12 @@
 //    [bg_menu addSubview:_favorButton];
     
     _followingButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106, 0, 106, 60)];
-    _followingButton.nameLabel.text = @"跟随";
+    _followingButton.nameLabel.text = @"关注的人";
     _followingButton.delegate = self;
     [bg_menu addSubview:_followingButton];
     
     _followedButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(106 * 2, 0, 106, 60)];
-    _followedButton.nameLabel.text = @"跟随者";
+    _followedButton.nameLabel.text = @"粉丝";
     _followedButton.delegate = self;
     [bg_menu addSubview:_followedButton];
 
@@ -188,9 +187,11 @@
         _descLabel.text = self.datasource.desc;
     }
     if (self.datasource.isFollowByMe) {
-        [_followButton setTitle:@"取消跟随" forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"user_cancel_follow_normal-2.png"] forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"user_cancel_follow_press_2.png"] forState:UIControlStateHighlighted];
     }else{
-        [_followButton setTitle:@"跟随对方" forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"user_add_following_normal.png"] forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"user_add_following_press.png"] forState:UIControlStateHighlighted];
     }
     
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];

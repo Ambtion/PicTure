@@ -150,14 +150,18 @@
 	
 	/* view count label */
 	_viewCountLabel.frame = VIEWCOUNT_RECT;
-	[_viewCountLabel setText:[NSString stringWithFormat:@"%d次浏览", self.album.viewCount]];
-//	[_viewCountLabel sizeToFit];
-	
+    NSString * str = nil;
+    if (self.album.permission) {
+        str = [NSString stringWithFormat:@"公开专辑  %d次浏览",self.album.viewCount];
+    }else{
+        str = [NSString stringWithFormat:@"私有专辑  %d次浏览",self.album.viewCount];
+    }
+	[_viewCountLabel setText:str];
+    
 	/* state label */
 	_updatedAtDescLabel.frame = UPDATEDESC_RECT;
 	// TODO
 	[_updatedAtDescLabel setText:self.album.updatedAtDesc];
-//	[_updatedAtDescLabel sizeToFit];
 }
 
 @end

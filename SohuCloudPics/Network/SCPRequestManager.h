@@ -45,29 +45,24 @@
 //personal Home
 - (void)getUserInfoWithID:(NSString *)user_ID;
 - (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page;
-
 //Folders
 - (void)getFoldersinfoWithID:(NSString *)uses_id;
 - (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page;
 //photoList
 - (void)getFolderinfoWihtUserID:(NSString *)user_id WithFolders:(NSString *)folder_id;
 - (void)getPhotosWithUserID:(NSString *)user_id FolderID:(NSString *)folder_id page:(NSInteger)page;
+//token
 
+//Feed
+- (void)getFeedMineInfo;
+- (void)getFeedMineWithPage:(NSInteger)page;
+//Followings
+- (void)getFollowingInfoWithUserID:(NSString * ) use_id;
+- (void)getfollowingsWihtUseId:(NSString *)user_id page:(NSInteger)pagenum;
+//Followed
+- (void)getFollowedsInfoWithUseID:(NSString *)user_id;
+- (void)getfollowedsWihtUseId:(NSString *)user_id page:(NSInteger)pagenum;
 
-- (void)getFolderCoverURLWithUserId:(NSString *)user_id folderID:(NSString *)folder_id coverShowId:(NSString *)cover_id tag:(int)tag;
-
-- (void)getUserFollwesNumWithID:(NSString *)user_ID;
-- (void)getUserFollowFeedWithUserID:(NSString *)user_ID page:(NSInteger)page only:(BOOL)only;
-
-
-
-//- (void)deleteFolderWithUserId:(NSString *)user_id folderId:(NSString *)folder_id;
-
-- (void)getPhotosWithUserID:(NSString *)user_id FolderID:(NSString *)folder_id page:(NSInteger)page;
-//- (void)deletePhotosWithUserId:(NSString *)user_id	folderId:(NSString *)folder_id photoIds:(NSArray *)photo_ids;
-
-- (void)getUserFollowersWithUserID:(NSString *)user_ID page:(NSInteger)page;
-- (void)getUserFollowingsWithUserID:(NSString *)user_ID page:(NSInteger)page;
 
 
 #pragma mark Action
@@ -78,8 +73,7 @@
 - (void)deletePhotosWithUserId:(NSString *)user_id	folderId:(NSString *)folder_id photoIds:(NSArray *)photo_ids success:(void (^) (NSString * response))success;
 - (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName success:(void (^) (NSString * response))success;
 - (void)createAlbumWithUserId:(NSString *)user_id  name:(NSString *)newName success:(void (^) (NSString * response))success;
-
 #pragma Follwe_Action
-- (void)destoryFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success;
-- (void)friendshipsFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success;
+- (void)destoryFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure;
+- (void)friendshipsFollowing:(NSString *)following_Id userID:(NSString *)useId success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure;
 @end

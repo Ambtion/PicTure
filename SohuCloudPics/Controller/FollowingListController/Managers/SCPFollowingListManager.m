@@ -31,6 +31,8 @@
         _isLoading = NO;
         _isinit = YES;
         _willRefresh = YES;
+        hasNext = YES;
+        curPage = 1;
         _controller = ctrl;
         _dataSource = [[NSMutableArray alloc] initWithCapacity:0];
         _requestManger  = [[SCPRequestManager alloc] init];
@@ -43,21 +45,27 @@
 #pragma mark
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    _maxNum = [[info objectForKey:@"totalCount"] intValue];
-    NSArray * array = [info objectForKey:@"friendViewList"];
+    
+    NSDictionary * userinfo = [info objectForKey:@"userInfo"];
+    if (userinfo)
+        _maxNum = [[userinfo objectForKey:@"followings"] intValue];
+    NSDictionary  * followings = [info objectForKey:@"Followings"];
+    hasNext = [[followings  objectForKey:@"has_next"] boolValue];
+    curPage = [[followings  objectForKey:@"page"] intValue];
+    NSArray * followingsArray = [followings objectForKey:@"followings"];
     if (_willRefresh)
         [_dataSource removeAllObjects];
-    NSLog(@"%@",[array lastObject]);
-    for (int i = 0; i < array.count; i++) {
+    for (int i = 0; i < followingsArray.count; i++) {
         SCPFollowCommonCellDataSource * dataSource = [[SCPFollowCommonCellDataSource alloc] init];
-        NSDictionary * dic = [array objectAtIndex:i];
-        dic = [dic objectForKey:@"user"];
+        NSDictionary * dic = [followingsArray objectAtIndex:i];
         dataSource.allInfo = dic;
-        dataSource.title = [dic objectForKey:@"nickname"];
-        dataSource.coverImage = [dic objectForKey:@"icon"];
-        dataSource.pictureCount = [[dic objectForKey:@"photoNum"] intValue];
-        dataSource.albumCount = [[dic objectForKey:@"publicFolders"] intValue];
-        dataSource.followState = FOLLOW_ME;
+        dataSource.title = [dic objectForKey:@"user_nick"];
+        dataSource.coverImage = [dic objectForKey:@"user_icon"];
+        dataSource.pictureCount = [[dic objectForKey:@"photo_num"] intValue];
+        dataSource.albumCount = [[dic objectForKey:@"public_folders"] intValue];
+        dataSource.following = [[dic objectForKey:@"is_following"] boolValue];
+        dataSource.followed = [[dic objectForKey:@"is_followed"] boolValue];
+
         [_dataSource addObject:dataSource];
         [dataSource release];
     }
@@ -73,9 +81,9 @@
     }
 }
 #pragma mark - networkFailed
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
+- (void)requestFailed:(NSString *)error
 {
-    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"访问失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
+    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
     [alterView show];
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -101,19 +109,16 @@
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataSource.count){
-        [_requestManger getUserFollowingsWithUserID:_user_ID page:1];
+        [_requestManger getFollowingInfoWithUserID:_user_ID];
     }else{
-        NSLog(@"%d max: %d",[_dataSource count],_maxNum);
-        if (_maxNum <= [_dataSource count]) {
+        if (!hasNext) {
             UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"已达到最大" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
             [alterView show];
             [self followedMoreDataFinishLoad];
             return;
         }
-        NSInteger pagenum = [_dataSource count] / 20;
-        [_requestManger getUserFollowingsWithUserID:_user_ID page:pagenum + 1];
+        [_requestManger getfollowingsWihtUseId:_user_ID page:curPage + 1];
     }
-    
 }
 
 #pragma mark - dataChange
@@ -125,7 +130,6 @@
     if (_isLoading) {
         return;
     }
-    
     [self dataSourcewithRefresh:YES];
 }
 
@@ -177,7 +181,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ( ( _maxNum <= [_dataSource count]) && !_isinit ) {
+    if (!hasNext && !_isinit ) {
         self.controller.pullingController.footView.hidden = YES;
     }else{
         self.controller.pullingController.footView.hidden = NO;
@@ -214,7 +218,7 @@
 }
 -(void)follweCommonCell:(SCPFollowCommonCell *)cell followImage:(id)image
 {
-    SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:[NSString stringWithFormat:@"%@",[cell.dataSource.allInfo objectForKey:@"userId"]]]  autorelease];
+    SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:[NSString stringWithFormat:@"%@",[cell.dataSource.allInfo objectForKey:@"user_id"]]]  autorelease];
     [_controller.navigationController pushViewController:scp animated:YES];
 }
 

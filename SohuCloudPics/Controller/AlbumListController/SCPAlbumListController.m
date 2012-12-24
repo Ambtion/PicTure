@@ -70,9 +70,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"albumListCell";
-    
     SCPAlbumListCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-	
     if (!cell) {
         cell = [[[SCPAlbumListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;

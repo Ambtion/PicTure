@@ -33,6 +33,8 @@
         _isinit = YES;
         _willRefresh = YES;
         _controller = ctrl;
+        hasNext = YES;
+        curPage = 1;
         _dataSource = [[NSMutableArray alloc] initWithCapacity:0];
         _requestManger  = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
@@ -44,25 +46,30 @@
 #pragma mark 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    NSLog(@"%s %@",__FUNCTION__ , info);
+    NSDictionary * userinfo = [info objectForKey:@"userInfo"];
+    if (userinfo)
+        _maxNum = [[userinfo objectForKey:@"followers"] intValue];
     
-    _maxNum = [[info objectForKey:@"totolCount"] intValue];
-    NSArray * array = [info objectForKey:@"fansViewList"];
+    NSDictionary  * followings = [info objectForKey:@"Followers"];
+    hasNext = [[followings  objectForKey:@"has_next"] boolValue];
+    curPage = [[followings  objectForKey:@"page"] intValue];
+    NSArray * followingsArray = [followings objectForKey:@"followers"];
     if (_willRefresh)
         [_dataSource removeAllObjects];
-    for (int i = 0; i < array.count; i++) {
+    for (int i = 0; i < followingsArray.count; i++) {
         SCPFollowCommonCellDataSource * dataSource = [[SCPFollowCommonCellDataSource alloc] init];
-        NSDictionary * dic = [array objectAtIndex:i];
-        dic = [dic objectForKey:@"user"];
+        NSDictionary * dic = [followingsArray objectAtIndex:i];
         dataSource.allInfo = dic;
-        dataSource.title = [dic objectForKey:@"nickname"];
-        dataSource.coverImage = [dic objectForKey:@"icon"];
-        dataSource.pictureCount = [[dic objectForKey:@"photoNum"] intValue];
-        dataSource.albumCount = [[dic objectForKey:@"publicFolders"] intValue];
-        dataSource.followState = FOLLOW_BUYME;
+        dataSource.title = [dic objectForKey:@"user_nick"];
+        dataSource.coverImage = [dic objectForKey:@"user_icon"];
+        dataSource.pictureCount = [[dic objectForKey:@"photo_num"] intValue];
+        dataSource.albumCount = [[dic objectForKey:@"public_folders"] intValue];
+        dataSource.following = [[dic objectForKey:@"is_following"] boolValue];
+        dataSource.followed = [[dic objectForKey:@"is_followed"] boolValue];
         [_dataSource addObject:dataSource];
         [dataSource release];
     }
+    
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
@@ -103,7 +110,8 @@
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataSource.count){
-        [_requestManger getUserFollowersWithUserID:_user_ID page:1];
+//        [_requestManger getUserFollowersWithUserID:_user_ID page:1];
+        [_requestManger getFollowedsInfoWithUseID:_user_ID];
     }else{
         NSLog(@"%d max: %d",[_dataSource count],_maxNum);
         if (_maxNum <= [_dataSource count]) {
@@ -112,8 +120,7 @@
             [self followedMoreDataFinishLoad];
             return;
         }
-        NSInteger pagenum = [_dataSource count] / 20;
-        [_requestManger getUserFollowersWithUserID:_user_ID page:pagenum + 1];
+        [_requestManger getfollowedsWihtUseId:_user_ID page:curPage + 1];
     }
 
 }
@@ -179,7 +186,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (( _maxNum <= [_dataSource count]) && !_isinit ) {
+    if (!hasNext && !_isinit ) {
         self.controller.pullingController.footView.hidden = YES;
     }else{
         self.controller.pullingController.footView.hidden = NO;
@@ -216,7 +223,7 @@
 -(void)follweCommonCell:(SCPFollowCommonCell *)cell followImage:(id)image
 {
     NSLog(@"follweCommonCell followImage");
-    SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:[NSString stringWithFormat:@"%@",[cell.dataSource.allInfo objectForKey:@"userId"]]]  autorelease];
+    SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:[NSString stringWithFormat:@"%@",[cell.dataSource.allInfo objectForKey:@"user_id"]]]  autorelease];
     [_controller.navigationController pushViewController:scp animated:YES];
 }
 @end

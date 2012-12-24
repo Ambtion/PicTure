@@ -254,15 +254,15 @@
 		album.creatorId = _user_id;
 		album.albumId = [Afolder objectForKey:@"folder_id"];
         album.coverURL = [Afolder objectForKey:@"cover_url"];
-        album.name = [Afolder objectForKey:@"name"];
+        album.name = [Afolder objectForKey:@"folder_name"];
         album.permission = [[Afolder objectForKey:@"is_public"] intValue];
-		album.updatedAtDesc = [Afolder objectForKey:@"updatedAtDesc"];
+		album.updatedAtDesc = [Afolder objectForKey:@"update_at_desc"];
 		album.photoNum = [[Afolder objectForKey:@"photo_num"] intValue];
 		album.viewCount = [[Afolder objectForKey:@"view_count"] intValue];
+        
 		[_albumList addObject:album];
 		[album release];
 	}
-    
 	[_pullingController.tableView reloadData];
 	[_pullingController refreshDoneLoadingTableViewData];
 }

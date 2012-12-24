@@ -60,37 +60,31 @@
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    NSLog(@"requestFinished %@",info);
     if (_willRefresh) {
         [_dataArray removeAllObjects];
-        NSDictionary * userInfo = [info objectForKey:@"userinfo"];
-        //        MyPersonalCelldataSource * data = [[MyPersonalCelldataSource alloc] init];
+        NSDictionary * userInfo = [info objectForKey:@"userInfo"];
         _personalDataSource.allInfo = userInfo;
-        _personalDataSource.portrait = [userInfo objectForKey:@"icon"];
-        _personalDataSource.name = [userInfo objectForKey:@"nickname"];
-        _personalDataSource.desc = [userInfo objectForKey:@"bio"];
+        _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
+        _personalDataSource.name = [userInfo objectForKey:@"user_nick"];
+        _personalDataSource.desc = [userInfo objectForKey:@"user_desc"];
         
-        NSLog(@"%s, %@",__FUNCTION__,[userInfo objectForKey:@"publicFolders"]);
-        
-        _personalDataSource.albumAmount = [[userInfo objectForKey:@"publicFolders"] intValue];
-        _personalDataSource.followedAmount = [[userInfo objectForKey:@"followerCount"] intValue];
-        _personalDataSource.followingAmount = [[userInfo objectForKey:@"followingCount"] intValue];
-//        _personalDataSource.favouriteAmount = 0;
+        _personalDataSource.albumAmount = [[userInfo objectForKey:@"public_folders"] intValue];
+        _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
+        _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
     }
-    
-    NSArray * photoList = [info objectForKey:@"photoList"];
+    curPage = [[[info objectForKey:@"feedList"]objectForKey:@"page"] intValue];
+    hasNextpage = [[[info objectForKey:@"feedList"]objectForKey:@"has_next"] boolValue];
+    NSArray * photoList = [[info objectForKey:@"feedList"] objectForKey:@"feed"];
     for (int i = 0; i < photoList.count; ++i) {
         FeedCellDataSource *adapter = [[FeedCellDataSource alloc] init];
         NSDictionary * photo = [photoList objectAtIndex:i];
         adapter.allInfo = photo;
         adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
-        adapter.name = [photo objectForKey:@"creatorNick"];
-        adapter.update =[photo objectForKey:@"uploadAtDesc"];
-        adapter.portrailImage = [photo objectForKey:@"creatorIcon"];
-        adapter.photoImage  = [photo objectForKey:@"bigUrl"];
-
-//        adapter.favourtecount = i * 17;
-//        adapter.ismyLike = YES;
+        
+        adapter.name = [photo objectForKey:@"user_nick"];
+        adapter.update =[photo objectForKey:@"upload_at_desc"];
+        adapter.portrailImage = [photo objectForKey:@"user_icon"];
+        adapter.photoImage  = [photo objectForKey:@"photo_url"];
         [_dataArray addObject:adapter];
         [adapter release];
     }
@@ -197,17 +191,15 @@
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataArray.count){
-        [_requestManager getUserInfoWithID:[SCPLoginPridictive currentToken]];
+        [_requestManager getUserInfoWithID:[SCPLoginPridictive currentUserId]];
     }else{
-//        if (MAXPICTURE < _dataArray.count || _dataArray.count % 20) {
-//            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-//            [moreView show];
-//            [self loadingMoreFinished];
-//            return;
-//        }
-        NSInteger pagenum = [_dataArray count] / 20;
-        [_requestManager getUserInfoFeedWithUserID:[SCPLoginPridictive currentUserId] page:pagenum + 1 only:YES];
-        
+        if (MAXPICTURE < _dataArray.count || !hasNextpage) {
+            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
+            [moreView show];
+            [self loadingMoreFinished];
+            return;
+        }
+        [_requestManager getUserInfoFeedWithUserID:[SCPLoginPridictive currentUserId] page:curPage + 1];
     }
 }
 
@@ -220,7 +212,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (MAXPICTURE < _dataArray.count|| !_dataArray.count || _dataArray.count % 20) {
+    if (MAXPICTURE < _dataArray.count|| !hasNextpage) {
         [self.controller.footView setHidden:YES];
     }else{
         [self.controller.footView setHidden:NO];

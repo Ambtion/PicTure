@@ -22,6 +22,8 @@
     BOOL _willRefresh;
     NSString * _user_ID;
     NSInteger _maxNum;
+    BOOL hasNext;
+    NSInteger curPage;
 }
 @property (assign, nonatomic) SCPFollowedListViewController *controller;
 

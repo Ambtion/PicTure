@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
     self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_follower.png"]frame:self.view.bounds] autorelease];
-    self.pullingController.headView.bannerName.frame = CGRectMake(110, 44, 100, 24);
+    self.pullingController.headView.bannerName.frame = CGRectMake(130, 44, 60, 24);
     
     //customer for  scrollview
     self.pullingController.delegate = self.manager;

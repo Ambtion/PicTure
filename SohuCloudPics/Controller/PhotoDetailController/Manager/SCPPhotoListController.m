@@ -135,7 +135,8 @@
         _requestManger.delegate = self;
         [self initSubViews];
         
-        [_requestManger getPhotosWithUserID:[self.info objectForKey:@"creatorId"] FolderID:[info objectForKey:@"folderShowId"] page:Pagenum++];
+//        [_requestManger getPhotosWithUserID:[self.info objectForKey:@"user_id"] FolderID:[info objectForKey:@"folder_id"] page:Pagenum++];
+        [_requestManger getFolderinfoWihtUserID:[self.info objectForKey:@"user_id"] WithFolders:[info objectForKey:@"folder_id"]];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(listOrientationChanged:)
@@ -162,7 +163,8 @@
         _requestManger.delegate = self;
         [self initSubViews];
         
-        [_requestManger getPhotosWithUserID:[self.info objectForKey:@"creatorId"] FolderID:[info objectForKey:@"folderShowId"] page:Pagenum++];
+
+        [_requestManger getFolderinfoWihtUserID:[self.info objectForKey:@"user_id"] WithFolders:[info objectForKey:@"folder_id"]];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(listOrientationChanged:)
@@ -249,8 +251,13 @@
 #pragma mark - Delegate
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    photoNum = [[[info objectForKey:@"folder"] objectForKey:@"photoNum"] intValue];
-    [imageArray addObjectsFromArray:[info objectForKey:@"photoList"]];
+    NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
+
+    NSDictionary * photolist = [info objectForKey:@"photoList"];
+    if ([folderinfo allKeys]) {
+        photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
+    }
+    [imageArray addObjectsFromArray:[photolist objectForKey:@"photos"]];
     NSLog(@"%@",[imageArray lastObject]);
     curPage =  [self getindexofImages];
     if (curPage == -1) {
@@ -276,16 +283,17 @@
     }
     return -1;
 }
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
+- (void)requestFailed:(NSString *)error
 {
-    NSLog(@"failed");
+    UIAlertView * alterview  = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
+    [alterview show];
 }
 - (void)getMoreImage
 {
     if (photoNum == imageArray.count) {
         return;
     }
-    [_requestManger getPhotosWithUserID :[self.info objectForKey:@"creatorId"] FolderID:[_info objectForKey:@"folderShowId"] page:Pagenum++];
+    [_requestManger getPhotosWithUserID :[self.info objectForKey:@"user_id"] FolderID:[_info objectForKey:@"folderShowId"] page:Pagenum++];
 }
 #pragma mark - InitSubView
 
@@ -390,7 +398,7 @@
     [self.view setUserInteractionEnabled:NO];
     animation = YES;
     
-    _dataManager.photo_ID = [self.info objectForKey:@"showId"];
+    _dataManager.photo_ID = [self.info objectForKey:@"photo_id"];
     [_dataManager dataSourcewithRefresh:YES];
     
     [self setZooming:_fontScrollview];
@@ -633,11 +641,11 @@
         [self.rearScrollview setContentOffset:CGPointMake(0, 0)];
     }
     
-    if ([[imageView info] objectForKey:@"bigUrl"]);
+    if ([[imageView info] objectForKey:@"photo_url"]);
     {
         [imageView cancelCurrentImageLoad];
         [imageView.actV startAnimating];
-        [imageView setImageWithURL:[NSURL URLWithString:[[imageView info] objectForKey:@"bigUrl"]] placeholderImage:nil options: 0   success:^(UIImage *image) {
+        [imageView setImageWithURL:[NSURL URLWithString:[[imageView info] objectForKey:@"photo_url"]] placeholderImage:nil options: 0   success:^(UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [imageView.actV stopAnimating];
             });
@@ -645,10 +653,10 @@
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
         }];
-        if (![[[imageView info] objectForKey:@"multipleFrames"] floatValue]) {
+        if (![[[imageView info] objectForKey:@"multi_frames"] floatValue]) {
             [imageView resetGigView];
         }else{
-            [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"originUrl"]]];
+            [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
         }
        
     }

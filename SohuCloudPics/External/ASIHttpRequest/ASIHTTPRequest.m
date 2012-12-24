@@ -1495,7 +1495,6 @@ static NSOperationQueue *sharedQueue = nil;
 	}
 	return NO;
 }
-
 - (void)checkRequestStatus
 {
 	// We won't let the request cancel while we're updating progress / checking for a timeout
