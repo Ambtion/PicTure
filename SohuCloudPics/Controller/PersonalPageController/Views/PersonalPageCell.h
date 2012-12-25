@@ -12,7 +12,7 @@
 
 @class PersonalPageCell;
 @interface PersonalPageCellDateSouce : NSObject
-@property(nonatomic,retain)NSDictionary * allInfo;
+//@property(nonatomic,retain)NSDictionary * allInfo;
 @property(nonatomic,retain)NSString * portrait;
 @property(nonatomic,retain)NSString* name;
 //@property(nonatomic,retain)NSString* position;

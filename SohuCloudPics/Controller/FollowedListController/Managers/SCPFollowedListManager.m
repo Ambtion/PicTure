@@ -66,11 +66,10 @@
         dataSource.albumCount = [[dic objectForKey:@"public_folders"] intValue];
         dataSource.following = [[dic objectForKey:@"is_following"] boolValue];
         if ([SCPLoginPridictive currentUserId]) {
-            dataSource.isMe = [dataSource.user_id isEqualToString:[SCPLoginPridictive currentUserId]];
+            dataSource.isMe = [dataSource.user_id isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
         }else{
             dataSource.isMe = NO;
-        }
-        [_dataSource addObject:dataSource];
+        }        [_dataSource addObject:dataSource];
         [dataSource release];
     }
     

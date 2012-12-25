@@ -13,7 +13,7 @@
 
 @implementation PersonalPageCellDateSouce
 
-@synthesize allInfo = _allInfo;
+//@synthesize allInfo = _allInfo;
 @synthesize portrait = _portrait;
 @synthesize name = _name;
 //@synthesize position = _position;
@@ -30,7 +30,7 @@
 {
     self.portrait = nil;
     self.name = nil;
-    self.allInfo = nil;
+//    self.allInfo = nil;
     self.desc = nil;
     [super dealloc];
 }

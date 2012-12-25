@@ -16,6 +16,7 @@
 #import "SCPFollowedListViewController.h"
 #import "SCPSetttingController.h"
 #import "MoreAlertView.h"
+#import "SCPAlbumListController.h"
 
 
 #define MAXIMAGEHEIGTH 320
@@ -60,16 +61,31 @@ static float OFFSET = 0.f;
     }
     return finalHeigth;
 }
+- (void)refreshUserinfo
+{
+    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
+        NSLog(@"%@",response);
+        _personalDataSource.portrait = [response objectForKey:@"user_icon"];
+        _personalDataSource.name = [response objectForKey:@"nick"];
+        _personalDataSource.desc = [response objectForKey:@"user_desc"];
+        _personalDataSource.albumAmount = [[response objectForKey:@"public_folders"] intValue];
+        _personalDataSource.followedAmount = [[response objectForKey:@"followers"] intValue];
+        _personalDataSource.followingAmount = [[response objectForKey:@"followings"] intValue];
+        [self.controller.homeTable reloadData];
+    } failure:^(NSString *error) {
+        UIAlertView * alterView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alterView show];
+        [alterView release];
+    }];
+}
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
-        _personalDataSource.allInfo = userInfo;
         _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
         _personalDataSource.name = [userInfo objectForKey:@"user_nick"];
         _personalDataSource.desc = [userInfo objectForKey:@"user_desc"];
-        
         _personalDataSource.albumAmount = [[userInfo objectForKey:@"public_folders"] intValue];
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
@@ -329,9 +345,12 @@ static float OFFSET = 0.f;
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender
 {
     if (![self isLogin]) return;
-    SCPAlbumGridController * alb = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
+    SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [_controller.navigationController pushViewController:alb animated:YES];
     [alb release];
+//    SCPAlbumGridController * alb = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:]];
+//    [_controller.navigationController pushViewController:alb animated:YES];
+//    [alb release];
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell favoriteClicked:(id)sender
 {

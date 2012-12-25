@@ -130,7 +130,8 @@
 	if (self.album.coverURL == nil || [self.album.coverURL isKindOfClass:[NSNull class]] || self.album.coverURL.length == 0) {
 		[_photoImageView setImage:[self getEmptyFolderCoverImage]];
 	} else {
-		[_photoImageView setImageWithURL:[NSURL URLWithString:_album.coverURL] placeholderImage:nil options:0];
+        NSString * coverUrl  =[NSString stringWithFormat:@"%@_c70",_album.coverURL];
+		[_photoImageView setImageWithURL:[NSURL URLWithString:coverUrl] placeholderImage:nil options:0];
 	}
 
     /* progress view */

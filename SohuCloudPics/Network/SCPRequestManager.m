@@ -143,7 +143,36 @@
         }
     }
 }
+
 #pragma mark - Personal Home
+- (void)getUserInfoWithID:(NSString *)user_ID success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure
+{
+    NSString  * str = nil;
+    if ([SCPLoginPridictive currentToken]) {
+        str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
+    }else{
+        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
+    }
+    NSLog(@"%@",str);
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:5.f];
+    [request setCompletionBlock:^{
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            success(dic);
+            
+        }else{
+            failure(@"连接失败");
+        }
+    }];
+    [request setFailedBlock:^{
+        failure(@"请求失败");
+    }];
+    
+    [request startAsynchronous];
+
+}
 - (void)getUserInfoWithID:(NSString *)user_ID
 {
     
@@ -211,7 +240,6 @@
     NSString  * str = nil;
     if ([SCPLoginPridictive isLogin]) {
         str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,uses_id,[SCPLoginPridictive currentToken]];
-        NSLog(@"Login:%@", str);
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,uses_id];
     }
@@ -515,10 +543,36 @@
     }];
     [request startAsynchronous];
 }
-
-#pragma mark - Follow
+#pragma mark Notificatin
+- (void)getNotificationUser
+{
+//    NSString * str = [NSString stringWithFormat:@"%@",BASICURL_V1];
+//    [request setCompletionBlock:^{
+//        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+//            NSString * str = [request responseString];
+//            NSDictionary * dic = [str JSONValue];
+//            [tempDic setObject:dic forKey:@"Followers"];
+//            if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
+//                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
+//                [tempDic removeAllObjects];
+//            }
+//        }else{
+//            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+//                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+//            }
+//        }
+//    }];
+//    [request setFailedBlock:^{
+//        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+//            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+//        }
+//    }];
+//    [request startAsynchronous];
+}
+#pragma mark - Action Follow
 - (void)destoryFollowing:(NSString *)following_Id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
 {
+    
     NSString * str = [NSString stringWithFormat:@"%@/friendships/destroy?&access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];

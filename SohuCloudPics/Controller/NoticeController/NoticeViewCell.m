@@ -85,8 +85,9 @@
 }
 -(void)updataData
 {
-//    [_imageCoverView setImageWithURL:[NSURL URLWithString:_dataSource.photoUrl]];
-    [_imageCoverView setImageWithURL:[NSURL URLWithString:_dataSource.photoUrl] placeholderImage:nil options:0];
+    
+    NSString * photo_url =[NSString stringWithFormat:@"%@_c70",_dataSource.photoUrl];
+    [_imageCoverView setImageWithURL:[NSURL URLWithString:photo_url] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] options:0];
     _titleLabel.text = _dataSource.name;
     _descLabel.text = _dataSource.content;
     _timeLabel.text = _dataSource.upTime;

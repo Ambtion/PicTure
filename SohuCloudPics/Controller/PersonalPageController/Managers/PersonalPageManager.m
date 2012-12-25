@@ -73,10 +73,10 @@ static float OFFSET = 0.f;
         
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
-        _personalDataSource.allInfo = userInfo;
+//        _personalDataSource.allInfo = userInfo;
         _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
         _personalDataSource.name = [userInfo objectForKey:@"nick"];
-        _personalDataSource.desc = [userInfo objectForKey:@"bio"];
+        _personalDataSource.desc = [userInfo objectForKey:@"user_desc"];
         _personalDataSource.albumAmount = [[userInfo objectForKey:@"public_folders"] intValue];
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];

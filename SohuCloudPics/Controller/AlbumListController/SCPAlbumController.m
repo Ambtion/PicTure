@@ -72,12 +72,11 @@
     [self.view addSubview:_pullingController.view];
 	[self updateBanner];
     [self initNavigationItem];
-
-	if (_albumList.count == 0) {
-		[self refresh];
-	} else {
-		[_pullingController.tableView reloadData];
-	}
+//	if (_albumList.count == 0) {
+//		[self refresh];
+//	} else {
+//		[_pullingController.tableView reloadData];
+//	}
 }
 
 - (void)updateBanner
@@ -153,6 +152,7 @@
 	_currentPage = 0;
 	_loadedPage = 0;
     [_request getFoldersinfoWithID:_user_id];
+    NSLog(@"%s",__FUNCTION__);
 }
 
 - (void)loadNextPage
@@ -198,7 +198,6 @@
     [nav.view.layer addAnimation:animation forKey:nil];
     [nav popViewControllerAnimated:NO];
     [nav pushViewController:ctrl animated:NO];
-    
 }
 
 - (void)onUploadClicked:(id)sender
@@ -208,11 +207,13 @@
     [self.navigationController presentModalViewController:manager animated:YES];
     [manager release];
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
+    [self refresh];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -224,22 +225,15 @@
 
 #pragma mark -
 #pragma mark SCPRequestManagerDelegate
-- (void)requestFailed:(NSString *)error
-{
-	UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-    [alterview show];
-    [self.pullingController refreshDoneLoadingTableViewData];
-}
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
   
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
-    NSLog(@"folderinfo %@",[folderinfo allKeys]);
+//    NSLog(@"folderinfo %@",[folderinfo allKeys]);
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
 	_hasNextPage = [[folderinfo objectForKey:@"has_next"] boolValue];
     _loadedPage = _currentPage;
-
 	if (_currentPage == 1) {
 		NSDictionary * creator = [info objectForKey:@"userInfo"];
 		int albumCount = [[creator objectForKey:@"public_folders"] intValue];
@@ -247,9 +241,8 @@
 		[self updateBannerWithAlbumCount:albumCount andAuthorName:nickname];
 		[_albumList removeAllObjects];
 	}
-    
 	NSArray *folderList = [folderinfo  objectForKey:@"folders"];
-    NSLog(@"%@",[folderList lastObject]);
+//    NSLog(@"%@",[folderList lastObject]);
 	for (int i = 0; i < folderList.count; ++i) {
 		NSDictionary *Afolder = [folderList objectAtIndex:i];
 		SCPAlbum *album = [[SCPAlbum alloc] init];
@@ -261,12 +254,17 @@
 		album.updatedAtDesc = [Afolder objectForKey:@"update_at_desc"];
 		album.photoNum = [[Afolder objectForKey:@"photo_num"] intValue];
 		album.viewCount = [[Afolder objectForKey:@"view_count"] intValue];
-        
 		[_albumList addObject:album];
 		[album release];
 	}
 	[_pullingController.tableView reloadData];
 	[_pullingController refreshDoneLoadingTableViewData];
+}
+- (void)requestFailed:(NSString *)error
+{
+	UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
+    [alterview show];
+    [self.pullingController refreshDoneLoadingTableViewData];
 }
 #pragma mark -
 #pragma mark BannerDataSource
@@ -293,7 +291,6 @@
 - (void)onImageViewClicked:(UIImageView *)imageView
 {
     switch (_state) {
-            
         case SCPAlbumControllerStateNormal:
         {
             /* go into the album */

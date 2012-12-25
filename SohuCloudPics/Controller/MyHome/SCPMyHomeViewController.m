@@ -107,7 +107,6 @@
 #pragma mark customerNavigationIteam
 - (void)viewWillAppear:(BOOL)animated
 {
-    
     NSLog(@"H%s %d start",__FUNCTION__,self.navigationItem.hidesBackButton);
     [super viewWillAppear:animated];
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -117,7 +116,7 @@
     backButton.frame = CGRectMake(0, 0, 26, 26);
     UIBarButtonItem * left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
-
+    [self.manager refreshUserinfo];
 }
 - (void)myHomeNavigationBack:(UIButton*)button
 {

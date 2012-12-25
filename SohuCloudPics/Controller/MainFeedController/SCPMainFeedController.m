@@ -66,7 +66,6 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    
     if (_item == nil) {
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
         [_item addRefreshtarget:self.manager action:@selector(refreshData:)];
@@ -77,7 +76,7 @@
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
-    
+    [self.manager refreshUserinfo];
     if (_item.superview)
         [_item removeFromSuperview];
 //    [super viewWillDisappear:animated]; //规定彩带行为

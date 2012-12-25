@@ -31,4 +31,5 @@
 - (id)initWithController:(SCPMyHomeViewController *)ctrl useID:(NSString *)useID;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
 - (void)loadingMore:(id)sender;
+- (void)refreshUserinfo;
 @end

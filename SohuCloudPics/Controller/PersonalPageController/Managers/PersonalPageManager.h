@@ -33,8 +33,8 @@
 
 @property (assign, nonatomic) SCPPersonalPageViewController *controller;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
-- (id)initWithController:(SCPPersonalPageViewController *)ctrl useID:(NSString *)useID;
 
+- (id)initWithController:(SCPPersonalPageViewController *)ctrl useID:(NSString *)useID;
 - (void)loadingMore:(id)sender;
 - (void)showLoadingMore;
 @end

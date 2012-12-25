@@ -43,6 +43,7 @@
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture;
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID;
 //personal Home
+- (void)getUserInfoWithID:(NSString *)user_ID success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure;
 - (void)getUserInfoWithID:(NSString *)user_ID;
 - (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page;
 //Folders
@@ -62,7 +63,8 @@
 //Followed
 - (void)getFollowedsInfoWithUseID:(NSString *)user_id;
 - (void)getfollowedsWihtUseId:(NSString *)user_id page:(NSInteger)pagenum;
-
+//Notification
+- (void)getNotificationUser;
 
 
 #pragma mark Action

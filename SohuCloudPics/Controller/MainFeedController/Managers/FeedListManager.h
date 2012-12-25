@@ -36,6 +36,7 @@
 - (id)initWithController:(SCPMainFeedController *)controller;
 - (void)refreshData:(id)sender;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
+- (void)refreshUserinfo;
 - (void)showViewForNoLogin;
 - (void)dismissLogin;
 @end
