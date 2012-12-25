@@ -19,7 +19,6 @@
 //@synthesize position = _position;
 @synthesize desc = _desc;
 
-@synthesize isFollowMe = _isFollowMe;
 @synthesize isFollowByMe = _isFollowByMe;
 @synthesize albumAmount = _albumAmount;
 //@synthesize favouriteAmount = _favouriteAmount;
@@ -75,7 +74,6 @@
 {
     //backGroud
     _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 367 - 480, 320, 480)];
-    NSLog(@"%s",__FUNCTION__);
     _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
     [self.contentView addSubview:_backgroundImageView];
     
@@ -89,7 +87,7 @@
     _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(118 , 109, 85, 85)];
     _portraitImageView.layer.cornerRadius = 42.5;
     _portraitImageView.clipsToBounds = YES;
-      _portraitImageView.backgroundColor = [UIColor clearColor];
+    _portraitImageView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_portraitImageView];
     
     UIImageView * bg_portrait = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_bg_photo.png"]] autorelease];
@@ -123,7 +121,7 @@
     _followButton.frame = CGRectMake(117, 268, 90, 25);
     _followButton.backgroundColor = [UIColor clearColor];
     [_followButton addTarget:self action:@selector(personalFollowButton:) forControlEvents:UIControlEventTouchUpInside];
-    _followButton.titleLabel.textColor = [UIColor whiteColor];
+    [_followButton setHidden:YES];
     [self.contentView addSubview:_followButton];
     
     CGRect frame = CGRectMake(_backgroundImageView.frame.size.width - 36, _backgroundImageView.frame.size.height - 36 - 113, 26, 26);
@@ -171,7 +169,7 @@
     }else{
         _descLabel.text = self.datasource.desc;
     }
-    
+    [_followButton setHidden:NO];
     if (self.datasource.isFollowByMe) {
         [_followButton setImage:[UIImage imageNamed:@"user_cancel_follow_normal-2.png"] forState:UIControlStateNormal];
         [_followButton setImage:[UIImage imageNamed:@"user_cancel_follow_press_2.png"] forState:UIControlStateHighlighted];

@@ -136,7 +136,7 @@
     for (NSDictionary * dic in array) {
         FoldersMode * mode = [[FoldersMode alloc] init];
         mode.foldrsName = [dic objectForKey:@"folder_name"];
-        mode.folders_Id = [dic objectForKey:@"folder_id"];
+        mode.folders_Id = [NSString stringWithFormat:@"%@",[dic objectForKey:@"folder_id"]];
         mode.isPublic = [[dic objectForKey:@"is_public"] boolValue];
         [_foldersArray addObject:mode];
         [mode release];

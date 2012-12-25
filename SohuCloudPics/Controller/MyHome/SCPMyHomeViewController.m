@@ -16,11 +16,14 @@
 @implementation SCPMyHomeViewController
 @synthesize manager = _manager;
 @synthesize homeTable = _homeTable;
+@synthesize topButton = _topButton;
+
 - (void)dealloc
 {
     self.manager = nil;
     self.homeTable = nil;
     self.footView = nil;
+    self.topButton = nil;
     [super dealloc];
     
 }
@@ -87,7 +90,19 @@
     [view addSubview:_footView];
     _homeTable.tableFooterView = view;
     [self.navigationItem setHidesBackButton:YES];
+    
+    _topButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [_topButton setBackgroundImage:[UIImage imageNamed:@"explore_up_page_icon.png"] forState:UIControlStateNormal];
+    _topButton.frame = CGRectMake(self.view.bounds.size.width - 10 - 45, self.view.bounds.size.height - 55, 45, 45);
+    [_topButton addTarget:self action:@selector(homeTopButtonHandle:) forControlEvents:UIControlEventTouchUpInside];
+    [_topButton setHidden:YES];
+    [self.view addSubview:_topButton];
 }
+- (void)homeTopButtonHandle:(id)sender
+{
+    [self.homeTable setContentOffset:CGPointZero animated:YES];
+}
+
 #pragma mark -
 #pragma mark customerNavigationIteam
 - (void)viewWillAppear:(BOOL)animated

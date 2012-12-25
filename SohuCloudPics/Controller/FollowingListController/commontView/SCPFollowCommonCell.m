@@ -14,7 +14,6 @@
 @synthesize coverImage = _coverImage;
 @synthesize title = _title;
 @synthesize pictureCount = _pictureCount,albumCount = _albumCount;
-@synthesize followed = _followed;
 @synthesize following = _following;
 @synthesize isMe = _isMe;
 

@@ -57,6 +57,7 @@
 @property(nonatomic,retain)BannerForHeadView * headView;
 @property(nonatomic,retain)UIView * footView;
 @property(nonatomic,readonly)DelegateManager * manager;
+@property(nonatomic,retain)UIButton * topbutton;
 - (id)initWithImageName:(UIImage*)image frame:(CGRect )frame;
 - (id)initWithLabelName:(NSString *)name frame:(CGRect )frame;
 - (void)reloadDataSourceWithAniamtion:(BOOL)animation;

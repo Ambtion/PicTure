@@ -20,6 +20,8 @@
 
 #define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 200
+
+static float OFFSET = 0.f;
 @implementation MyhomeManager
 @synthesize controller = _controller;
 
@@ -142,6 +144,13 @@
             [self loadingMore:nil];
         }
     }
+    
+    if (scrollView.contentOffset.y >= scrollView.bounds.size.width && scrollView.contentOffset.y < OFFSET && scrollView.contentOffset.y < scrollView.contentSize.height - 580) {
+        [_controller.topButton setHidden:NO];
+    }else{
+        [_controller.topButton setHidden:YES];
+    }
+    OFFSET = scrollView.contentOffset.y;
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell refreshClick:(id)sender
 {

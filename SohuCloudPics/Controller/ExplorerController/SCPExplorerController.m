@@ -53,7 +53,11 @@
 }
 - (void)refreshButton:(UIButton *)button
 {
-    [self.manager refreshData:nil];
+    if ([self.pullingController.tableView numberOfSections]){
+        [self.pullingController.tableView setContentOffset:CGPointZero];
+    }
+    [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
+//    [self.manager refreshData:nil];
 }
 #pragma mark -
 #pragma mark customerNavigationIteam

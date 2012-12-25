@@ -12,17 +12,21 @@
 #import "SCPFollowedListViewController.h"
 #import "SCPFollowingListViewController.h"
 
-
+@interface SCPPersonalPageViewController ()
+- (void)personalTopButtonHandle:(id)sender;
+@end
 
 @implementation SCPPersonalPageViewController
-
 @synthesize manager = _manager;
 @synthesize footView = _footView;
 @synthesize tableView = _tableView;
+@synthesize topButton = _topButton;
+
 - (void)dealloc
 {
     self.footView = nil;
     [_tableView release];
+    [_topButton release];
     [_manager release];
     [super dealloc];
 }
@@ -39,7 +43,6 @@
 {
     
     [super viewDidLoad];
-    
     self.view.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
@@ -80,8 +83,18 @@
     [view addSubview:_footView];
     _tableView.tableFooterView = view;
     [self.manager dataSourcewithRefresh:YES];
+    
+    _topButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [_topButton setBackgroundImage:[UIImage imageNamed:@"explore_up_page_icon.png"] forState:UIControlStateNormal];
+    _topButton.frame = CGRectMake(self.view.bounds.size.width - 10 - 45, self.view.bounds.size.height - 55, 45, 45);
+    [_topButton addTarget:self action:@selector(personalTopButtonHandle:) forControlEvents:UIControlEventTouchUpInside];
+    [_topButton setHidden:YES];
+    [self.view addSubview:_topButton];
 }
-
+- (void)personalTopButtonHandle:(id)sender
+{
+    [self.tableView setContentOffset:CGPointZero animated:YES];
+}
 #pragma mark -
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated
@@ -104,5 +117,4 @@
 {
     [super viewDidUnload];
 }
-
 @end

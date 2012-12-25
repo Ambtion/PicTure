@@ -10,11 +10,10 @@
 
 
 
-
+static CGFloat OFFSET = 0.f;
 
 @implementation DelegateManager
 @synthesize delegate = _delegate;
-
 
 #pragma mark -shutDown
 - (void)shutChangeFunction
@@ -78,7 +77,6 @@
     }else{
         _tableView.frame = CGRectMake(0, 0, 320, controller.view.bounds.size.height + 44);
     }
-    
     [self updateContentOffset];
     
     if (scrollView.contentOffset.y <= scrollView.contentSize.height - scrollView.frame.size.height || scrollView.contentSize.height <= scrollView.frame.size.height) {
@@ -87,6 +85,13 @@
            [controller realLoadingMore:nil];
         }
     }
+    if (scrollView.contentOffset.y >= scrollView.bounds.size.width && scrollView.contentOffset.y < OFFSET && scrollView.contentOffset.y < scrollView.contentSize.height - 580) {
+        [controller.topbutton setHidden:NO];
+    }else{
+         [controller.topbutton setHidden:YES];
+    }
+    OFFSET = scrollView.contentOffset.y;
+    
     [_refreshView egoRefreshScrollViewDidScroll:scrollView];
 
     if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)]){
@@ -366,6 +371,8 @@
 @synthesize footView = _footView;
 @synthesize manager = _manager;
 @synthesize scrollView = _scrollView;
+@synthesize topbutton = _topbutton;
+
 - (void)dealloc
 {
     [_scrollView release];
@@ -373,9 +380,9 @@
     [_tableView release];
     [_refreshView release];
     [_manager release];
+    [_topbutton release];
     self.footView = nil;
     [super dealloc];
-
 }
 -(id)initWithImageName:(UIImage*)image frame:(CGRect )frame
 {
@@ -425,7 +432,6 @@
     [self.view addSubview:_tableView];
     [self.view addSubview:_scrollView];
 
-    
     _manager = [[DelegateManager alloc] init];
     _manager->_reloading = NO;
     _manager->controller = self;
@@ -436,7 +442,17 @@
     _manager->_scrollView = _scrollView;
     _refreshView.delegate = _manager;
     
+    _topbutton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [_topbutton setBackgroundImage:[UIImage imageNamed:@"explore_up_page_icon.png"] forState:UIControlStateNormal];
+    _topbutton.frame = CGRectMake(self.view.bounds.size.width - 10 - 45, self.view.bounds.size.height - 55, 45, 45);
+    [_topbutton addTarget:self action:@selector(topButtonHandle:) forControlEvents:UIControlEventTouchUpInside];
+    [_topbutton setHidden:YES];
+    [self.view addSubview:_topbutton];
     [self addTableFootView];
+}
+- (void)topButtonHandle:(id)sender
+{
+    [self.tableView setContentOffset:CGPointZero animated:YES];
 }
 - (void)addTableFootView
 {

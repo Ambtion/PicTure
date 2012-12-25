@@ -71,7 +71,6 @@
     _pullingController.headView.datasouce = self;
     _pullingController.tableView.separatorColor = [UIColor clearColor];
     [self.view addSubview:_pullingController.view];
-    
 	[self updateBanner];
     [self initNavigationItem];
 
@@ -103,32 +102,42 @@
 
 - (void)initNavigationItem
 {
+    
     int rightBarWidth = 250;
     _rightBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rightBarWidth, 28)];
     _rightBarView.backgroundColor = [UIColor clearColor];
-    /* switch button */
-    _switchButton = [[self switchButtonView] retain];
-    _switchButton.frame = CGRectMake(rightBarWidth - 60, 0, 28, 28);
-    [_switchButton addTarget:self action:@selector(onSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [_rightBarView addSubview:_switchButton];
-    /* upload button */
-    _uploadButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _uploadButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
-    [_uploadButton setImage:[UIImage imageNamed:@"header_upload.png"] forState:UIControlStateNormal];
-    [_uploadButton setImage:[UIImage imageNamed:@"header_upload_press.png"] forState:UIControlStateHighlighted];
-    [_uploadButton addTarget:self action:@selector(onUploadClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [_rightBarView addSubview:_uploadButton];
-    /* ok button, not added first */
-    _okButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _okButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
-    [_okButton setImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
-    [_okButton setImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
-    [_okButton addTarget:self action:@selector(onOKClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    if ([self loginPridecate]) {
+        /* switch button */
+        _switchButton = [[self switchButtonView] retain];
+        _switchButton.frame = CGRectMake(rightBarWidth - 60, 0, 28, 28);
+        [_switchButton addTarget:self action:@selector(onSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_rightBarView addSubview:_switchButton];
+        
+        /* upload button */
+        _uploadButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _uploadButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        [_uploadButton setImage:[UIImage imageNamed:@"header_upload.png"] forState:UIControlStateNormal];
+        [_uploadButton setImage:[UIImage imageNamed:@"header_upload_press.png"] forState:UIControlStateHighlighted];
+        [_uploadButton addTarget:self action:@selector(onUploadClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_rightBarView addSubview:_uploadButton];
+        /* ok button, not added first */
+        _okButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _okButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        [_okButton setImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
+        [_okButton setImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
+        [_okButton addTarget:self action:@selector(onOKClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        _switchButton = [[self switchButtonView] retain];
+        _switchButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        [_switchButton addTarget:self action:@selector(onSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_rightBarView addSubview:_switchButton];
+    }
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_rightBarView];
     self.navigationItem.rightBarButtonItem = item;
     [item release];
-    
     /* customize backButtonIteam */
     _backButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     _backButton.frame = CGRectMake(0, 0, 28, 28);
@@ -207,7 +216,6 @@
 	[super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
-//    [self refresh];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -249,7 +257,7 @@
 		NSDictionary *Afolder = [folderList objectAtIndex:i];
 		SCPAlbum *album = [[SCPAlbum alloc] init];
 		album.creatorId = _user_id;
-		album.albumId = [Afolder objectForKey:@"folder_id"];
+		album.albumId = [NSString stringWithFormat:@"%@",[Afolder objectForKey:@"folder_id"]];
         album.coverURL = [Afolder objectForKey:@"cover_url"];
         album.name = [Afolder objectForKey:@"folder_name"];
         album.permission = [[Afolder objectForKey:@"is_public"] intValue];
@@ -279,9 +287,9 @@
 - (BOOL)loginPridecate
 {
     
-    if (![SCPLoginPridictive isLogin] || ![[NSString stringWithFormat:@"%@",self.user_id] isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
-        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
-        [alte show];
+    if (![SCPLoginPridictive isLogin] || ![self.user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
+//        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
+//        [alte show];
         return NO;
     }
     return YES;

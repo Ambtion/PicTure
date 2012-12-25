@@ -74,7 +74,7 @@
     _pullingController.headView.datasouce = self;
     [self.view addSubview:_pullingController.view];
     [self initNavigationItem];
-    
+    [self refresh];
 }
 
 - (void)initNavigationItem
@@ -93,39 +93,50 @@
     int rightBarWidth = 250;
     _rightBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rightBarWidth, 28)];
     _rightBarView.backgroundColor = [UIColor clearColor];
-    /* iMark button */
-    _iMarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _iMarkButton.frame = CGRectMake(rightBarWidth - 94 - 10, 0, 28, 28);
-    [_iMarkButton setImage:[UIImage imageNamed:@"header_info.png"] forState:UIControlStateNormal];
-    [_iMarkButton setImage:[UIImage imageNamed:@"header_info_press.png"] forState:UIControlStateHighlighted];
-    [_iMarkButton addTarget:self action:@selector(oniMarkClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [_rightBarView addSubview:_iMarkButton];
-    /* trash button */
-    _trashButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _trashButton.frame = CGRectMake(rightBarWidth - 62 - 5, 0, 28, 28);
-    [_trashButton setImage:[UIImage imageNamed:@"header_delete.png"] forState:UIControlStateNormal];
-    [_trashButton setImage:[UIImage imageNamed:@"header_delete_press.png"] forState:UIControlStateHighlighted];
-    [_trashButton addTarget:self action:@selector(onTrashClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [_rightBarView addSubview:_trashButton];
-    /* pen button */
-    _penButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _penButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
-    [_penButton setImage:[UIImage imageNamed:@"header_edit.png"] forState:UIControlStateNormal];
-    [_penButton setImage:[UIImage imageNamed:@"header_edit_press.png"] forState:UIControlStateHighlighted];
-    [_penButton addTarget:self action:@selector(onPenClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [_rightBarView addSubview:_penButton];
-    /* ok button, not added first */
-    _okButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _okButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
-    [_okButton setImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
-    [_okButton setImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
-    [_okButton addTarget:self action:@selector(onDeleteOKClicked:) forControlEvents:UIControlEventTouchUpInside];
-    /* cancel button, not added first */
-    _cancelButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _cancelButton.frame = CGRectMake(0, 0, 28, 28);
-    [_cancelButton setImage:[UIImage imageNamed:@"header_cancel_normal.png"] forState:UIControlStateNormal];
-    [_cancelButton setImage:[UIImage imageNamed:@"header_cancel_press.png"] forState:UIControlStateHighlighted];
-    [_cancelButton addTarget:self action:@selector(onDeleteCancelClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    if ([self longinPridecate]) {
+        /* iMark button */
+        _iMarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _iMarkButton.frame = CGRectMake(rightBarWidth - 94 - 10, 0, 28, 28);
+        [_iMarkButton setImage:[UIImage imageNamed:@"header_info.png"] forState:UIControlStateNormal];
+        [_iMarkButton setImage:[UIImage imageNamed:@"header_info_press.png"] forState:UIControlStateHighlighted];
+        [_iMarkButton addTarget:self action:@selector(oniMarkClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_rightBarView addSubview:_iMarkButton];
+        /* trash button */
+        _trashButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _trashButton.frame = CGRectMake(rightBarWidth - 62 - 5, 0, 28, 28);
+        [_trashButton setImage:[UIImage imageNamed:@"header_delete.png"] forState:UIControlStateNormal];
+        [_trashButton setImage:[UIImage imageNamed:@"header_delete_press.png"] forState:UIControlStateHighlighted];
+        [_trashButton addTarget:self action:@selector(onTrashClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_rightBarView addSubview:_trashButton];
+        /* pen button */
+        _penButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _penButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        [_penButton setImage:[UIImage imageNamed:@"header_edit.png"] forState:UIControlStateNormal];
+        [_penButton setImage:[UIImage imageNamed:@"header_edit_press.png"] forState:UIControlStateHighlighted];
+        [_penButton addTarget:self action:@selector(onPenClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_rightBarView addSubview:_penButton];
+        /* ok button, not added first */
+        _okButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _okButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        [_okButton setImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
+        [_okButton setImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
+        [_okButton addTarget:self action:@selector(onDeleteOKClicked:) forControlEvents:UIControlEventTouchUpInside];
+        /* cancel button, not added first */
+        _cancelButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _cancelButton.frame = CGRectMake(0, 0, 28, 28);
+        [_cancelButton setImage:[UIImage imageNamed:@"header_cancel_normal.png"] forState:UIControlStateNormal];
+        [_cancelButton setImage:[UIImage imageNamed:@"header_cancel_press.png"] forState:UIControlStateHighlighted];
+        [_cancelButton addTarget:self action:@selector(onDeleteCancelClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        /* iMark button */
+        _iMarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _iMarkButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        [_iMarkButton setImage:[UIImage imageNamed:@"header_info.png"] forState:UIControlStateNormal];
+        [_iMarkButton setImage:[UIImage imageNamed:@"header_info_press.png"] forState:UIControlStateHighlighted];
+        [_iMarkButton addTarget:self action:@selector(oniMarkClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_rightBarView addSubview:_iMarkButton];
+    }
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:_rightBarView];
     self.navigationItem.rightBarButtonItem = rightBarItem;
     [rightBarItem release];
@@ -175,7 +186,7 @@
         NSLog(@"folderinfo remove");
         self.albumData.photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
         self.albumData.viewCount = [[folderinfo objectForKey:@"view_count"] intValue];
-        self.albumData.creatorId = [folderinfo objectForKey:@"user_id"];
+        self.albumData.creatorId = [NSString stringWithFormat:@"%@",[folderinfo objectForKey:@"user_id"]];
         self.albumData.permission = [[folderinfo objectForKey:@"is_public"] intValue];
         self.albumData.name = [folderinfo objectForKey:@"folder_name"];
         self.pullingController.headView.labelName.text = self.albumData.name;
@@ -191,7 +202,7 @@
 	for (int i = 0; i < photoList.count; ++i) {
 		NSDictionary *photoInfo = [photoList objectAtIndex:i];
 		SCPPhoto *photo = [[SCPPhoto alloc] init];
-		photo.photoID = [photoInfo objectForKey:@"photo_id"];
+		photo.photoID = [NSString stringWithFormat:@"%@",[photoInfo objectForKey:@"photo_id"]];
         photo.photoUrl = [photoInfo objectForKey:@"photo_url"];
         [_photoList addObject:photo];
 		[photo release];
@@ -220,9 +231,9 @@
 
 - (BOOL)longinPridecate
 {
-    if (![SCPLoginPridictive isLogin] || ![[NSString stringWithFormat:@"%@",self.albumData.creatorId] isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
-        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
-        [alte show];
+    if (![SCPLoginPridictive isLogin] || ![self.albumData.creatorId isEqualToString:[SCPLoginPridictive currentUserId]]) {
+//        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
+//        [alte show];
         return NO;
     }
     return YES;
@@ -231,7 +242,7 @@
 #pragma mark Rename album
 - (void)onPenClicked:(id)sender
 {
-    if (![self longinPridecate]) return;
+//    if (![self longinPridecate]) return;
     SCPAlert_Rename * rename = [[[SCPAlert_Rename alloc] initWithDelegate:self name:self.albumData.name] autorelease];
     [rename show];
 }
@@ -252,7 +263,7 @@
 #pragma mark trash
 - (void)onTrashClicked:(id)sender
 {
-    if (![self longinPridecate]) return;
+//    if (![self longinPridecate]) return;
     _state = PhotoGridStateDelete;
     [self.pullingController shutDataChangeFunction];
     CATransition *animation = [CATransition animation];
@@ -576,12 +587,10 @@
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
     [self addObserVerOnCenter];
-    [self refresh];
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-//    [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:NO];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];
     [self removeObserverOnCenter];
 }

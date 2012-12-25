@@ -14,8 +14,6 @@
 #import "SCPMenuNavigationController.h"
 #import "SCPPhotoGridController.h"
 #import "AlbumControllerManager.h"
-//#import "SCPTaskManager.h"
-
 
 @implementation SCPAlbumGridController
 
@@ -89,12 +87,12 @@
         
         for(SCPAlbumTaskList * tasks in [SCPUploadTaskManager currentManager].taskList)
         {
-            if ([tasks.albumId isEqualToString: album.albumId]) {
+            if ([[NSString stringWithFormat:@"%@",tasks.albumId] isEqualToString: [NSString stringWithFormat:@"%@",album.albumId]]) {
                 UIProgressView * pro = [cell.progressViewList objectAtIndex:indexInCell];
                 [pro setHidden:NO];
             }
             //当前进行的任务
-            if ([album.albumId isEqualToString:[SCPUploadTaskManager currentManager].curTask.albumId]) {
+            if ([[NSString stringWithFormat:@"%@",album.albumId] isEqualToString:[NSString stringWithFormat:@"%@",[SCPUploadTaskManager currentManager].curTask.albumId]]) {
                 self.curProgreeeView = [cell.progressViewList objectAtIndex:indexInCell];
                 self.currlabel = [cell.countLabelList objectAtIndex:indexInCell];
                 [self.currlabel setHidden:YES];

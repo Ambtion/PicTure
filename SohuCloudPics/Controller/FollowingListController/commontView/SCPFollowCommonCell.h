@@ -18,7 +18,6 @@
 @property(nonatomic,retain)NSString * title;
 @property(nonatomic,assign)NSInteger pictureCount;
 @property(nonatomic,assign)NSInteger albumCount;
-@property(nonatomic,assign)BOOL followed;
 @property(nonatomic,assign)BOOL following;
 @property(nonatomic,assign)BOOL isMe;
 @end

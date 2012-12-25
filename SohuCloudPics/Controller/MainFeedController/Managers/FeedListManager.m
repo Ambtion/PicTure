@@ -59,11 +59,11 @@
 {
     if (_willRefresh)
         [_dataArray removeAllObjects];
-    NSLog(@"%@",info);
     
     NSDictionary * creator = [info objectForKey:@"userInfo"];
+    NSLog(@"%@",creator);
     if (creator) {
-        allFollowed = [[creator objectForKey:@"followings"] intValue];
+        allFollowed = [[creator objectForKey:@"followers"] intValue];
     }
     NSArray * photoList = [[info objectForKey:@"feedList"] objectForKey:@"feed"];
     hasNextPage = [[[info objectForKey:@"feedList"] objectForKey:@"has_next"] boolValue];
@@ -300,7 +300,8 @@
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     // do nothing for it mainfeedPage
-    SCPPersonalPageViewController *controller = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:nil useID:[cell.dataSource.allInfo objectForKey:@"user_id"]];
+    NSString * user_id = [NSString stringWithFormat:@"%@",[cell.dataSource.allInfo objectForKey:@"user_id"]];
+    SCPPersonalPageViewController *controller = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:nil useID:user_id];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];
 }

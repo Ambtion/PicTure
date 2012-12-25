@@ -76,8 +76,6 @@
     }
     if (_dataSource.describtion && ![_dataSource.describtion isEqualToString:@""]) {
         describLabel.text = _dataSource.describtion;
-//        CGSize size = [_dataSource.describtion sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(270, 1000) lineBreakMode:UILineBreakModeWordWrap];
-//        describLabel.frame = CGRectMake(describLabel.frame.origin.x, describLabel.frame.origin.y, size.width, size.height);
         [describLabel sizeToFit];
     }else{
         describLabel.text = @"该图片无描述";

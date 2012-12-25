@@ -58,15 +58,14 @@
     for (int i = 0; i < followingsArray.count; i++) {
         SCPFollowCommonCellDataSource * dataSource = [[SCPFollowCommonCellDataSource alloc] init];
         NSDictionary * dic = [followingsArray objectAtIndex:i];
-        dataSource.user_id = [dic objectForKey:@"user_id"];
+        dataSource.user_id = [NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]];
         dataSource.title = [dic objectForKey:@"user_nick"];
         dataSource.coverImage = [dic objectForKey:@"user_icon"];
         dataSource.pictureCount = [[dic objectForKey:@"photo_num"] intValue];
         dataSource.albumCount = [[dic objectForKey:@"public_folders"] intValue];
         dataSource.following = [[dic objectForKey:@"is_following"] boolValue];
-        dataSource.followed = [[dic objectForKey:@"is_followed"] boolValue];
         if ([SCPLoginPridictive currentUserId]) {
-            dataSource.isMe = [[NSString stringWithFormat:@"%@",dataSource.user_id] isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
+            dataSource.isMe = [dataSource.user_id isEqualToString:[SCPLoginPridictive currentUserId]];
         }else{
             dataSource.isMe = NO;
         }

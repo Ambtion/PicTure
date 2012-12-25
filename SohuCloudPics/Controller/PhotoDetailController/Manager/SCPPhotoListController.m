@@ -135,8 +135,7 @@
         _requestManger.delegate = self;
         [self initSubViews];
         
-//        [_requestManger getPhotosWithUserID:[self.info objectForKey:@"user_id"] FolderID:[info objectForKey:@"folder_id"] page:Pagenum++];
-        [_requestManger getFolderinfoWihtUserID:[self.info objectForKey:@"user_id"] WithFolders:[info objectForKey:@"folder_id"]];
+        [_requestManger getFolderinfoWihtUserID:[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] WithFolders:[NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]]];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(listOrientationChanged:)
@@ -164,7 +163,7 @@
         [self initSubViews];
         
 
-        [_requestManger getFolderinfoWihtUserID:[self.info objectForKey:@"user_id"] WithFolders:[info objectForKey:@"folder_id"]];
+        [_requestManger getFolderinfoWihtUserID:[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] WithFolders:[NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]]];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(listOrientationChanged:)
@@ -291,7 +290,7 @@
     if (photoNum == imageArray.count) {
         return;
     }
-    [_requestManger getPhotosWithUserID :[self.info objectForKey:@"user_id"] FolderID:[_info objectForKey:@"folderShowId"] page:Pagenum++];
+    [_requestManger getPhotosWithUserID :[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] FolderID:[NSString   stringWithFormat:@"%@",[_info objectForKey:@"folderShowId"]] page:Pagenum++];
 }
 #pragma mark - InitSubView
 
@@ -396,7 +395,7 @@
     [self.view setUserInteractionEnabled:NO];
     animation = YES;
     
-    _dataManager.photo_ID = [self.info objectForKey:@"photo_id"];
+    _dataManager.photo_ID = [NSString stringWithFormat:@"%@",[self.info objectForKey:@"photo_id"]];
     [_dataManager dataSourcewithRefresh:YES];
     
     [self setZooming:_fontScrollview];

@@ -18,6 +18,7 @@
 @property (strong, nonatomic) PersonalPageManager *manager;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) UIView * footView;
+@property (strong, nonatomic) UIButton * topButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil useID:(NSString *) use_ID;
 
 @end

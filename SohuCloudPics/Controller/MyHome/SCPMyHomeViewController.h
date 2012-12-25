@@ -17,7 +17,7 @@
 }
 @property (strong, nonatomic) MyhomeManager *manager;
 @property (strong, nonatomic) UITableView *homeTable;
-
+@property (strong, nonatomic) UIButton * topButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil useID:(NSString *) use_ID;
 @property (strong, nonatomic) UIView * footView;
 @end

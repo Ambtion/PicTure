@@ -170,7 +170,6 @@
             }
         }
     }];
-    
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
@@ -624,6 +623,7 @@
     [request setPostValue:newName forKey:@"new_name"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
+        
         NSLog(@"%@",[request responseString]);
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);

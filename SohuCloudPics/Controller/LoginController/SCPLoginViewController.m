@@ -205,7 +205,7 @@
     [waitView show];
     [AccountSystemRequset sohuLoginWithuseName:_usernameTextField.text password:_passwordTextField.text sucessBlock:^(NSDictionary *response) {
         NSLog(@"%@",response);
-        [SCPLoginPridictive loginUserId:[response objectForKey:@"user_id"] withToken:[response objectForKey:@"access_token"]];
+        [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];
         [waitView dismissWithClickedButtonIndex:0 animated:YES];
         if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
             [_delegate SCPLogin:self doLogin:button];

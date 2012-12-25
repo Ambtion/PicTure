@@ -52,7 +52,7 @@
 
 - (id)initWithController:(SCPPhotoDetailViewController *)ctrl info:(NSDictionary*)info
 {
-    return [self initWithController:ctrl useId:[NSString stringWithFormat:@"%@",[info objectForKey:@"user_id"]] photoId:[info objectForKey:@"photo_id"]];
+    return [self initWithController:ctrl useId:[NSString stringWithFormat:@"%@",[info objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[info objectForKey:@"photo_id"]]];
 }
 
 #pragma mark  Request Finished

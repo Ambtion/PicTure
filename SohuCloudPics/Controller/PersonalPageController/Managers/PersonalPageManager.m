@@ -20,6 +20,8 @@
 #define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 200
 #define PAGEPHOTONUMBER 
+
+static float OFFSET = 0.f;
 @implementation PersonalPageManager
 
 @synthesize controller = _controller;
@@ -79,12 +81,12 @@
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
         _personalDataSource.isFollowByMe = [[userInfo objectForKey:@"is_following"] boolValue];
-        _personalDataSource.isFollowMe = [[userInfo objectForKey:@"is_followed"] boolValue];
         if ([SCPLoginPridictive currentUserId]) {
-            _personalDataSource.isMe = [[NSString stringWithFormat:@"%@",_user_ID] isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
+            _personalDataSource.isMe = [_user_ID isEqualToString:(NSString *)[SCPLoginPridictive currentUserId]];
         }else{
             _personalDataSource.isMe = NO;
-        }    }
+        }
+    }
     
     NSDictionary * feedinfo = [info objectForKey:@"feedList"];
     hasNextpage = [[feedinfo objectForKey:@"has_next"] boolValue];
@@ -179,6 +181,13 @@
             [self loadingMore:nil];
         }
     }
+    if (scrollView.contentOffset.y >= scrollView.bounds.size.width && scrollView.contentOffset.y < OFFSET && scrollView.contentOffset.y < scrollView.contentSize.height - 580) {
+        [_controller.topButton setHidden:NO];
+    }else{
+        [_controller.topButton setHidden:YES];
+    }
+    OFFSET = scrollView.contentOffset.y;
+
 }
 - (void)personalPageCell:(PersonalPageCell *)personal refreshClick:(id)sender
 {
