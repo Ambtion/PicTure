@@ -69,7 +69,8 @@
             dataSource.isMe = [dataSource.user_id isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
         }else{
             dataSource.isMe = NO;
-        }        [_dataSource addObject:dataSource];
+        }
+        [_dataSource addObject:dataSource];
         [dataSource release];
     }
     if (_isinit) {
@@ -203,7 +204,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     SCPFollowCommonCell * commoncell = [tableView dequeueReusableCellWithIdentifier:@"COMMONCELL"];
     if (commoncell == nil) {
         commoncell = [[[SCPFollowCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"COMMONCELL"] autorelease];
@@ -225,18 +225,25 @@
         [loginView show];
         return;
     }
-    
     if (cell.dataSource.following) {
         [_requestManger destoryFollowing:cell.dataSource.user_id success:^(NSString *response) {
+            //                NSInteger num = [_controller.pullingController.tableView indexPathForCell:cell].row;
+            //                SCPFollowCommonCellDataSource * dataSource = [_dataSource objectAtIndex:num];
+            //                dataSource.following = NO;
+            //                [self.controller.pullingController.tableView reloadData];
             [self dataSourcewithRefresh:YES];
-
         } failure:^(NSString *error) {
             UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
             [alterView show];
         }];
     }else{
         [_requestManger friendshipsFollowing:cell.dataSource.user_id success:^(NSString *response) {
+            //                NSInteger num = [_controller.pullingController.tableView indexPathForCell:cell].row;
+            //      g          SCPFollowCommonCellDataSource * dataSource = [_dataSource objectAtIndex:num];
+            //                dataSource.following = YES;
+            //                [self.controller.pullingController.tableView reloadData];
             [self dataSourcewithRefresh:YES];
+            
         } failure:^(NSString *error) {
             UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
             [alterView show];

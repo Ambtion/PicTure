@@ -546,28 +546,31 @@
 #pragma mark Notificatin
 - (void)getNotificationUser
 {
-//    NSString * str = [NSString stringWithFormat:@"%@",BASICURL_V1];
-//    [request setCompletionBlock:^{
-//        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
-//            NSString * str = [request responseString];
-//            NSDictionary * dic = [str JSONValue];
-//            [tempDic setObject:dic forKey:@"Followers"];
-//            if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
-//                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
-//                [tempDic removeAllObjects];
-//            }
-//        }else{
-//            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-//                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
-//            }
-//        }
-//    }];
-//    [request setFailedBlock:^{
-//        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-//            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
-//        }
-//    }];
-//    [request startAsynchronous];
+    NSString * str = [NSString stringWithFormat:@"%@/notifications?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
+    NSLog(@"%@",str);
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setCompletionBlock:^{
+        NSLog(@"%@",[request responseString]);
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            [tempDic setObject:dic forKey:@"Followers"];
+            if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
+                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
+                [tempDic removeAllObjects];
+            }
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+            }
+        }
+    }];
+    [request setFailedBlock:^{
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+        }
+    }];
+    [request startAsynchronous];
 }
 #pragma mark - Action Follow
 - (void)destoryFollowing:(NSString *)following_Id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure

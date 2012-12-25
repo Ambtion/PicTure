@@ -16,6 +16,7 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_dataSource release];
+    [_resqust release];
     [super dealloc];
 }
 
@@ -26,6 +27,9 @@
         _isLoading = NO;
         _controller = ctrl;
         _dataSource = [[NSMutableArray alloc] initWithCapacity:0];
+        _resqust = [[SCPRequestManager alloc] init];
+        _resqust.delegate = self;
+        [_resqust getNotificationUser];
         [self initDataSource];
     }
     return self;
@@ -47,11 +51,11 @@
 }
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
-    
     if (isRefresh)
         [_dataSource removeAllObjects];
     _isLoading = YES;
     for (int i = 0; i < 20; i++) {
+    
         NoticeDataSource * dataSource = [[NoticeDataSource alloc] init];
         dataSource.name = @"小白的驴";
         dataSource.content = @"跟随了我";
@@ -68,7 +72,14 @@
         [self performSelector:@selector(followedMoreDataFinishLoad) withObject:nil afterDelay:1.f];
     }
 }
-
+- (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
+{
+    NSLog(@"%@",info);
+}
+- (void)requestFailed:(NSString *)error
+{
+    NSLog(@"%@",error);
+}
 #pragma mark - dataChange
 #pragma mark refresh
 //1 点击 2 下拉 3 结束
