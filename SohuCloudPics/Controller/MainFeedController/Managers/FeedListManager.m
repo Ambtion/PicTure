@@ -63,7 +63,7 @@
     NSDictionary * creator = [info objectForKey:@"userInfo"];
     NSLog(@"%@",creator);
     if (creator) {
-        allFollowed = [[creator objectForKey:@"followers"] intValue];
+        allFollowed = [[creator objectForKey:@"followings"] intValue];
     }
     NSArray * photoList = [[info objectForKey:@"feedList"] objectForKey:@"feed"];
     hasNextPage = [[[info objectForKey:@"feedList"] objectForKey:@"has_next"] boolValue];

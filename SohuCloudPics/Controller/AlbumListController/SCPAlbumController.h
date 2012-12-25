@@ -40,7 +40,7 @@ typedef enum {
 }
 
 /* Data */
-@property (strong, nonatomic) NSString *user_id;
+@property (strong, nonatomic) NSString * user_id;
 @property (strong, nonatomic) NSMutableArray *albumList;
 @property (strong, nonatomic) NSString *bannerLeftString;
 @property (strong, nonatomic) NSString *bannerRightString;

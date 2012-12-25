@@ -47,7 +47,6 @@
     [self.view addSubview:self.pullingController.view];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataWhenLoginStateChange:) name:@"LoginStateChange" object:nil];
-//    [self.manager dataSourcewithRefresh:YES];
     
     [self.pullingController showLoadingMore];
     [self.pullingController realLoadingMore:nil];
@@ -67,6 +66,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    
     if (_item == nil) {
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
         [_item addRefreshtarget:self.manager action:@selector(refreshData:)];
@@ -74,6 +74,10 @@
     if (!_item.superview)    [self.navigationController.navigationBar addSubview:_item];
     
     [super viewDidAppear:animated];
+}
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self.manager dataSourcewithRefresh:YES];
 }
 -(void)viewWillDisappear:(BOOL)animated
 {

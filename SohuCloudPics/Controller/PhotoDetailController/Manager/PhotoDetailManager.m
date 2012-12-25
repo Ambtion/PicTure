@@ -313,16 +313,6 @@
         [alert show];
         return;
     }
-//    if (!cell.dataSource.ismyLike){
-//        
-//        [_requestManger makeUser:[SCPLoginPridictive currentUserId] likephotoWith:_user_ID :_photo_ID success:^(NSString *response) {
-//            NSLog(@"%@",response);
-//        }];
-//    }else{
-//        [_requestManger makeUser:[SCPLoginPridictive currentUserId] unLikephotoWith:_user_ID :_photo_ID success:^(NSString *response) {
-//            NSLog(@"%@",response);
-//        }];
-//    }
 }
 
 - (void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx

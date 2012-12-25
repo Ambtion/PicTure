@@ -329,7 +329,7 @@ static float OFFSET = 0.f;
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender
 {
     if (![self isLogin]) return;
-    SCPAlbumGridController * alb = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]];
+    SCPAlbumGridController * alb = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [_controller.navigationController pushViewController:alb animated:YES];
     [alb release];
 }
@@ -342,7 +342,7 @@ static float OFFSET = 0.f;
     if (![self isLogin]) return;
     NSLog(@"%s",__FUNCTION__);
     UINavigationController *nav = _controller.navigationController;
-    SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]];
+    SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [nav pushViewController:ctrl animated:YES];
     [ctrl release];
 }
@@ -350,7 +350,7 @@ static float OFFSET = 0.f;
 {
     if (![self isLogin]) return;
     UINavigationController *nav = _controller.navigationController;
-    SCPFollowedListViewController *ctrl = [[SCPFollowedListViewController alloc] initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]];
+    SCPFollowedListViewController *ctrl = [[SCPFollowedListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [nav pushViewController:ctrl animated:YES];
     [ctrl release];
 }

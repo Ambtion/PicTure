@@ -41,7 +41,7 @@ static float OFFSET = 0.f;
     
     self = [super init];
     if (self) {
-        _user_ID = [useID copy];
+        _user_ID = [useID retain];
         _controller = ctrl;
         _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
         _personalDataSource = [[PersonalPageCellDateSouce alloc] init];
