@@ -72,7 +72,6 @@
         }        [_dataSource addObject:dataSource];
         [dataSource release];
     }
-    
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
