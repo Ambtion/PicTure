@@ -63,7 +63,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     _pullingController = [[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_album.png"] frame:self.view.bounds];
     _pullingController.tableView.tableFooterView = nil;
     _pullingController.delegate = self;
@@ -102,11 +101,9 @@
 
 - (void)initNavigationItem
 {
-    
     int rightBarWidth = 250;
     _rightBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rightBarWidth, 28)];
     _rightBarView.backgroundColor = [UIColor clearColor];
-    
     
     if ([self loginPridecate]) {
         /* switch button */
@@ -286,8 +283,7 @@
 #pragma mark - SCPAlbumCellDelegate
 - (BOOL)loginPridecate
 {
-    
-    if (![SCPLoginPridictive isLogin] || ![self.user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
+    if (![SCPLoginPridictive isLogin] || ![self.user_id isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
 //        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
 //        [alte show];
         return NO;

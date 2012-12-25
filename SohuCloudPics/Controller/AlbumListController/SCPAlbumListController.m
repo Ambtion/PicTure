@@ -30,7 +30,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
     self.pullingController.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.pullingController.tableView.separatorColor = [UIColor colorWithRed:222.0 / 255.0 green:222.0 / 255.0 blue:222.0 / 255.0 alpha:1.0];
 }

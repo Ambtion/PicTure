@@ -75,12 +75,9 @@
     
     [super viewDidAppear:animated];
 }
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [self.manager dataSourcewithRefresh:YES];
-}
 -(void)viewWillDisappear:(BOOL)animated
 {
+    
     if (_item.superview)
         [_item removeFromSuperview];
 //    [super viewWillDisappear:animated]; //规定彩带行为

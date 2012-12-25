@@ -231,9 +231,9 @@
 
 - (BOOL)longinPridecate
 {
-    if (![SCPLoginPridictive isLogin] || ![self.albumData.creatorId isEqualToString:[SCPLoginPridictive currentUserId]]) {
-//        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
-//        [alte show];
+    if (![SCPLoginPridictive isLogin] || ![self.albumData.creatorId isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
+        //        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
+        //        [alte show];
         return NO;
     }
     return YES;

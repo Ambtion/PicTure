@@ -314,6 +314,11 @@ static NSInteger lastNum = -1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (MAXPICTURE < [self offsetOfDataSouce]) {
+        [self.controller.pullingController.footView setHidden:YES];
+    }else{
+        [self.controller.pullingController.footView setHidden:NO];
+    }
     return _strategyArray.count;
 }
 
