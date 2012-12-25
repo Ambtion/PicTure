@@ -677,7 +677,7 @@
 {
     NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setPostValue:newName forKey:@"new_name"];
+    [request setPostValue:newName forKey:@"name"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
         
