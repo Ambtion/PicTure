@@ -31,6 +31,7 @@
     BOOL _isinit;
     BOOL _isLoading;
     BOOL _willRefresh;
+    NSInteger numCount;
 }
 
 @property (assign, nonatomic) SCPPhotoDetailViewController *controller;

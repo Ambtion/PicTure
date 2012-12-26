@@ -642,7 +642,8 @@
 {
     NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setPostValue:newName forKey:@"name"];
+    NSString *urlName = [newName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [request setPostValue:urlName forKey:@"name"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
         
@@ -656,11 +657,29 @@
     [request setFailedBlock:^{
         failure(@"连接失败");
     }];
-    
     [request startAsynchronous];
-    
 }
 
-
+- (void)renameUserinfWithfolderWithnewName:(NSString *)newName Withdescription:(NSString *)description success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+{
+    NSString *url = [NSString stringWithFormat: @"%@/user/?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    NSString *urlName = [newName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [request setPostValue:urlName forKey:@"name"];
+    [request setPostValue:description forKey:@"description"];
+    [request setRequestMethod:@"PUT"];
+	[request setCompletionBlock:^{
+        NSLog(@"%@",[request responseString]);
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+            success([request responseString]);
+        }else{
+            failure(@"请求失败");
+        }
+    }];
+    [request setFailedBlock:^{
+        failure(@"连接失败");
+    }];
+    [request startAsynchronous];
+}
 
 @end

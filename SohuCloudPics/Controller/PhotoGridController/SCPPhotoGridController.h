@@ -43,6 +43,7 @@ typedef enum {
     NSInteger taskTotal;
     BOOL hasNextPage;
     NSInteger curpage;
+    BOOL isLoading;
 }
 
 /* Data */

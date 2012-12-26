@@ -66,7 +66,7 @@ static float OFFSET = 0.f;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
         NSLog(@"%@",response);
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
-        _personalDataSource.name = [response objectForKey:@"nick"];
+        _personalDataSource.name = [response objectForKey:@"user_nick"];
         _personalDataSource.desc = [response objectForKey:@"user_desc"];
         _personalDataSource.albumAmount = [[response objectForKey:@"public_folders"] intValue];
         _personalDataSource.followedAmount = [[response objectForKey:@"followers"] intValue];

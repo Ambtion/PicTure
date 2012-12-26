@@ -174,7 +174,7 @@
 {
     if (self.datasource == nil )         return;
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"]];
-    if (_dataSource.name ||[_dataSource.name isKindOfClass:[NSNull class]] || [_dataSource.name isEqualToString:@""]) {
+    if (!_dataSource.name ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"起个名字吧";
     }else{
         _nameLabel.text = [_dataSource name];

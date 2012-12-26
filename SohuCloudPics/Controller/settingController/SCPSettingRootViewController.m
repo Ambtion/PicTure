@@ -9,6 +9,7 @@
 #import "SCPSettingRootViewController.h"
 #import "MySettingCell.h"
 #import "SCPLoginPridictive.h"
+#import "SCPSettingUserinfoController.h"
 
 static NSString* SettingMenu[7] = {@"个人资料设置",@"隐私和推送设置",@"清除缓冲",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
 static NSString* SettingCover[7] = {@"settings_user.png",@"settings_push.png",@"settings_feedback.png",
@@ -33,13 +34,10 @@ static BOOL SettingNext[7] = {YES,YES,NO,YES,NO,YES,NO};
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorColor = [UIColor clearColor];
-    [self.view addSubview:_tableView];
-    
-    
+    _tableView.scrollEnabled = NO;
+    [self.view addSubview:_tableView];    
     //custimize iteam
-   
-    
-    
+
 }
 - (void)_backbutton:(UIButton*)button
 {
@@ -104,6 +102,9 @@ static BOOL SettingNext[7] = {YES,YES,NO,YES,NO,YES,NO};
 {
     if (indexPath.row == 0) {
         return;
+    }
+    if (indexPath.row == 1 ) {
+        [self.navigationController pushViewController:[[[SCPSettingUserinfoController alloc] init] autorelease] animated:YES];
     }
     if (indexPath.row == 7) {
 //        [SCPLoginPridictive removeDataForKey:nil];

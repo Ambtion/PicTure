@@ -47,18 +47,17 @@
         [bg_view setUserInteractionEnabled:YES];
         bg_view.image = [UIImage imageNamed:@"pop_up_filed.png"];
         bg_view.backgroundColor = [UIColor whiteColor];
-        _renameField = [[UITextField alloc] initWithFrame:CGRectMake(5, 6, 82, 23)];
+        _renameField = [[UITextField alloc] initWithFrame:CGRectMake(5, 6, 190 - 7, 23)];
         _renameField.backgroundColor = [UIColor clearColor];
         _renameField.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         _renameField.font = [_renameField.font fontWithSize:15];
-        _renameField.placeholder = name;
+        _renameField.text = name;
         _renameField.textAlignment = UITextAlignmentLeft;
         _renameField.borderStyle = UITextBorderStyleNone;
         _renameField.returnKeyType = UIReturnKeyDefault;
         
         [bg_view addSubview:_renameField];
         [_alertboxImageView addSubview:bg_view];
-        
         
         //外面不用
         UIButton* _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];

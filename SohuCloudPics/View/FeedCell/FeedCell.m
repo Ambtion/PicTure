@@ -102,9 +102,10 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     [_portraitView addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(portraitViewClicked:)] autorelease]];
     [tailerView addSubview:_portraitView];
     
-    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 5 + OFFSETY, 130, 20)];
+    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 5 + OFFSETY, 230, 20)];
     _nameLabel.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:20];
     _nameLabel.textColor = [UIColor colorWithRed:98.0/255 green:98.0/255 blue:98.0/255 alpha:1];
+    _nameLabel.numberOfLines = 1;
     _nameLabel.backgroundColor = [UIColor clearColor];
     [tailerView addSubview:_nameLabel];
     

@@ -164,19 +164,24 @@
 }
 - (void)loadingNextPage
 {
-    
+    if (isLoading) {
+        return;
+    }
+    isLoading = YES;
     if (hasNextPage)
         [_request getPhotosWithUserID:_albumData.creatorId FolderID:_albumData.albumId page:curpage + 1];
 }
 #pragma mark - SCPRequestManagerDelegate
 - (void)requestFailed:(NSString *)error
 {
+    isLoading = NO;
     UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
     [alterview show];
     [self.pullingController refreshDoneLoadingTableViewData];
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
+    isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolistinfo = [info objectForKey:@"photoList"];
     NSLog(@"%@",[photolistinfo allKeys]);
@@ -485,7 +490,6 @@
         } else {
             [cell hideViewWithPosition:i];
         }
-        
     }
     if (_photoList.count < offset + 12 ) {
         [self loadingNextPage];

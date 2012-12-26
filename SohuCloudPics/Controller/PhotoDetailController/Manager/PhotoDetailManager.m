@@ -71,7 +71,7 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-
+    NSLog(@"%@",info);
     if (_willRefresh){
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
@@ -84,6 +84,8 @@
         fAdapter.photoImage = [self.infoFromSuper objectForKey:@"photo_url"];
         fAdapter.isGif = [[self.infoFromSuper objectForKey:@"multi_frames"] intValue];
         fAdapter.update = [self.infoFromSuper objectForKey:@"upload_at_desc"];
+        numCount = [[self.infoFromSuper objectForKey:@"view_count"] intValue];
+
         [_dataSourceArray addObject:fAdapter];
         [fAdapter release];
         
@@ -201,7 +203,8 @@
 }
 - (NSString*)bannerDataSouceRightLabel
 {
-    return [self.controller getTimeString];
+//    return [self.controller getTimeString];
+    return [NSString stringWithFormat:@"浏览数:%d",numCount];
 }
 #pragma mark -
 #pragma mark Tableview DataSource
@@ -232,7 +235,7 @@
         FeedDescriptionSource * data = [_dataSourceArray objectAtIndex: 1];
         NSString * str = data.describtion;
         CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(270, 1000) lineBreakMode:UILineBreakModeWordWrap];
-        CGFloat heigth = (size.height  + 10);
+        CGFloat heigth = MAX((size.height  + 10), 30);
         return heigth;//for desc
     }
     return 0;

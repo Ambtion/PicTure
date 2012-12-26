@@ -38,7 +38,7 @@
         describLabel.numberOfLines = 0;
         describLabel.textColor = [UIColor colorWithRed:138/255.f green:157/255.f blue:181/255.f alpha:1];
         describLabel.backgroundColor = [UIColor clearColor];
-        describLabel.text = @"描述:预留接口";
+        describLabel.text = @"该图片无描述";
         [self.contentView addSubview:describLabel];
         
 //        UIImageView* bookmarkview = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 35, 15, 15)] autorelease];
@@ -61,7 +61,6 @@
 
 -(void)setDataScoure:(FeedDescriptionSource *)dataScoure
 {
-//    NSLog(@"MMMMMM  %@",dataScoure.describtion);
     if (_dataSource != dataScoure) {
         [_dataSource release];
         _dataSource = [dataScoure retain];
@@ -70,15 +69,10 @@
 }
 -(void)updataSource
 {
-//    if (_dataSource.bookMark && ![_dataSource.bookMark isEqualToString:@""]) {
-//        bookMarkLabel.text = _dataSource.bookMark;
-//    }else{
-//        bookMarkLabel.text = @"无标签";
-//    }
-
-    if (!_dataSource.describtion ||[_dataSource.describtion isEqualToString:[NSString stringWithFormat:@"%@",@""]]) {
+    if (!_dataSource.describtion ||![_dataSource.describtion isKindOfClass:[NSString class]]||[_dataSource.describtion isEqualToString:@""]) {
         describLabel.text = @"该图片无描述";
     }else{
+        
         describLabel.text = _dataSource.describtion;
         [describLabel sizeToFit];
     }
