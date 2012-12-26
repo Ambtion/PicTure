@@ -326,6 +326,7 @@
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
             [self getFeedMineWithPage:1];
+            
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
                 [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
@@ -623,6 +624,7 @@
     
     NSString *url = [NSString stringWithFormat:@"%@/folders",BASICURL_V1];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setStringEncoding:NSUTF8StringEncoding];
     [request setPostValue:newName forKey:@"name"];
     [request setPostValue:[NSNumber numberWithBool:NO] forKey:@"is_public"];
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
@@ -642,8 +644,8 @@
 {
     NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    NSString *urlName = [newName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    [request setPostValue:urlName forKey:@"name"];
+    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setPostValue:newName forKey:@"name"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
         
@@ -664,7 +666,6 @@
 {
     NSString *url = [NSString stringWithFormat: @"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setDefaultResponseEncoding:NSUTF8StringEncoding];
     NSString *urlName = [newName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [request setPostValue:urlName forKey:@"name"];
     [request setPostValue:description forKey:@"description"];
