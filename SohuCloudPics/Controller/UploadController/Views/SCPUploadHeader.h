@@ -28,7 +28,7 @@
     AlbumsTableManager *_manager;
     SCPRequestManager * _requestmanager;
     NSMutableArray * _foldersArray;
-    
+    BOOL isSelectedLast;
 }
 @property (assign, nonatomic) id<UploadHeadDeleagte> delegate;
 // data

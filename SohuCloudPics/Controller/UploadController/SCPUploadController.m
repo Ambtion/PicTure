@@ -98,6 +98,7 @@
     _uploadTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _uploadTableView.dataSource = self;
     _uploadTableView.delegate = self;
+    _uploadTableView.bounces = NO;
     [self.view addSubview:_uploadTableView];
     
     [self customizeNavigationBar];

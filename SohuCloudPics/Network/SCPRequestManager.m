@@ -223,7 +223,9 @@
     [request setTimeOutSeconds:5];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            
             NSString * str = [request responseString];
+            NSLog(@"%@",str);
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"folderinfo"];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
@@ -666,8 +668,8 @@
 {
     NSString *url = [NSString stringWithFormat: @"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    NSString *urlName = [newName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    [request setPostValue:urlName forKey:@"name"];
+    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setPostValue:newName forKey:@"name"];
     [request setPostValue:description forKey:@"description"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{

@@ -33,10 +33,10 @@ typedef enum {
     UIButton *_okButton;
 	
 	SCPRequestManager *_request;
-	
 	BOOL _hasNextPage;
 	int _currentPage;
 	int _loadedPage;
+    BOOL isLoading;
 }
 
 /* Data */

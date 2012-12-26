@@ -10,13 +10,13 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation MyPersonalCelldataSource
-//@synthesize allInfo = _allInfo;
+
+@synthesize isInit = _isInit;
 @synthesize portrait = _portrait;
 @synthesize name = _name;
 @synthesize position = _position;
 @synthesize desc = _desc;
 @synthesize albumAmount = _albumAmount;
-//@synthesize favouriteAmount = _favouriteAmount;
 @synthesize followedAmount = _followedAmount;
 @synthesize followingAmount = _followingAmount;
 
@@ -25,11 +25,16 @@
     self.portrait = nil;
     self.name = nil;
     self.position = nil;
-//    self.allInfo = nil;
     self.desc = nil;
     [super dealloc];
 }
-
+- (id)init
+{
+    if (self = [super init]) {
+        self.isInit = YES;
+    }
+    return self;
+}
 @end
 
 @implementation MyPersonalCell
@@ -42,7 +47,7 @@
     [_portraitImageView release];
     [_nameLabel release];
     [_descLabel release];
-    
+    [_settingButton release];
     [_albumButton release];
 //    [_favorButton release];
     [_followingButton release];
@@ -129,14 +134,14 @@
     _descLabel.shadowOffset = CGSizeMake(0, 1);
     [self.contentView addSubview:_descLabel];
     
-    _followButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_followButton setImage:[UIImage imageNamed:@"user_settings_normal.png"] forState:UIControlStateNormal];
-    [_followButton setImage:[UIImage imageNamed:@"user_settings_press.png"] forState:UIControlStateHighlighted];
-    [_followButton addTarget:self action:@selector(settingButton:) forControlEvents:UIControlEventTouchUpInside];
-    _followButton.frame = CGRectMake(117, 268, 90, 25);
-    _followButton.backgroundColor = [UIColor clearColor];
-    _followButton.titleLabel.textColor = [UIColor clearColor];
-    [self.contentView addSubview:_followButton];
+    _settingButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [_settingButton setImage:[UIImage imageNamed:@"user_settings_normal.png"] forState:UIControlStateNormal];
+    [_settingButton setImage:[UIImage imageNamed:@"user_settings_press.png"] forState:UIControlStateHighlighted];
+    [_settingButton addTarget:self action:@selector(settingButton:) forControlEvents:UIControlEventTouchUpInside];
+    _settingButton.frame = CGRectMake(117, 268, 90, 25);
+    _settingButton.backgroundColor = [UIColor clearColor];
+    _settingButton.titleLabel.textColor = [UIColor clearColor];
+    [self.contentView addSubview:_settingButton];
     
     CGRect frame = CGRectMake(_backgroundImageView.frame.size.width - 36, _backgroundImageView.frame.size.height - 36 - 113, 26, 26);
     RefreshButton * refreshButton = [[[RefreshButton alloc] initWithFrame:frame] autorelease];
@@ -184,9 +189,12 @@
     }else{
         _descLabel.text = self.datasource.desc;
     }
-    
+    if (self.datasource.isInit) {
+        [_settingButton setHidden:YES];
+    }else{
+        [_settingButton setHidden:NO];
+    }
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
-//    _favorButton.numlabel.text = [NSString stringWithFormat:@"%d",self.datasource.favouriteAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
 }

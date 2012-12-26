@@ -57,6 +57,7 @@
 }
 - (void)refreshUserinfo
 {
+    if (_isInit) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
         NSLog(@"%@",response);
         allFollowed = [[response objectForKey:@"followings"] intValue];

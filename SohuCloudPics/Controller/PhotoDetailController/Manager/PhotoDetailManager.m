@@ -71,8 +71,8 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    NSLog(@"%@",info);
     if (_willRefresh){
+        
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
         FeedCellDataSource *fAdapter = [[FeedCellDataSource alloc] init];

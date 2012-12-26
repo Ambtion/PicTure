@@ -136,7 +136,6 @@
     NSInteger total = [[dic objectForKey:@"Total"] intValue];
     NSInteger finish = [[dic objectForKey:@"Finish"] intValue];
     CGFloat pro = (CGFloat)((CGFloat)finish / (CGFloat)total);
-    NSLog(@"LLLLLLLLLLLLL %s %@ %f", __FUNCTION__, dic ,pro);
     self.curProgreeeView.progress = pro;
 }
 

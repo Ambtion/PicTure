@@ -63,6 +63,7 @@ static float OFFSET = 0.f;
 }
 - (void)refreshUserinfo
 {
+    if (_isinit) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
         NSLog(@"%@",response);
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
@@ -83,6 +84,7 @@ static float OFFSET = 0.f;
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
+        _personalDataSource.isInit = NO;
         _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
         _personalDataSource.name = [userInfo objectForKey:@"user_nick"];
         _personalDataSource.desc = [userInfo objectForKey:@"user_desc"];
@@ -106,6 +108,7 @@ static float OFFSET = 0.f;
         [_dataArray addObject:adapter];
         [adapter release];
     }
+    
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
@@ -339,8 +342,8 @@ static float OFFSET = 0.f;
 #pragma mark CELL - Method
 - (void)MyPersonalCell:(MyPersonalCell *)cell settingClick:(id)sender
 {
-    SCPSetttingController * setting = [[[SCPSetttingController alloc] initWithcontroller:_controller] autorelease];
-    [_controller presentModalViewController:setting animated:YES];
+    SCPSetttingController * setting = [[[SCPSetttingController alloc] initWithcontroller:_controller.navigationController] autorelease];
+    [_controller.navigationController presentModalViewController:setting animated:YES];
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender
 {

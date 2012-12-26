@@ -24,5 +24,6 @@
     
     MainFeedBannerDataSource * _dataSource;
 }
+
 @property(nonatomic,retain)MainFeedBannerDataSource * dataSource;
 @end

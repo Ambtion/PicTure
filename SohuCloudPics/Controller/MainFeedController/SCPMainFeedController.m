@@ -63,12 +63,18 @@
 }
 #pragma mark -
 #pragma mark customerNavigationItem
-
-- (void)viewDidAppear:(BOOL)animated
+- (void)refreshButton:(UIButton *)button
+{
+    if ([self.pullingController.tableView numberOfSections]){
+        [self.pullingController.tableView setContentOffset:CGPointZero];
+    }
+    [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
+    //    [self.manager refreshData:nil];
+}- (void)viewDidAppear:(BOOL)animated
 {
     if (_item == nil) {
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
-        [_item addRefreshtarget:self.manager action:@selector(refreshData:)];
+        [_item addRefreshtarget:self action:@selector(refreshButton:)];
     }
     if (!_item.superview)    [self.navigationController.navigationBar addSubview:_item];
     
@@ -80,14 +86,6 @@
     if (_item.superview)
         [_item removeFromSuperview];
 //    [super viewWillDisappear:animated]; //规定彩带行为
-}
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-}
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

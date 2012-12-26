@@ -13,7 +13,7 @@
 
 @implementation PersonalPageCellDateSouce
 
-//@synthesize allInfo = _allInfo;
+@synthesize isInit = _isInit;
 @synthesize portrait = _portrait;
 @synthesize name = _name;
 //@synthesize position = _position;
@@ -25,7 +25,13 @@
 @synthesize followedAmount = _followedAmount;
 @synthesize followingAmount = _followingAmount;
 @synthesize isMe = _isMe;
-
+- (id)init
+{
+    if (self = [super init]) {
+        self.isInit = YES;
+    }
+    return self;
+}
 - (void)dealloc
 {
     self.portrait = nil;
@@ -96,6 +102,7 @@
 }
 -(void)addUserPhotoLabel
 {
+    
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 212, 300, 18)];
     _nameLabel.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:18];
     _nameLabel.shadowColor = [UIColor blackColor];
@@ -103,7 +110,6 @@
     _nameLabel.textAlignment = UITextAlignmentCenter;
     _nameLabel.backgroundColor = [UIColor clearColor];
     _nameLabel.textColor = [UIColor whiteColor];
-    
     [self.contentView addSubview:_nameLabel];
     
     _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 236, 300, 24)];
@@ -156,7 +162,6 @@
 }
 - (void)updataData
 {
-    if (self.datasource == nil )      return;
     
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"]];
     if (!_dataSource.name || ![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
@@ -169,7 +174,6 @@
     }else{
         _descLabel.text = self.datasource.desc;
     }
-    [_followButton setHidden:NO];
     if (self.datasource.isFollowByMe) {
         [_followButton setImage:[UIImage imageNamed:@"user_cancel_follow_normal-2.png"] forState:UIControlStateNormal];
         [_followButton setImage:[UIImage imageNamed:@"user_cancel_follow_press_2.png"] forState:UIControlStateHighlighted];
@@ -177,9 +181,12 @@
         [_followButton setImage:[UIImage imageNamed:@"user_add_following_normal.png"] forState:UIControlStateNormal];
         [_followButton setImage:[UIImage imageNamed:@"user_add_following_press.png"] forState:UIControlStateHighlighted];
     }
-    if (self.datasource.isMe) {
+    if (self.datasource.isMe || self.datasource.isInit) {
         [_followButton setHidden:YES];
+    }else{
+        [_followButton setHidden:NO];
     }
+    
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];

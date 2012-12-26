@@ -67,6 +67,7 @@ static float OFFSET = 0.f;
 }
 - (void)refreshUserinfo
 {
+    if (_isinit) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",_user_ID]success:^(NSDictionary *response) {
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
@@ -84,13 +85,13 @@ static float OFFSET = 0.f;
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    
+    NSLog(@"%@",info);
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
-//        _personalDataSource.allInfo = userInfo;
+        _personalDataSource.isInit = NO;
         _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
-        _personalDataSource.name = [userInfo objectForKey:@"nick"];
+        _personalDataSource.name = [userInfo objectForKey:@"user_nick"];
         _personalDataSource.desc = [userInfo objectForKey:@"user_desc"];
         _personalDataSource.albumAmount = [[userInfo objectForKey:@"public_folders"] intValue];
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
@@ -102,6 +103,7 @@ static float OFFSET = 0.f;
             _personalDataSource.isMe = NO;
         }
     }
+    
     NSDictionary * feedinfo = [info objectForKey:@"feedList"];
     hasNextpage = [[feedinfo objectForKey:@"has_next"] boolValue];
     curPage = [[feedinfo objectForKey:@"page"] intValue];
@@ -282,6 +284,7 @@ static float OFFSET = 0.f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     NSInteger row = indexPath.row;
     if (row == 0) {
         PersonalPageCell* pageCell = [tableView dequeueReusableCellWithIdentifier:@"PAGECELL"];

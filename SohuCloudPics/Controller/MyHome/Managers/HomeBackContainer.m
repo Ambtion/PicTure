@@ -26,31 +26,43 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
         self.delegate = Adelegete;
         self.frame = [[UIScreen mainScreen] bounds];
         self.image = [UIImage imageNamed:@"pop_bg.png"];
-        [self setUserInteractionEnabled:YES];
 //        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandle:)] autorelease];
 //        [self addGestureRecognizer:gesture];
+        
         [self addSubviews];
     }
     return self;
 }
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch * touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self];
+    NSLog(@"%@",NSStringFromCGPoint(point));
+    
+    if (CGRectContainsPoint(CGRectMake(0, 0, 320, 480 - 162), point)) {
+        [self tapGestureHandle:nil];
+        return;
+    }
+    [super touchesBegan:touches withEvent:event];
+}
 - (void)addSubviews
 {
     _boxViews = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.bounds.size.height, self.bounds.size.width, 162)];
-    _boxViews.backgroundColor = [UIColor redColor];
+    _boxViews.backgroundColor = [UIColor clearColor];
     _boxViews.image = [UIImage imageNamed:@"ueser_image_change_bg.png"];
     [self addSubview:_boxViews];
     [_boxViews setUserInteractionEnabled:YES];
+    [self setUserInteractionEnabled:YES];
+  
     [self boxviewaddSubViews];
 }
 - (void)boxviewaddSubViews
 {
     
     for (int i = 0; i < 4; i++) {
-        
         UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(5 + 80 * i, 33, 75, 75)] autorelease];
         imageview.image = [UIImage imageNamed:ICON[i]];
         [imageview setUserInteractionEnabled:YES];
-        
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:[UIImage imageNamed:@"user_image_check.png"] forState:UIControlStateSelected];
         button.frame = CGRectMake(5 + 80 * i, 33, 75, 75);
@@ -59,7 +71,6 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
         [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_boxViews addSubview:imageview];
         [_boxViews addSubview:button];
-        
     }
     [self setSelecteStateonButton];
 }
@@ -82,6 +93,7 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
     UIButton * button = (UIButton*)[_boxViews viewWithTag:index];
     [button setSelected:YES];
 }
+
 - (void)buttonClick:(UIButton *)button
 {
     NSString * bgName = IMAGENAME[button.tag - 1000];

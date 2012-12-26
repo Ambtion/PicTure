@@ -72,9 +72,14 @@
     _pullingController.delegate = self;
     _pullingController.tableView.dataSource = self;
     _pullingController.headView.datasouce = self;
+    //目的是为了防止图片到底.....
+    UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 4)] autorelease];
+    view.backgroundColor = [UIColor clearColor];
+    _pullingController.tableView.tableFooterView = view;
     [self.view addSubview:_pullingController.view];
     [self initNavigationItem];
     [self refresh];
+    
 }
 
 - (void)initNavigationItem
@@ -184,11 +189,10 @@
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolistinfo = [info objectForKey:@"photoList"];
-    NSLog(@"%@",[photolistinfo allKeys]);
+    NSLog(@"%@",info);
           
     if (folderinfo) {
         NSLog(@"%@",folderinfo);
-        NSLog(@"folderinfo remove");
         self.albumData.photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
         self.albumData.viewCount = [[folderinfo objectForKey:@"view_count"] intValue];
         self.albumData.creatorId = [NSString stringWithFormat:@"%@",[folderinfo objectForKey:@"user_id"]];
@@ -199,10 +203,10 @@
     }
     
     [self updateUploadPhotoList];
+    
     hasNextPage = [[photolistinfo objectForKey:@"has_next"] boolValue];
     curpage = [[photolistinfo objectForKey:@"page"] intValue];
-    NSLog(@"nextpage:%d,curpage:%d",hasNextPage ,curpage);
-
+    
 	NSArray * photoList = [photolistinfo objectForKey:@"photos"];
 	for (int i = 0; i < photoList.count; ++i) {
 		NSDictionary *photoInfo = [photoList objectAtIndex:i];
@@ -231,6 +235,7 @@
         [_photoList addObject:photo];
         [photo release];
     }
+    
 }
 #pragma mark - inner method
 

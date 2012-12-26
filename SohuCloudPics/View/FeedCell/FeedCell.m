@@ -182,7 +182,12 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     tailerView.frame = frame;
     
     [self showGifButton];
-    NSString * str = [NSString stringWithFormat:@"%@_w283",_dataSource.photoImage];
+    NSString * str  = nil;
+    if (self.dataSource.heigth > 320) {
+        str = [NSString stringWithFormat:@"%@_h960",_dataSource.photoImage];
+    }else{
+       str = [NSString stringWithFormat:@"%@_w640",_dataSource.photoImage];
+    }
     [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
 //    [_photoImageView setImageWithURL:[NSURL URLWithString:_dataSource.photoImage]];
     [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];

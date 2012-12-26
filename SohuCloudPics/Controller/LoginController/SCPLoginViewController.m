@@ -215,6 +215,7 @@
         UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
         [alterView show];
     }];
+
 }
 
 - (void)sinaLogin:(UIButton*)button
@@ -247,34 +248,30 @@
     view.contentSize = size;
     
     CGPoint point = view.contentOffset;
-    point.y += 120;
-    
+    point.y =  120;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
     view.contentOffset = point;
     [UIView commitAnimations];
-    
 }
-
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     UIScrollView *view = (UIScrollView *) self.view;
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+//    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     
     CGPoint point = view.contentOffset;
-    point.y -= 120;
-    
+    point.y  =  0;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
     view.contentOffset = point;
     [UIView commitAnimations];
-    CGSize size = view.contentSize;
-    size.height -= keyboardSize.height;
+    
+    CGSize size = view.bounds.size;
     view.contentSize = size;
-    UIScrollView * views = (UIScrollView *) self.view;
-    views.contentSize = self.view.bounds.size;
+//    UIScrollView * views = (UIScrollView *) self.view;
+//    views.contentSize = self.view.bounds.size;
 }
 
 @end

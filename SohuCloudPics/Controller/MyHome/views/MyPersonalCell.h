@@ -16,7 +16,7 @@
 
 @interface MyPersonalCelldataSource : NSObject
 
-//@property(nonatomic,retain)NSDictionary * allInfo;
+@property(nonatomic,assign)BOOL isInit;
 @property(nonatomic,retain)NSString * portrait;
 @property(nonatomic,retain)NSString* name;
 @property(nonatomic,retain)NSString* position;
@@ -45,7 +45,7 @@
     UIImageView * _portraitImageView;
     UILabel * _nameLabel;
     UILabel * _descLabel;
-    UIButton * _followButton;
+    UIButton * _settingButton;
     
     MenuButtonView * _albumButton;
 //    MenuButtonView * _favorButton;

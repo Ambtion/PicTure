@@ -47,6 +47,7 @@
     [_albumNameLabel release];
     [_albumChooseButton release];
     [_labelBoxLabel release];
+    isSelectedLast = NO;
     [super dealloc];
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -127,12 +128,12 @@
     [_foldersArray removeAllObjects];
     [_requestmanager getFoldersWithID:[SCPLoginPridictive currentUserId] page:1];
 }
+
 #pragma mark  Method Network
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     NSArray * array = [[info objectForKey:@"folderinfo"] objectForKey:@"folders"];
     NSLog(@"%@",[array lastObject]);
-
     for (NSDictionary * dic in array) {
         FoldersMode * mode = [[FoldersMode alloc] init];
         mode.foldrsName = [dic objectForKey:@"folder_name"];
@@ -141,12 +142,17 @@
         [_foldersArray addObject:mode];
         [mode release];
     }
-    
     if ([[info objectForKey:@"has_next"] intValue]){
         [_requestmanager getFoldersWithID:[SCPLoginPridictive currentUserId] page:[[info objectForKey:@"page"] intValue] + 1];
     }else{
         [_albumsTable reloadData];
+        if (isSelectedLast) {
+            self.currentAlbum = 1;
+//            [self albumChooseButtonClicked];
+            isSelectedLast = NO;
+        }
     }
+   
 }
 - (void)requestFailed:(NSString *)error
 {
@@ -156,10 +162,9 @@
 #pragma mark Create Folder
 - (void)renameAlertView:(SCPAlert_Rename *)view OKClicked:(UITextField *)textField
 {
-    if (!textField.text ||[textField.text isEqualToString:@""]) {
-        return;
-    }
+    if (!textField.text ||[textField.text isEqualToString:@""]) return;
     [_requestmanager createAlbumWithName:textField.text success:^(NSString *response) {
+        isSelectedLast = YES;
         [self refreshData];
     } failure:^(NSString *error) {
         UIAlertView * alterview = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
@@ -179,7 +184,6 @@
         [self.superview.superview addSubview:_albumsTable];
         [self.superview.superview bringSubviewToFront:_albumsTable];
         [_albumsTable becomeFirstResponder];
-        
     } else {
         [_albumsTable removeFromSuperview];
     }
@@ -200,19 +204,15 @@
 //
 //    }
 //}
-
 - (void)setCurrentAlbum:(NSInteger)currentAlbum
 {
     _currentAlbum = currentAlbum;
-    //        [_albumChooseButton setTitle:((FoldersMode *)[_foldersArray objectAtIndex:_currentAlbum]).foldrsName forState:UIControlStateNormal];
     FoldersMode * mode = (FoldersMode *)[_foldersArray objectAtIndex:_currentAlbum];
     _albumNameLabel.text = mode.foldrsName;
     if ([_delegate respondsToSelector:@selector(uploadHeader:selectAlbum:)])
         [_delegate performSelector:@selector(uploadHeader:selectAlbum:) withObject:self withObject:mode.folders_Id];
 }
 @end
-
-
 
 @implementation AlbumsTableManager
 
@@ -241,10 +241,7 @@
     }
     return cell;
 }
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    cell.backgroundColor = [UIColor redColor];
-//}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _header.foldersArray.count + 1;

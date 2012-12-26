@@ -53,6 +53,7 @@
         _hasNextPage = NO;
 		_currentPage = 0;
 		_loadedPage = 0;
+        isLoading = NO;
         _albumList = [[NSMutableArray alloc] init];
 		_request = [[SCPRequestManager alloc] init];
 		_request.delegate = self;
@@ -157,8 +158,9 @@
 
 - (void)loadNextPage
 {
+    if (isLoading) return;
+    isLoading = YES;
 	if (_hasNextPage) {
-
 		if (_currentPage == _loadedPage) {
             [_request getFoldersWithID:_user_id page:_currentPage + 1];
 		}
@@ -228,7 +230,7 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-  
+    isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
 //    NSLog(@"folderinfo %@",[folderinfo allKeys]);
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
@@ -237,7 +239,7 @@
 	if (_currentPage == 1) {
 		NSDictionary * creator = [info objectForKey:@"userInfo"];
 		int albumCount = [[creator objectForKey:@"public_folders"] intValue];
-		NSString * nickname = [creator objectForKey:@"nick"];
+		NSString * nickname = [creator objectForKey:@"user_nick"];
 		[self updateBannerWithAlbumCount:albumCount andAuthorName:nickname];
 		[_albumList removeAllObjects];
 	}
