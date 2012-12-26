@@ -11,11 +11,16 @@
 #import "SCPLoginPridictive.h"
 #import "SCPSettingUserinfoController.h"
 
-static NSString* SettingMenu[7] = {@"个人资料设置",@"隐私和推送设置",@"清除缓冲",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
+#import "SCPAlert_About.h"
+#import "SCPAlert_FeedBack.h"
+
+static NSString* SettingMenu[7] = {@"个人资料设置",@"上传图片质量",@"清除缓冲",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
 static NSString* SettingCover[7] = {@"settings_user.png",@"settings_push.png",@"settings_feedback.png",
                                 @"settings_feedback.png",@"settings_refresh.png",@"settings_about.png",@"settings_logout.png"};
 
-static BOOL SettingNext[7] = {YES,YES,NO,YES,NO,YES,NO};
+static BOOL SettingNext[7] = {YES,NO,NO,NO,NO,NO,NO};
+static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
+
 @implementation SCPSettingRootViewController
 
 - (id)initwithController:(id)controller
@@ -78,15 +83,14 @@ static BOOL SettingNext[7] = {YES,YES,NO,YES,NO,YES,NO};
     MySettingCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CELL"];
     if (cell == nil) {
         cell = [[[MySettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"] autorelease];
-       
     }
     cell.c_ImageView.image = [UIImage imageNamed:SettingCover[indexPath.row - 1]];
     cell.c_Label.text = SettingMenu[indexPath.row - 1];
     
     if (SettingNext[indexPath.row - 1]) {
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.accessoryImage.image = [UIImage imageNamed:@"settings_arrow.png"];
     }
+    
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -106,12 +110,23 @@ static BOOL SettingNext[7] = {YES,YES,NO,YES,NO,YES,NO};
     if (indexPath.row == 1 ) {
         [self.navigationController pushViewController:[[[SCPSettingUserinfoController alloc] init] autorelease] animated:YES];
     }
+    if (indexPath.row == 4) {
+        NSLog(@"%s",__FUNCTION__);
+        SCPAlert_FeedBack * feedBack = [[[SCPAlert_FeedBack alloc] init] autorelease];
+        [feedBack show];
+    }
+    
+    if (indexPath.row == 6) {
+        SCPAlert_About * about = [[[SCPAlert_About alloc] initWithTitle:nil] autorelease];
+        [about show];
+    }
     if (indexPath.row == 7) {
 //        [SCPLoginPridictive removeDataForKey:nil];
         [SCPLoginPridictive logout];
         UIAlertView * alter = [[UIAlertView alloc] initWithTitle:@"已登出" message:@"" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alter show];
         [alter release];
+        
     }
     
 }

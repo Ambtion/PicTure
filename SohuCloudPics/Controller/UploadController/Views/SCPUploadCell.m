@@ -99,7 +99,6 @@
 {
     return textView.text.length - range.length + text.length <= DESC_COUNT_LIMIT;
 }
-
 - (void)textViewDidChange:(UITextView *)textView
 {
     [_descCountLabel setText:[NSString stringWithFormat:@"%d/%d", textView.text.length, DESC_COUNT_LIMIT]];

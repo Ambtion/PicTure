@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "SCPRequestManager.h"
 
-@interface SCPSettingUserinfoController : UIViewController
+@interface SCPSettingUserinfoController : UIViewController<UITextFieldDelegate,UITextViewDelegate>
 {
     SCPRequestManager * _request;
     UIImageView * _portraitView;
     UITextField * _nameFiled;
-    UITextField * _description;
+    UITextView * _description;
+    UIImageView * _imageview;
 }
 @end

@@ -398,6 +398,11 @@
 		C5A9D809166F3BAA00494794 /* MoreAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A9D808166F3BAA00494794 /* MoreAlertView.m */; };
 		C5AEE2161616BD81005DE811 /* Light.png in Resources */ = {isa = PBXBuildFile; fileRef = C5AEE2151616BD81005DE811 /* Light.png */; };
 		C5D47C80168AD54E00C522E3 /* SCPSettingUserinfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D47C7F168AD54E00C522E3 /* SCPSettingUserinfoController.m */; };
+		C5D47C86168ADD9500C522E3 /* personal_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D47C85168ADD9500C522E3 /* personal_setting.png */; };
+		C5D47C88168AED2D00C522E3 /* personal_slogn.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D47C87168AED2D00C522E3 /* personal_slogn.png */; };
+		C5D47C8B168AF98F00C522E3 /* SCPAlert_About.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D47C8A168AF98F00C522E3 /* SCPAlert_About.m */; };
+		C5D47C8E168AFCFB00C522E3 /* SCPAlert_FeedBack.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D47C8D168AFCFB00C522E3 /* SCPAlert_FeedBack.m */; };
+		C5D47C90168B01A800C522E3 /* info_pop_feedback_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D47C8F168B01A800C522E3 /* info_pop_feedback_bg.png */; };
 		C5D9A7DD1637DF3E004BD68D /* ImageToolBox.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9A7DC1637DF3E004BD68D /* ImageToolBox.m */; };
 		C5E29080162288C00085EBE9 /* 2-清新.png in Resources */ = {isa = PBXBuildFile; fileRef = C5E29077162288C00085EBE9 /* 2-清新.png */; };
 		C5E29081162288C00085EBE9 /* 3-黑白.png in Resources */ = {isa = PBXBuildFile; fileRef = C5E29078162288C00085EBE9 /* 3-黑白.png */; };
@@ -976,6 +981,13 @@
 		C5AEE2151616BD81005DE811 /* Light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Light.png; sourceTree = "<group>"; };
 		C5D47C7E168AD54E00C522E3 /* SCPSettingUserinfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPSettingUserinfoController.h; sourceTree = "<group>"; };
 		C5D47C7F168AD54E00C522E3 /* SCPSettingUserinfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPSettingUserinfoController.m; sourceTree = "<group>"; };
+		C5D47C85168ADD9500C522E3 /* personal_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personal_setting.png; sourceTree = "<group>"; };
+		C5D47C87168AED2D00C522E3 /* personal_slogn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personal_slogn.png; sourceTree = "<group>"; };
+		C5D47C89168AF98F00C522E3 /* SCPAlert_About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAlert_About.h; sourceTree = "<group>"; };
+		C5D47C8A168AF98F00C522E3 /* SCPAlert_About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlert_About.m; sourceTree = "<group>"; };
+		C5D47C8C168AFCFB00C522E3 /* SCPAlert_FeedBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAlert_FeedBack.h; sourceTree = "<group>"; };
+		C5D47C8D168AFCFB00C522E3 /* SCPAlert_FeedBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlert_FeedBack.m; sourceTree = "<group>"; };
+		C5D47C8F168B01A800C522E3 /* info_pop_feedback_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info_pop_feedback_bg.png; sourceTree = "<group>"; };
 		C5D9A7DB1637DF3E004BD68D /* ImageToolBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageToolBox.h; sourceTree = "<group>"; };
 		C5D9A7DC1637DF3E004BD68D /* ImageToolBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageToolBox.m; sourceTree = "<group>"; };
 		C5E29077162288C00085EBE9 /* 2-清新.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "2-清新.png"; sourceTree = "<group>"; };
@@ -1386,6 +1398,7 @@
 		61907A5A15EB8CFB00324A6B /* Resourse */ = {
 			isa = PBXGroup;
 			children = (
+				C5D47C82168ADA4800C522E3 /* Setting */,
 				C51E2A7C168AAC6700DC0ED4 /* systerm.png */,
 				C508A6B3168454B2006D86B9 /* Default@2x.png */,
 				C508A6B5168457D3006D86B9 /* HomeBackImage */,
@@ -1553,6 +1566,7 @@
 		B7916E481615CAC4007E6EB5 /* alertView */ = {
 			isa = PBXGroup;
 			children = (
+				C5D47C8F168B01A800C522E3 /* info_pop_feedback_bg.png */,
 				C596DF02168854B700E04C93 /* pop_bg.png */,
 				C54105521675E0520063A1BD /* pop_up_btn_L_press.png */,
 				C54105531675E0520063A1BD /* pop_up_btn_L.png */,
@@ -1664,6 +1678,10 @@
 				C54105501675DECE0063A1BD /* SCPAlert_DetailView.m */,
 				C5A9D807166F3BAA00494794 /* MoreAlertView.h */,
 				C5A9D808166F3BAA00494794 /* MoreAlertView.m */,
+				C5D47C89168AF98F00C522E3 /* SCPAlert_About.h */,
+				C5D47C8A168AF98F00C522E3 /* SCPAlert_About.m */,
+				C5D47C8C168AFCFB00C522E3 /* SCPAlert_FeedBack.h */,
+				C5D47C8D168AFCFB00C522E3 /* SCPAlert_FeedBack.m */,
 			);
 			name = SCPAlertView;
 			path = View/SCPAlertView;
@@ -2394,6 +2412,15 @@
 			name = PhotoController;
 			sourceTree = "<group>";
 		};
+		C5D47C82168ADA4800C522E3 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				C5D47C85168ADD9500C522E3 /* personal_setting.png */,
+				C5D47C87168AED2D00C522E3 /* personal_slogn.png */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
 		C5E29075162288C00085EBE9 /* filterImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -2751,6 +2778,9 @@
 				C596DF091688593500E04C93 /* ueser_image_change_bg.png in Resources */,
 				C58BEF25168951A1004946B1 /* explore_up_page_icon.png in Resources */,
 				C51E2A7D168AAC6700DC0ED4 /* systerm.png in Resources */,
+				C5D47C86168ADD9500C522E3 /* personal_setting.png in Resources */,
+				C5D47C88168AED2D00C522E3 /* personal_slogn.png in Resources */,
+				C5D47C90168B01A800C522E3 /* info_pop_feedback_bg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2897,6 +2927,8 @@
 				C588DE45168559DF008744D1 /* SCPUploadTaskManager.m in Sources */,
 				C588DE4E16858BC9008744D1 /* AccountSystemRequset.m in Sources */,
 				C5D47C80168AD54E00C522E3 /* SCPSettingUserinfoController.m in Sources */,
+				C5D47C8B168AF98F00C522E3 /* SCPAlert_About.m in Sources */,
+				C5D47C8E168AFCFB00C522E3 /* SCPAlert_FeedBack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

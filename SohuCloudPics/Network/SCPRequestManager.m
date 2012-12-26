@@ -660,9 +660,9 @@
     [request startAsynchronous];
 }
 
-- (void)renameUserinfWithfolderWithnewName:(NSString *)newName Withdescription:(NSString *)description success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+- (void)renameUserinfWithnewName:(NSString *)newName Withdescription:(NSString *)description success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
-    NSString *url = [NSString stringWithFormat: @"%@/user/?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+    NSString *url = [NSString stringWithFormat: @"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     NSString *urlName = [newName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [request setPostValue:urlName forKey:@"name"];

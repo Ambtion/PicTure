@@ -139,14 +139,14 @@
     if (!_renameField.text || [_renameField.text isEqualToString:@""]) {
         return;
     }
+    if ([_delegate respondsToSelector:@selector(renameAlertView:OKClicked:)]) {
+        [_delegate performSelector:@selector(renameAlertView:OKClicked:) withObject:self withObject:_renameField];
+    }
     if ([_renameField isFirstResponder]) {
-        NSLog(@"%s",__FUNCTION__);
         [_renameField resignFirstResponder];
     }else{
         [self removeFromSuperview];
     }
-    if ([_delegate respondsToSelector:@selector(renameAlertView:OKClicked:)]) {
-        [_delegate performSelector:@selector(renameAlertView:OKClicked:) withObject:self withObject:_renameField];
-    }
+   
 }
 @end
