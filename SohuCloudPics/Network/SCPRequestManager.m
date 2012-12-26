@@ -664,6 +664,7 @@
 {
     NSString *url = [NSString stringWithFormat: @"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setDefaultResponseEncoding:NSUTF8StringEncoding];
     NSString *urlName = [newName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [request setPostValue:urlName forKey:@"name"];
     [request setPostValue:description forKey:@"description"];
