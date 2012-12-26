@@ -38,7 +38,7 @@ static NSString *menuPress[6] = {
 
 
 @implementation SCPMenuManager
-
+@synthesize homelogin;
 @synthesize menuArray;
 @synthesize ribbon;
 @synthesize ribbonFake;
@@ -70,6 +70,7 @@ static NSString *menuPress[6] = {
     self.ribbon = nil;
     self.coverView = nil;
     self.menuArray = nil;
+    self.homelogin = nil;
     [super dealloc];
 }
 
@@ -217,7 +218,11 @@ static NSString *menuPress[6] = {
 {
     NSLog(@"SCPLogin");
     [navController dismissModalViewControllerAnimated:NO];
-    [self onAccountClicked:nil];
+    if (self.homelogin == LoginController) {
+        [self onAccountClicked:nil];
+    }else{
+        [self onNoticeClicked:nil];
+    }
 }
 
 #pragma mark -
@@ -281,9 +286,9 @@ static NSString *menuPress[6] = {
     [self hideMenuWithRibbon:NO];
     [self restIcon:1];
     if (![SCPLoginPridictive isLogin]) {
-        SCPLoginViewController * login = [[[SCPLoginViewController alloc] init] autorelease];
-        login.delegate = self;
-        UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
+        self.homelogin = [[[SCPLoginViewController alloc] init] autorelease];
+        self.homelogin.delegate = self;
+        UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:self.homelogin] autorelease];
         [navController presentModalViewController:nav animated:YES];
         return;
     }
@@ -327,11 +332,19 @@ static NSString *menuPress[6] = {
 {
     //提醒....
     [self hideMenuWithRibbon:NO];
+    [self restIcon:1];
+    if (![SCPLoginPridictive isLogin]) {
+        SCPLoginViewController * login = [[[SCPLoginViewController alloc] init] autorelease];
+        login.delegate = self;
+        UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
+        [navController presentModalViewController:nav animated:YES];
+        return;
+    }
     if ([self.navController.visibleViewController isKindOfClass:[NoticeDataSource class]]) {
         return;
     }
     NoticeViewController * nvc = [[[NoticeViewController alloc] init] autorelease];
-    [navController pushViewController:nvc animated:YES];
+    [self.navController pushViewController:nvc animated:YES];
 }
 
 

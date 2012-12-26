@@ -182,6 +182,7 @@
 		C508A6D016846C08006D86B9 /* user_bg_sea.png in Resources */ = {isa = PBXBuildFile; fileRef = C508A6CC16846C07006D86B9 /* user_bg_sea.png */; };
 		C508A6D116846C08006D86B9 /* user_bg_plain.png in Resources */ = {isa = PBXBuildFile; fileRef = C508A6CD16846C07006D86B9 /* user_bg_plain.png */; };
 		C508A6D316846C60006D86B9 /* user_icon_stra.png in Resources */ = {isa = PBXBuildFile; fileRef = C508A6D216846C5F006D86B9 /* user_icon_stra.png */; };
+		C51E2A7D168AAC6700DC0ED4 /* systerm.png in Resources */ = {isa = PBXBuildFile; fileRef = C51E2A7C168AAC6700DC0ED4 /* systerm.png */; };
 		C532480E16848EE50055F9B8 /* qqLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = C532480B16848EE50055F9B8 /* qqLogin.png */; };
 		C532480F16848EE50055F9B8 /* renrenLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = C532480C16848EE50055F9B8 /* renrenLogin.png */; };
 		C532481016848EE50055F9B8 /* sinaLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = C532480D16848EE50055F9B8 /* sinaLogin.png */; };
@@ -698,6 +699,7 @@
 		C508A6CC16846C07006D86B9 /* user_bg_sea.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_bg_sea.png; sourceTree = "<group>"; };
 		C508A6CD16846C07006D86B9 /* user_bg_plain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_bg_plain.png; sourceTree = "<group>"; };
 		C508A6D216846C5F006D86B9 /* user_icon_stra.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_icon_stra.png; sourceTree = "<group>"; };
+		C51E2A7C168AAC6700DC0ED4 /* systerm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = systerm.png; sourceTree = "<group>"; };
 		C532480B16848EE50055F9B8 /* qqLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqLogin.png; sourceTree = "<group>"; };
 		C532480C16848EE50055F9B8 /* renrenLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = renrenLogin.png; sourceTree = "<group>"; };
 		C532480D16848EE50055F9B8 /* sinaLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sinaLogin.png; sourceTree = "<group>"; };
@@ -1381,6 +1383,7 @@
 		61907A5A15EB8CFB00324A6B /* Resourse */ = {
 			isa = PBXGroup;
 			children = (
+				C51E2A7C168AAC6700DC0ED4 /* systerm.png */,
 				C508A6B3168454B2006D86B9 /* Default@2x.png */,
 				C508A6B5168457D3006D86B9 /* HomeBackImage */,
 				C505236C15E332590057B22D /* icon */,
@@ -2742,6 +2745,7 @@
 				C596DF07168858B700E04C93 /* user_image_check.png in Resources */,
 				C596DF091688593500E04C93 /* ueser_image_change_bg.png in Resources */,
 				C58BEF25168951A1004946B1 /* explore_up_page_icon.png in Resources */,
+				C51E2A7D168AAC6700DC0ED4 /* systerm.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

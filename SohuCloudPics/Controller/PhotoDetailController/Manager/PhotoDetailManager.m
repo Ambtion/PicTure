@@ -71,10 +71,10 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
+
     if (_willRefresh){
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
-        NSLog(@"%@",info);
         FeedCellDataSource *fAdapter = [[FeedCellDataSource alloc] init];
         fAdapter.allInfo = self.infoFromSuper;
         fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
@@ -88,8 +88,8 @@
         [fAdapter release];
         
         FeedDescriptionSource * data = [[FeedDescriptionSource alloc] init];
-        data.describtion = @"该图片无描述";
-        data.bookMark = nil;
+        data.describtion = [self.infoFromSuper objectForKey:@"photo_desc"];
+        data.bookMark = @"OK";
         [_dataSourceArray addObject:data];
         [data release];
     }
@@ -102,8 +102,6 @@
     }
     if (_willRefresh) {
         [self refreshDataFinishLoad:nil];
-    }else{
-        
     }
 }
 #pragma networkFailed
@@ -234,14 +232,9 @@
         FeedDescriptionSource * data = [_dataSourceArray objectAtIndex: 1];
         NSString * str = data.describtion;
         CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(270, 1000) lineBreakMode:UILineBreakModeWordWrap];
-        //        CGFloat heigth = (size.height  + 55) > 90 ? (size.height  + 55) : 90;
         CGFloat heigth = (size.height  + 10);
         return heigth;//for desc
     }
-    //    CommentCellDataSource * adpter = [_dataSourceArray objectAtIndex: i];
-    //    NSString * str = adpter.content;
-    //    CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(235, 1000) lineBreakMode:UILineBreakModeWordWrap];
-    //    return size.height + 30 < 60 ? 60 : size.height + 30 + 10;
     return 0;
 }
 
@@ -259,21 +252,14 @@
         picture.dataSource = [_dataSourceArray objectAtIndex:row];
         return picture;
     }
-    if (row == 1) {
-        FeedDescription* des = [tableView dequeueReusableCellWithIdentifier:@"FeedDescribtion"];
-        if (des == nil)
-            des = [[[FeedDescription alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FeedDescribtion"] autorelease];
-        
-        des.dataScoure = [_dataSourceArray objectAtIndex:row];
-        return des;
+
+    FeedDescription* des = [tableView dequeueReusableCellWithIdentifier:@"FeedDescribtion"];
+    if (des == nil){
+        des = [[[FeedDescription alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FeedDescribtion"] autorelease];
     }
-    CommentCell * cell = [tableView dequeueReusableCellWithIdentifier:@"comment"];
-    if (cell == nil) {
-        cell = [[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"comment"];
-        cell.delegate = self;
-    }
-    cell.dataSource = [_dataSourceArray objectAtIndex:row];
-    return cell;
+    des.dataScoure = [_dataSourceArray objectAtIndex:row];
+    return des;
+    
 }
 
 #pragma mark -

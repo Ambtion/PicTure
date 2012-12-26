@@ -59,6 +59,7 @@
     [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
 //    [self.manager refreshData:nil];
 }
+
 #pragma mark -
 #pragma mark customerNavigationIteam
 

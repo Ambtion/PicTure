@@ -46,7 +46,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
 	// Do any additional setup after loading the view.
     self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_photos.png"] frame:self.view.bounds] autorelease];
     //customer for  scrollview
@@ -71,6 +70,7 @@
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated
 {
+    
     self.navigationItem.hidesBackButton = YES;
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
@@ -80,13 +80,13 @@
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
     [super viewWillAppear:animated];
+    [self.manager dataSourcewithRefresh:YES];
 }
 
 - (void)navigationBack:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
 - (void)displayCommentPostBar
 {
     // check whether logged in

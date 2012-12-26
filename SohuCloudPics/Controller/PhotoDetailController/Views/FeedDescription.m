@@ -61,6 +61,7 @@
 
 -(void)setDataScoure:(FeedDescriptionSource *)dataScoure
 {
+//    NSLog(@"MMMMMM  %@",dataScoure.describtion);
     if (_dataSource != dataScoure) {
         [_dataSource release];
         _dataSource = [dataScoure retain];
@@ -69,16 +70,17 @@
 }
 -(void)updataSource
 {
-    if (_dataSource.bookMark && ![_dataSource.bookMark isEqualToString:@""]) {
-        bookMarkLabel.text = _dataSource.bookMark;
+//    if (_dataSource.bookMark && ![_dataSource.bookMark isEqualToString:@""]) {
+//        bookMarkLabel.text = _dataSource.bookMark;
+//    }else{
+//        bookMarkLabel.text = @"无标签";
+//    }
+
+    if (!_dataSource.describtion ||[_dataSource.describtion isEqualToString:[NSString stringWithFormat:@"%@",@""]]) {
+        describLabel.text = @"该图片无描述";
     }else{
-        bookMarkLabel.text = @"无标签";
-    }
-    if (_dataSource.describtion && ![_dataSource.describtion isEqualToString:@""]) {
         describLabel.text = _dataSource.describtion;
         [describLabel sizeToFit];
-    }else{
-        describLabel.text = @"该图片无描述";
     }
   
 //    UIImageView * view = ( UIImageView *)[self.contentView viewWithTag:100];

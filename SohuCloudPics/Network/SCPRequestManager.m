@@ -14,48 +14,6 @@
 
 #define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
 
-@implementation SCPRequestManager (common)
-
-- (void)addOperation:(NSInteger)tag URL:(NSURL *)url method:(NSString *)method action:(SEL)action
-{
-	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-	request.requestMethod = method;
-    [self addRequestHeaderIn:request];
-    request.tag = tag;
-    request.delegate = self;
-    [request setDidFinishSelector:action];
-    [request setDidFailSelector:@selector(requestFailed:)];
-    [operationQuene addOperation:request];
-}
-
-- (void)addOperation:(NSInteger)tag URL:(NSURL *)url action:(SEL)action
-{
-	[self addOperation:tag URL:url method:@"GET" action:action];
-}
-
-- (void)addRequestHeaderIn:(ASIHTTPRequest *)request
-{
-    [request addRequestHeader:@"accept" value:@"application/json"];
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    
-    if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-        [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
-    }
-    
-}
-- (void)commonShowWhenRequsetFailed:(ASIHTTPRequest *)request
-{
-    UIAlertView * alter = [[[UIAlertView alloc] initWithTitle:@"请求失败" message:[NSString stringWithFormat:@"%@",[request error]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-    [alter show];
-    
-}
-
-@end
-
-
 @implementation SCPRequestManager
 
 @synthesize delegate = _delegate;
@@ -70,8 +28,6 @@
 {
     self = [super init];
     if (self) {
-        operationQuene = [[ASINetworkQueue alloc] init];
-        operationQuene.maxConcurrentOperationCount  = 8;
         tempDic = [[NSMutableDictionary dictionaryWithCapacity:0] retain];
     }
     return self;
@@ -80,10 +36,6 @@
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:_delegate];
-    [operationQuene cancelAllOperations];
-    [operationQuene setRequestDidFinishSelector:nil];
-    [operationQuene setRequestDidFailSelector:nil];
-    [operationQuene release];
     [tempDic release];
     [super dealloc];
 }
@@ -118,7 +70,17 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:5.f];
     [request setCompletionBlock:^{
-        [self photoDetailrequestFinished:request];
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
+                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:dic];
+            }
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+            }
+        }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
@@ -127,23 +89,6 @@
     }];
     [request startAsynchronous];
 }
-- (void)photoDetailrequestFinished:(ASIHTTPRequest *)request
-{
-    
-    if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
-        NSString * str = [request responseString];
-        NSDictionary * dic = [str JSONValue];
-//        NSLog(@"%@",dic);
-        if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
-            [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:dic];
-        }
-    }else{
-        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
-        }
-    }
-}
-
 #pragma mark - Personal Home
 - (void)getUserInfoWithID:(NSString *)user_ID success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure
 {
@@ -554,10 +499,8 @@
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
-            [tempDic setObject:dic forKey:@"Followers"];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
-                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
-                [tempDic removeAllObjects];
+                [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:dic]];
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
@@ -570,6 +513,28 @@
             [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
         }
     }];
+    [request startAsynchronous];
+}
+- (void)destoryNotificationAndsuccess:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
+{
+
+    NSString * str = [NSString stringWithFormat:@"%@/notifications/deletes?&access_token=%@",BASICURL_V1,
+                      [SCPLoginPridictive currentToken]];
+        NSLog(@"%@",str );
+    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
+	[request setCompletionBlock:^{
+        NSLog(@"%@",[request responseString]);
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+            success([request responseString]);
+        }else{
+            failure(@"请求失败");
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"%@",[request error]);
+        failure(@"连接失败");
+    }];
+    
     [request startAsynchronous];
 }
 #pragma mark - Action Follow

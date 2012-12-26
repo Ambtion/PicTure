@@ -8,6 +8,8 @@
 
 #import "NoticeManager.h"
 #import "SCPPersonalPageViewController.h"
+#import "SCPFollowingListViewController.h"
+#import "MoreAlertView.h"
 
 @implementation NoticeManager
 @synthesize controller = _controller;
@@ -29,56 +31,66 @@
         _dataSource = [[NSMutableArray alloc] initWithCapacity:0];
         _resqust = [[SCPRequestManager alloc] init];
         _resqust.delegate = self;
-        [_resqust getNotificationUser];
-        [self initDataSource];
+//        [self dataSourcewithRefresh:YES];
     }
     return self;
 }
-- (void)initDataSource
-{
-    _isLoading = YES;
-    for (int i = 0; i < 20; i++) {
-        NoticeDataSource * dataSource = [[NoticeDataSource alloc] init];
-        dataSource.name = @"小白的驴";
-        dataSource.content = @"跟随了我";
-        dataSource.upTime = [NSString stringWithFormat:@"%d小时前",rand() % 3];
-        dataSource.photoUrl = @"http://10.10.68.104:8080/cloudpics/pic";
-        [_dataSource addObject:dataSource];
-        [dataSource release];
-    }
-    [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
-    _isLoading = NO;
-}
-- (void)dataSourcewithRefresh:(BOOL)isRefresh
-{
-    if (isRefresh)
-        [_dataSource removeAllObjects];
-    _isLoading = YES;
-    for (int i = 0; i < 20; i++) {
-    
-        NoticeDataSource * dataSource = [[NoticeDataSource alloc] init];
-        dataSource.name = @"小白的驴";
-        dataSource.content = @"跟随了我";
-        dataSource.upTime = [NSString stringWithFormat:@"%d小时前",rand() % 3];
-        dataSource.photoUrl = [NSString stringWithFormat:@"http://10.10.68.104:8080/cloudpics/pic?id=%d",rand()];
-        [_dataSource addObject:dataSource];
-        [dataSource release];
 
-    }
-    //假设3s后刷新完成
-    if (isRefresh) {
-        [self performSelector:@selector(followedRefreshDataFinishLoad) withObject:nil afterDelay:1.f];
-    }else{
-        [self performSelector:@selector(followedMoreDataFinishLoad) withObject:nil afterDelay:1.f];
-    }
-}
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    NSLog(@"%@",info);
+    [_dataSource removeAllObjects];
+    numFollowing = [[info objectForKey:@"followed"] intValue];
+    NSLog(@"numFollowing %d",numFollowing);
+    [_resqust getUserInfoWithID:[SCPLoginPridictive currentUserId] success:^(NSDictionary *response) {
+        if (numFollowing != 0) {
+            NoticeDataSource * dataSouce =  [[NoticeDataSource alloc] init];
+            dataSouce.name = [response objectForKey:@"user_nick"];
+            dataSouce.content = [NSString stringWithFormat:@"有%d个人跟随了我",numFollowing];
+            dataSouce.photoUrl = [response objectForKey:@"user_icon"];
+            [_dataSource addObject:dataSouce];
+            [dataSouce release];
+        }
+        
+        NoticeDataSource * dataSouces =  [[NoticeDataSource alloc] init];
+        dataSouces.name = @"系统管理员";
+        dataSouces.content = @"最新版本敬请期待";
+        dataSouces.image = [UIImage imageNamed:@"systerm.png"];
+        [_dataSource addObject:dataSouces];
+        [dataSouces release];
+        
+        [self.controller.pullingController refreshDoneLoadingTableViewData];
+        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+        
+    } failure:^(NSString *error) {
+        
+    }];
+  
 }
-- (void)requestFailed:(NSString *)error
+#pragma Network Failed
+- (void)requestFailed:(ASIHTTPRequest *)mangeger
 {
-    NSLog(@"%@",error);
+    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"访问失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
+    [alterView show];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != 0) {
+        [self dataSourcewithRefresh:YES];
+    }else{
+        [self restNetWorkState];
+    }
+}
+- (void)restNetWorkState
+{
+    [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+    _isLoading = NO;
+}
+#pragma mark -
+
+- (void)dataSourcewithRefresh:(BOOL)isRefresh
+{
+    _isLoading = YES;
+    [_resqust getNotificationUser];
 }
 #pragma mark - dataChange
 #pragma mark refresh
@@ -88,7 +100,6 @@
     if (_isLoading) {
         return;
     }
-    
     [self dataSourcewithRefresh:YES];
 }
 
@@ -102,12 +113,10 @@
     _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
-    
 }
 #pragma mark more
 //1:下拉刷新 2:刷新结束
-
-- (void)PullingreloadMoreTableViewData:(id)sender
+- (void)pullingreloadTableViewDataSource:(id)sender
 {
     [self dataSourcewithRefresh:NO];
 }
@@ -116,20 +125,46 @@
     _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-    
 }
 #pragma mark - action
+- (BOOL)isLogin
+{
+    if (![SCPLoginPridictive isLogin]) {
+        
+        MoreAlertView * more = [[[MoreAlertView alloc] init] autorelease];
+        [more show];
+    }
+    return [SCPLoginPridictive isLogin];
+}
 -(void)NoticeViewCell:(NoticeViewCell *)cell portraitClick:(id)sender
 {
-    NSLog(@"%s",__FUNCTION__);
-    [_controller.navigationController pushViewController:[[[SCPPersonalPageViewController alloc] init] autorelease] animated:YES];
-
+    
 }
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (indexPath.row == 1 || _dataSource.count == 1) {
+        return;
+    }
+    if (![self isLogin]) {
+        return;
+    }
+    [_resqust destoryNotificationAndsuccess:^(NSString *response) {
+        NSLog(@"%s",__FUNCTION__);
+        UINavigationController *nav = _controller.navigationController;
+        SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
+        [nav pushViewController:ctrl animated:YES];
+        [ctrl release];
+    } failure:^(NSString *error) {
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];
+    }];
+}
 #pragma mark - dataSouce
 - (NSString *)bannerDataSouceLeftLabel
 {
-    return @"有20条评论";
+    return @"我有新的提醒";
 }
 - (NSString *)bannerDataSouceRightLabel
 {
@@ -144,6 +179,7 @@
 {
     return _dataSource.count;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
@@ -157,7 +193,9 @@
                                        reuseIdentifier:str] autorelease];
         cell.delegate = self;
     }
+//    NSLog(@"%@",((NoticeDataSource *)[_dataSource objectAtIndex:1]).name);
     cell.dataSource = [_dataSource objectAtIndex:indexPath.row];
+  
     return cell;
 }
 

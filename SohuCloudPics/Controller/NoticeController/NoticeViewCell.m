@@ -13,12 +13,14 @@
 @synthesize upTime = _upTime;
 @synthesize photoUrl = _photoUrl;
 @synthesize content = _content;
+@synthesize image = _image;
 - (void)dealloc
 {
     self.name = nil;
     self.content = nil;
     self.photoUrl = nil;
     self.upTime = nil;
+    self.image = nil;
     [super dealloc];
 }
 
@@ -50,7 +52,7 @@
 
 - (void)addSubviews
 {
-    _imageCoverView = [[ImageViewForCell alloc] initWithFrame:CGRectMake(10, 5, 50, 50)];
+    _imageCoverView = [[ImageViewForCell alloc] initWithFrame:CGRectMake(5, 5, 50, 50)];
     _imageCoverView.backgroundColor = [UIColor clearColor];
     [_imageCoverView addTarget:self action:@selector(follweImageCick:)];
     [self.contentView addSubview:_imageCoverView];
@@ -69,13 +71,12 @@
     _descLabel.textColor = [UIColor colorWithRed:98.f/255 green:98.f/255 blue:98.f/255 alpha:1];
     [self.contentView addSubview:_descLabel];
     
-    
-    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 16, 28 + 86, 28)];
-    _timeLabel.textAlignment = UITextAlignmentRight;
-    _timeLabel.backgroundColor = [UIColor clearColor];
-    _timeLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12];
-    _timeLabel.textColor = [UIColor colorWithRed:98.f/255 green:98.f/255 blue:98.f/255 alpha:1];
-    [self.contentView addSubview:_timeLabel];
+//    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 16, 28 + 86, 28)];
+//    _timeLabel.textAlignment = UITextAlignmentRight;
+//    _timeLabel.backgroundColor = [UIColor greenColor];
+//    _timeLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12];
+//    _timeLabel.textColor = [UIColor colorWithRed:98.f/255 green:98.f/255 blue:98.f/255 alpha:1];
+//    [self.contentView addSubview:_timeLabel];
     
     UIImageView * lineView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
     lineView.frame = CGRectMake(0, 59, 320, 1);
@@ -86,11 +87,16 @@
 -(void)updataData
 {
     
-    NSString * photo_url =[NSString stringWithFormat:@"%@_c70",_dataSource.photoUrl];
-    [_imageCoverView setImageWithURL:[NSURL URLWithString:photo_url] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] options:0];
+    if (!_dataSource.image) {
+        NSString * photo_url =[NSString stringWithFormat:@"%@_c70",_dataSource.photoUrl];
+        [_imageCoverView setImageWithURL:[NSURL URLWithString:photo_url] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] options:0];
+    }else{
+        _imageCoverView.image = _dataSource.image;
+    }
+    NSLog(@"%@",_dataSource.name);
     _titleLabel.text = _dataSource.name;
     _descLabel.text = _dataSource.content;
-    _timeLabel.text = _dataSource.upTime;
+//    _timeLabel.text = _dataSource.upTime;
 }
 
 - (NoticeDataSource *)dataSource

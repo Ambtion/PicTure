@@ -65,12 +65,27 @@ static float OFFSET = 0.f;
     }
     return finalHeigth;
 }
-
+- (void)refreshUserinfo
+{
+    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",_user_ID]success:^(NSDictionary *response) {
+        _personalDataSource.portrait = [response objectForKey:@"user_icon"];
+        _personalDataSource.name = [response objectForKey:@"user_nick"];
+        _personalDataSource.desc = [response objectForKey:@"user_desc"];
+        _personalDataSource.albumAmount = [[response objectForKey:@"public_folders"] intValue];
+        _personalDataSource.followedAmount = [[response objectForKey:@"followers"] intValue];
+        _personalDataSource.followingAmount = [[response objectForKey:@"followings"] intValue];
+        _personalDataSource.isFollowByMe = [[response objectForKey:@"is_following"] boolValue];
+        [self.controller.tableView reloadData];
+    } failure:^(NSString *error) {
+        UIAlertView * alterView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alterView show];
+        [alterView release];
+    }];
+}
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     
     if (_willRefresh) {
-        
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
 //        _personalDataSource.allInfo = userInfo;
@@ -87,7 +102,6 @@ static float OFFSET = 0.f;
             _personalDataSource.isMe = NO;
         }
     }
-    
     NSDictionary * feedinfo = [info objectForKey:@"feedList"];
     hasNextpage = [[feedinfo objectForKey:@"has_next"] boolValue];
     curPage = [[feedinfo objectForKey:@"page"] intValue];
@@ -304,7 +318,9 @@ static float OFFSET = 0.f;
     if (personal.datasource.isFollowByMe) {
         [_requestManager destoryFollowing:_user_ID  success:^(NSString *response) {
             NSLog(@"%@",response);
-            [self dataSourcewithRefresh:YES];
+//            [self dataSourcewithRefresh:YES];
+//            [self refreshFin]
+            [self refreshUserinfo];
         } failure:^(NSString *error) {
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [alertView show];
@@ -314,7 +330,8 @@ static float OFFSET = 0.f;
     }else{
         
         [_requestManager friendshipsFollowing:_user_ID  success:^(NSString *response) {
-            [self dataSourcewithRefresh:YES];
+//            [self dataSourcewithRefresh:YES];
+            [self refreshUserinfo];
         } failure:^(NSString *error) {
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [alertView show];

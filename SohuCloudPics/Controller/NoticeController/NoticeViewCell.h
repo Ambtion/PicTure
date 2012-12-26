@@ -16,7 +16,7 @@
 @property(nonatomic,retain) NSString * content;
 @property(nonatomic,retain) NSString * upTime;
 @property(nonatomic,retain) NSString * photoUrl;
-
+@property(nonatomic,retain) UIImage * image;
 @end
 @class NoticeViewCell;
 @protocol NoticeViewCellDelegate <NSObject>

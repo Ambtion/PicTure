@@ -224,15 +224,16 @@
     
     if (cell.dataSource.following) {
         [_requestManger destoryFollowing:cell.dataSource.user_id success:^(NSString *response) {
-            [self dataSourcewithRefresh:YES];
-            
+            cell.dataSource.following = !cell.dataSource.following;
+            [cell updataData];
         } failure:^(NSString *error) {
             UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
             [alterView show];
         }];
     }else{
         [_requestManger friendshipsFollowing:cell.dataSource.user_id success:^(NSString *response) {
-            [self dataSourcewithRefresh:YES];
+            cell.dataSource.following = !cell.dataSource.following;
+            [cell updataData];
         } failure:^(NSString *error) {
             UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
             [alterView show];

@@ -37,4 +37,5 @@
 }
 @property(nonatomic,retain)SCPFollowCommonCellDataSource * dataSource;
 @property(nonatomic,assign)id<SCPFollowCommonCellDelegate> delegate;
+-(void)updataData;
 @end

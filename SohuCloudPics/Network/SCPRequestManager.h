@@ -25,16 +25,7 @@
 
 @interface SCPRequestManager : NSObject<ASIHTTPRequestDelegate>
 {
-    
-    ASINetworkQueue * operationQuene;
-    NSInteger startPage;
-    NSInteger startPageOffset;
-    NSInteger endPage;
-    NSInteger maxResult;
-    
-    NSInteger pageCount;
     NSMutableDictionary * tempDic;
-    BOOL isFailed;
     id<SCPRequestManagerDelegate> _delegate;
 }
 
@@ -65,6 +56,7 @@
 - (void)getfollowedsWihtUseId:(NSString *)user_id page:(NSInteger)pagenum;
 //Notification
 - (void)getNotificationUser;
+- (void)destoryNotificationAndsuccess:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure;
 
 
 #pragma mark Action

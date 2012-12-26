@@ -17,9 +17,10 @@
     NSMutableArray * _dataSource;
     BOOL _isLoading;
     SCPRequestManager * _resqust;
+    NSInteger  numFollowing;
 }
 @property (assign, nonatomic) NoticeViewController *controller;
 
 - (id)initWithViewController:(NoticeViewController *)ctrl;
-- (void)refreshData:(id)sender;
+- (void)dataSourcewithRefresh:(BOOL)isRefresh;
 @end

@@ -37,7 +37,6 @@
     [super viewDidLoad];
     self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_alert.png"]frame:self.view.bounds] autorelease];
     self.pullingController.headView.bannerName.frame = CGRectMake(130, 44, 60, 24);
-    
     self.manager = [[[NoticeManager alloc] initWithViewController:self] autorelease];
     self.manager.controller = self;
     //customer for  scrollview
@@ -45,7 +44,7 @@
     self.pullingController.delegate = self.manager;
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
-    
+    [self.pullingController.footView setHidden:YES];
     [self.view addSubview:self.pullingController.view];
     
 }
@@ -55,7 +54,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
-    
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
@@ -64,6 +62,7 @@
     
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
+    [self.manager dataSourcewithRefresh:YES];
 }
 
 - (void)navigationBack:(UIButton*)button
