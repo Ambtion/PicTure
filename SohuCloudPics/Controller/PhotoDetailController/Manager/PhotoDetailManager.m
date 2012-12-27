@@ -80,17 +80,18 @@
         fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
         fAdapter.name = [self.infoFromSuper objectForKey:@"user_nick"];
         fAdapter.portrailImage = [self.infoFromSuper objectForKey:@"user_icon"];
+        
         //图像信息
         fAdapter.photoImage = [self.infoFromSuper objectForKey:@"photo_url"];
         fAdapter.isGif = [[self.infoFromSuper objectForKey:@"multi_frames"] intValue];
         fAdapter.update = [self.infoFromSuper objectForKey:@"upload_at_desc"];
         numCount = [[self.infoFromSuper objectForKey:@"view_count"] intValue];
-
         [_dataSourceArray addObject:fAdapter];
         [fAdapter release];
         
         FeedDescriptionSource * data = [[FeedDescriptionSource alloc] init];
         data.describtion = [self.infoFromSuper objectForKey:@"photo_desc"];
+        NSLog(@"%@",data.describtion);
         data.bookMark = @"OK";
         [_dataSourceArray addObject:data];
         [data release];
@@ -138,20 +139,14 @@
     _willRefresh = isRefresh | _dataSourceArray.count;
     if (isRefresh || _dataSourceArray.count == 0){
         [_requestManger getPhotoDetailinfoWithUserID:_user_ID photoID:_photo_ID];
-    }else{
-        ///.....temp
-        //        for (int i = 0; i < N; ++i) {
-        //            CommentCellDataSource *cAdapter = [[CommentCellDataSource alloc] init];
-        //            cAdapter.name = [NSString stringWithFormat:@"冒险岛%d号", i];
-        //            cAdapter.portraitImage = [UIImage imageNamed:@"portrait.png"];
-        //            cAdapter.time = @"N小时前";
-        //            cAdapter.content = @"我是评论 我是评论我是评论我是评论我 是评论我是评论我是评论 我是评论我是评论我是 评论我是评论我是 评论我是评论我是评论";
-        //            [_dataSourceArray addObject:cAdapter];
-        //        }
-        //        [self performSelector:@selector(moreDataFinishLoad:) withObject:self afterDelay:1.f];
     }
 }
 
+#pragma mark Top
+- (void)pullingreloadPushToTop:(id)sender
+{
+    [self.controller showNavigationBar];
+}
 #pragma mark Refresh Action
 //1 点击 2 下拉 3 结束
 - (void)refreshData:(id)sender

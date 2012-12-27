@@ -392,6 +392,7 @@
 }
 - (void)handlesignalGesture:(UITapGestureRecognizer *)gesture
 {
+    
     [self.view setUserInteractionEnabled:NO];
     animation = YES;
     
@@ -622,7 +623,6 @@
             
             rect = CGRectMake(0, 0, w, h);
         }
-    
     imageView.frame = rect;
     imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
     if ([imageView isEqual:self.currentImageView]) {
@@ -648,6 +648,7 @@
         }else{
             str = [NSString stringWithFormat:@"%@_w640",[[imageView info] objectForKey:@"photo_url"]];
         }
+        
         [imageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options: 0   success:^(UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [imageView.actV stopAnimating];

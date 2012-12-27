@@ -48,10 +48,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     CGRect frame = self.view.frame;
-    
     _backgroundImageView = [[UIImageView alloc] initWithFrame:frame];
     _backgroundImageView.image = [UIImage imageNamed:@"linkin_email.png"];
-    
     _emailLabel = [[UILabel alloc] initWithFrame:CGRectMake(47, 195, 200, 15)];
     _emailLabel.font = [UIFont systemFontOfSize:12];
     _emailLabel.textColor = [UIColor colorWithRed:0 green:0.4392 blue:0.8471 alpha:1];
@@ -69,25 +67,24 @@
     [self.view addSubview:_emailLabel];
     [self.view addSubview:_emailButton];
     
+    //返回按钮
+    UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(10, 8, 28, 28);
+    [backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:backButton];
 }
-
+- (void)backButtonClick:(UIButton*)button
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
     self.backgroundImageView = nil;
     self.emailLabel = nil;
     self.emailButton = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.navigationController setNavigationBarHidden:YES];
-    if ([self.navigationController class] == [SCPMenuNavigationController class]) {
-        [((SCPMenuNavigationController *) self.navigationController) setDisableMenu:YES];
-    }
 }
 
 - (void)gotoEmail
@@ -96,11 +93,6 @@
     
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://mail.163.com"]];
     [nav popViewControllerAnimated:YES];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

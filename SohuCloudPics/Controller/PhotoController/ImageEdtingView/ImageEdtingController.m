@@ -18,6 +18,7 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ImageToolBox.h"
+#import "SCPLoginPridictive.h"
 
 
 #define IMAGE_OUTPATH [[[NSString alloc] initWithFormat:@"%@/Documents/%@",NSHomeDirectory(), @"originalImage.jpeg"]autorelease]
@@ -462,6 +463,12 @@
 {
     //图片未最任何处理....
     if (_filternum == -1 && !_isBlured &&!_clipview.superview && !_angleNum) {
+        
+        if (![SCPLoginPridictive isLogin]) {
+            [controller dismissModalViewControllerAnimated:YES];
+            return ;
+        }
+        
         [_library assetForURL:self.assetURL resultBlock:^(ALAsset *asset) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
@@ -524,6 +531,11 @@
             return ;
         }
         
+        if (![SCPLoginPridictive isLogin]) {
+            [controller dismissModalViewControllerAnimated:YES];
+            return ;
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([delegate respondsToSelector:@selector(imageEdtingDidSave:imageinfo:info:num:)]) {
                 [delegate imageEdtingDidSave:self imageinfo:assetURL info:_info num:infoNum];
@@ -533,16 +545,12 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
                     [workingDictionary setObject:[asset valueForProperty:ALAssetPropertyType] forKey:@"UIImagePickerControllerMediaType"];
-                    //                    [workingDictionary setObject:[UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]] forKey:@"UIImagePickerControllerOriginalImage"];
-                    
-                    //                    [workingDictionary setObject:[[asset valueForProperty:ALAssetPropertyURLs] valueForKey:[[[asset valueForProperty:ALAssetPropertyURLs] allKeys] objectAtIndex:0]] forKey:@"UIImagePickerControllerReferenceURL"];
                     [workingDictionary setObject:asset.defaultRepresentation.url forKey:@"UIImagePickerControllerRepresentationURL"];
                     [workingDictionary setObject:[UIImage imageWithCGImage:[asset thumbnail] ]forKey:@"UIImagePickerControllerThumbnail"];
                     
                     SCPUploadController * ctrl = [[[SCPUploadController alloc] initWithImageToUpload:[NSArray arrayWithObject:workingDictionary] :controller] autorelease];
                     [self.navigationController pushViewController:ctrl animated:YES];
                     [workingDictionary release];
-                    
                 });
                 
             } failureBlock:^(NSError *error) {
@@ -554,18 +562,19 @@
     
 }
 
-
 #pragma mark-
 -(void)waitForMomentsWithTitle:(NSString*)str
 {
-    _alterView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:str withView:self.view] autorelease];
+    _alterView = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:str withView:self.view];
     [_alterView show];
 }
 
 -(void)stopWait
 {
-    if(_alterView)
+    if(_alterView){
         [_alterView dismissWithClickedButtonIndex:0 animated:YES];
+        [_alterView release],_alterView = nil;
+    }
 }
 
 

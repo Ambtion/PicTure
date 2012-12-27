@@ -55,5 +55,6 @@
 @property(nonatomic,retain)NSString * groupName;
 @property(nonatomic,assign)id<ImageEdtingDelegate> delegate;
 -(id)initWithUIImage:(UIImage *)image controller: (id)Acontroller;
+
 -(id)initWithAsset:(NSURL *)url info:(id)info :(NSInteger)num;
 @end

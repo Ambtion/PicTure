@@ -74,6 +74,7 @@
     [super viewDidAppear:animated];
     [self showGuideView];
 }
+
 - (void)showGuideView
 {
     NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];

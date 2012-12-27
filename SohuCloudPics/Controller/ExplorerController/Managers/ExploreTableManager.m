@@ -206,10 +206,11 @@ static NSInteger lastNum = -1;
 {
     [_requestManager getExploreFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
         
+
         if (startIndex == 0)
             [_strategyArray removeAllObjects];
+        NSLog(@"_requestManager ::%@",[infoArray lastObject]);
         for (int i = 0; i < infoArray.count / 4 ; i++) {
-            
             ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
             NSInteger num_strategy = [self randomNum];
             NSMutableArray * frames = [[NSMutableArray alloc] init];
@@ -228,10 +229,12 @@ static NSInteger lastNum = -1;
         }else{
             [self moreDataFinishLoad];
         }
+        NSLog(@"_requestManager ::%@",[infoArray lastObject]);
     } failture:^(NSString *error) {
         UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
         [alterView show];
     }];
+
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -251,7 +254,11 @@ static NSInteger lastNum = -1;
     _willRefresh = YES;
     _isLoading = NO;
 }
-#pragma mark - dataChange
+#pragma mark - Top
+- (void)pullingreloadPushToTop:(id)sender
+{
+    [self.controller showNavigationBar];
+}
 #pragma mark refresh
 //1 点击 2 下拉 3 结束
 - (void)refreshData:(id)sender
@@ -292,6 +299,7 @@ static NSInteger lastNum = -1;
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
     _isLoading = NO;
 }
+
 #pragma mark -
 #pragma mark bannerDatasouce
 

@@ -45,8 +45,6 @@
     timeDelay = Adelay;
 }
 
-
-
 - (void)setGifFileDirectory:(NSString *)directory
 {
     homeDirectory = [NSString stringWithFormat:@"%@",directory];
@@ -59,13 +57,12 @@
 
 - (NSData *)saveAnimatedGif
 {
-
+    
     NSMutableData * mydata = [[[NSMutableData alloc] initWithLength:0] autorelease];
     CGImageDestinationRef destination = CGImageDestinationCreateWithData((CFMutableDataRef)mydata, kUTTypeGIF, [frame count], NULL);
 
     NSDictionary *gifProperties = [NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:loopCount] forKey:(NSString *)kCGImagePropertyGIFLoopCount]
                                                               forKey:(NSString *)kCGImagePropertyGIFDictionary];
-
     for (UIImage *obj in frame)
     {
         NSDictionary *frameProperties = [NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:timeDelay] forKey:(NSString *)kCGImagePropertyGIFDelayTime]
@@ -73,16 +70,10 @@
         CGImageDestinationAddImage(destination, obj.CGImage, (CFDictionaryRef)frameProperties);
         count++;
     }
-
     CGImageDestinationSetProperties(destination, (CFDictionaryRef)gifProperties);
-
     CGImageDestinationFinalize(destination);
-    NSLog(@"make gif End");
-
     CFRelease(destination);
     count = 0;
-    NSLog(@"make gif End");
-
     return mydata;
 }
 

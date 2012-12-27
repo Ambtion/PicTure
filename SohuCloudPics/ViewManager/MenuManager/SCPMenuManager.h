@@ -30,6 +30,9 @@
 @property (assign, nonatomic) id<SCPMenuDelegate> menuDelegate;
 @property (assign, nonatomic) SCPMenuNavigationController *navController;
 @property (retain, nonatomic) SCPLoginViewController * homelogin;
+@property (retain, nonatomic) SCPLoginViewController * notLogin;
+@property (retain, nonatomic) SCPLoginViewController * uLoadLogin;
+
 @property (assign, nonatomic) BOOL isMoving;
 @property (assign, nonatomic) BOOL isMenuShowing;
 @property (assign, nonatomic) CGFloat menuHeight;

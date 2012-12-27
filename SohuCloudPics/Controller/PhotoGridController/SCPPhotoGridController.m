@@ -580,6 +580,10 @@
 
 #pragma mark -
 #pragma mark PullingRefreshDelegate
+- (void)pullingreloadPushToTop:(id)sender
+{
+    [self showNavigationBar];
+}
 - (void)pullingreloadTableViewDataSource:(id)sender
 {
 	[self refresh];
@@ -601,6 +605,7 @@
 {
     [super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];
+    [self showNavigationBar];
     [self removeObserverOnCenter];
 }
 #pragma mark -

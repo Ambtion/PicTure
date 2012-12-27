@@ -163,7 +163,11 @@
     }
     
 }
-
+#pragma mark Top
+- (void)pullingreloadPushToTop:(id)sender
+{
+    [self.controller showNavigationBar];
+}
 #pragma mark Refresh Action
 //1 点击 2 下拉 3 结束
 - (void)refreshData:(id)sender
@@ -257,6 +261,7 @@
     return [self.controller getTimeString];
 }
 #pragma mark -
+
 #pragma mark Table Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

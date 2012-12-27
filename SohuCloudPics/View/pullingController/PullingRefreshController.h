@@ -15,6 +15,8 @@
 @optional
 -(void)pullingreloadTableViewDataSource:(id)sender;
 -(void)pullingreloadMoreTableViewData:(id)sender;
+-(void)pullingreloadPushToTop:(id)sender;
+
 @end
 
 
@@ -32,10 +34,8 @@
 @property(nonatomic,assign)id<PullingRefreshDelegate> delegate;
 - (void)managerRefreshDoneLoadingTableViewData;
 - (void)managerMoreDoneLoadingTableViewData;
-
 - (void)shutChangeFunction;
 - (void)openChangeFunction;
-
 @end
 
 @interface PullingRefreshController : UIViewController

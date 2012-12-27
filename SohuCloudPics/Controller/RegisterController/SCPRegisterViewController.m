@@ -36,38 +36,31 @@
     [super dealloc];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)loadView
 {
     [super loadView];
-    
     UIScrollView *view = [[[UIScrollView alloc] initWithFrame:self.view.bounds] autorelease];
     view.bounces = NO;
     view.contentSize = view.frame.size;
-    [self.view addSubview:view];
+    self.view = view;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    [self addViews];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
+}
+- (void)addViews
+{
     _checked = [[UIImage imageNamed:@"check_box_select.png"] stretchableImageWithLeftCapWidth:44 topCapHeight:0];
     _noChecked = [[UIImage imageNamed:@"check_box_no_select.png"] stretchableImageWithLeftCapWidth:44 topCapHeight:0];
-
     CGRect frame = self.view.bounds;
-    
     _backgroundImageView = [[UIImageView alloc] initWithFrame:frame];
     _backgroundImageView.image = [UIImage imageNamed:@"signin_bg.png"];
-    
     _backgroundControl = [[UIControl alloc] initWithFrame:frame];
     [_backgroundControl addTarget:self action:@selector(allTextFieldsResignFirstResponder) forControlEvents:UIControlEventTouchDown];
     
@@ -129,27 +122,14 @@
     [self.view addSubview:_displayPasswordButton];
     [self.view addSubview:_registerButton];
     
-    
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(10, 8, 28, 28);
     [backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.navigationController setNavigationBarHidden:YES];
-    if ([self.navigationController class] == [SCPMenuNavigationController class]) {
-        [((SCPMenuNavigationController *) self.navigationController) setDisableMenu:YES];
-    }
-}
 - (void)backButtonClick:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -190,15 +170,14 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    UIScrollView *view = (UIScrollView *) self.view;
+    UIScrollView * view = (UIScrollView *) self.view;
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    CGSize size = view.contentSize;
+    CGSize size = view.bounds.size;
     size.height += keyboardSize.height;
     view.contentSize = size;
     
     CGPoint point = view.contentOffset;
-    point.y += 118;
+    point.y = 118;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
@@ -210,10 +189,8 @@
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     UIScrollView *view = (UIScrollView *) self.view;
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    
     CGPoint point = view.contentOffset;
-    point.y -= 118;
+    point.y  =  0;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
@@ -221,8 +198,7 @@
     view.contentOffset = point;
     [UIView commitAnimations];
     
-    CGSize size = view.contentSize;
-    size.height -= keyboardSize.height;
+    CGSize size = view.bounds.size;
     view.contentSize = size;
 }
 

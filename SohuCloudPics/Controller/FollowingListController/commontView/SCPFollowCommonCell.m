@@ -98,6 +98,8 @@
     }
     if (_dataSource.isMe) {
         [_follweButton setHidden:YES];
+    }else{
+        [_follweButton setHidden:NO];
     }
 }
 -(void)setDataSource:(SCPFollowCommonCellDataSource *)dataSource

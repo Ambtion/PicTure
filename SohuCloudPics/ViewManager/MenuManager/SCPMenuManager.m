@@ -39,6 +39,9 @@ static NSString *menuPress[6] = {
 
 @implementation SCPMenuManager
 @synthesize homelogin;
+@synthesize notLogin;
+@synthesize uLoadLogin;
+
 @synthesize menuArray;
 @synthesize ribbon;
 @synthesize ribbonFake;
@@ -71,6 +74,8 @@ static NSString *menuPress[6] = {
     self.coverView = nil;
     self.menuArray = nil;
     self.homelogin = nil;
+    self.notLogin = nil;
+    self.uLoadLogin = nil;
     [super dealloc];
 }
 
@@ -217,11 +222,13 @@ static NSString *menuPress[6] = {
 - (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
     NSLog(@"SCPLogin");
-    [navController dismissModalViewControllerAnimated:NO];
+    [navController dismissModalViewControllerAnimated:YES];
     if (self.homelogin == LoginController) {
         [self onAccountClicked:nil];
-    }else{
+    }else if(self.notLogin == LoginController){
         [self onNoticeClicked:nil];
+    }else{
+        [self onBatchClicked:nil];
     }
 }
 
@@ -242,7 +249,7 @@ static NSString *menuPress[6] = {
         [tabCtrl switchToindex:index == 3 ? 0 : 1];
         return;
     }
-    [self.navController popToRootViewControllerAnimated:YES];
+    [self.navController popToRootViewControllerAnimated:NO];
 }
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -267,24 +274,31 @@ static NSString *menuPress[6] = {
 
 - (void)onBatchClicked:(id)sender
 {
-    UIAlertView * alterveiw = [[[UIAlertView alloc] initWithTitle:nil message:@"是否允许访问相册" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil]autorelease];
-    [alterveiw show];
-}
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
     [self hideMenuWithRibbon:NO];
-    if (!buttonIndex) {
+    if (![SCPLoginPridictive isLogin]) {
+        self.uLoadLogin = [[[SCPLoginViewController alloc] init] autorelease];
+        self.uLoadLogin.delegate = self;
+        UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:self.uLoadLogin] autorelease];
+        [navController presentModalViewController:nav animated:YES];
         return;
     }
+    [self restIcon:1];
     AlbumControllerManager * manager = [[AlbumControllerManager alloc] initWithpresentController:self.navController];
 	[self.navController presentModalViewController:manager animated:YES];
     [manager release];
+    
 }
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//
+//    AlbumControllerManager * manager = [[AlbumControllerManager alloc] initWithpresentController:self.navController];
+//	[self.navController presentModalViewController:manager animated:YES];
+//    [manager release];
+//}
 - (void)onAccountClicked:(id)sender
 {
     
     [self hideMenuWithRibbon:NO];
-    [self restIcon:1];
     if (![SCPLoginPridictive isLogin]) {
         self.homelogin = [[[SCPLoginViewController alloc] init] autorelease];
         self.homelogin.delegate = self;
@@ -295,6 +309,8 @@ static NSString *menuPress[6] = {
     if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeViewController class]]) {
         return;
     }
+    
+    [self restIcon:1];
     SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
     [self.navController pushViewController:myhome animated:YES];
 }
@@ -334,7 +350,6 @@ static NSString *menuPress[6] = {
 {
     //提醒....
     [self hideMenuWithRibbon:NO];
-    [self restIcon:1];
     if (![SCPLoginPridictive isLogin]) {
         SCPLoginViewController * login = [[[SCPLoginViewController alloc] init] autorelease];
         login.delegate = self;
@@ -345,6 +360,7 @@ static NSString *menuPress[6] = {
     if ([self.navController.visibleViewController isKindOfClass:[NoticeDataSource class]]) {
         return;
     }
+    [self restIcon:1];
     NoticeViewController * nvc = [[[NoticeViewController alloc] init] autorelease];
     [self.navController pushViewController:nvc animated:YES];
 }

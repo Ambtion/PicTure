@@ -361,6 +361,13 @@ static CGFloat OFFSET = 0.f;
     if ([self.delegate respondsToSelector:@selector(tableView:performAction:forRowAtIndexPath:withSender:)])
         [self.delegate tableView:tableView performAction:action forRowAtIndexPath:indexPath withSender:sender];
 }
+- (void)topButtonHandle:(id)sender
+{
+    [_tableView setContentOffset:CGPointZero animated:YES];
+    if ([self.delegate respondsToSelector:@selector(pullingreloadPushToTop:) ]) {
+        [self.delegate performSelector:@selector(pullingreloadPushToTop:) withObject:nil];
+    }
+}
 
 @end
 
@@ -410,7 +417,6 @@ static CGFloat OFFSET = 0.f;
 
 - (void)addsubviews
 {
-    
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.bounds.size.height)];
     [_scrollView setContentSize:CGSizeMake(320, 1000)];
     [_scrollView setUserInteractionEnabled:NO];
@@ -445,19 +451,15 @@ static CGFloat OFFSET = 0.f;
     _topbutton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     [_topbutton setBackgroundImage:[UIImage imageNamed:@"explore_up_page_icon.png"] forState:UIControlStateNormal];
     _topbutton.frame = CGRectMake(self.view.bounds.size.width - 10 - 45, self.view.bounds.size.height - 55, 45, 45);
-    [_topbutton addTarget:self action:@selector(topButtonHandle:) forControlEvents:UIControlEventTouchUpInside];
+    [_topbutton addTarget:self.manager action:@selector(topButtonHandle:) forControlEvents:UIControlEventTouchUpInside];
     [_topbutton setHidden:YES];
     [self.view addSubview:_topbutton];
     [self addTableFootView];
 }
-- (void)topButtonHandle:(id)sender
-{
-    [self.tableView setContentOffset:CGPointZero animated:YES];
-}
+
 - (void)addTableFootView
 {
     
-//    _footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] ;
     _footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)] ;
     _footView.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
     UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(realLoadingMore:)] autorelease];

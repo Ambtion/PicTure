@@ -77,7 +77,7 @@ static float OFFSET = 0.f;
         [alterView show];
         [alterView release];
     }];
-}g
+}
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     if (wait) {

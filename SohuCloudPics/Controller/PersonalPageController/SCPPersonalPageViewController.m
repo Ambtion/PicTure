@@ -94,6 +94,7 @@
 - (void)personalTopButtonHandle:(id)sender
 {
     [self.tableView setContentOffset:CGPointZero animated:YES];
+    [self showNavigationBar];
 }
 #pragma mark -
 #pragma mark customer Navigationiteam

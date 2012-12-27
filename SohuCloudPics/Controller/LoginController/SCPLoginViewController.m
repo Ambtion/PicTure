@@ -38,15 +38,6 @@
     [super dealloc];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)loadView
 {
     [super loadView];
@@ -61,11 +52,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
     [self addsubViews];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
 }
 
 -(void)addsubViews
@@ -161,10 +153,8 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
-    if ([self.navigationController class] == [SCPMenuNavigationController class]) {
-        [((SCPMenuNavigationController *) self.navigationController) setDisableMenu:YES];
-    }
 }
+
 - (void)allTextFieldsResignFirstResponder
 {
     [_usernameTextField resignFirstResponder];
@@ -200,6 +190,7 @@
     }
     [_passwordTextField resignFirstResponder];
     [_usernameTextField resignFirstResponder];
+    
     SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登陆中..." withView: self.view] autorelease];
     [waitView show];
     [AccountSystemRequset sohuLoginWithuseName:_usernameTextField.text password:_passwordTextField.text sucessBlock:^(NSDictionary *response) {
@@ -231,15 +222,14 @@
 }
 - (void)registerButtonClicked:(UIButton *)button
 {
-    NSLog(@"registerButtonClicked start");
     SCPRegisterViewController *reg = [[[SCPRegisterViewController alloc] init] autorelease];
     [self.navigationController pushViewController:reg animated:YES];
-    NSLog(@"registerButtonClicked end");
 }
 
 #pragma mark keyboard
 - (void)keyboardWillShow:(NSNotification *)notification
 {
+    
     UIScrollView * view = (UIScrollView *) self.view;
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGSize size = view.bounds.size;
@@ -257,8 +247,6 @@
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     UIScrollView *view = (UIScrollView *) self.view;
-//    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    
     CGPoint point = view.contentOffset;
     point.y  =  0;
     [UIView beginAnimations:nil context:nil];
@@ -269,8 +257,6 @@
     
     CGSize size = view.bounds.size;
     view.contentSize = size;
-//    UIScrollView * views = (UIScrollView *) self.view;
-//    views.contentSize = self.view.bounds.size;
 }
 
 @end

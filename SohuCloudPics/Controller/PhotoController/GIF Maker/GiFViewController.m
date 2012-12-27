@@ -12,6 +12,7 @@
 #import "SCPUploadController.h"
 
 #import "SCPAlert_WaitView.h"
+#import "SCPLoginPridictive.h"
 
 @implementation GiFViewController
 @synthesize imageArray = _imageArray;
@@ -433,19 +434,33 @@
     [self.view setUserInteractionEnabled:NO];
     [self makeRation];
     [self makeResize];
+    
     _imageview.image = [_imageview.animationImages objectAtIndex:0];
+    
     //make gif
     FreeGifMaker * gifmaker = [[[FreeGifMaker alloc]init] autorelease];
     CGFloat delay = _imageview.animationDuration / _imageview.animationImages.count;
     [gifmaker setGifFrame:_imageview.animationImages delay:delay];
     NSData * data = [[[NSData alloc] initWithData:[gifmaker saveAnimatedGif]] autorelease];
+    [_alterView dismissWithClickedButtonIndex:0 animated:YES];
+
+    
+    //Gif unlogin
+    NSString * gif_unlogin;
+    if (![SCPLoginPridictive isLogin]) {
+        [_controller dismissModalViewControllerAnimated:YES];
+        return;
+    }
+    
     NSDictionary * dic = [NSDictionary dictionaryWithObjectsAndKeys:data,@"ImageData",_imageview.image,@"UIImagePickerControllerThumbnail",nil];
     [self.view setUserInteractionEnabled:YES];
-    
     SCPUploadController *ctrl = [[[SCPUploadController alloc] initWithImageToUpload:[NSArray arrayWithObject:dic]:_controller] autorelease];
     [self.navigationController pushViewController:ctrl animated:YES];
-    [_alterView dismissWithClickedButtonIndex:0 animated:YES];
     
+}
+- (void)image:(UIImage *)image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
+{
+    NSLog(@"%@",error);
 }
 -(void)makeRation
 {

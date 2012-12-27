@@ -119,7 +119,6 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     _positionTimeLabel.backgroundColor = [UIColor clearColor];
     [tailerView addSubview:_positionTimeLabel];
 
-    
 //    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(205 - 7, 5 + OFFSETY, 51, 18)];
     
 //    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
@@ -180,16 +179,17 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     CGRect frame = tailerView.frame;
     frame.origin.y = _photoImageView.superview.frame.size.height;
     tailerView.frame = frame;
-    
     [self showGifButton];
     NSString * str  = nil;
     if (self.dataSource.heigth > 320) {
         str = [NSString stringWithFormat:@"%@_h960",_dataSource.photoImage];
     }else{
-       str = [NSString stringWithFormat:@"%@_w640",_dataSource.photoImage];
+        str = [NSString stringWithFormat:@"%@_w640",_dataSource.photoImage];
     }
-    
-    [_photoImageView setImageWithURL:[NSURL URLWithString:_dataSource.photoImage]];
+//    str = [NSString stringWithFormat:@"%@_c70",_dataSource.photoImage];
+//    NSLog(@"%@",str);
+    [_photoImageView cancelCurrentImageLoad];
+    [_photoImageView setImageWithURL:str];
     [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
     
     if (!_dataSource ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
@@ -202,10 +202,6 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     }else{
         _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
     }
-//    [_commentButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.commontcount]];
-//    [self setFavorButtonImage];
-//    [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
-    
 }
 //- (void)setFavorButtonImage
 //{

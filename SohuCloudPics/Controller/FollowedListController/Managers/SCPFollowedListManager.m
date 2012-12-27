@@ -113,10 +113,8 @@
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataSource.count){
-//        [_requestManger getUserFollowersWithUserID:_user_ID page:1];
         [_requestManger getFollowedsInfoWithUseID:_user_ID];
     }else{
-        NSLog(@"%d max: %d",[_dataSource count],_maxNum);
         if (_maxNum <= [_dataSource count]) {
             UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"已达到最大" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
             [alterView show];
@@ -227,10 +225,8 @@
     }
     if (cell.dataSource.following) {
         [_requestManger destoryFollowing:cell.dataSource.user_id success:^(NSString *response) {
-            
             cell.dataSource.following = !cell.dataSource.following;
             [cell updataData];
-            
         } failure:^(NSString *error) {
             UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
             [alterView show];
