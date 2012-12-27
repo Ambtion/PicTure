@@ -177,7 +177,6 @@
 }
 - (void)updataData
 {
-    if (self.datasource == nil )         return;
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"]];
     if (!_dataSource.name ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"起个名字吧";
@@ -189,18 +188,20 @@
     }else{
         _descLabel.text = self.datasource.desc;
     }
-    if (self.datasource.isInit) {
-        [_settingButton setHidden:YES];
-    }else{
-        [_settingButton setHidden:NO];
-    }
+//    if (self.datasource.isInit) {
+//        [_settingButton setHidden:YES];
+//    }else{
+//        [_settingButton setHidden:NO];
+//    }
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
+    
 }
 
 -(void)setDatasource:(MyPersonalCelldataSource *)datasource
 {
+    
     if (_dataSource != datasource) {
         [_dataSource release];
         _dataSource = [datasource retain];

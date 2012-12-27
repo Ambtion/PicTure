@@ -10,9 +10,9 @@
 #import "SCPAppDelegate.h"
 
 static NSString * IMAGENAME[4]  = {@"user_bg_plain.png",
-                                    @"user_bg_sea.png",
-                                    @"user_bg_soul.png",@"user_bg_stra.png"};
-static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_icon_soul.png",@"user_bg_stra.png"};
+    @"user_bg_sea.png",
+    @"user_bg_soul.png",@"user_bg_stra.png"};
+static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_icon_soul.png",@"user_icon_stra.png"};
 @implementation HomeBackContainer
 @synthesize delegate;
 - (void)dealloc
@@ -26,8 +26,8 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
         self.delegate = Adelegete;
         self.frame = [[UIScreen mainScreen] bounds];
         self.image = [UIImage imageNamed:@"pop_bg.png"];
-//        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandle:)] autorelease];
-//        [self addGestureRecognizer:gesture];
+        //        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandle:)] autorelease];
+        //        [self addGestureRecognizer:gesture];
         
         [self addSubviews];
     }
@@ -53,19 +53,19 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
     [self addSubview:_boxViews];
     [_boxViews setUserInteractionEnabled:YES];
     [self setUserInteractionEnabled:YES];
-  
+    
     [self boxviewaddSubViews];
 }
 - (void)boxviewaddSubViews
 {
     
     for (int i = 0; i < 4; i++) {
-        UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(5 + 80 * i, 33, 75, 75)] autorelease];
+        UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(4 + 79 * i, 33, 77, 77)] autorelease];
         imageview.image = [UIImage imageNamed:ICON[i]];
         [imageview setUserInteractionEnabled:YES];
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:[UIImage imageNamed:@"user_image_check.png"] forState:UIControlStateSelected];
-        button.frame = CGRectMake(5 + 80 * i, 33, 75, 75);
+        button.frame = CGRectMake(4 + 79 * i, 33, 77, 77);
         button.center = imageview.center;
         button.tag = i + 1000;
         [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -123,7 +123,7 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
 {
     NSString * str = [[NSUserDefaults standardUserDefaults] objectForKey:@"HomeBackImage"];
     if (!str || [str isEqualToString:@""])       return 1002;
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 4; i++)
         if([IMAGENAME[i] isEqualToString:str]) return 1000 + i;
     return 1002;
 }

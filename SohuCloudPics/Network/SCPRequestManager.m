@@ -252,10 +252,10 @@
     NSString  * str = nil;
     if ([SCPLoginPridictive isLogin]) {
         str = [NSString stringWithFormat:@"%@/folders/%@?owner_id=%@&access_token=%@",BASICURL_V1,folder_id,user_id,[SCPLoginPridictive currentToken]];
-        NSLog(@"Login:%@", str);
     }else{
         str = [NSString stringWithFormat:@"%@/folders/%@?owner_id=%@",BASICURL_V1,folder_id,user_id];
     }
+    NSLog(@"Login:%@", str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:5.f];
     [request setCompletionBlock:^{

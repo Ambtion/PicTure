@@ -637,7 +637,7 @@
         self.rearScrollview.contentSize = imageView.frame.size;
         [self.rearScrollview setContentOffset:CGPointMake(0, 0)];
     }
-    
+
     if ([[imageView info] objectForKey:@"photo_url"]);
     {
         [imageView cancelCurrentImageLoad];
@@ -661,8 +661,7 @@
         }else{
             [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
         }
-       
-    }
+    }g
 }
 - (void)refreshScrollviewOnMinBounds
 {

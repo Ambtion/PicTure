@@ -57,7 +57,9 @@
 }
 - (void)refreshUserinfo
 {
+    
     if (_isInit) return;
+    if (![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
         NSLog(@"%@",response);
         allFollowed = [[response objectForKey:@"followings"] intValue];
@@ -66,7 +68,6 @@
         UIAlertView * alterView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alterView show];
         [alterView release];
-        
     }];
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info

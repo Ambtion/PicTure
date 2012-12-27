@@ -188,8 +188,8 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     }else{
        str = [NSString stringWithFormat:@"%@_w640",_dataSource.photoImage];
     }
-    [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
-//    [_photoImageView setImageWithURL:[NSURL URLWithString:_dataSource.photoImage]];
+    
+    [_photoImageView setImageWithURL:[NSURL URLWithString:_dataSource.photoImage]];
     [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
     
     if (!_dataSource ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {

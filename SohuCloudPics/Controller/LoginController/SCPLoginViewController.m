@@ -206,14 +206,14 @@
     [AccountSystemRequset sohuLoginWithuseName:_usernameTextField.text password:_passwordTextField.text sucessBlock:^(NSDictionary *response) {
         NSLog(@"%@",response);
         [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];
-        [waitView dismissWithClickedButtonIndex:0 animated:YES];
         if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
             [_delegate SCPLogin:self doLogin:button];
-        
+        [waitView dismissWithClickedButtonIndex:0 animated:YES];
+
     } failtureSucess:^(NSString *error) {
-        [waitView dismissWithClickedButtonIndex:0 animated:NO];
         UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
         [alterView show];
+//        [waitView dismissWithClickedButtonIndex:0 animated:NO];
     }];
 
 }

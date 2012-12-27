@@ -272,6 +272,7 @@ static float OFFSET = 0.f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     NSInteger row = indexPath.row;
     if (row == 0) {
         MyPersonalCell* pageCell = [tableView dequeueReusableCellWithIdentifier:@"PAGECELL"];

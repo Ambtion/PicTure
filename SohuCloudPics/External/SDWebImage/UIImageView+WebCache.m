@@ -82,6 +82,7 @@
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image
 {
     self.image = image;
+    [self setNeedsDisplay];
     return;
     NSString * str;
     [UIView transitionWithView:self duration:0.5 options:UIViewAnimationOptionCurveEaseInOut |
