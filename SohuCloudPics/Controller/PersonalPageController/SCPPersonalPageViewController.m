@@ -96,6 +96,10 @@
     [self.tableView setContentOffset:CGPointZero animated:YES];
     [self showNavigationBar];
 }
+- (void)didReceiveMemoryWarning
+{
+//    NSLog(@"%s",__FUNCTION__)
+}
 #pragma mark -
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated

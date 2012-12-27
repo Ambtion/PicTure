@@ -25,11 +25,10 @@
     if (self = [super init]) {
         
         self.frame = [[UIScreen mainScreen] bounds] ;
-        UIImageView * bgView = [[UIImageView alloc] initWithFrame:[self  bounds]];
+        UIImageView * bgView = [[[UIImageView alloc] initWithFrame:[self  bounds]] autorelease];
         bgView.image = [UIImage imageNamed:@"pop_bg.png"];
         [self  addSubview:bgView];
         backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
-        
         NSString * retina;
         
         backgroundView.frame = CGRectMake(0, 0, 130, 130);
