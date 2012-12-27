@@ -70,7 +70,8 @@
     }
     [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
     //    [self.manager refreshData:nil];
-}- (void)viewDidAppear:(BOOL)animated
+}
+- (void)viewDidAppear:(BOOL)animated
 {
     if (_item == nil) {
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
@@ -88,6 +89,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+
     [self.manager refreshUserinfo];
 }
 @end

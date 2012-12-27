@@ -14,10 +14,9 @@
 #import "SCPLoginPridictive.h"
 
 #import "AccountSystemRequset.h"
-#import "SCPAlter_WaitView.h"
+#import "SCPAlert_WaitView.h"
 
 #define EMAIL_ARRAY ([NSArray arrayWithObjects:@"126.com", @"163.com", @"qq.com", @"sohu.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
-
 
 @implementation SCPLoginViewController
 @synthesize delegate = _delegate;
@@ -201,7 +200,7 @@
     }
     [_passwordTextField resignFirstResponder];
     [_usernameTextField resignFirstResponder];
-    SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登陆中..."] autorelease];
+    SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登陆中..." withView: self.view] autorelease];
     [waitView show];
     [AccountSystemRequset sohuLoginWithuseName:_usernameTextField.text password:_passwordTextField.text sucessBlock:^(NSDictionary *response) {
         NSLog(@"%@",response);
@@ -213,7 +212,7 @@
     } failtureSucess:^(NSString *error) {
         UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
         [alterView show];
-//        [waitView dismissWithClickedButtonIndex:0 animated:NO];
+        [waitView dismissWithClickedButtonIndex:0 animated:NO];
     }];
 
 }

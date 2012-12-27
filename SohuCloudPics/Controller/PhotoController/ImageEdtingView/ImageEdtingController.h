@@ -11,7 +11,7 @@
 #import "FitterTabBar.h"
 #import "UICliper.h"
 
-#import "SCPAlter_WaitView.h"
+#import "SCPAlert_WaitView.h"
 
 @class ALAssetsLibrary;
 @class ALAsset;

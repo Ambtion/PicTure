@@ -81,6 +81,7 @@
     active.hidesWhenStopped = YES;
     [active stopAnimating];
     [_footView addSubview:active];
+    
     ////
     UIImageView * bg_imageview = [[[UIImageView alloc] initWithFrame:CGRectMake((320 - 30)/2.f,10.f, 30.f, 30.f)]autorelease];
     bg_imageview.image =[UIImage imageNamed:@"end_bg.png"];
@@ -98,6 +99,7 @@
     [_topButton setHidden:YES];
     [self.view addSubview:_topButton];
 }
+
 - (void)homeTopButtonHandle:(id)sender
 {
     [self.homeTable setContentOffset:CGPointZero animated:YES];

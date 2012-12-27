@@ -83,22 +83,15 @@
     _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
     [self.contentView addSubview:_backgroundImageView];
     
-    //portrait Image
-    UIImageView * imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(118, 109, 85, 85)] autorelease];
-    imageView.image = [UIImage imageNamed:@"user_bg_photo_defout.png"];
-    imageView.layer.cornerRadius = 42.5;
-    imageView.clipsToBounds = YES;
-    [self.contentView addSubview:imageView];
-    
     _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(118 , 109, 85, 85)];
     _portraitImageView.layer.cornerRadius = 42.5;
     _portraitImageView.clipsToBounds = YES;
     _portraitImageView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_portraitImageView];
     
-    UIImageView * bg_portrait = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_bg_photo.png"]] autorelease];
-    bg_portrait.frame = CGRectMake(109, 100, 102, 102);
-    [self.contentView addSubview:bg_portrait];
+    bgCircleView = [[[UIImageView alloc] initWithImage:nil] autorelease];
+    bgCircleView.frame = CGRectMake(109, 100, 102, 102);
+    [self.contentView addSubview:bgCircleView];
 }
 -(void)addUserPhotoLabel
 {
@@ -164,6 +157,7 @@
 {
     
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"]];
+    
     if (!_dataSource.name || ![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"佚名";
     }else{
@@ -181,15 +175,28 @@
         [_followButton setImage:[UIImage imageNamed:@"user_add_following_normal.png"] forState:UIControlStateNormal];
         [_followButton setImage:[UIImage imageNamed:@"user_add_following_press.png"] forState:UIControlStateHighlighted];
     }
-    if (self.datasource.isMe || self.datasource.isInit) {
+    _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
+    _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
+    _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
+    
+    if (self.datasource.isMe ) {
         [_followButton setHidden:YES];
     }else{
         [_followButton setHidden:NO];
     }
     
-    _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
-    _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
-    _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
+    if (self.datasource.isInit) {
+        _portraitImageView.image = nil;
+        _nameLabel.text = nil;
+        _descLabel.text = nil;
+        [_followButton setHidden:YES];
+        _albumButton.numlabel.text = nil;
+        _followingButton.numlabel.text = nil;
+        _followedButton.numlabel.text = nil;
+    }else{
+        [_followButton setHidden:NO];
+        bgCircleView.image = [UIImage imageNamed:@"user_bg_photo.png"];
+    }
 }
 
 -(void)setDatasource:(PersonalPageCellDateSouce *)datasource

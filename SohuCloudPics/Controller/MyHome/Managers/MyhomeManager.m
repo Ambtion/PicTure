@@ -15,7 +15,6 @@
 #import "SCPFollowingListViewController.h"
 #import "SCPFollowedListViewController.h"
 #import "SCPSetttingController.h"
-#import "MoreAlertView.h"
 #import "SCPAlbumListController.h"
 
 
@@ -63,7 +62,7 @@ static float OFFSET = 0.f;
 }
 - (void)refreshUserinfo
 {
-    if (_isinit) return;
+    if (_isinit || ![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
         NSLog(@"%@",response);
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
@@ -78,9 +77,13 @@ static float OFFSET = 0.f;
         [alterView show];
         [alterView release];
     }];
-}
+}g
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
+    if (wait) {
+        [wait dismissWithClickedButtonIndex:0 animated:YES];
+        [wait release],wait = nil;
+    }
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
@@ -216,17 +219,15 @@ static float OFFSET = 0.f;
 #pragma mark dataSource
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
+    if (_isinit) {
+        wait = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"加载中..." withView:_controller.view];
+        [wait show];
+    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataArray.count){
         [_requestManager getUserInfoWithID:[SCPLoginPridictive currentUserId]];
     }else{
-        if (MAXPICTURE < _dataArray.count || !hasNextpage) {
-            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-            [moreView show];
-            [self loadingMoreFinished];
-            return;
-        }
         [_requestManager getUserInfoFeedWithUserID:[SCPLoginPridictive currentUserId] page:curPage + 1];
     }
 }
@@ -240,7 +241,7 @@ static float OFFSET = 0.f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (MAXPICTURE < _dataArray.count|| !hasNextpage) {
+    if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit) {
         [self.controller.footView setHidden:YES];
     }else{
         [self.controller.footView setHidden:NO];
@@ -303,7 +304,6 @@ static float OFFSET = 0.f;
 #pragma feedCell Method
 -(void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
-    if (![self isLogin]) return;
     UINavigationController * nav = _controller.navigationController;
     SCPPhotoDetailViewController *ctrl = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
     [nav pushViewController:ctrl animated:YES];
@@ -331,15 +331,7 @@ static float OFFSET = 0.f;
     //
     //    [ctrl release];
 }
-#pragma mark -
-- (BOOL)isLogin
-{
-    if (![SCPLoginPridictive isLogin]) {
-        MoreAlertView * more = [[[MoreAlertView alloc] init] autorelease];
-        [more show];
-    }
-    return [SCPLoginPridictive isLogin];
-}
+
 #pragma mark CELL - Method
 - (void)MyPersonalCell:(MyPersonalCell *)cell settingClick:(id)sender
 {
@@ -348,7 +340,6 @@ static float OFFSET = 0.f;
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender
 {
-    if (![self isLogin]) return;
     SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [_controller.navigationController pushViewController:alb animated:YES];
     [alb release];
@@ -358,11 +349,10 @@ static float OFFSET = 0.f;
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell favoriteClicked:(id)sender
 {
-    if (![self isLogin]) return;
+    
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell followingButtonClicked:(id)sender
 {
-    if (![self isLogin]) return;
     NSLog(@"%s",__FUNCTION__);
     UINavigationController *nav = _controller.navigationController;
     SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
@@ -371,7 +361,6 @@ static float OFFSET = 0.f;
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell followedButtonClicked:(id)sender
 {
-    if (![self isLogin]) return;
     UINavigationController *nav = _controller.navigationController;
     SCPFollowedListViewController *ctrl = [[SCPFollowedListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [nav pushViewController:ctrl animated:YES];

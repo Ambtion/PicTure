@@ -14,6 +14,7 @@
 #import "SCPAlert_About.h"
 #import "SCPAlert_FeedBack.h"
 #import "SCPMenuNavigationController.h"
+#import "SCPMainTabController.h"
 
 static NSString* SettingMenu[7] = {@"个人资料设置",@"上传图片质量",@"清除缓冲",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
 static NSString* SettingCover[7] = {@"settings_user.png",@"settings_push.png",@"settings_feedback.png",
@@ -124,14 +125,23 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     if (indexPath.row == 7) {
 //        [SCPLoginPridictive removeDataForKey:nil];
         [SCPLoginPridictive logout];
-        [(SCPMenuNavigationController *)_controller popViewControllerAnimated:NO];
-        UIAlertView * alter = [[UIAlertView alloc] initWithTitle:@"已登出" message:@"" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        UIAlertView * alter = [[UIAlertView alloc] initWithTitle:@"已登出" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alter show];
         [alter release];
         
     }
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"%@",[_controller class]);
+    SCPMenuNavigationController * mnv = (SCPMenuNavigationController *)_controller;
+    [mnv popToRootViewControllerAnimated:NO];
+    SCPMainTabController * mainTab = [[mnv childViewControllers] lastObject];
+    mainTab.selectedIndex = 0;
+    [_controller dismissModalViewControllerAnimated:YES];
     
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

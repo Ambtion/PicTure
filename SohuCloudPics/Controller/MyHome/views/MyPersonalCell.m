@@ -22,6 +22,7 @@
 
 - (void)dealloc
 {
+    
     self.portrait = nil;
     self.name = nil;
     self.position = nil;
@@ -49,7 +50,7 @@
     [_descLabel release];
     [_settingButton release];
     [_albumButton release];
-//    [_favorButton release];
+    [bgCircleView release];
     [_followingButton release];
     [_followedButton release];
     
@@ -81,6 +82,7 @@
     [_backgroundImageView addGestureRecognizer:gesture];
     [_backgroundImageView setUserInteractionEnabled:YES];
     [self setHomeBackGroudImage];
+    
     //portrait Image
     _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(118 , 109, 85, 85)];
     _portraitImageView.layer.cornerRadius = 42.5;
@@ -88,9 +90,8 @@
     _portraitImageView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_portraitImageView];
     
-    UIImageView * bg_portrait = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_bg_photo.png"]] autorelease];
-    bg_portrait.frame = CGRectMake(109, 100, 102, 102);
-    [self.contentView addSubview:bg_portrait];
+    bgCircleView = [[UIImageView alloc] initWithFrame:CGRectMake(109, 100, 102, 102)];
+    [self.contentView addSubview:bgCircleView];
 }
 - (void)setHomeBackGroudImage
 {
@@ -188,15 +189,21 @@
     }else{
         _descLabel.text = self.datasource.desc;
     }
-//    if (self.datasource.isInit) {
-//        [_settingButton setHidden:YES];
-//    }else{
-//        [_settingButton setHidden:NO];
-//    }
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
     
+    if (self.datasource.isInit) {
+        _portraitImageView.image = nil;
+        _nameLabel.text = nil;
+        _descLabel.text = nil;
+        _albumButton.numlabel.text = nil;
+        _followingButton.numlabel.text = nil;
+        _followedButton.numlabel.text = nil;
+        
+    }else{
+        bgCircleView.image = [UIImage imageNamed:@"user_bg_photo.png"];
+    }
 }
 
 -(void)setDatasource:(MyPersonalCelldataSource *)datasource

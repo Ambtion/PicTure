@@ -43,12 +43,13 @@
     MyPersonalCelldataSource * _dataSource;
     UIImageView * _backgroundImageView;
     UIImageView * _portraitImageView;
+    UIImageView * bgCircleView;
+    
     UILabel * _nameLabel;
     UILabel * _descLabel;
     UIButton * _settingButton;
     
     MenuButtonView * _albumButton;
-//    MenuButtonView * _favorButton;
     MenuButtonView * _followingButton;
     MenuButtonView * _followedButton;
 }

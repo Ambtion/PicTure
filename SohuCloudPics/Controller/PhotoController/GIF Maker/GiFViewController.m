@@ -11,7 +11,7 @@
 #import "SCPMenuNavigationController.h"
 #import "SCPUploadController.h"
 
-#import "SCPALter_WaitView.h"
+#import "SCPAlert_WaitView.h"
 
 @implementation GiFViewController
 @synthesize imageArray = _imageArray;
@@ -427,7 +427,7 @@
 -(void)saveGif:(UIButton*)button
 {
     
-    SCPAlert_WaitView *  _alterView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"制作中"] autorelease];
+    SCPAlert_WaitView *  _alterView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"制作中" withView: self.view] autorelease];
     [_alterView show];
     
     [self.view setUserInteractionEnabled:NO];

@@ -558,7 +558,7 @@
 #pragma mark-
 -(void)waitForMomentsWithTitle:(NSString*)str
 {
-    _alterView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:str] autorelease];
+    _alterView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:str withView:self.view] autorelease];
     [_alterView show];
 }
 

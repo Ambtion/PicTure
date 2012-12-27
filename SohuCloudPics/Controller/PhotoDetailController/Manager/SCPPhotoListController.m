@@ -661,7 +661,7 @@
         }else{
             [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
         }
-    }g
+    }
 }
 - (void)refreshScrollviewOnMinBounds
 {

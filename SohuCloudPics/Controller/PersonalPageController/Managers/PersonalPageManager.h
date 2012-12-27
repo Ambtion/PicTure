@@ -15,18 +15,21 @@
 #import "SCPRequestManager.h"
 #import "SCPAlert_LoginView.h"
 #import "SCPLoginViewController.h"
+#import "SCPAlert_WaitView.h"
 
 @class SCPPersonalPageViewController;
 @interface PersonalPageManager : NSObject <UITableViewDataSource, PullingRefreshTableViewDelegate, FeedCellDelegate, PersonalPageCellDelegate, SCPRequestManagerDelegate, UIAlertViewDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate>
 {
     NSMutableArray* _dataArray;
     SCPRequestManager  * _requestManager;
+    SCPAlert_WaitView * wait;
+    PersonalPageCellDateSouce * _personalDataSource;
+    NSString * _user_ID;
+
     BOOL _isLoading;
     BOOL _willRefresh;
     BOOL _isinit;
-    NSString * _user_ID;
     BOOL _loadingMore;
-    PersonalPageCellDateSouce * _personalDataSource;
     BOOL hasNextpage;
     NSInteger curPage;
 }

@@ -15,8 +15,6 @@
 #import "SCPFollowedListViewController.h"
 #import "SCPLoginPridictive.h"
 
-#import "MoreAlertView.h"
-
 #define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 200
 #define PAGEPHOTONUMBER 
@@ -35,7 +33,6 @@ static float OFFSET = 0.f;
     [_user_ID release];
     [super dealloc];
 }
-
 - (id)initWithController:(SCPPersonalPageViewController *)ctrl useID:(NSString *)useID
 {
     
@@ -85,7 +82,11 @@ static float OFFSET = 0.f;
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    NSLog(@"%@",info);
+//    NSLog(@"%@",info);
+    if (wait) {
+        [wait dismissWithClickedButtonIndex:0 animated:YES];
+        [wait release],wait = nil;
+    }
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
@@ -135,9 +136,13 @@ static float OFFSET = 0.f;
 }
 
 #pragma mark - Network Failed
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
-{    
-    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"访问失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
+- (void)requestFailed:(NSString *)error
+{
+    if (wait) {
+        [wait dismissWithClickedButtonIndex:0 animated:YES];
+        [wait release],wait = nil;
+    }
+    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
     [alterView show];
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -156,26 +161,23 @@ static float OFFSET = 0.f;
         [self loadingMoreFinished];
     }    
 }
-
 #pragma mark Data Source
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
+    if (_isinit) {
+        wait = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"加载中..." withView:_controller.view];
+        [wait show];
+     }
+    
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataArray.count){
         [_requestManager getUserInfoWithID:_user_ID];
     }else{
-        if (MAXPICTURE < _dataArray.count || !hasNextpage){
-            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-            [moreView show];
-            [self loadingMoreFinished];
-            return;
-        }
         [_requestManager getUserInfoFeedWithUserID:_user_ID page:curPage + 1];
     }
 }
 #pragma mark -
-
 
 #pragma mark  Limit Scrollview
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -217,14 +219,12 @@ static float OFFSET = 0.f;
 {
     _isLoading = NO;
     [self.controller.tableView reloadData];
-//    [self.controller.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 - (void)showLoadingMore
 {
     if (_isLoading) {
         return;
     }
-    
     UIView * view  = _controller.tableView.tableFooterView;
     UILabel * label = (UILabel *)[view viewWithTag:100];
     UIActivityIndicatorView * acv  = (UIActivityIndicatorView *)[view viewWithTag:200];
@@ -255,10 +255,9 @@ static float OFFSET = 0.f;
 {
     return 1;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (MAXPICTURE < _dataArray.count|| !hasNextpage){
+    if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit){
         [self.controller.footView setHidden:YES];
     }else{
         [self.controller.footView setHidden:NO];

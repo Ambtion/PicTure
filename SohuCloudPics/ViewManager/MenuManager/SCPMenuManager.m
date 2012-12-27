@@ -303,6 +303,7 @@ static NSString *menuPress[6] = {
 {
     SCPMainTabController *tabCtrl = [navController.childViewControllers objectAtIndex:0];
     if (tabCtrl.selectedIndex == 1 && self.navController.viewControllers.count == 1) {
+        [self hideMenuWithRibbon:NO];
         return;
     }
     index = 2;
@@ -314,6 +315,7 @@ static NSString *menuPress[6] = {
 {
     SCPMainTabController *tabCtrl = [navController.childViewControllers objectAtIndex:0];
     if (tabCtrl.selectedIndex == 0 && self.navController.viewControllers.count == 1) {
+        [self hideMenuWithRibbon:NO];
         return;
     }
     index = 3;

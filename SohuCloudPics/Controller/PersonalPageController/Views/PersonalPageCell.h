@@ -41,6 +41,7 @@
     PersonalPageCellDateSouce * _dataSource;
     UIImageView * _backgroundImageView;
     UIImageView * _portraitImageView;
+    UIImageView * bgCircleView;
     UILabel * _nameLabel;
     UILabel * _descLabel;
     UIButton * _followButton;

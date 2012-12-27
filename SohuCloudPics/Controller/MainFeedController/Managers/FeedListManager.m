@@ -57,9 +57,8 @@
 }
 - (void)refreshUserinfo
 {
-    
-    if (_isInit) return;
-    if (![SCPLoginPridictive currentUserId]) return;
+    NSLog(@"%s",__FUNCTION__);
+    if (_isInit || ![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
         NSLog(@"%@",response);
         allFollowed = [[response objectForKey:@"followings"] intValue];
@@ -266,7 +265,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    if (MAXPICTURE < _dataArray.count || !hasNextPage) {
+    if (MAXPICTURE < _dataArray.count || !hasNextPage || _isInit) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
         [self.controller.pullingController.footView setHidden:NO];

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SCPSettingRootViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface SCPSettingRootViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     UITableView * _tableView;
     id _controller;
