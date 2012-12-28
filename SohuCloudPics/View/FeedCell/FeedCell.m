@@ -129,7 +129,6 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 //    [_commentButton addtarget:self action:@selector(commentButtonClicked)];
 //    _commentButton.imageView.image = [UIImage imageNamed:@"comments.png"];
 //    [tailerView addSubview:_commentButton];
-
     [self.contentView addSubview:tailerView];
 }
 
@@ -138,19 +137,19 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 - (void)showGifButton
 {
     if (_dataSource.isGif) {
+        
         if (!_gifPlayView) {
-            _gifPlayView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,55, 55)];
-            _gifPlayView.image = [UIImage imageNamed:@"play_normal.png"];
+            _gifPlayView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,65, 65)];
+            _gifPlayView.image = [UIImage imageNamed:@"GIF_play_normal.png"];
         }
-        _gifPlayView.center = CGPointMake(_photoImageView.bounds.size.width /2.f, _photoImageView.bounds.size.height/ 2.f);
+        _gifPlayView.center = CGPointMake(_photoImageView.superview.bounds.size.width /2.f, _photoImageView.superview.bounds.size.height/ 2.f);
         if (!_gifPlayView.superview)
-            [_photoImageView addSubview:_gifPlayView];
+            [_photoImageView.superview addSubview:_gifPlayView];
     }else{
         if (_gifPlayView.superview)
             [_gifPlayView removeFromSuperview];
     }
 }
-
 - (void)updataData
 {
     
@@ -171,7 +170,6 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     }else if(_dataSource.heigth > maxHeigth){
         _photoImageView.frame = CGRectMake(0, 0, 320, _dataSource.heigth);
         _photoImageView.superview.frame = CGRectMake(0, 0, 320, maxHeigth);
-
     }else{
         _photoImageView.frame = CGRectMake(0, 0, 320, _dataSource.heigth);
         _photoImageView.superview.frame = CGRectMake(0, 0, 320, _photoImageView.frame.size.height);
@@ -186,9 +184,7 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     }else{
         str = [NSString stringWithFormat:@"%@_w640",_dataSource.photoImage];
     }
-//    NSLog(@"%@",str);
-    str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-
+    
     [_photoImageView cancelCurrentImageLoad];
     [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];

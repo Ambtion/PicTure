@@ -9,7 +9,6 @@
 #import "NoticeManager.h"
 #import "SCPPersonalPageViewController.h"
 #import "SCPFollowingListViewController.h"
-#import "MoreAlertView.h"
 
 @implementation NoticeManager
 @synthesize controller = _controller;
@@ -67,19 +66,20 @@
   
 }
 #pragma Network Failed
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
+- (void)requestFailed:(NSString *)error
 {
-    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"访问失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
-    [alterView show];
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [alertView show];
+    [self restNetWorkState];
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != 0) {
-        [self dataSourcewithRefresh:YES];
-    }else{
-        [self restNetWorkState];
-    }
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    if (buttonIndex != 0) {
+//        [self dataSourcewithRefresh:YES];
+//    }else{
+//        [self restNetWorkState];
+//    }
+//}
 - (void)restNetWorkState
 {
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
@@ -130,9 +130,10 @@
 - (BOOL)isLogin
 {
     if (![SCPLoginPridictive isLogin]) {
+        UIAlertView * ale = [[UIAlertView alloc] initWithTitle:@"" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [ale show];
+        [ale release];
         
-        MoreAlertView * more = [[[MoreAlertView alloc] init] autorelease];
-        [more show];
     }
     return [SCPLoginPridictive isLogin];
 }
@@ -156,9 +157,7 @@
         [nav pushViewController:ctrl animated:YES];
         [ctrl release];
     } failure:^(NSString *error) {
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
+        [self requestFailed:error];
     }];
 }
 #pragma mark - dataSouce

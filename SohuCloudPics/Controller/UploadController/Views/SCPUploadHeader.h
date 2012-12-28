@@ -28,7 +28,6 @@
     AlbumsTableManager *_manager;
     SCPRequestManager * _requestmanager;
     NSMutableArray * _foldersArray;
-    BOOL isSelectedLast;
 }
 @property (assign, nonatomic) id<UploadHeadDeleagte> delegate;
 // data
@@ -40,6 +39,7 @@
 @property (strong, nonatomic) UILabel *albumChooseLabel;
 @property (strong, nonatomic) UIButton *albumChooseButton;
 @property (strong, nonatomic) UILabel * albumNameLabel;
+//@property (strong, nonatomic) UITableViewCell * albumName;
 @property (strong, nonatomic) UILabel *labelBoxLabel;
 
 - (void)dismissAlbumChooseTable;

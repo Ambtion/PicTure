@@ -12,4 +12,5 @@
 @property(nonatomic,retain)UIImageView* c_ImageView;
 @property(nonatomic,retain)UILabel* c_Label;
 @property(nonatomic,retain)UIImageView * accessoryImage;
+//@property(nonatomic,retain)
 @end

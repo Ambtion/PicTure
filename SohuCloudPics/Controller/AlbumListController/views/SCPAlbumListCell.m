@@ -12,10 +12,10 @@
 #import "SCPAlbum.h"
 
 
-#define NAME_RECT CGRectMake(105, 12, 200, 40)
-#define VIEWCOUNT_RECT CGRectMake(105, 50, 120, 12)
+#define NAME_RECT CGRectMake(105, 12, 200, 38)
+#define VIEWCOUNT_RECT CGRectMake(105, 52, 120, 12)
 #define UPDATEDESC_RECT CGRectMake(230, 50, 75, 12)
-#define PHOTONUM_RECT CGRectMake(105, 77, 200, 12)
+#define PHOTONUM_RECT CGRectMake(105, 77 - 8, 200, 12)
 
 
 @implementation SCPAlbumListCell
@@ -40,7 +40,6 @@
     [_viewCountLabel release];
 	[_updatedAtDescLabel release];
 	[_album release];
-    
     [super dealloc];
 }
 
@@ -97,9 +96,9 @@
         _nameLabel = [[UILabel alloc] initWithFrame:NAME_RECT];
         _nameLabel.backgroundColor = [UIColor clearColor];
         _nameLabel.textColor = [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0];
-		_nameLabel.font = [UIFont boldSystemFontOfSize:13];
-        _nameLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _nameLabel.numberOfLines = 0;
+		_nameLabel.font = [UIFont boldSystemFontOfSize:14];
+//        _nameLabel.lineBreakMode = UILineBreakMode;
+        _nameLabel.numberOfLines = 2;
         [self addSubview:_nameLabel];
         
         /* view count label */
@@ -117,6 +116,10 @@
 		_updatedAtDescLabel.font = [_updatedAtDescLabel.font fontWithSize:10];
 		_updatedAtDescLabel.textAlignment = NSTextAlignmentRight;
 		[self addSubview:_updatedAtDescLabel];
+        UIImageView * lineView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]] autorelease];
+        lineView.frame = CGRectMake(0, self.frame.size.height - 8, 320, 1);
+        [self addSubview:lineView];
+
     }
     return self;
 }
@@ -130,7 +133,7 @@
 	if (self.album.coverURL == nil || [self.album.coverURL isKindOfClass:[NSNull class]] || self.album.coverURL.length == 0) {
 		[_photoImageView setImage:[self getEmptyFolderCoverImage]];
 	} else {
-        NSString * coverUrl  =[NSString stringWithFormat:@"%@_c70",_album.coverURL];
+        NSString * coverUrl  =[NSString stringWithFormat:@"%@_c100",_album.coverURL];
 		[_photoImageView setImageWithURL:[NSURL URLWithString:coverUrl] placeholderImage:nil options:0];
 	}
 
@@ -142,12 +145,13 @@
 
     /* count label */
     [_photoNumLabel setHidden:self.album.isUploading];
-    [_photoNumLabel setText:[NSString stringWithFormat:@"共有 %d 张图片", self.album.photoNum]];
+    [_photoNumLabel setText:[NSString stringWithFormat:@"共有%d张图片", self.album.photoNum]];
 	
 	/* name label */
 	_nameLabel.frame = NAME_RECT;
-	[_nameLabel setText:[UIUtils pruneString:self.album.name toLength:29]];
-	[_nameLabel sizeToFit];
+    _nameLabel.text = [self.album name];
+//	[_nameLabel setText:[UIUtils pruneString:self.album.name toLength:27]];
+//	[_nameLabel sizeToFit];
 	
 	/* view count label */
 	_viewCountLabel.frame = VIEWCOUNT_RECT;

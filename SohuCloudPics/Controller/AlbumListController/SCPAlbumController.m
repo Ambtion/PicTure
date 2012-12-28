@@ -264,8 +264,8 @@
 }
 - (void)requestFailed:(NSString *)error
 {
-	UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-    [alterview show];
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [alertView show];
     [self.pullingController refreshDoneLoadingTableViewData];
 }
 #pragma mark -
@@ -371,7 +371,7 @@
 #pragma mark SCPAlertDelegate
 - (void)alertViewOKClicked:(SCPAlert_LoginView *)view
 {
-
+    
     SCPAlbum *album = [[_albumList objectAtIndex:view.tag] retain];
     [_albumList removeObjectAtIndex:view.tag];
     // TODO
@@ -384,9 +384,7 @@
         [album release];
         [self refresh];
     } failure:^(NSString *error) {
-        UIAlertView * alterView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alterView show];
-        [alterView release];
+        [self requestFailed:error];
         [album release];
     }];
 }
@@ -402,10 +400,10 @@
 	[self refresh];
 }
 
-- (void)pullingreloadMoreTableViewData:(id)sender
-{
-	NSLog(@"here");
-	[_pullingController moreDoneLoadingTableViewData];
-}
+//- (void)pullingreloadMoreTableViewData:(id)sender
+//{
+//	NSLog(@"here");
+//	[_pullingController moreDoneLoadingTableViewData];
+//}
 
 @end

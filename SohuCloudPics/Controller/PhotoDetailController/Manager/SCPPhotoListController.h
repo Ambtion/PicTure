@@ -42,9 +42,11 @@
     NSMutableArray * curImages;
     NSInteger photoNum;
     NSInteger Pagenum;
+    BOOL hasNextPage;
     //for animation
     BOOL animation;
     BOOL isInit;
+    BOOL isLoading;
 }
 @property (nonatomic,retain)NSDictionary * info;
 @property (nonatomic,retain)UIView * bgView;

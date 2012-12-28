@@ -52,7 +52,7 @@ static UIImage *emptyFolderCoverImage = nil;
 	if (emptyFolderCoverImage == nil) {
 		@synchronized (self) {
 			if (emptyFolderCoverImage == nil) {
-				emptyFolderCoverImage = [UIImage imageNamed:@"11.png"];
+				emptyFolderCoverImage = [UIImage imageNamed:@"frame_alubme_default_image.png"];
 			}
 		}
 	}

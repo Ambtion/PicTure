@@ -22,8 +22,6 @@
     UIImageView *_backgroundImageView;
     UIImageView *_alertboxImageView;
     UITextField *_renameField;
-//    UIButton *_cancelButton;
-//    UIButton *_okButton;
     
     id<SCPAlertRenameViewDelegate> _delegate;
 }

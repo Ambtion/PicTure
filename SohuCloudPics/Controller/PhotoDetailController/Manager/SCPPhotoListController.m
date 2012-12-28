@@ -67,7 +67,6 @@
 }
 - (void)resetGigView
 {
-    
     [self.webView removeFromSuperview];
     self.webView = nil;
 }
@@ -94,7 +93,6 @@
 @synthesize currentImageView = _currentImageView;
 @synthesize rearImageView = _rearImageView;
 @synthesize rearScrollview = _rearScrollview;
-
 
 - (void)dealloc
 {
@@ -129,8 +127,10 @@
         curPage = 0;
         Pagenum = 1;
         animation = NO;
+        hasNextPage = YES;
         self.info = info;
         isInit = YES;
+        isLoading = NO;
         _requestManger = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
         [self initSubViews];
@@ -150,7 +150,7 @@
     if (self) {
         
         self.view.backgroundColor = [UIColor redColor];
-        
+        self.info = info;
         imageArray = [[NSMutableArray alloc] initWithCapacity:0];
         curImages = [[NSMutableArray alloc] initWithCapacity:0];
         curPage = 0;
@@ -158,11 +158,13 @@
         animation = NO;
         self.info = info;
         isInit = YES;
+        isLoading = NO;
+        hasNextPage = YES;
+        
         _requestManger = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
         [self initSubViews];
         
-
         [_requestManger getFolderinfoWihtUserID:[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] WithFolders:[NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]]];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -241,34 +243,38 @@
     
 }
 
-- (BOOL)shouldAutorotate
-{
-    return NO;
-}
-
-
 #pragma mark - Delegate
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
+    isLoading = NO;
+//    NSLog(@"%@",info);
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolist = [info objectForKey:@"photoList"];
     if ([folderinfo allKeys]) {
         photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
     }
+    Pagenum = [[photolist objectForKey:@"page"] intValue];
+    hasNextPage = [[photolist objectForKey:@"has_next"] boolValue];
     [imageArray addObjectsFromArray:[photolist objectForKey:@"photos"]];
     curPage =  [self getindexofImages];
+    NSLog(@"MMMMMMM %d %d",curPage, imageArray.count);
     if (curPage == -1) {
         [self getMoreImage];
     }else{
         [self refreshScrollView];
     }
 }
-
+- (void)requestFailed:(NSString *)error
+{
+    isLoading = NO;
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [alertView show];
+}
 - (NSInteger)getindexofImages
 {
     BOOL isFound = NO;
     int i = 0;
-    for (i = 0; i < imageArray.count; i++) {
+    for (; i < imageArray.count; i++) {
         NSDictionary * dic = [imageArray objectAtIndex:i];
         if ([[dic objectForKey:@"photo_url"] isEqual:[self.info objectForKey:@"photo_url"]]) {
             isFound = YES;
@@ -280,17 +286,19 @@
     }
     return -1;
 }
-- (void)requestFailed:(NSString *)error
-{
-    UIAlertView * alterview  = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-    [alterview show];
-}
+
 - (void)getMoreImage
 {
-    if (photoNum == imageArray.count) {
+    NSLog(@"%s",__FUNCTION__);
+    if (photoNum <= imageArray.count || isLoading || !hasNextPage) {
+        NSLog(@" MORE  %s",__FUNCTION__);
         return;
     }
-    [_requestManger getPhotosWithUserID :[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] FolderID:[NSString   stringWithFormat:@"%@",[_info objectForKey:@"folderShowId"]] page:Pagenum++];
+    
+    NSLog(@"%@",self.info);
+    isLoading = YES;
+        [_requestManger getPhotosWithUserID :[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] FolderID:[NSString stringWithFormat:@"%@",[_info objectForKey:@"folder_id"]] page:Pagenum + 1];
+    
 }
 #pragma mark - InitSubView
 
@@ -637,7 +645,7 @@
         self.rearScrollview.contentSize = imageView.frame.size;
         [self.rearScrollview setContentOffset:CGPointMake(0, 0)];
     }
-
+    [imageView resetGigView];
     if ([[imageView info] objectForKey:@"photo_url"]);
     {
         [imageView cancelCurrentImageLoad];
@@ -657,11 +665,10 @@
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
         }];
-        if (![[[imageView info] objectForKey:@"multi_frames"] floatValue]) {
-            [imageView resetGigView];
-        }else{
+    
+        if ([[[imageView info] objectForKey:@"multi_frames"] boolValue])
             [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
-        }
+
     }
 }
 - (void)refreshScrollviewOnMinBounds
@@ -761,6 +768,9 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (isLoading) {
+        return;
+    }
     if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging]|| animation )      return;
     if (photoNum < 3) {
         curPage = self.scrollView.contentOffset.x / self.view.frame.size.width;
@@ -768,15 +778,14 @@
         return;
     }
     int x = self.scrollView.contentOffset.x;
-    
     if(x >= (self.scrollView.frame.size.width * 2)) {
         
-        if (curPage == photoNum - 2) {
+        if (curPage >= photoNum - 2) {
             curPage = photoNum - 1;
             [self initSubViews];
             return;
         }
-        if (curPage == imageArray.count - 2) {
+        if (curPage >= imageArray.count - 2) {
             [self getMoreImage];
             return;
         }

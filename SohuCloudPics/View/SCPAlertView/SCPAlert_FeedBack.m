@@ -33,7 +33,7 @@
         [self addSubview:_alertboxImageView];
         
         _okButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _okButton.frame = CGRectMake(129,240, 89, 35);
+        _okButton.frame = CGRectMake(22, 240, 89, 35);
         _okButton.titleLabel.font = [_okButton.titleLabel.font fontWithSize:16];
         [_okButton setTitle:@"发送" forState:UIControlStateNormal];
         [_okButton setTitleColor:[UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1] forState:UIControlStateNormal];
@@ -43,7 +43,7 @@
         [_alertboxImageView addSubview:_okButton];
      
         _cancelbutton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _cancelbutton.frame = CGRectMake(22, 240, 89, 35);
+        _cancelbutton.frame = CGRectMake(129,240, 89, 35);
         _cancelbutton.titleLabel.font = [_okButton.titleLabel.font fontWithSize:16];
         [_cancelbutton setTitle:@"取消" forState:UIControlStateNormal];
         [_cancelbutton setTitleColor:[UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1] forState:UIControlStateNormal];

@@ -55,14 +55,15 @@
     _footView.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
     UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self.manager action:@selector(loadingMore:)] autorelease];
     [_footView addGestureRecognizer:gesture];
-    UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(110, 21, 18, 18)] autorelease];
+    UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(110, 18, 18, 18)] autorelease];
     imageview.image = [UIImage imageNamed:@"load_more_pics.png"];
     [_footView addSubview:imageview];
     
     UILabel * label = [[[UILabel alloc] initWithFrame:CGRectMake(66  + 10, 0, 320 - 142, 50)] autorelease];
     label.tag = 100;
     label.textAlignment = UITextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:97.0/255 green:120.0/255 blue:137.0/255 alpha:1];
+    label.font = [UIFont systemFontOfSize:14];
+    label.textColor = [UIColor colorWithRed:98.f/255 green:98.f/255 blue:98.f/255 alpha:1];
     label.text = @"加载更多...";
     label.backgroundColor = [UIColor clearColor];
     [_footView addSubview:label];
@@ -74,6 +75,7 @@
     active.hidesWhenStopped = YES;
     [active stopAnimating];
     [_footView addSubview:active];
+    
     UIImageView * bg_imageview = [[[UIImageView alloc] initWithFrame:CGRectMake((320 - 30)/2.f,10.f, 30.f, 30.f)]autorelease];
     bg_imageview.image =[UIImage imageNamed:@"end_bg.png"];
     UIView * view = [[[UIView alloc] initWithFrame:_footView.bounds] autorelease];
@@ -83,6 +85,7 @@
     [view addSubview:_footView];
     _tableView.tableFooterView = view;
     [self.manager dataSourcewithRefresh:YES];
+    
     
     _topButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     [_topButton setBackgroundImage:[UIImage imageNamed:@"explore_up_page_icon.png"] forState:UIControlStateNormal];

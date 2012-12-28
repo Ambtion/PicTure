@@ -136,7 +136,6 @@
             [image drawInRect:(CGRect){0,0,image.size}];
             UIImage* N_image = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
-            
             [_library writeImageToSavedPhotosAlbum:N_image.CGImage orientation:(ALAssetOrientation)[self.originalImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
                 if (error) {
                     NSLog(@"error%@",error);
@@ -458,17 +457,21 @@
     [self renderDefaultImage];
     
 }
-
+- (void)dismissController
+{
+    [self stopWait];
+    [controller dismissModalViewControllerAnimated:YES];
+}
 -(void)renderDefaultImage
 {
     //图片未最任何处理....
     if (_filternum == -1 && !_isBlured &&!_clipview.superview && !_angleNum) {
         
         if (![SCPLoginPridictive isLogin]) {
-            [controller dismissModalViewControllerAnimated:YES];
+            [self waitForMomentsWithTitle:@"保存到相册..."];
+            [self performSelector:@selector(dismissController) withObject:nil afterDelay:1.f];
             return ;
         }
-        
         [_library assetForURL:self.assetURL resultBlock:^(ALAsset *asset) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
@@ -485,7 +488,6 @@
         }];
         return;
     }
-    
     //图片做出处理
     [_library assetForURL:self.assetURL resultBlock:^(ALAsset *asset) {
         self.originalImage = [UIImage imageWithCGImage:[asset defaultRepresentation].fullResolutionImage];

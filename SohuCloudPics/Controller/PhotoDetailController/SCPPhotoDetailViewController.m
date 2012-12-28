@@ -80,7 +80,7 @@
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
     [super viewWillAppear:animated];
-    [self.manager dataSourcewithRefresh:YES];
+//    [self.manager dataSourcewithRefresh:YES];
 }
 
 - (void)navigationBack:(UIButton*)button

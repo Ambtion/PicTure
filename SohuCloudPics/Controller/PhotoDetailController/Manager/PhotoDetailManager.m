@@ -108,19 +108,20 @@
     }
 }
 #pragma networkFailed
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
+- (void)requestFailed:(NSString *)error
 {
-    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"访问失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
-    [alterView show];
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [alertView show];
+    [self restNetWorkState];
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != 0) {
-        [self dataSourcewithRefresh:_willRefresh];
-    }else{
-        [self restNetWorkState];
-    }
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    if (buttonIndex != 0) {
+//        [self dataSourcewithRefresh:_willRefresh];
+//    }else{
+//        [self restNetWorkState];
+//    }
+//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {

@@ -147,6 +147,7 @@
     }
     [CATransaction commit];
 }
+
 #pragma mark -
 #pragma mark captureImage
 -(void)CaptureStillImageWithblockSucecces:(void(^)(UIImage* image))sucecces;

@@ -12,7 +12,7 @@
 #import "SCPLoginPridictive.h"
 #import "JSON.h"
 
-#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+#define BASICURL_V1 @"http://61.135.181.37:8888/api/v1"
 
 @implementation SCPRequestManager
 
@@ -20,7 +20,7 @@
 
 - (void)showWhenRequsetFailed:(ASIHTTPRequest *)request
 {
-    UIAlertView * alter = [[[UIAlertView alloc] initWithTitle:@"请求失败" message:[NSString stringWithFormat:@"%@",[request error]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
+    UIAlertView * alter = [[[UIAlertView alloc] initWithTitle:@"网络连接异常" message:[NSString stringWithFormat:@"%@",[request error]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
     [alter show];
 }
 
@@ -43,22 +43,19 @@
 #pragma mark - Explore
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture
 {
-    if (maxresult > startIndex)
-        return;
     NSString * str_url = [NSString stringWithFormat:@"%@/plaza?start=%d&count=%d",BASICURL_V1,startIndex,maxresult];
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
     [request setTimeOutSeconds:5.f];
     [request setCompletionBlock:^{
-        NSLog(@"sucess StatusCode : %d",[request responseStatusCode]);
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
-//            NSLog(@"%@",[[[[request responseString] JSONValue] objectForKey:@"photos"] lastObject]);
+//        NSLog(@"sucess StatusCode : %d %@",[request responseStatusCode],[[request responseString] JSONValue]);
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]){
             success([[[request responseString] JSONValue] objectForKey:@"photos"]);
         }else {
-            faiture([NSString stringWithFormat:@"请求失败"]);
+            faiture([NSString stringWithFormat:@"网络连接异常"]);
         }
     }];
     [request setFailedBlock:^{
-        faiture(@"连接失败");
+        faiture(@"网络连接异常");
     }];
     [request startAsynchronous];
 }
@@ -79,13 +76,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -109,11 +106,11 @@
             success(dic);
             
         }else{
-            failure(@"连接失败");
+            failure(@"网络连接异常");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"请求失败");
+        failure(@"网络连接异常");
     }];
     
     [request startAsynchronous];
@@ -141,13 +138,13 @@
             [self getUserInfoFeedWithUserID:user_ID page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -169,13 +166,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -200,13 +197,13 @@
             [self getFoldersWithID:uses_id page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -235,13 +232,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -269,14 +266,14 @@
             
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -305,13 +302,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -332,13 +329,13 @@
             
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -360,13 +357,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -389,13 +386,13 @@
             [self getfollowingsWihtUseId:use_id page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -422,13 +419,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -449,13 +446,13 @@
             [self getfollowedsWihtUseId:user_id page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -481,13 +478,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -508,13 +505,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"请求失败"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"连接失败"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
     }];
     [request startAsynchronous];
@@ -531,12 +528,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
-            failure(@"请求失败");
+            failure(@"网络连接异常");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request error]);
-        failure(@"连接失败");
+        failure(@"网络连接异常");
     }];
     
     [request startAsynchronous];
@@ -552,12 +549,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
-            failure(@"请求失败");
+            failure(@"网络连接异常");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request error]);
-        failure(@"连接失败");
+        failure(@"网络连接异常");
     }];
     
     [request startAsynchronous];
@@ -571,11 +568,11 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
-            failure(@"请求失败");
+            failure(@"网络连接异常");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"连接失败");
+        failure(@"网络连接异常");
     }];
     [request startAsynchronous];
 }
@@ -590,11 +587,11 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
-            failure(@"请求失败");
+            failure(@"网络连接异常");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"连接失败");
+        failure(@"网络连接异常");
     }];
     [request startAsynchronous];
 }
@@ -612,12 +609,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
-            failure(@"请求失败");
+            failure(@"网络连接异常");
         }
     }];
     [request setFailedBlock:^{
         [request setFailedBlock:^{
-            failure(@"连接失败");
+            failure(@"网络连接异常");
         }];
     }];
     [request startAsynchronous];
@@ -635,10 +632,10 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
-            failure(@"请求失败");
+            failure(@"网络连接异常");
         }    }];
     [request setFailedBlock:^{
-        failure(@"连接失败");
+        failure(@"网络连接异常");
     }];
     [request startAsynchronous];
 }
@@ -656,11 +653,11 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
-            failure(@"请求失败");
+            failure(@"网络连接异常");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"连接失败");
+        failure(@"网络连接异常");
     }];
     [request startAsynchronous];
 }
@@ -678,11 +675,11 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
-            failure(@"请求失败");
+            failure(@"网络连接异常");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"连接失败");
+        failure(@"网络连接异常");
     }];
     [request startAsynchronous];
 }

@@ -51,6 +51,8 @@ void customedExceptionHandler(NSException *exception)
 //    NSLog(@"userDefaults dump: %@", [appUserDefaults persistentDomainForName: bundleId]);
 //    NSLog(@"Finished dumping userDefaults for %@", bundleId);
 //    [appUserDefaults release];
+    
+    NSLog(@"%@",NSHomeDirectory());
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
 
 }

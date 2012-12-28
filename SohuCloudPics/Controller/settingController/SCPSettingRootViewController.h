@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCPAlertView_LoginTip.h"
 
 @interface SCPSettingRootViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     UITableView * _tableView;
     id _controller;
+    SCPAlertView_LoginTip * loginView;
+    SCPAlertView_LoginTip * cacheView;
 }
 - (id)initwithController:(id)controller;
 @end

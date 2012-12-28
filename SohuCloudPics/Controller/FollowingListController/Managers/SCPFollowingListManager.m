@@ -86,18 +86,18 @@
 #pragma mark - networkFailed
 - (void)requestFailed:(NSString *)error
 {
-    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
-    [alterView show];
-    [self.controller.pullingController refreshDoneLoadingTableViewData];
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [alertView show];
+    [self restNetWorkState];
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != 0) {
-        [self dataSourcewithRefresh:_willRefresh];
-    }else{
-        [self restNetWorkState];
-    }
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    if (buttonIndex != 0) {
+//        [self dataSourcewithRefresh:_willRefresh];
+//    }else{
+//        [self restNetWorkState];
+//    }
+//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -115,12 +115,6 @@
     if(_willRefresh | !_dataSource.count){
         [_requestManger getFollowingInfoWithUserID:_user_ID];
     }else{
-        if (!hasNext) {
-            UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"已达到最大" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
-            [alterView show];
-            [self followedMoreDataFinishLoad];
-            return;
-        }
         [_requestManger getfollowingsWihtUseId:_user_ID page:curPage + 1];
     }
 }
@@ -227,16 +221,14 @@
             cell.dataSource.following = !cell.dataSource.following;
             [cell updataData];
         } failure:^(NSString *error) {
-            UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-            [alterView show];
+           [self requestFailed:error];
         }];
     }else{
         [_requestManger friendshipsFollowing:cell.dataSource.user_id success:^(NSString *response) {
             cell.dataSource.following = !cell.dataSource.following;
             [cell updataData];
         } failure:^(NSString *error) {
-            UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-            [alterView show];
+            [self requestFailed:error];
         }];
     }
 }

@@ -222,7 +222,7 @@ static NSString *menuPress[6] = {
 - (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
     NSLog(@"SCPLogin");
-    [navController dismissModalViewControllerAnimated:YES];
+    [navController dismissModalViewControllerAnimated:NO];
     if (self.homelogin == LoginController) {
         [self onAccountClicked:nil];
     }else if(self.notLogin == LoginController){
@@ -288,13 +288,7 @@ static NSString *menuPress[6] = {
     [manager release];
     
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//
-//    AlbumControllerManager * manager = [[AlbumControllerManager alloc] initWithpresentController:self.navController];
-//	[self.navController presentModalViewController:manager animated:YES];
-//    [manager release];
-//}
+
 - (void)onAccountClicked:(id)sender
 {
     
@@ -309,7 +303,6 @@ static NSString *menuPress[6] = {
     if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeViewController class]]) {
         return;
     }
-    
     [self restIcon:1];
     SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
     [self.navController pushViewController:myhome animated:YES];

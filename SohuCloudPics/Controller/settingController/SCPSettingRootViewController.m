@@ -33,7 +33,14 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     }
     return self;
 }
-
+- (void)dealloc
+{
+    [_tableView release];
+    [loginView release];
+    [cacheView release];
+    
+    [super dealloc];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -109,37 +116,52 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     if (indexPath.row == 0) {
         return;
     }
-    if (indexPath.row == 1 ) {
+    if (indexPath.row == 1 ) {//个人信息修改
         [self.navigationController pushViewController:[[[SCPSettingUserinfoController alloc] init] autorelease] animated:YES];
+    }
+    if (indexPath.row == 3) { //清除缓冲
+        cacheView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认清除缓冲" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
+        [cacheView show];
     }
     if (indexPath.row == 4) {
         NSLog(@"%s",__FUNCTION__);
         SCPAlert_FeedBack * feedBack = [[[SCPAlert_FeedBack alloc] init] autorelease];
         [feedBack show];
     }
-    
+
     if (indexPath.row == 6) {
         SCPAlert_About * about = [[[SCPAlert_About alloc] initWithTitle:nil] autorelease];
         [about show];
     }
     if (indexPath.row == 7) {
-//        [SCPLoginPridictive removeDataForKey:nil];
-        [SCPLoginPridictive logout];
-        UIAlertView * alter = [[UIAlertView alloc] initWithTitle:@"已登出" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alter show];
-        [alter release];
-        
+        loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认登出" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
+        [loginView show];
     }
+
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"%@",[_controller class]);
-    SCPMenuNavigationController * mnv = (SCPMenuNavigationController *)_controller;
-    [mnv popToRootViewControllerAnimated:NO];
-    SCPMainTabController * mainTab = [[mnv childViewControllers] lastObject];
-    mainTab.selectedIndex = 0;
-    [_controller dismissModalViewControllerAnimated:YES];
+    if (loginView == alertView && buttonIndex == 0) {
+        [SCPLoginPridictive logout];
+        SCPMenuNavigationController * mnv = (SCPMenuNavigationController *)_controller;
+        [mnv popToRootViewControllerAnimated:NO];
+        SCPMainTabController * mainTab = [[mnv childViewControllers] lastObject];
+        mainTab.selectedIndex = 0;
+        [_controller dismissModalViewControllerAnimated:YES];
+    }
     
+    if (cacheView == alertView && buttonIndex == 0) {
+        
+        NSFileManager * manager  = [NSFileManager defaultManager];
+        NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
+        NSError * error = nil;
+        [manager removeItemAtPath:str error:&error];
+        if (error) {
+            SCPAlert_CustomeView * alert = [[[SCPAlert_CustomeView alloc] initWithTitle:[NSString stringWithFormat:@"%@",error]] autorelease];
+            [alert show];
+        }
+
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -428,13 +428,14 @@ static CGFloat OFFSET = 0.f;
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     _tableView.separatorColor = [UIColor clearColor];
+    _tableView.decelerationRate = UIScrollViewDecelerationRateFast;
+    
     
     UIView * headView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)] autorelease];
     headView.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     _tableView.tableHeaderView = headView;
-    _refreshView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0, 40, 320, 60) arrowImageName:@"dorp_down.png" textColor:[UIColor colorWithRed:98/255.f green:98/255.f blue:98/255.f alpha:1]];
+    _refreshView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0, 40, 320, 60) arrowImageName:@"dorp_down.png" textColor:[UIColor colorWithRed:98.f/255.f green:98.f/255.f blue:98.f/255.f alpha:1]];
     [_tableView.tableHeaderView addSubview:_refreshView];
-//    _tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_tableView];
     [self.view addSubview:_scrollView];
 
@@ -464,14 +465,15 @@ static CGFloat OFFSET = 0.f;
     _footView.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
     UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(realLoadingMore:)] autorelease];
     [_footView addGestureRecognizer:gesture];
-    UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(110, 21, 18, 18)] autorelease];
+    UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(110, 23, 18, 18)] autorelease];
     imageview.image = [UIImage imageNamed:@"load_more_pics.png"];
     [_footView addSubview:imageview];
     
     UILabel * label = [[[UILabel alloc] initWithFrame:CGRectMake(66  + 10, 0, 320 - 142, 60)] autorelease];
     label.tag = 100;
     label.textAlignment = UITextAlignmentCenter;
-    label.textColor = [UIColor colorWithRed:97.0/255 green:120.0/255 blue:137.0/255 alpha:1];
+    label.font = [UIFont systemFontOfSize:14];
+    label.textColor = [UIColor colorWithRed:98.f/255 green:98.f/255 blue:98.f/255 alpha:1];
     label.text = @"加载更多...";
     label.backgroundColor = [UIColor clearColor];
     [_footView addSubview:label];
@@ -490,7 +492,7 @@ static CGFloat OFFSET = 0.f;
     [view addSubview:bg_imageview];
     [view addSubview:_footView];
     _tableView.tableFooterView = view;
-//    self.footView.hidden = YES;
+    
 }
 - (void)setFootViewoffsetY:(CGFloat)offsetY
 {

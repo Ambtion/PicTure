@@ -10,6 +10,7 @@
 
 #import "SCPUploadCell.h"
 #import "SCPMenuNavigationController.h"
+#import "SCPAlertView_LoginTip.h"
 
 //#import "SCPTaskManager.h"
 
@@ -121,8 +122,6 @@
     
 }
 
-
-
 - (void)viewWillAppear:(BOOL)animated
 {
     if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
@@ -166,7 +165,7 @@ done:
 {
     
     if (!self.curAlbumID) {
-        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"请选择专辑" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+        SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"请选择专辑" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterView show];
         return;
     }
@@ -198,6 +197,7 @@ done:
 #pragma mark SCPUploadDelegate
 - (void)uploadHeader:(SCPUploadHeader *)header selectAlbum:(NSString *)albumID
 {
+    NSLog(@"%@",albumID);
     self.curAlbumID = albumID;
 }
 #pragma mark -

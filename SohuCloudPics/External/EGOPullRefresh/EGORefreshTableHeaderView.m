@@ -29,11 +29,10 @@
 #define TEXT_COLOR	 [UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0]
 #define FLIP_ANIMATION_DURATION 0.18
 
-#define OFFSET_Y 10
+#define OFFSET_Y 0
 @interface EGORefreshTableHeaderView (Private)
 - (void)setState:(EGOPullRefreshState)aState;
 @end
-
 
 
 @implementation EGORefreshTableHeaderView
@@ -53,8 +52,8 @@
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		label.font = [UIFont systemFontOfSize:12.0];
 		label.textColor = textColor;
-		label.shadowColor = [UIColor colorWithWhite:1 alpha:1.0];
-		label.shadowOffset = CGSizeMake(0.0, 1.0);
+//		label.shadowColor = [UIColor colorWithWhite:1 alpha:1.0];
+//		label.shadowOffset = CGSizeMake(0.0, 1.0);
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = UITextAlignmentCenter;
 		[self addSubview:label];
@@ -63,10 +62,10 @@
         
 		label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, frame.size.height - 48.0 + OFFSET_Y, self.frame.size.width, 20.0)];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		label.font = [UIFont boldSystemFontOfSize:16.0];
+		label.font = [UIFont systemFontOfSize:12.f];
 		label.textColor = textColor;
-		label.shadowColor = [UIColor colorWithWhite:1 alpha:1.0];
-		label.shadowOffset = CGSizeMake(0.0, 1.0);
+//		label.shadowColor = [UIColor colorWithWhite:1 alpha:1.0];
+//		label.shadowOffset = CGSizeMake(0.0, 1.0);
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = UITextAlignmentCenter;
 		[self addSubview:label];
@@ -75,7 +74,7 @@
 		
         //图片层
 		CALayer *layer = [CALayer layer];
-		layer.frame = CGRectMake(25.0 + 20, frame.size.height - 65.0+OFFSET_Y, 30.0, 55.0);
+		layer.frame = CGRectMake(25.0 + 50, frame.size.height - 65.0 + 10 + OFFSET_Y, 30.0, 55.0);
 		layer.contentsGravity = kCAGravityResizeAspect;
 		layer.contents = (id)[UIImage imageNamed:arrow].CGImage;
 		
@@ -89,7 +88,7 @@
 		_arrowImage = layer;
 		
 		UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		view.frame = CGRectMake(25.0 + 20, frame.size.height - 38.0+OFFSET_Y - 5, 20.0, 20.0);
+		view.frame = CGRectMake(25.0 + 50, frame.size.height - 38.0 + 10 - 2 + OFFSET_Y - 5, 20.0, 20.0);
 		[self addSubview:view];
 		_activityView = view;
 		[view release];
@@ -111,20 +110,18 @@
 {
     
 	if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderDataSourceLastUpdated:)]) {
-		
+        
 		NSDate *date = [_delegate egoRefreshTableHeaderDataSourceLastUpdated:self];
-		
 		[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehaviorDefault];
 		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-		[dateFormatter setDateStyle:NSDateFormatterShortStyle];
-		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateFormat:@"MM-dd H:mm"];
         
-		_lastUpdatedLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [dateFormatter stringFromDate:date]];
+		_lastUpdatedLabel.text = [NSString stringWithFormat:@"上次更新:%@", [dateFormatter stringFromDate:date]];
 		[[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:@"EGORefreshTableView_LastRefresh"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
         
 	} else {
-		_lastUpdatedLabel.text = @"Passtion coming soon";
+		_lastUpdatedLabel.text = @"精彩立即呈现";
 	}
 }
 

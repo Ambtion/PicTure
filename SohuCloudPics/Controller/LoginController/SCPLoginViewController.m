@@ -15,6 +15,7 @@
 
 #import "AccountSystemRequset.h"
 #import "SCPAlert_WaitView.h"
+#import "SCPAlertView_LoginTip.h"
 
 #define EMAIL_ARRAY ([NSArray arrayWithObjects:@"126.com", @"163.com", @"qq.com", @"sohu.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
 
@@ -52,12 +53,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self addsubViews];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
 }
 
 -(void)addsubViews
@@ -178,13 +177,13 @@
 
 - (void)loginButtonClicked:(UIButton*)button
 {
-    if (!_usernameTextField.text) {
-        UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:@"请输入账号" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+    if (!_usernameTextField.text|| [_usernameTextField.text isEqualToString:@""]) {
+        SCPAlertView_LoginTip * alterview = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"请输入账号" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterview show];
         return;
     }
     if (!_passwordTextField.text || [_passwordTextField.text isEqualToString:@""]) {
-        UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:@"请输入密码" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+        SCPAlertView_LoginTip * alterview = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"请输入密码" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterview show];
         return;
     }
@@ -201,7 +200,7 @@
         [waitView dismissWithClickedButtonIndex:0 animated:YES];
 
     } failtureSucess:^(NSString *error) {
-        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
+        SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
         [alterView show];
         [waitView dismissWithClickedButtonIndex:0 animated:NO];
     }];

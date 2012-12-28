@@ -12,7 +12,6 @@
 #import "SCPMainFeedController.h"
 #import "SCPPersonalPageViewController.h"
 #import "SCPPhotoDetailViewController.h"
-#import "MoreAlertView.h"
 
 
 #define MAXIMAGEHEIGTH 320
@@ -64,9 +63,7 @@
         allFollowed = [[response objectForKey:@"followings"] intValue];
         [self.controller.pullingController.headView BannerreloadDataSource];
     } failure:^(NSString *error) {
-        UIAlertView * alterView = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alterView show];
-        [alterView release];
+        [self requestFailed:error];
     }];
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
@@ -92,7 +89,6 @@
         adapter.update = [photo objectForKey:@"upload_at_desc"];
         adapter.portrailImage = [photo objectForKey:@"user_icon"];
         adapter.photoImage  = [photo objectForKey:@"photo_url"];
-
         [_dataArray addObject:adapter];
         [adapter release];
     }
@@ -102,28 +98,28 @@
         [self feedMoreDataFinishLoad];
         return;
     }
-    
     if (_willRefresh) {
         [self feedRefreshDataFinishLoad];
     }else{
         [self feedMoreDataFinishLoad];
-    }
-    
+    }    
 }
+
 #pragma Network Failed
-- (void)requestFailed:(ASIHTTPRequest *)mangeger
+- (void)requestFailed:(NSString *)error
 {
-    UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"访问失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
-    [alterView show];
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [alertView show];
+    [self restNetWorkState];
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != 0) {
-        [self dataSourcewithRefresh:_willRefresh];
-    }else{
-        [self restNetWorkState];
-    }
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    if (buttonIndex != 0) {
+//        [self dataSourcewithRefresh:_willRefresh];
+//    }else{
+//        [self restNetWorkState];
+//    }
+//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -153,12 +149,6 @@
     if(isRefresh || !_dataArray.count){
         [_requestManager getFeedMineInfo];
     }else{
-        if (MAXPICTURE < _dataArray.count || !hasNextPage) {
-            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-            [moreView show];
-            [self feedMoreDataFinishLoad];
-            return;
-        }
         [_requestManager getFeedMineWithPage:curpage + 1];
     }
     

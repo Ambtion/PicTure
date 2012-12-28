@@ -180,8 +180,8 @@
 - (void)requestFailed:(NSString *)error
 {
     isLoading = NO;
-    UIAlertView * alterview = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-    [alterview show];
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [alertView show];
     [self.pullingController refreshDoneLoadingTableViewData];
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
@@ -264,9 +264,7 @@
         self.pullingController.headView.labelName.text = str;
         [self.pullingController reloadDataSourceWithAniamtion:NO];
     } failure:^(NSString *error) {
-        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
-        [alterView show];
-        
+        [self requestFailed:error];
     }];
 }
 
@@ -376,9 +374,7 @@
                 [self.pullingController reloadDataSourceWithAniamtion:NO];
             });
         } failure:^(NSString *error) {
-            UIAlertView * alterview = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            [alterview show];
-            [alterview release];
+            [self requestFailed:error];
         }];
     }
 }

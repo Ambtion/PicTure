@@ -27,13 +27,13 @@
     [super viewDidLoad];
 
     [self addTableView];
-    [self.pullingController showLoadingMore];
-    [self.pullingController realLoadingMore:nil];
-
+//    [self.pullingController showLoadingMore];
+    [self.manager dataSourcewithRefresh:YES];
 }
 
 - (void)addTableView
 {
+    
     self.manager = [[[ExploreTableManager alloc] init] autorelease];
     self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_explore.png"] frame:self.view.bounds] autorelease];
     self.pullingController.view.frame = self.view.bounds;
@@ -44,6 +44,7 @@
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
     [self.view addSubview:self.pullingController.view];
+    
 }
 
 - (void)viewDidUnload
@@ -57,7 +58,6 @@
         [self.pullingController.tableView setContentOffset:CGPointZero];
     }
     [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
-//    [self.manager refreshData:nil];
 }
 
 #pragma mark -
@@ -88,14 +88,12 @@
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSLog(@"%s",__FUNCTION__);
     if (_item.superview) {
         [_item removeFromSuperview];
     }
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
-    NSLog(@"%s",__FUNCTION__);
     if (_item.superview) {
         [_item removeFromSuperview];
     }

@@ -9,9 +9,8 @@
 #import "ExploreTableManager.h"
 
 #import "SCPExplorerController.h"
-//#import "SCPPhotoDetailViewController.h"
 #import "SCPPhotoDetailViewController.h"
-#import "MoreAlertView.h"
+#import "SCPAlert_CustomeView.h"
 
 #define MAXPICTURE 400
 
@@ -165,13 +164,37 @@ static NSInteger lastNum = -1;
 
 - (NSArray *)getImageViewFrameWithInfoArray:(NSArray *)infoArray : (NSArray *) viewFrame
 {
+//    //图片不需要截就可以实现
+//    NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
+//    for (int i = 0; i < viewFrame.count; i++) {
+//        CGRect superRect = [[viewFrame objectAtIndex:i] CGRectValue];
+//        
+//        NSDictionary * dic = [infoArray objectAtIndex:i];
+//        CGFloat heigth = [[dic objectForKey:@"height"] floatValue];
+//        CGFloat wigth = [[dic objectForKey:@"width"] floatValue];
+//        if (!dic ||!heigth || !wigth) {
+//            [array addObject:[NSValue valueWithCGRect:CGRectMake(0, 0, superRect.size.width, superRect.size.height)]];
+//            break;
+//        }
+//        CGFloat scale = MIN(heigth/superRect.size.height, wigth/superRect.size.width);
+//        CGRect frame = CGRectMake(0, 0, wigth/scale, heigth/scale);
+//        frame.origin.x = (superRect.size.width - frame.size.width)/2.f;
+//        frame.origin.y = (superRect.size.height - frame.size.height)/2.f;
+//        [array addObject:[NSValue valueWithCGRect:frame]];
+//    }
+    //需要c_*配合显示
+    
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < viewFrame.count; i++) {
+        
         CGRect superRect = [[viewFrame objectAtIndex:i] CGRectValue];
         
         NSDictionary * dic = [infoArray objectAtIndex:i];
         CGFloat heigth = [[dic objectForKey:@"height"] floatValue];
         CGFloat wigth = [[dic objectForKey:@"width"] floatValue];
+        heigth = 205;
+        wigth = 205;
+        
         if (!dic ||!heigth || !wigth) {
             [array addObject:[NSValue valueWithCGRect:CGRectMake(0, 0, superRect.size.width, superRect.size.height)]];
             break;
@@ -181,6 +204,7 @@ static NSInteger lastNum = -1;
         frame.origin.x = (superRect.size.width - frame.size.width)/2.f;
         frame.origin.y = (superRect.size.height - frame.size.height)/2.f;
         [array addObject:[NSValue valueWithCGRect:frame]];
+
     }
     return array;
 }
@@ -190,26 +214,19 @@ static NSInteger lastNum = -1;
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(isRefresh || !_strategyArray.count){
+        NSLog(@"MMMMM %s",__FUNCTION__);
         _lastCount = 0;
         [self getExploreFrom:0 count:60];
     }else{
-        if([self offsetOfDataSouce] > MAXPICTURE) {
-            MoreAlertView * moreView = [[[MoreAlertView alloc] init] autorelease];
-            [moreView show];
-            [self moreDataFinishLoad];
-            return;
-        }
         [self getExploreFrom:[self offsetOfDataSouce] count:60];
     }
 }
 - (void)getExploreFrom:(NSInteger)startIndex count:(NSInteger)count
 {
     [_requestManager getExploreFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
-        
-
         if (startIndex == 0)
             [_strategyArray removeAllObjects];
-        NSLog(@"_requestManager ::%@",[infoArray lastObject]);
+//        NSLog(@"_requestManager ::%@",[infoArray lastObject]);
         for (int i = 0; i < infoArray.count / 4 ; i++) {
             ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
             NSInteger num_strategy = [self randomNum];
@@ -229,21 +246,13 @@ static NSInteger lastNum = -1;
         }else{
             [self moreDataFinishLoad];
         }
-        NSLog(@"_requestManager ::%@",[infoArray lastObject]);
     } failture:^(NSString *error) {
-        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:error message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"重试", nil] autorelease];
-        [alterView show];
-    }];
-
-}
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != 0) {
-        [self dataSourcewithRefresh:_willRefresh];
-    }else{
+        SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+        [alertView show];
         [self restNetWorkState];
-    }
+    }];
 }
+
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -290,7 +299,7 @@ static NSInteger lastNum = -1;
 
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"NNNNN %s",__FUNCTION__);
     [self dataSourcewithRefresh:NO];
 }
 - (void)moreDataFinishLoad
@@ -305,7 +314,7 @@ static NSInteger lastNum = -1;
 
 - (NSString*)bannerDataSouceLeftLabel
 {
-    return [NSString stringWithFormat:@"有%d图片",[self offsetOfDataSouce]];
+    return [NSString stringWithFormat:@"有%d张图片",[self offsetOfDataSouce]];
 }
 
 - (NSString*)bannerDataSouceRightLabel
@@ -322,7 +331,7 @@ static NSInteger lastNum = -1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (MAXPICTURE < [self offsetOfDataSouce]) {
+    if (MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
         [self.controller.pullingController.footView setHidden:NO];
@@ -339,7 +348,6 @@ static NSInteger lastNum = -1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     ExploreViewCellDataSource * dataSource = [_strategyArray objectAtIndex:indexPath.row];
     ExploreViewCell * cell = [tableView dequeueReusableCellWithIdentifier:dataSource.identify];
     if (cell == nil) {
