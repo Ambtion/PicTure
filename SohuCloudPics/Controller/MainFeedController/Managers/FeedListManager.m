@@ -200,6 +200,7 @@
 #pragma mark No LoginView
 - (void)showViewForNoLogin
 {
+    
     if (_LoginTip == nil) {
         _LoginTip = [[LoginTipView alloc] initWithFrame:_controller.pullingController.view.bounds];
         [_LoginTip addtarget:self action:@selector(tipForLogin:)];
@@ -248,7 +249,8 @@
 }
 - (NSString*)bannerDataSouceRightLabel
 {
-    return [self.controller getTimeString];
+//    return [self.controller getTimeString];
+    return nil;
 }
 #pragma mark -
 
@@ -313,6 +315,7 @@
     SCPPersonalPageViewController *controller = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:nil useID:user_id];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];
+    
 }
 
 -(void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object

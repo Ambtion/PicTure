@@ -24,8 +24,13 @@
 }
 -(void)addSubviews
 {
-    UIImageView * image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
-    image.image = [UIImage imageNamed:@"feed_no_login.png"];
+    
+    UIImageView * image = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    if ([[UIScreen mainScreen] bounds].size.height > 480) {
+        image.image = [UIImage imageNamed:@"feed_no_login6.png"];
+    }else{
+        image.image = [UIImage imageNamed:@"feed_no_loginios4.png"];
+    }
     image.userInteractionEnabled = YES;
     [self addSubview:image];
     [image release];

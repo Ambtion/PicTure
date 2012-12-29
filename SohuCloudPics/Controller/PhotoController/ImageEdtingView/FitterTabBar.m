@@ -40,17 +40,24 @@
 
 -(void)addPhotoArray
 {
-  //  [_photoArray addObject:@"1-原图.png"];
-    [_photoArray addObject:@"2-清新.png"];
-    [_photoArray addObject:@"3-黑白.png"];
-    
-    [_photoArray addObject:@"4-复古.png"];
-    [_photoArray addObject:@"5-LOMO.png"];
-    [_photoArray addObject:@"8-温暖.png"];
-    
-    [_photoArray addObject:@"6-大自然.png"];
-    [_photoArray addObject:@"7-淡雅.png"];
+//    [_photoArray addObject:@"2-清新.png"];
+//    [_photoArray addObject:@"3-黑白.png"];
+//    
+//    [_photoArray addObject:@"4-复古.png"];
+//    [_photoArray addObject:@"5-LOMO.png"];
+//    [_photoArray addObject:@"8-温暖.png"];
+//    
+//    [_photoArray addObject:@"6-大自然.png"];
+//    [_photoArray addObject:@"7-淡雅.png"];
 //    [_photoArray addObject:@"9-回忆.png"];
+    [_photoArray addObject:@"清新.png"];
+    [_photoArray addObject:@"黑白.png"];
+    [_photoArray addObject:@"复古.png"];
+    [_photoArray addObject:@"LOMO.png"];
+    [_photoArray addObject:@"温暖.png"];
+    [_photoArray addObject:@"大自然.png"];
+    [_photoArray addObject:@"淡雅.png"];
+    [_photoArray addObject:@"回忆.png"];
 }
 #pragma mark -
 #pragma mark addScrollview

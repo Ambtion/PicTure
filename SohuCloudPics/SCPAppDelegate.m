@@ -16,7 +16,6 @@
 #import "SCPMenuNavigationController.h"
 #import "SCPLoginViewController.h"
 #import "SCPExplorerController.h"
-
 #import "SCPAlert_DetailView.h"
 #import "FunctionguideScroll.h"
 
@@ -30,9 +29,7 @@ void customedExceptionHandler(NSException *exception)
 }
 
 
-
 @implementation SCPAppDelegate
-
 @synthesize window = _window;
 
 - (void)dealloc
@@ -51,7 +48,6 @@ void customedExceptionHandler(NSException *exception)
 //    NSLog(@"userDefaults dump: %@", [appUserDefaults persistentDomainForName: bundleId]);
 //    NSLog(@"Finished dumping userDefaults for %@", bundleId);
 //    [appUserDefaults release];
-    
     NSLog(@"%@",NSHomeDirectory());
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
 }
@@ -81,6 +77,7 @@ void customedExceptionHandler(NSException *exception)
         [_window addSubview:_fgc.view];
     }
 }
+
 - (void)removeFromWindows
 {
     CATransition * animation = [CATransition animation];

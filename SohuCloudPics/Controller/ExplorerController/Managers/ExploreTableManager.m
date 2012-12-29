@@ -190,10 +190,10 @@ static NSInteger lastNum = -1;
         CGRect superRect = [[viewFrame objectAtIndex:i] CGRectValue];
         
         NSDictionary * dic = [infoArray objectAtIndex:i];
-        CGFloat heigth = [[dic objectForKey:@"height"] floatValue];
-        CGFloat wigth = [[dic objectForKey:@"width"] floatValue];
-        heigth = 205;
-        wigth = 205;
+//        CGFloat heigth = [[dic objectForKey:@"height"] floatValue];
+//        CGFloat wigth = [[dic objectForKey:@"width"] floatValue];
+       CGFloat heigth = 205;
+       CGFloat wigth = 205;
         
         if (!dic ||!heigth || !wigth) {
             [array addObject:[NSValue valueWithCGRect:CGRectMake(0, 0, superRect.size.width, superRect.size.height)]];
@@ -316,10 +316,10 @@ static NSInteger lastNum = -1;
 {
     return [NSString stringWithFormat:@"有%d张图片",[self offsetOfDataSouce]];
 }
-
 - (NSString*)bannerDataSouceRightLabel
 {
-    return [self.controller getTimeString];
+//    return [self.controller getTimeString];
+    return nil;
 }
 
 #pragma mark -

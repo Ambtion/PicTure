@@ -469,6 +469,7 @@
             //设置图片
             [[cell imageViewAt:i] setImage:[self.thumbnailArray objectAtIndex:taskTotal - tag.integerValue - 1]];
             //当前任务 设置进度条
+            
             if (tag.integerValue == _uploadTaskList.taskList.count - 1) {
                 [self.uploadTaskList.currentTask.request setUploadProgressDelegate:[cell.progViewList objectAtIndex:i]];
             }
@@ -603,6 +604,7 @@
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];
     [self showNavigationBar];
     [self removeObserverOnCenter];
+    [[SCPUploadTaskManager currentManager].curTask clearProgreessView];
 }
 #pragma mark -
 #pragma mark Notification

@@ -10,6 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "SCPRequestManager.h"
 //#import "PhotoDetailManager.h"
+#import  <QuartzCore/QuartzCore.h>
 
 @class PhotoDetailManager;
 
@@ -22,6 +23,11 @@
 - (void)resetGigView;
 @end
 
+@class SCPPhotoListController;
+
+@protocol SCPPhotoListControllerDeletate <NSObject>
+- (void)whenViewRemveFromSuperview:(SCPPhotoListController *)controller;
+@end
 @interface SCPPhotoListController : UIViewController <UIScrollViewDelegate,SCPRequestManagerDelegate>
 {
     UIView * _bgView;
@@ -48,6 +54,7 @@
     BOOL isInit;
     BOOL isLoading;
 }
+@property (nonatomic,retain)UIView * tempView;
 @property (nonatomic,retain)NSDictionary * info;
 @property (nonatomic,retain)UIView * bgView;
 @property (nonatomic,retain) InfoImageView * fontImageView;
@@ -59,7 +66,6 @@
 @property (nonatomic,retain) UIScrollView * scrollView;
 
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager;
-- (id)initWithUseInfo:(NSDictionary *)info;
 - (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect;
 - (UIImageView *)getCurrentImageView;
 

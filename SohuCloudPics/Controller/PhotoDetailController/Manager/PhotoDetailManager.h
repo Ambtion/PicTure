@@ -37,7 +37,7 @@
 @property (assign, nonatomic) SCPPhotoDetailViewController *controller;
 @property (retain, nonatomic) NSDictionary * infoFromSuper;
 @property (nonatomic,retain) NSString * photo_ID;
-
+@property (nonatomic,retain)SCPPhotoListController * listView;
 - (id)initWithController:(SCPPhotoDetailViewController *)ctrl info:(NSDictionary*)info;
 - (id)initWithController:(SCPPhotoDetailViewController *)ctrl useId:(NSString*) useId photoId:(NSString*)photoId;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;

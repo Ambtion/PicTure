@@ -39,7 +39,7 @@
 
 //队列任务管理
 - (void)go;
-
+- (void)clearProgreessView;
 - (void)cancelupLoadWithTag:(NSArray *)unitArray;
 // 任务记忆管理
 //....

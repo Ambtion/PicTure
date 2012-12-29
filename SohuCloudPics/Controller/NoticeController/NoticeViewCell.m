@@ -88,7 +88,7 @@
 {
     
     if (!_dataSource.image) {
-        NSString * photo_url =[NSString stringWithFormat:@"%@_c70",_dataSource.photoUrl];
+        NSString * photo_url =[NSString stringWithFormat:@"%@_c150",_dataSource.photoUrl];
         [_imageCoverView setImageWithURL:[NSURL URLWithString:photo_url] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] options:0];
     }else{
         _imageCoverView.image = _dataSource.image;

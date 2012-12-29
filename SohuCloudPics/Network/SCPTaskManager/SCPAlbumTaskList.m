@@ -91,6 +91,12 @@
     for (SCPTaskUnit * unit in _taskList)
         NSLog(@"after Remove::unit ::%@",unit.thumbnail);
 }
+- (void)clearProgreessView
+{
+    for (SCPTaskUnit * unit in _taskList) {
+        [unit.request setUploadProgressDelegate:nil];
+    }
+}
 #pragma mark - Requsetdelgate
 
 - (void)requestFinished:(ASIHTTPRequest *)request

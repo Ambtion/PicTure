@@ -393,7 +393,7 @@ static NSString *menuPress[6] = {
     NSLog(@"showMenu");
     isMoving = TRUE;
     isMenuShowing = YES;
-    [rootView setUserInteractionEnabled:NO];
+    [[[[UIApplication sharedApplication] delegate] window] setUserInteractionEnabled:NO];
     [rootView setHidden:NO];
     for (int i = 0; i < menuArray.count; i++) {
         UIView *view = [menuArray objectAtIndex:i];
@@ -486,7 +486,7 @@ static NSString *menuPress[6] = {
     if (!isMenuShowing || isMoving)  return;
     NSLog(@"hideMenu");
     isMoving = TRUE;
-    [rootView setUserInteractionEnabled:NO];
+    [[[[UIApplication sharedApplication] delegate] window] setUserInteractionEnabled:NO];
     isMenuShowing = NO;
     for (int i = 0; i < menuArray.count; i++) {
         UIView *view = [menuArray objectAtIndex:i];
@@ -501,7 +501,6 @@ static NSString *menuPress[6] = {
         transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeRotation(DEGREES_TO_RADIANS(90), fx, 0,0)];
         transformAnimation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.15 :0.25 :0.9 :0.9];
         transformAnimation.duration = animationDuration;
-
         //move
         CABasicAnimation *translateAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         translateAnimation.fromValue = [NSValue valueWithCGPoint:layer.position];
@@ -624,7 +623,6 @@ static NSString *menuPress[6] = {
         [group setDuration:animationDuration];
         [ribbon.layer addAnimation:group forKey:nil];
     }
-   
     ribbon.layer.position = toPoint;
     ribbon.layer.opacity = 1.0;
     
@@ -639,7 +637,7 @@ static NSString *menuPress[6] = {
 #pragma animationDelegate
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    [rootView setUserInteractionEnabled:YES];
+    [[[[UIApplication sharedApplication] delegate] window] setUserInteractionEnabled:YES];
     if (isMenuShowing) {
         [self menuDidShow];
     } else {

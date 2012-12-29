@@ -83,7 +83,7 @@
 
 
 @implementation SCPPhotoListController
-
+@synthesize tempView;
 @synthesize info = _info;
 @synthesize bgView = _bgView;
 @synthesize scrollView = _scrollView;
@@ -93,13 +93,12 @@
 @synthesize currentImageView = _currentImageView;
 @synthesize rearImageView = _rearImageView;
 @synthesize rearScrollview = _rearScrollview;
-
 - (void)dealloc
 {
     
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    
     [_requestManger release];
+    self.tempView = nil;
     self.bgView = nil;
     self.scrollView = nil;
     self.fontImageView  = nil;
@@ -119,9 +118,9 @@
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        
         self.view.backgroundColor = [UIColor redColor];
         _dataManager = dataManager;
+        
         imageArray = [[NSMutableArray alloc] initWithCapacity:0];
         curImages = [[NSMutableArray alloc] initWithCapacity:0];
         curPage = 0;
@@ -134,7 +133,7 @@
         _requestManger = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
         [self initSubViews];
-        
+        [self.view setUserInteractionEnabled:NO];
         [_requestManger getFolderinfoWihtUserID:[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] WithFolders:[NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]]];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -144,38 +143,6 @@
     }
     return self;
 }
-- (id)initWithUseInfo:(NSDictionary *)info
-{
-    self = [super initWithNibName:nil bundle:nil];
-    if (self) {
-        
-        self.view.backgroundColor = [UIColor redColor];
-        self.info = info;
-        imageArray = [[NSMutableArray alloc] initWithCapacity:0];
-        curImages = [[NSMutableArray alloc] initWithCapacity:0];
-        curPage = 0;
-        Pagenum = 1;
-        animation = NO;
-        self.info = info;
-        isInit = YES;
-        isLoading = NO;
-        hasNextPage = YES;
-        
-        _requestManger = [[SCPRequestManager alloc] init];
-        _requestManger.delegate = self;
-        [self initSubViews];
-        
-        [_requestManger getFolderinfoWihtUserID:[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] WithFolders:[NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]]];
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(listOrientationChanged:)
-                                                     name:UIDeviceOrientationDidChangeNotification
-                                                   object:nil];
-        
-    }
-    return self;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
@@ -257,6 +224,7 @@
     hasNextPage = [[photolist objectForKey:@"has_next"] boolValue];
     [imageArray addObjectsFromArray:[photolist objectForKey:@"photos"]];
     curPage =  [self getindexofImages];
+    [self.view setUserInteractionEnabled:YES];
     NSLog(@"MMMMMMM %d %d",curPage, imageArray.count);
     if (curPage == -1) {
         [self getMoreImage];
@@ -267,6 +235,7 @@
 - (void)requestFailed:(NSString *)error
 {
     isLoading = NO;
+    [self.view setUserInteractionEnabled:YES];
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
 }
@@ -294,10 +263,10 @@
         NSLog(@" MORE  %s",__FUNCTION__);
         return;
     }
-    
     NSLog(@"%@",self.info);
     isLoading = YES;
-        [_requestManger getPhotosWithUserID :[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] FolderID:[NSString stringWithFormat:@"%@",[_info objectForKey:@"folder_id"]] page:Pagenum + 1];
+    [self.view setUserInteractionEnabled:NO];
+    [_requestManger getPhotosWithUserID :[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] FolderID:[NSString stringWithFormat:@"%@",[_info objectForKey:@"folder_id"]] page:Pagenum + 1];
     
 }
 #pragma mark - InitSubView
@@ -309,7 +278,7 @@
     rect.origin.x -= OFFSET;
     
     self.bgView = [[[UIView alloc] initWithFrame:rect] autorelease];
-    self.bgView.backgroundColor = [UIColor greenColor];
+    self.bgView.backgroundColor = [UIColor blackColor];
     [self.view  addSubview:self.bgView];
     
     self.scrollView = [[[UIScrollView alloc] initWithFrame:self.bgView.bounds] autorelease];
@@ -388,9 +357,9 @@
     gesture1.numberOfTapsRequired = 1;
     
     [gesture1 requireGestureRecognizerToFail:gesture];
-    
     [view addGestureRecognizer:gesture1];
     [view addGestureRecognizer:gesture];
+    
 }
 #pragma mark TapGesture
 - (void)setZooming:(UIScrollView *)scrollview
@@ -400,56 +369,63 @@
 }
 - (void)handlesignalGesture:(UITapGestureRecognizer *)gesture
 {
-    
     [self.view setUserInteractionEnabled:NO];
     animation = YES;
-    
     _dataManager.photo_ID = [NSString stringWithFormat:@"%@",[self.info objectForKey:@"photo_id"]];
     [_dataManager dataSourcewithRefresh:YES];
-    
-    [self setZooming:_fontScrollview];
-    [self setZooming:_curscrollView];
-    [self setZooming:_rearScrollview];
-    [[self currentImageView] resetGigView];
-    
-    UIImageView * imageView = [[[UIImageView alloc] initWithFrame:[self getCurrentImageView].bounds] autorelease];
-    imageView.image = [self getCurrentImageView].image;
-    UIView * boundsView = [[[UIView alloc] initWithFrame:[self getCurrentImageView].frame] autorelease];
-    boundsView.backgroundColor = [UIColor clearColor];
-    boundsView.clipsToBounds = YES;
-    [boundsView addSubview:imageView];
-    
-    CGFloat heigth = [self getHeightofImage:[[self.info objectForKey:@"height"] floatValue] :[[self.info objectForKey:@"width"] floatValue]];
-    CGRect photoRect = CGRectZero;
-    CGRect boundsRect = CGRectZero;
-    [self setTempRect:&boundsRect PhotoRect:&photoRect with:heigth];
-    
-    self.view.alpha = 0;
-    boundsView.transform = [self getTransfrom];
-    boundsView.center = CGPointMake(160, 240);
-    
-    SCPAppDelegate * app = (SCPAppDelegate *)[UIApplication sharedApplication].delegate;
-    UIView * bgview = [[[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds] autorelease];
-    bgview.backgroundColor = [UIColor blackColor];
-    
-    [app.window addSubview:bgview];
-    [app.window addSubview:boundsView];
-    
-    [((SCPMenuNavigationController *) (self.navigationController)).menuManager.ribbon setHidden:NO];
-    [self.navigationController popViewControllerAnimated:NO];
-    
-    [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        boundsView.transform =CGAffineTransformIdentity;
-        boundsView.frame = boundsRect;
-        imageView.frame = photoRect;
-        bgview.alpha = 0;
+    [_dataManager.controller showNavigationBar];
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self.currentImageView setAlpha:0];
     } completion:^(BOOL finished) {
-        
-        [boundsView removeFromSuperview];
-        [bgview removeFromSuperview];
-        [self.view setUserInteractionEnabled:YES];
+        [self.view removeFromSuperview];
+        [self.tempView removeFromSuperview];
         animation = NO;
+        [self.view setUserInteractionEnabled:YES];
     }];
+    
+//    [self setZooming:_fontScrollview];
+//    [self setZooming:_curscrollView];
+//    [self setZooming:_rearScrollview];
+//    [[self currentImageView] resetGigView];
+//    
+//    UIImageView * imageView = [[[UIImageView alloc] initWithFrame:[self getCurrentImageView].bounds] autorelease];
+//    imageView.image = [self getCurrentImageView].image;
+//    UIView * boundsView = [[[UIView alloc] initWithFrame:[self getCurrentImageView].frame] autorelease];
+//    boundsView.backgroundColor = [UIColor clearColor];
+//    boundsView.clipsToBounds = YES;
+//    [boundsView addSubview:imageView];
+//    
+//    CGFloat heigth = [self getHeightofImage:[[self.info objectForKey:@"height"] floatValue] :[[self.info objectForKey:@"width"] floatValue]];
+//    CGRect photoRect = CGRectZero;
+//    CGRect boundsRect = CGRectZero;
+//    [self setTempRect:&boundsRect PhotoRect:&photoRect with:heigth];
+//    
+//    self.view.alpha = 0;
+//    boundsView.transform = [self getTransfrom];
+//    boundsView.center = CGPointMake(160, 240);
+//    
+//    SCPAppDelegate * app = (SCPAppDelegate *)[UIApplication sharedApplication].delegate;
+//    UIView * bgview = [[[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds] autorelease];
+//    bgview.backgroundColor = [UIColor blackColor];
+//    
+//    [app.window addSubview:bgview];
+//    [app.window addSubview:boundsView];
+//    
+//    [((SCPMenuNavigationController *) (self.navigationController)).menuManager.ribbon setHidden:NO];
+//    [self.navigationController popViewControllerAnimated:NO];
+//    
+//    [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+//        boundsView.transform =CGAffineTransformIdentity;
+//        boundsView.frame = boundsRect;
+//        imageView.frame = photoRect;
+//        bgview.alpha = 0;
+//    } completion:^(BOOL finished) {
+//        
+//        [boundsView removeFromSuperview];
+//        [bgview removeFromSuperview];
+//        [self.view setUserInteractionEnabled:YES];
+//        animation = NO;
+//    }];
 }
 - (void)setTempRect:(CGRect *)tempRect PhotoRect:(CGRect *)photoRect with:(CGFloat)heigth
 {
@@ -491,48 +467,82 @@
         view = self.rearImageView;
     return view;
 }
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    
+//    [self.tempView removeFromSuperview];
+    [[[[UIApplication sharedApplication] delegate] window] addSubview:self.view];
+    [self listOrientationinit];
+    [self.view setUserInteractionEnabled:YES];
+    animation = NO;
+
+//    if (anim == startAnimations) {
+//        [self.tempView removeFromSuperview];
+//        [[[[UIApplication sharedApplication] delegate] window] addSubview:self.view];
+//        [self listOrientationinit];
+//        [self.view setUserInteractionEnabled:YES];
+//        animation = NO;
+//    }else{
+////        [self.view setUserInteractionEnabled:YES];
+////        animation = NO;
+//    }
+    
+}
 - (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect
 {
+   
+    self.tempView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.tempView.backgroundColor = [UIColor blackColor];
     [self.view setUserInteractionEnabled:NO];
-    animation = YES;
+     animation = YES;
+    CATransition * startAnimations = [[CATransition animation] retain];
+    startAnimations.type = kCATransitionFade;
+    startAnimations.duration = 0.5;
+    startAnimations.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.30 :0 :0.6 :0.8];
+    [[[[UIApplication sharedApplication] delegate] window] addSubview:self.tempView];
+    startAnimations.delegate = self;
+    [[[[[UIApplication sharedApplication] delegate] window] layer] addAnimation:startAnimations forKey:@"KO"];
     
-    UIView * boundsView = [[[UIView alloc] initWithFrame:temRect] autorelease];
-    boundsView.backgroundColor = [UIColor clearColor];
-    boundsView.clipsToBounds = YES;
-    
-    UIImageView * imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.frame = imageRect;
-    [boundsView addSubview:imageView];
-    
-    SCPAppDelegate * app = (SCPAppDelegate *)[UIApplication sharedApplication].delegate;
-    UIView * view = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
-    view.backgroundColor = [UIColor blackColor];
-    
-    view.alpha = 0;
-    [app.window addSubview:view];
-    [app.window addSubview:boundsView];
-    
-    [self listOrientationinit];
-    CGRect finRect = [self getCurrentImageView].bounds;
-    finRect.origin.x = (self.view.frame.size.width - finRect.size.width)/2;
-    finRect.origin.y = (self.view.frame.size.height - finRect.size.height)/2;
-    
-    [UIView animateWithDuration:.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
-        boundsView.frame = finRect;
-        imageView.frame = [self getCurrentImageView].bounds;
-        boundsView.transform = [self getTransfrom];
-        view.alpha = 1;
-        
-    } completion:^(BOOL finished) {
-        [((SCPMenuNavigationController *) (nav_ctrller)).menuManager.ribbon setHidden:YES];
-        [nav_ctrller pushViewController:self animated:NO];
-        [self listOrientationinit];
-        [view removeFromSuperview];
-        [boundsView removeFromSuperview];
-        [self.view setUserInteractionEnabled:YES];
-        animation = NO;
-        
-    }];
+//    [self.view setUserInteractionEnabled:NO];
+//    animation = YES;
+//    
+//    UIView * boundsView = [[[UIView alloc] initWithFrame:temRect] autorelease];
+//    boundsView.backgroundColor = [UIColor clearColor];
+//    boundsView.clipsToBounds = YES;
+//    
+//    UIImageView * imageView = [[UIImageView alloc] initWithImage:image];
+//    imageView.frame = imageRect;
+//    [boundsView addSubview:imageView];
+//    
+//    SCPAppDelegate * app = (SCPAppDelegate *)[UIApplication sharedApplication].delegate;
+//    UIView * view = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
+//    view.backgroundColor = [UIColor blackColor];
+//    
+//    view.alpha = 0;
+//    [app.window addSubview:view];
+//    [app.window addSubview:boundsView];
+//    
+//    [self listOrientationinit];
+//    CGRect finRect = [self getCurrentImageView].bounds;
+//    finRect.origin.x = (self.view.frame.size.width - finRect.size.width)/2;
+//    finRect.origin.y = (self.view.frame.size.height - finRect.size.height)/2;
+//    
+//    [UIView animateWithDuration:.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
+//        boundsView.frame = finRect;
+//        imageView.frame = [self getCurrentImageView].bounds;
+//        boundsView.transform = [self getTransfrom];
+//        view.alpha = 1;
+//        
+//    } completion:^(BOOL finished) {
+//        [((SCPMenuNavigationController *) (nav_ctrller)).menuManager.ribbon setHidden:YES];
+//        [nav_ctrller pushViewController:self animated:NO];
+//        [self listOrientationinit];
+//        [view removeFromSuperview];
+//        [boundsView removeFromSuperview];
+//        [self.view setUserInteractionEnabled:YES];
+//        animation = NO;
+//        
+//    }];
     
 }
 
@@ -725,7 +735,7 @@
 - (void)refreshScrollViewNormal
 {
     if ([self getDisplayImagesWithCurpage:curPage]) {
-        
+     
         self.fontImageView.info = [curImages objectAtIndex:0];
         self.currentImageView.info = [curImages objectAtIndex:1];
         self.rearImageView.info = [curImages objectAtIndex:2];
@@ -747,6 +757,7 @@
         isInit = NO;
         return;
     }
+    
     NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
     if (photoNum < 3) {
         [self refreshScrollviewWhenPhotonumLessThree];

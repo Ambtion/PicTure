@@ -21,7 +21,7 @@
 @synthesize controller = _controller;
 @synthesize infoFromSuper = _infoFromSuper;
 @synthesize photo_ID = _photo_ID;
-
+@synthesize listView =  _listView;
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -30,6 +30,7 @@
     [_requestManger release];
     [_photo_ID release];
     [_user_ID release];
+    [_listView release];
     [super dealloc];
     
 }
@@ -71,6 +72,7 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
+    NSLog(@"%@",info);
     if (_willRefresh){
         
         [_dataSourceArray removeAllObjects];
@@ -80,7 +82,7 @@
         fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
         fAdapter.name = [self.infoFromSuper objectForKey:@"user_nick"];
         fAdapter.portrailImage = [self.infoFromSuper objectForKey:@"user_icon"];
-        
+
         //图像信息
         fAdapter.photoImage = [self.infoFromSuper objectForKey:@"photo_url"];
         fAdapter.isGif = [[self.infoFromSuper objectForKey:@"multi_frames"] intValue];
@@ -239,6 +241,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     int row = indexPath.row;
     if (row == 0) {
         //./ -> View ->FeedCell(Myfavorite)
@@ -274,12 +277,18 @@
 {
     if ((!self.controller.navigationController.navigationBarHidden))
         [self.controller.navigationController setNavigationBarHidden:YES animated:YES];
-    SCPPhotoListController * listView = [[[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper : self] autorelease];
+    if ([self.listView.view superview]) {
+        return;
+    }
+    self.listView = [[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self];
     CGRect rect = cell.frame;
     CGFloat Y = ((SCPPhotoDetailViewController *)self.controller).pullingController.tableView.contentOffset.y;
     rect.origin.y -= Y;
     rect.size.height -= 70;
-    [listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
+    cell.photoImageView.image = nil;
+    
+    [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
+    
 }
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
@@ -287,7 +296,6 @@
     SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
     [nav pushViewController:ctrl animated:YES];
     [ctrl release];
-    
 }
 
 - (void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object

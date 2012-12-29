@@ -185,9 +185,13 @@ done:
     
     SCPAlbumTaskList * album = [[[SCPAlbumTaskList alloc] initWithTaskList:array album_id:self.curAlbumID] autorelease];
     [[SCPUploadTaskManager currentManager] addTaskList:album];
-    
-//    [controller performSelector:@selector(dismissModalViewControllerAnimated:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithBool:NO] waitUntilDone:YES];
-    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:1.f];
+    SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"图片已在后台上传" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+    [alterView show];
+    return;
+}
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.f];
 }
 #pragma mark Back
 - (void)backTotop:(UIButton*)button

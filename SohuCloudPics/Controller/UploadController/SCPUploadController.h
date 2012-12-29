@@ -11,7 +11,7 @@
 #import "SCPAlbum.h"
 #import "SCPRequestManager.h"
 
-@interface SCPUploadController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIActionSheetDelegate, SCPLabelBoxDelegate, SCPLabelChooserDelegate, SCPRequestManagerDelegate,UploadHeadDeleagte>
+@interface SCPUploadController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIAlertViewDelegate, UITextViewDelegate, UIActionSheetDelegate, SCPLabelBoxDelegate, SCPLabelChooserDelegate, SCPRequestManagerDelegate,UploadHeadDeleagte>
 {
     BOOL _displayingLabels;
     SCPRequestManager * _requsetManager;

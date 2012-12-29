@@ -220,7 +220,7 @@
     UIImageView *coverImageView = [self coverImageViewAt:position];
     [coverImageView setHidden:NO];
 	if (album.coverURL != nil && ![album.coverURL isKindOfClass:[NSNull class]] && album.coverURL.length != 0) {
-        NSString *str = [NSString stringWithFormat:@"%@_c70",album.coverURL];
+        NSString *str = [NSString stringWithFormat:@"%@_c150",album.coverURL];
 		[coverImageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options:0];
 	} else {
 		[coverImageView setImage:[self getEmptyFolderCoverImage]];
