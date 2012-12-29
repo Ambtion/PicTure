@@ -95,11 +95,14 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     }
     cell.c_ImageView.image = [UIImage imageNamed:SettingCover[indexPath.row - 1]];
     cell.c_Label.text = SettingMenu[indexPath.row - 1];
-    
     if (SettingNext[indexPath.row - 1]) {
         cell.accessoryImage.image = [UIImage imageNamed:@"settings_arrow.png"];
     }
-    
+    if (SwitchShow[indexPath.row - 1]) {
+        [cell.imageSwitch setHidden:NO];
+    }else{
+        [cell.imageSwitch setHidden:YES];
+    }
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

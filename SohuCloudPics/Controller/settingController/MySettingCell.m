@@ -18,6 +18,7 @@
     self.c_ImageView = nil;
     self.c_Label = nil;
     self.accessoryImage = nil;
+    self.imageSwitch = nil;
     [super dealloc];
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -45,6 +46,9 @@
     self.accessoryImage = [[[UIImageView alloc] initWithFrame:CGRectMake(320 - 5 -21, (55 - 21)/2, 21, 21)] autorelease];
     self.accessoryImage.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.accessoryImage];
+    
+    self.imageSwitch = [[ImageQualitySwitch alloc] initWithFrame:CGRectMake(320 - 90 - 5, (55 - 27)/2, 0, 0)];
+    [self.contentView addSubview:self.imageSwitch];
     
     UIImageView * lineView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
     lineView.frame = CGRectMake(0, 54, 320, 1);

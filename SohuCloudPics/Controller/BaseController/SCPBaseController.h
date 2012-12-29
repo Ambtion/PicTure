@@ -12,6 +12,10 @@
 #import "SCPHorizontalGestureRecognizer.h"
 #import "SCPAlert_CustomeView.h"
 
+
+
+
+
 @interface SCPBaseController : UIViewController <UIGestureRecognizerDelegate>
 {
     float lastOffset;

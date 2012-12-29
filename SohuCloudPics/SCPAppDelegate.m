@@ -54,7 +54,6 @@ void customedExceptionHandler(NSException *exception)
     
     NSLog(@"%@",NSHomeDirectory());
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
-
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -80,8 +79,6 @@ void customedExceptionHandler(NSException *exception)
     if (!num ||![num boolValue]) {
         _fgc = [[FunctionguideScroll alloc] init];
         [_window addSubview:_fgc.view];
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"FunctionShowed"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 - (void)removeFromWindows

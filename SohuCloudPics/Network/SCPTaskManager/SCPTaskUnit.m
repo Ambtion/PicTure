@@ -53,8 +53,15 @@
     [lib assetForURL:_asseetUrl resultBlock:^(ALAsset *asset) {
         CGImageRef  cgimage =[[asset defaultRepresentation] fullResolutionImage];
         UIImage * image = [UIImage imageWithCGImage:cgimage];
-//        NSData * data = UIImagePNGRepresentation(image);
-        NSData * data = UIImageJPEGRepresentation(image, 1.f);
+        NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"];
+        NSData * data = nil;
+        if (!num || ![num boolValue]) {
+            //PNG
+            data = UIImagePNGRepresentation(image);
+        }else{
+            //JPEG
+           data = UIImageJPEGRepresentation(image, 0.7f);
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             resultBlock(data,self);
             [lib release];

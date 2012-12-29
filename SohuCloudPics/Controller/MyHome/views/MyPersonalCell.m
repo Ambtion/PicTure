@@ -104,6 +104,8 @@
 }
 - (void)changeBack:(UITapGestureRecognizer *)gesture
 {
+    CGPoint point = [gesture locationInView:self.contentView];
+    if (CGRectContainsPoint(CGRectMake(109, 100, 102, 102), point))        return;
     HomeBackContainer * hc = [[[HomeBackContainer alloc] initWithDelegate:self] autorelease];
     [hc show];
 }

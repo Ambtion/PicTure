@@ -186,7 +186,8 @@ done:
     SCPAlbumTaskList * album = [[[SCPAlbumTaskList alloc] initWithTaskList:array album_id:self.curAlbumID] autorelease];
     [[SCPUploadTaskManager currentManager] addTaskList:album];
     
-    [controller performSelector:@selector(dismissModalViewControllerAnimated:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithBool:NO] waitUntilDone:YES];
+//    [controller performSelector:@selector(dismissModalViewControllerAnimated:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithBool:NO] waitUntilDone:YES];
+    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:1.f];
 }
 #pragma mark Back
 - (void)backTotop:(UIButton*)button

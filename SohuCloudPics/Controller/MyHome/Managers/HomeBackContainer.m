@@ -58,7 +58,6 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
 }
 - (void)boxviewaddSubViews
 {
-    
     for (int i = 0; i < 4; i++) {
         UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(4 + 79 * i, 33, 77, 77)] autorelease];
         imageview.image = [UIImage imageNamed:ICON[i]];
@@ -76,6 +75,7 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
 }
 - (void)tapGestureHandle:(id)gesture
 {
+    
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         _boxViews.frame = CGRectMake(0, self.bounds.size.height, self.bounds.size.width, 120);
     } completion:^(BOOL finished) {

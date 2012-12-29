@@ -329,7 +329,6 @@ static NSString *menuPress[6] = {
     }
     index = 3;
     [self popNavigationList];
-
 }
 
 - (void)onCameraClicked:(id)sender
@@ -337,6 +336,7 @@ static NSString *menuPress[6] = {
     [self hideMenuWithRibbon:NO];
     CameraViewController * phc = [[[CameraViewController alloc] init]autorelease];
     [navController performSelector:@selector(pushViewController:animated:) withObject:phc afterDelay:0];
+    
 }
 
 - (void)onNoticeClicked:(id)sender
@@ -350,7 +350,7 @@ static NSString *menuPress[6] = {
         [navController presentModalViewController:nav animated:YES];
         return;
     }
-    if ([self.navController.visibleViewController isKindOfClass:[NoticeDataSource class]]) {
+    if ([self.navController.visibleViewController isKindOfClass:[NoticeViewController class]]) {
         return;
     }
     [self restIcon:1];
@@ -390,10 +390,10 @@ static NSString *menuPress[6] = {
 - (void)showMenuWithRibbon
 {
     if (isMenuShowing || isMoving) return;
-    
     NSLog(@"showMenu");
     isMoving = TRUE;
     isMenuShowing = YES;
+    [rootView setUserInteractionEnabled:NO];
     [rootView setHidden:NO];
     for (int i = 0; i < menuArray.count; i++) {
         UIView *view = [menuArray objectAtIndex:i];
@@ -405,7 +405,6 @@ static NSString *menuPress[6] = {
         if (i % 2) {
             fx = 1.0;
         }
-        
         CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
         transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
 
@@ -415,7 +414,6 @@ static NSString *menuPress[6] = {
         transformAnimation.timeOffset = animationDuration;
         transformAnimation.autoreverses = YES;
         transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-        
         //move
         CABasicAnimation *translateAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         translateAnimation.fromValue = [NSValue valueWithCGPoint:layer.position];
@@ -445,6 +443,7 @@ static NSString *menuPress[6] = {
         //group
         CAAnimationGroup *group = [CAAnimationGroup animation];
         group.duration = animationDuration;
+        group.delegate = self;
         group.animations = [NSArray arrayWithObjects:transformAnimation,translateAnimation,color, nil];
         layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge;
 //        layer.shouldRasterize = YES;
@@ -474,7 +473,6 @@ static NSString *menuPress[6] = {
     [group setDuration:animationDuration];
     [ribbon.layer addAnimation:group forKey:nil];
     ribbon.layer.position = toPoint;
-    group.delegate = self;
     
 }
 - (CAMediaTimingFunction *)myfunctionTime
@@ -483,10 +481,12 @@ static NSString *menuPress[6] = {
 }
 - (void)hideMenuWithRibbon:(BOOL)hideRibbon
 {
+    
     NSLog(@"isMenudone :%d,isMoving :%d ",isMenudone, isMoving);
     if (!isMenuShowing || isMoving)  return;
     NSLog(@"hideMenu");
     isMoving = TRUE;
+    [rootView setUserInteractionEnabled:NO];
     isMenuShowing = NO;
     for (int i = 0; i < menuArray.count; i++) {
         UIView *view = [menuArray objectAtIndex:i];
@@ -570,8 +570,8 @@ static NSString *menuPress[6] = {
     if (hideRibbon) {
         toPoint.y -= menuHeight * 2;
     }
-    
     ribbon.layer.position = toPoint;
+    
 }
 
 - (void)hideRibbonWithAnimation:(BOOL)animation
@@ -639,7 +639,7 @@ static NSString *menuPress[6] = {
 #pragma animationDelegate
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-   
+    [rootView setUserInteractionEnabled:YES];
     if (isMenuShowing) {
         [self menuDidShow];
     } else {

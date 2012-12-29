@@ -27,7 +27,6 @@
     [super viewDidLoad];
 
     [self addTableView];
-//    [self.pullingController showLoadingMore];
     [self.manager dataSourcewithRefresh:YES];
 }
 
@@ -79,8 +78,15 @@
 {
     NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
     if (!num || ![num boolValue]) {
+        
         SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
-        view.image = [UIImage imageNamed:@"广场导引.png"];
+
+        if ([[UIScreen mainScreen] bounds].size.height > 480) {
+            NSLog(@"%s",__FUNCTION__);
+            view.image = [UIImage imageNamed:@"广场导引ios6.png"];
+        }else{
+            view.image = [UIImage imageNamed:@"广场导引.png"];
+        }
         [view show];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"GuideViewShowed"];
         [[NSUserDefaults standardUserDefaults] synchronize];

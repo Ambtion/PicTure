@@ -428,7 +428,7 @@ static CGFloat OFFSET = 0.f;
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     _tableView.separatorColor = [UIColor clearColor];
-    _tableView.decelerationRate = UIScrollViewDecelerationRateFast;
+//    _tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     
     UIView * headView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)] autorelease];
