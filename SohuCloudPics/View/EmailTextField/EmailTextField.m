@@ -11,76 +11,10 @@
 #import <stdlib.h>
 #import <QuartzCore/QuartzCore.h>
 
-static BOOL isInOrder(NSString *a, NSString *b)
-{
-    int a_len, b_len, i, j;
-    a_len = a.length;
-    b_len = b.length;
-    for (i = 0, j = 0; i < a_len && j < b_len; ++i, ++j) {
-        if ([a characterAtIndex:i] > [b characterAtIndex:j]) {
-            return NO;
-        } else if ([a characterAtIndex:i] < [b characterAtIndex:j]) {
-            return YES;
-        }
-    }
-    if (a_len > b_len) {
-        return NO;
-    }
-    return YES;
-}
-
-static int compareNSString(const void *a, const void *b)
-{
-    NSString *sa = *((NSString **) a), *sb = *((NSString **) b);
-    if ([sa isEqualToString:sb]) {
-        return 0;
-    }
-    return isInOrder(sa, sb) ? -1 : 1;
-}
-
-static NSArray *sort(NSArray *array)
-{
-    int length = array.count;
-    NSArray **arr = malloc(length * sizeof(NSArray *));
-    for (int i = 0; i < length; ++i) {
-        arr[i] = [array objectAtIndex:i];
-    }
-    qsort(arr, length, sizeof(NSArray *), compareNSString);
-    NSArray *result = [NSArray arrayWithObjects:arr count:length];
-    free(arr);
-    return result;
-}
-
-static void check(NSArray **p_domains)
-{
-    NSArray *domains = *p_domains;
-    BOOL isOK = YES;
-    int length = domains.count;
-    for (int i = 0; i < length - 1; ++i) {
-        if (!isInOrder([domains objectAtIndex:i], [domains objectAtIndex:i + 1])) {
-            isOK = NO;
-            break;
-        }
-    }
-    
-    if (!isOK) {
-        NSArray *sorted = sort(domains);
-        [*p_domains release];
-        *p_domains = [sorted retain]; 
-    }
-}
 
 @implementation NSString (indexOfChar)
 - (NSInteger)firstIndexOfChar:(unichar)c
 {
-    //    int i = self.length - 1;
-    //    for (; i > -1 && [self characterAtIndex:i] != c; --i) {
-    //        ;
-    //    }
-    //    return i;
-    
-    // For different strategies: lastIndexOfChar is above; firstIndexOfChar is below.
-    
     int i = 0, len = self.length;
     for (; i < len && [self characterAtIndex:i] != c; ++i) {
         ;
@@ -94,14 +28,13 @@ static void check(NSArray **p_domains)
 
 
 
-
 @interface EmailTextFieldManager : NSObject <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 {
     EmailTextField *eTextField;
     NSArray *domains;
     
     NSString *emailAccount;
-    NSRange emailDomainRange;
+	NSMutableArray *filtered_domains;
 }
 
 - (id)initWithEmailTextField:(EmailTextField *)textField;
@@ -116,10 +49,21 @@ static void check(NSArray **p_domains)
     if (self) {
         eTextField = textField;
         domains = eTextField.domains;
-        emailDomainRange.location = 0;
-        emailDomainRange.length = 0;
+		filtered_domains = [[NSMutableArray array] retain];
     }
     return self;
+}
+
+- (void)dealloc
+{
+	if (emailAccount) {
+		[emailAccount release];
+	}
+	if (filtered_domains) {
+		[filtered_domains release];
+	}
+	
+	[super dealloc];
 }
 
 #pragma mark methods for UITextFieldDelegate
@@ -150,100 +94,30 @@ static void check(NSArray **p_domains)
     int lastIndexOfAt = [email firstIndexOfChar:'@'];
     if (lastIndexOfAt == -1) { // there is no @
         emailAccount = [email copy];
-        emailDomainRange.location = 0;
-        emailDomainRange.length = domains.count;
-        [eTextField freshDropDownList];
+		
+		[filtered_domains removeAllObjects];
+		[filtered_domains addObjectsFromArray:domains];
+        
+		[eTextField freshDropDownList];
         
     } else { // there is an @
         emailAccount = [[email substringToIndex:lastIndexOfAt] copy];
         NSString *emailDomain = [email substringFromIndex:lastIndexOfAt + 1];
-        emailDomainRange = [self rangeOfDomain:emailDomain inArray:domains];
+		
+		[filtered_domains removeAllObjects];
+		if (!emailDomain || [emailDomain isEqualToString:@""]) {
+			[filtered_domains addObjectsFromArray:domains];
+		} else {
+			for (NSString *domain in domains) {
+				NSRange range = [domain rangeOfString:emailDomain];
+				if (range.location == 0) {
+					[filtered_domains addObject:domain];
+				}
+			}
+		}
+		
         [eTextField freshDropDownList];
     }
-}
-
-// private method used as a tool
-// the time complexity of this solution must be O(log(n)), O(n) is not acceptable
-- (NSRange)rangeOfDomain:(NSString *)domain inArray:(NSArray *)array
-{
-    NSRange result = {0, 0};
-    int left = 0, right = array.count - 1;
-    for (int i = 0; i < domain.length; ++i) {
-        unichar c = [domain characterAtIndex:i];
-        if (left == right) {
-            NSString *s = (NSString *) [array objectAtIndex:left];
-            if (s.length <= i || [s characterAtIndex:i] != c) {
-                return result;
-            } else {
-                continue;
-            }
-        }
-        
-        // first, find the most left location of c, start will be the result
-        int start = left, end = right;
-        while (start < end) {
-            int middle = (start + end) / 2;
-            if (((NSString *) [array objectAtIndex:middle]).length <= i) {
-                start = middle + 1;
-                continue;
-            }
-            unichar middleChar = [[array objectAtIndex:middle] characterAtIndex:i];
-            if (middleChar < c) {
-                start = middle + 1;
-            } else if (middleChar > c) {
-                end = middle - 1;
-            } else {
-                if (middle == left) {
-                    start = left;
-                    break;
-                } else if ([[array objectAtIndex:(middle - 1)] characterAtIndex:i] == c) {
-                    end = middle - 1;
-                } else {
-                    start = middle;
-                    break;
-                }
-            }
-        }
-        if ([[array objectAtIndex:start] characterAtIndex:i] == c) {
-            left = start;
-        } else {
-            return result;
-        }
-        
-        // then, find the most right location of c, end will be the result
-        start = left, end = right;
-        while (start < end) {
-            int middle = (start + end) / 2;
-            if (((NSString *) [array objectAtIndex:middle]).length <= i) {
-                start = middle + 1;
-                continue;
-            }
-            unichar middleChar = [[array objectAtIndex:middle] characterAtIndex:i];
-            if (middleChar > c) {
-                end = middle - 1;
-            } else if (middleChar < c) {
-                start = middle + 1;
-            } else {
-                if (middle == right) {
-                    end = right;
-                    break;
-                } else if ([[array objectAtIndex:(middle + 1)] characterAtIndex:i] == c) {
-                    start = middle + 1;
-                } else {
-                    end = middle;
-                    break;
-                }
-            }
-        }
-        if ([[array objectAtIndex:start] characterAtIndex:i] == c) {
-            right = end;
-        } else {
-            return result;
-        }
-    }
-    result.location = left;
-    result.length = right - left + 1;
-    return result;
 }
 
 #pragma mark methods from UITableViewDelegate
@@ -254,7 +128,7 @@ static void check(NSArray **p_domains)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    eTextField.text = [NSString stringWithFormat:@"%@@%@", emailAccount, [domains objectAtIndex:(emailDomainRange.location + indexPath.row)]];
+	eTextField.text = [NSString stringWithFormat:@"%@@%@", emailAccount, [filtered_domains objectAtIndex:(indexPath.row)]];
     [eTextField resignFirstResponder];
 }
 
@@ -266,7 +140,7 @@ static void check(NSArray **p_domains)
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return emailDomainRange.length;
+	return filtered_domains.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -279,7 +153,7 @@ static void check(NSArray **p_domains)
         cell.textLabel.font = [UIFont systemFontOfSize:15];
         cell.textLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     }
-    NSString *text = [NSString stringWithFormat:@"%@@%@", emailAccount, [domains objectAtIndex:(emailDomainRange.location + indexPath.row)]];
+	NSString *text = [NSString stringWithFormat:@"%@@%@", emailAccount, [filtered_domains objectAtIndex:(indexPath.row)]];
     
     cell.textLabel.text = text;
     return cell;
@@ -315,7 +189,6 @@ static void check(NSArray **p_domains)
         _isOn = NO;
         
         _domains = [domains retain];
-        check(&_domains);
         
         _manager = [[EmailTextFieldManager alloc] initWithEmailTextField:self];
         _dropDownListTable.delegate = _manager;

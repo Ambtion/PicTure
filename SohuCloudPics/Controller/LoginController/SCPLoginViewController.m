@@ -17,7 +17,10 @@
 #import "SCPAlert_WaitView.h"
 #import "SCPAlertView_LoginTip.h"
 
-#define EMAIL_ARRAY ([NSArray arrayWithObjects:@"126.com", @"163.com", @"qq.com", @"sohu.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
+#define EMAIL_ARRAY ([NSArray arrayWithObjects:\
+@"sohu.com", @"vip.sohu.com", @"chinaren.com", @"sogou.com", @"17173.com", @"focus.cn", @"game.sohu.com", @"37wanwan.com",\
+@"126.com", @"163.com", @"qq.com", @"gmail.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
+
 
 @implementation SCPLoginViewController
 @synthesize delegate = _delegate;

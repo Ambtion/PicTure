@@ -16,7 +16,7 @@
 #import "SCPMenuNavigationController.h"
 #import "SCPMainTabController.h"
 
-static NSString* SettingMenu[7] = {@"个人资料设置",@"上传图片质量",@"清除缓冲",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
+static NSString* SettingMenu[7] = {@"个人资料设置",@"上传图片质量",@"清除缓存",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
 static NSString* SettingCover[7] = {@"settings_user.png",@"settings_push.png",@"settings_feedback.png",
                                 @"settings_feedback.png",@"settings_refresh.png",@"settings_about.png",@"settings_logout.png"};
 
@@ -122,8 +122,8 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     if (indexPath.row == 1 ) {//个人信息修改
         [self.navigationController pushViewController:[[[SCPSettingUserinfoController alloc] init] autorelease] animated:YES];
     }
-    if (indexPath.row == 3) { //清除缓冲
-        cacheView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认清除缓冲" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
+    if (indexPath.row == 3) { //清除缓存
+        cacheView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认清除缓存" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
         [cacheView show];
     }
     if (indexPath.row == 4) {
