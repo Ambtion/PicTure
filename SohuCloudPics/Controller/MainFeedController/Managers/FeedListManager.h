@@ -32,6 +32,7 @@
 
 @property(assign,nonatomic)SCPMainFeedController*  controller;
 @property(nonatomic,retain)NSMutableArray * headViewdata;
+@property(nonatomic,assign)BOOL isLoading;
 
 - (id)initWithController:(SCPMainFeedController *)controller;
 - (void)refreshData:(id)sender;

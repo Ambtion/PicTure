@@ -27,6 +27,7 @@ static float OFFSET = 0.f;
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_requestManager setDelegate:nil];
     [_requestManager release];
     [_dataArray release];
     [_personalDataSource release];

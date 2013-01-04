@@ -80,8 +80,6 @@
 
 @end
 
-
-
 @implementation SCPPhotoListController
 @synthesize tempView;
 @synthesize info = _info;
@@ -97,6 +95,7 @@
 {
     
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    [_requestManger setDelegate:nil];
     [_requestManger release];
     self.tempView = nil;
     self.bgView = nil;

@@ -34,7 +34,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s start",__FUNCTION__);
+    [_requsetManager setDelegate:nil];
     [_requsetManager release];
     [_preLabelObjs release];
     [_imageList release];
@@ -49,8 +49,6 @@
     [_labelChooser release];
     [_descCell release];
     [super dealloc];
-    NSLog(@"%s end",__FUNCTION__);
-
 }
 
 #pragma mark - init

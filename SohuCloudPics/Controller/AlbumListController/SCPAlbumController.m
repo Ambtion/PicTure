@@ -29,6 +29,9 @@
 
 - (void)dealloc
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_request setDelegate:nil];
+    [_request release];
 	self.user_id = nil;
     self.albumList = nil;
     self.bannerLeftString = nil;
@@ -36,12 +39,10 @@
     self.pullingController = nil;
     self.curProgreeeView = nil;
     [_backButton release];
-    
     [_rightBarView release];
     [_switchButton release];
     [_uploadButton release];
     [_okButton release];
-	[_request release];
     [super dealloc];
 }
 

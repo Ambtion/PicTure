@@ -20,12 +20,15 @@
 @implementation FeedListManager
 
 @synthesize controller = _controller;
+@synthesize isLoading = _isLoading;
+
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_requestManager setDelegate:nil];
+    [_requestManager release];
     [_dataArray release];
     [_LoginTip release];
-    [_requestManager release];
     [super dealloc];
 }
 -(id)initWithController:(SCPMainFeedController *)controller
@@ -72,7 +75,6 @@
         [_dataArray removeAllObjects];
     
     NSDictionary * creator = [info objectForKey:@"userInfo"];
-    NSLog(@"%@",creator);
     if (creator) {
         allFollowed = [[creator objectForKey:@"followings"] intValue];
     }
@@ -95,7 +97,9 @@
     if (_isInit) {
         _isInit = NO;
         _isLoading = NO;
-        [self feedMoreDataFinishLoad];
+        [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+        [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
         return;
     }
     if (_willRefresh) {
@@ -134,7 +138,6 @@
 
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
-    
     if (![SCPLoginPridictive isLogin]) {
         if (isRefresh) {
             [self feedRefreshDataFinishLoad];
@@ -151,7 +154,6 @@
     }else{
         [_requestManager getFeedMineWithPage:curpage + 1];
     }
-    
 }
 #pragma mark Top
 - (void)pullingreloadPushToTop:(id)sender
@@ -262,7 +264,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    if (MAXPICTURE < _dataArray.count || !hasNextPage || _isInit) {
+    if ((MAXPICTURE < _dataArray.count || !hasNextPage)&&  !_isInit) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
         [self.controller.pullingController.footView setHidden:NO];

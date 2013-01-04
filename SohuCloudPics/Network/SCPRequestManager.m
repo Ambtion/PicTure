@@ -13,16 +13,12 @@
 #import "JSON.h"
 
 #define BASICURL_V1 @"http://61.135.181.37:8888/api/v1"
+//#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+
+#define TIMEOUT 30.f
 
 @implementation SCPRequestManager
-
 @synthesize delegate = _delegate;
-
-- (void)showWhenRequsetFailed:(ASIHTTPRequest *)request
-{
-    UIAlertView * alter = [[[UIAlertView alloc] initWithTitle:@"网络连接异常" message:[NSString stringWithFormat:@"%@",[request error]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-    [alter show];
-}
 
 - (id)init
 {
@@ -35,19 +31,20 @@
 
 - (void)dealloc
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:_delegate];
+    //    [NSObject cancelPreviousPerformRequestsWithTarget:_delegate];
     [tempDic release];
     [super dealloc];
+    
 }
-
 #pragma mark - Explore
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture
 {
+    
     NSString * str_url = [NSString stringWithFormat:@"%@/plaza?start=%d&count=%d",BASICURL_V1,startIndex,maxresult];
+    NSLog(@"%@",str_url);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-//        NSLog(@"sucess StatusCode : %d %@",[request responseStatusCode],[[request responseString] JSONValue]);
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]){
             success([[[request responseString] JSONValue] objectForKey:@"photos"]);
         }else {
@@ -66,8 +63,9 @@
     NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@",BASICURL_V1,photo_ID,user_id];
     NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
+        
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -98,7 +96,7 @@
     }
     NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -114,7 +112,7 @@
     }];
     
     [request startAsynchronous];
-
+    
 }
 - (void)getUserInfoWithID:(NSString *)user_ID
 {
@@ -124,11 +122,11 @@
         str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
         NSLog(@"Login:%@", str);
     }else{
-      str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
+        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
+        NSLog(@"%@",str);
     }
-    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -153,7 +151,7 @@
 {
     NSString * str = [NSString stringWithFormat:@"%@/feed?user_id=%@&page=%d",BASICURL_V1,user_ID,page];
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -187,7 +185,7 @@
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,uses_id];
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -218,7 +216,7 @@
         str = [NSString stringWithFormat:@"%@/folders?owner_id=%@&page=%d",BASICURL_V1,user_id,page];
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             
@@ -255,7 +253,7 @@
     }
     NSLog(@"Login:%@", str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -288,13 +286,12 @@
         str = [NSString stringWithFormat:@"%@/folders/%@/photos?owner_id=%@&page=%d",BASICURL_V1,folder_id,user_id,page];
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
-            NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
-
+//            NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
             [tempDic setObject:dic forKey:@"photoList"];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
@@ -318,7 +315,7 @@
 {
     NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentUserId],[SCPLoginPridictive currentToken]];
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -345,7 +342,7 @@
 {
     NSString * str = [NSString stringWithFormat:@"%@/feed/mine?access_token=%@&page=%d",BASICURL_V1,[SCPLoginPridictive currentToken],page];
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -374,9 +371,8 @@
 {
     NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,use_id,[SCPLoginPridictive currentToken]];
     NSLog(@"%@",str);
-
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -396,7 +392,7 @@
         }
     }];
     [request startAsynchronous];
-
+    
 }
 - (void)getfollowingsWihtUseId:(NSString *)user_id page:(NSInteger)pagenum
 {
@@ -407,7 +403,7 @@
         str = [NSString stringWithFormat:@"%@/followings?user_id=%@&page=%d&access_token=%@",BASICURL_V1,user_id,pagenum,[SCPLoginPridictive currentToken]];
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -436,7 +432,7 @@
 {
     NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_id,[SCPLoginPridictive currentToken]];
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -466,7 +462,7 @@
         str = [NSString stringWithFormat:@"%@/followers?user_id=%@&page=%d&access_token=%@",BASICURL_V1,user_id,pagenum,[SCPLoginPridictive currentToken]];
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:5.f];
+    [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
@@ -496,7 +492,7 @@
     NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setCompletionBlock:^{
-        NSLog(@"%@",[request responseString]);
+//        NSLog(@"%@",[request responseString]);
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -518,13 +514,13 @@
 }
 - (void)destoryNotificationAndsuccess:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
 {
-
+    
     NSString * str = [NSString stringWithFormat:@"%@/notifications/deletes?&access_token=%@",BASICURL_V1,
                       [SCPLoginPridictive currentToken]];
-        NSLog(@"%@",str );
+    NSLog(@"%@",str );
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
 	[request setCompletionBlock:^{
-        NSLog(@"%@",[request responseString]);
+//        NSLog(@"%@",[request responseString]);
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
@@ -598,7 +594,7 @@
 
 - (void)deletePhotosWithUserId:(NSString *)user_id	folderId:(NSString *)folder_id photoIds:(NSArray *)photo_ids success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
 {
-
+    
     NSString *url = [NSString stringWithFormat: @"%@/photos/batch_delete",BASICURL_V1];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
@@ -648,8 +644,7 @@
     [request setPostValue:newName forKey:@"name"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
-        
-        NSLog(@"%@",[request responseString]);
+//        NSLog(@"%@",[request responseString]);
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
             success([request responseString]);
         }else{
@@ -661,7 +656,6 @@
     }];
     [request startAsynchronous];
 }
-
 - (void)renameUserinfWithnewName:(NSString *)newName Withdescription:(NSString *)description success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
     NSString *url = [NSString stringWithFormat: @"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];

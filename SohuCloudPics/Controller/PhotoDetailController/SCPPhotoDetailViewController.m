@@ -53,9 +53,9 @@
     self.pullingController.delegate = self.manager;
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
-    [self.pullingController.footView setHidden:YES];
     [self.view addSubview:self.pullingController.view];
-    [self.manager dataSourcewithRefresh:YES];
+    [self.pullingController realLoadingMore:nil];
+    
     
     _commentPostBar = [[CommentPostBar alloc] initWithFrame:CGRectMake(0, self.view.bounds.origin.y + self.view.bounds.size.height, 320, 45)];
     _commentPostBar.delegate = self;
@@ -80,7 +80,6 @@
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
     [super viewWillAppear:animated];
-//    [self.manager dataSourcewithRefresh:YES];
 }
 
 - (void)navigationBack:(UIButton*)button

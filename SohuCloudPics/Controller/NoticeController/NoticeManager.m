@@ -16,8 +16,9 @@
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [_dataSource release];
+    [_resqust setDelegate:nil];
     [_resqust release];
+    [_dataSource release];
     [super dealloc];
 }
 

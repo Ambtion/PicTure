@@ -19,6 +19,7 @@
 {
     NSMutableArray * _dataSource;
     SCPRequestManager * _requestManger;
+    
     BOOL _isLoading;
     BOOL _isinit;
     BOOL _willRefresh;

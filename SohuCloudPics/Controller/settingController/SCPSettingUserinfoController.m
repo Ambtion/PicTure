@@ -16,10 +16,11 @@
 @implementation SCPSettingUserinfoController
 - (void)dealloc
 {
+    [_request setDelegate:nil];
+    [_request release];
     [_portraitView release];
     [_nameFiled release];
     [_description release];
-    [_request release];
     [super dealloc];
 }
 - (id)init

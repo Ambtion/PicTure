@@ -28,6 +28,7 @@ static float OFFSET = 0.f;
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_requestManager setDelegate:nil];
     [_requestManager release];
     [_dataArray release];
     [_personalDataSource release];
@@ -64,7 +65,7 @@ static float OFFSET = 0.f;
 {
     if (_isinit || ![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
-        NSLog(@"%@",response);
+//        NSLog(@"%@",response);
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
         _personalDataSource.desc = [response objectForKey:@"user_desc"];

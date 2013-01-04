@@ -21,9 +21,11 @@
     NSMutableArray *_strategyArray;
     BOOL _isLoading;
     BOOL _willRefresh;
+    BOOL _isinit;
     NSUInteger _lastCount;
 }
 
+@property (assign) BOOL isLoading;
 @property (assign) SCPExplorerController *controller;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
 - (void)refreshData:(id)sender;

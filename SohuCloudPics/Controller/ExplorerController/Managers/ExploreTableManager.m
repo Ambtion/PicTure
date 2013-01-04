@@ -108,7 +108,7 @@ static NSInteger lastNum = -1;
 @implementation ExploreTableManager
 
 @synthesize controller = _controller;
-
+@synthesize isLoading = _isLoading;
 - (NSInteger)randomNum
 {
     int i;
@@ -122,6 +122,7 @@ static NSInteger lastNum = -1;
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_requestManager setDelegate:nil];
     [_requestManager release];
     [_strategyArray release];
     [super dealloc];
@@ -135,6 +136,7 @@ static NSInteger lastNum = -1;
         _requestManager = [[SCPRequestManager alloc] init];
         _isLoading = NO;
         _willRefresh = YES;
+        _isinit = YES;
         _lastCount = 0;
     }
     return self;
@@ -214,7 +216,6 @@ static NSInteger lastNum = -1;
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(isRefresh || !_strategyArray.count){
-        NSLog(@"MMMMM %s",__FUNCTION__);
         _lastCount = 0;
         [self getExploreFrom:0 count:60];
     }else{
@@ -226,7 +227,6 @@ static NSInteger lastNum = -1;
     [_requestManager getExploreFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
         if (startIndex == 0)
             [_strategyArray removeAllObjects];
-//        NSLog(@"_requestManager ::%@",[infoArray lastObject]);
         for (int i = 0; i < infoArray.count / 4 ; i++) {
             ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
             NSInteger num_strategy = [self randomNum];
@@ -240,8 +240,17 @@ static NSInteger lastNum = -1;
             [frames release];
             [dataSouce release];
         }
+        
         _lastCount = [self offsetOfDataSouce];
-        if (startIndex == 0) {
+        if (_isinit) {
+            _isinit = NO;
+            _isLoading = NO;
+            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+            [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+            return ;
+        }
+        if (startIndex == 0 ) {
             [self refreshDataFinishLoad];
         }else{
             [self moreDataFinishLoad];
@@ -252,7 +261,6 @@ static NSInteger lastNum = -1;
         [self restNetWorkState];
     }];
 }
-
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -331,7 +339,7 @@ static NSInteger lastNum = -1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) {
+    if ((MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
         [self.controller.pullingController.footView setHidden:NO];

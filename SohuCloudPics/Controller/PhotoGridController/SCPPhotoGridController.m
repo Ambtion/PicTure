@@ -45,6 +45,9 @@
 }
 - (void)dealloc
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_request setDelegate:nil];
+    [_request release];
     self.albumData = nil;
     self.photoList = nil;
     self.thumbnailArray = nil;
@@ -60,7 +63,6 @@
     [_penButton release];
     [_okButton release];
     [_cancelButton release];
-	[_request release];
     [super dealloc];
 }
 

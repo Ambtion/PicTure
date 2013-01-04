@@ -27,12 +27,13 @@
     [super viewDidLoad];
 
     [self addTableView];
-    [self.manager dataSourcewithRefresh:YES];
+//    [self.manager dataSourcewithRefresh:YES];
+//    [self.pullingController showLoadingMore];
+    [self.pullingController realLoadingMore:nil];
 }
 
 - (void)addTableView
 {
-    
     self.manager = [[[ExploreTableManager alloc] init] autorelease];
     self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_explore.png"] frame:self.view.bounds] autorelease];
     self.pullingController.view.frame = self.view.bounds;
@@ -53,6 +54,7 @@
 }
 - (void)refreshButton:(UIButton *)button
 {
+    if (self.manager.isLoading) return;
     if ([self.pullingController.tableView numberOfSections]){
         [self.pullingController.tableView setContentOffset:CGPointZero];
     }

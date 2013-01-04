@@ -82,7 +82,7 @@ static CGFloat OFFSET = 0.f;
     if (scrollView.contentOffset.y <= scrollView.contentSize.height - scrollView.frame.size.height || scrollView.contentSize.height <= scrollView.frame.size.height) {
         if (_loadingMore) {
             _loadingMore = NO;
-           [controller realLoadingMore:nil];
+           [controller realLoadingMore:@"more"];
         }
     }
     if (scrollView.contentOffset.y >= scrollView.bounds.size.width && scrollView.contentOffset.y < OFFSET && scrollView.contentOffset.y < scrollView.contentSize.height - 580) {
@@ -517,13 +517,10 @@ static CGFloat OFFSET = 0.f;
 #pragma mark loadingMore
 - (void)showLoadingMore
 {
-    if (_shutDown) {
-        return;
-    }
-    if (_manager->_reloading) {
-        return;
-    }
-    _manager->_reloading = YES;
+//    if (_shutDown) return;
+//    NSLog(@"%d",_manager->_reloading);
+//    if (_manager->_reloading) return;
+//    _manager->_reloading = YES;
     UIView * view  = _tableView.tableFooterView;
     UILabel * label = (UILabel *)[view viewWithTag:100];
     UIActivityIndicatorView * acv  = (UIActivityIndicatorView *)[view viewWithTag:200];
@@ -532,9 +529,11 @@ static CGFloat OFFSET = 0.f;
 }
 - (void)realLoadingMore:(id)sender
 {
-    if (sender) {
-        [self showLoadingMore];
-    }
+    if (_shutDown) return;
+    NSLog(@"%d",_manager->_reloading);
+    if (_manager->_reloading) return;
+    _manager->_reloading = YES;
+    [self showLoadingMore];
     if ([_delegate respondsToSelector:@selector(pullingreloadMoreTableViewData:)]) {
         [_delegate pullingreloadMoreTableViewData:self];
     }

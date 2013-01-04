@@ -18,6 +18,8 @@
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_requestManger setDelegate:nil];
+    [_requestManger release];
     [_dataSource release];
     [super dealloc];
 }
@@ -162,7 +164,7 @@
 #pragma mark bannerDataSource
 - (NSString*)bannerDataSouceLeftLabel
 {
-    return [NSString stringWithFormat:@"跟随了%d人",_maxNum];
+    return [NSString stringWithFormat:@"关注了%d人",_maxNum];
 }
 
 - (NSString*)bannerDataSouceRightLabel

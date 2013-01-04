@@ -25,9 +25,10 @@
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [_requestManger setDelegate:nil];
+    [_requestManger release];
     [_dataSourceArray release];
     [_infoFromSuper release];
-    [_requestManger release];
     [_photo_ID release];
     [_user_ID release];
     [_listView release];
@@ -35,9 +36,7 @@
     
 }
 - (id)initWithController:(SCPPhotoDetailViewController *)ctrl useId:(NSString*) useId photoId:(NSString*)photoId
-
 {
-    
     if (self = [super init]) {
         _controller = ctrl;
         _dataSourceArray = [[NSMutableArray alloc] initWithCapacity:0];
@@ -55,7 +54,6 @@
 {
     return [self initWithController:ctrl useId:[NSString stringWithFormat:@"%@",[info objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[info objectForKey:@"photo_id"]]];
 }
-
 #pragma mark  Request Finished
 - (CGFloat)getHeightofImage:(CGFloat)O_height :(CGFloat) O_width
 {
@@ -72,9 +70,8 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    NSLog(@"%@",info);
+    
     if (_willRefresh){
-        
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
         FeedCellDataSource *fAdapter = [[FeedCellDataSource alloc] init];
@@ -101,8 +98,9 @@
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
+        [self.controller.pullingController moreDoneLoadingTableViewData];
+        [self.controller.pullingController refreshDoneLoadingTableViewData];
         [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-        [self refreshDataFinishLoad:nil];
         return;
     }
     if (_willRefresh) {
@@ -116,14 +114,6 @@
     [alertView show];
     [self restNetWorkState];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex != 0) {
-//        [self dataSourcewithRefresh:_willRefresh];
-//    }else{
-//        [self restNetWorkState];
-//    }
-//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -133,7 +123,6 @@
     }
     _isLoading = NO;
     _willRefresh = YES;
-    
 }
 
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
@@ -144,7 +133,6 @@
         [_requestManger getPhotoDetailinfoWithUserID:_user_ID photoID:_photo_ID];
     }
 }
-
 #pragma mark Top
 - (void)pullingreloadPushToTop:(id)sender
 {
@@ -174,11 +162,10 @@
 }
 #pragma mark More Action
 //1:下拉刷新 2:刷新结束
-
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
-    //    [self dataSourcewithRefresh:NO];
-    [self moreDataFinishLoad:nil];
+    //目前仅仅是为了初始化时候的圈圈
+    [self dataSourcewithRefresh:YES];
 }
 - (void)moreDataFinishLoad:(id)sender
 {
@@ -212,6 +199,11 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (_isinit) {
+        [self.controller.pullingController.footView setHidden:NO];
+    }else{
+        [self.controller.pullingController.footView setHidden:YES];
+    }
     return _dataSourceArray.count;
 }
 

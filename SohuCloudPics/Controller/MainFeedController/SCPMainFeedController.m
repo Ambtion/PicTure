@@ -47,9 +47,8 @@
     [self.view addSubview:self.pullingController.view];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataWhenLoginStateChange:) name:@"LoginStateChange" object:nil];
-    
-    [self.pullingController showLoadingMore];
     [self.pullingController realLoadingMore:nil];
+    
 }
 
 - (void)handleDataWhenLoginStateChange:(NSNotification *)notifition
@@ -65,11 +64,11 @@
 #pragma mark customerNavigationItem
 - (void)refreshButton:(UIButton *)button
 {
+    if (self.manager.isLoading) return;
     if ([self.pullingController.tableView numberOfSections]){
         [self.pullingController.tableView setContentOffset:CGPointZero];
     }
     [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
-    //    [self.manager refreshData:nil];
 }
 - (void)viewDidAppear:(BOOL)animated
 {

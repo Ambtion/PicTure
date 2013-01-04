@@ -63,7 +63,6 @@
 {
     if ([_tableView.pDelegate respondsToSelector:@selector(scrollViewDidScroll:)])
         [_tableView.pDelegate scrollViewDidScroll:scrollView];
-    
     [_headerView egoRefreshScrollViewDidScroll:scrollView];
 }
 
@@ -103,7 +102,6 @@
 {
     if ([_tableView.pDelegate respondsToSelector:@selector(scrollViewWillBeginDecelerating:)])
         [_tableView.pDelegate scrollViewWillBeginDecelerating:scrollView];
-    
     [_headerView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
@@ -238,7 +236,6 @@
 {
     if ([_tableView.pDelegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)])
         return [_tableView.pDelegate tableView:tableView heightForHeaderInSection:section];
-    
     return 0.0;
 }
 
@@ -246,7 +243,6 @@
 {
     if ([_tableView.pDelegate respondsToSelector:@selector(tableView:heightForFooterInSection:)])
         return [_tableView.pDelegate tableView:tableView heightForFooterInSection:section];
-    
     return 0.0;
 }
 
@@ -318,7 +314,6 @@
     if ([_tableView.pDelegate respondsToSelector:@selector(tableView:performAction:forRowAtIndexPath:withSender:)])
         [_tableView.pDelegate tableView:tableView performAction:action forRowAtIndexPath:indexPath withSender:sender];
 }
-
 @end
 
 

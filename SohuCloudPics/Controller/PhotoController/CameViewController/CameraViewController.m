@@ -201,18 +201,14 @@
 #pragma mark Camera
 -(void)openCamera
 {
-    NSLog(@"opneCamera");
     [self.view setUserInteractionEnabled:YES];
-    NSLog(@"%s start",__FUNCTION__);
 //    [CameraImageHelper startRunning];
     [camerBox startRunning];
-    NSLog(@"%s start 2",__FUNCTION__);
     CATransition * transiton = [CATransition animation];
     transiton.fillMode = kCAFillModeForwards;
     transiton.duration = 0.5;
     transiton.speed = 1.0;
     transiton.type = @"cameraIrisHollowOpen";
-    NSLog(@"%s start end",__FUNCTION__);
     transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [_tampview.layer addAnimation:transiton forKey:@"Open"];
     _tampview.alpha = 0;
@@ -242,7 +238,6 @@
         [self.navigationController.navigationBar setHidden:NO];
         [((SCPMenuNavigationController *)self.navigationController).ribbonView setHidden:NO];
         [self.navigationController popViewControllerAnimated:YES];
-        
     }else if (isForwardImage){
         isForwardImage = NO;
         ImageEdtingController * imageEdting = [[[ImageEdtingController alloc] initWithUIImage:self.imageForTemp controller:self] autorelease];

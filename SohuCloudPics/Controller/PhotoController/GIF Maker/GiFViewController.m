@@ -444,7 +444,6 @@
     NSData * data = [[[NSData alloc] initWithData:[gifmaker saveAnimatedGif]] autorelease];
     [_alterView dismissWithClickedButtonIndex:0 animated:YES];
 
-    
     //Gif unlogin
     NSString * gif_unlogin;
     if (![SCPLoginPridictive isLogin]) {

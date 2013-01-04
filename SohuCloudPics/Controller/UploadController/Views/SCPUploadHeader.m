@@ -38,11 +38,11 @@
 
 - (void)dealloc
 {
+    [_requestmanager setDelegate:nil];
+    [_requestmanager release];
     [_foldersArray release];
     [_albumsTable release];
     [_manager release];
-    [_requestmanager release];
-    
     [_nameLabel release];
     [_albumChooseLabel release];
     [_albumNameLabel release];
