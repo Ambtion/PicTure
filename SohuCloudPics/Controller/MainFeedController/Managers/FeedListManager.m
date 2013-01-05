@@ -147,11 +147,20 @@
         [self showViewForNoLogin];
         return;
     }
+    if (_isLoading) {
+        if (isRefresh) {
+            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+        }else{
+            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+        }
+        return;
+    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(isRefresh || !_dataArray.count){
         [_requestManager getFeedMineInfo];
     }else{
+        if ((MAXPICTURE < _dataArray.count || !hasNextPage)&&  !_isInit) return;
         [_requestManager getFeedMineWithPage:curpage + 1];
     }
 }
@@ -294,12 +303,16 @@
         cell.maxImageHeigth = MAXIMAGEHEIGTH;
     }
     cell.dataSource = [_dataArray objectAtIndex:indexPath.row];
+
+    if (_dataArray.count - 1 == indexPath.row )
+        [self.controller.pullingController realLoadingMore:nil];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
 }
+
 #pragma mark -
 #pragma mark Cell Do Action
 
@@ -309,7 +322,6 @@
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
-
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     // do nothing for it mainfeedPage

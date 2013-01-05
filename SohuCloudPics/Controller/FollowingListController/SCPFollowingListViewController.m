@@ -45,7 +45,6 @@
     self.pullingController.headView.datasouce = self.manager;
     [self.view addSubview:self.pullingController.view];
 //    [self.manager dataSourcewithRefresh:YES];
-    [self.pullingController showLoadingMore];
     [self.pullingController realLoadingMore:nil];
     
 }
@@ -60,7 +59,7 @@
     NSLog(@"%s",__FUNCTION__);
     
     [self.navigationItem setHidesBackButton:YES];
-    _refreshButton = [[RefreshButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
+    _refreshButton = [[RefreshButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
     [_refreshButton addTarget:self.manager action:@selector(refreshData:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem * right = [[[UIBarButtonItem alloc] initWithCustomView:_refreshButton] autorelease];
     self.navigationItem.rightBarButtonItem = right;
@@ -68,7 +67,8 @@
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(navigationBack:) forControlEvents:UIControlEventTouchUpInside];
-    backButton.frame = CGRectMake(0, 0, 26, 26);
+//    backButton.frame = CGRectMake(0, 0, 26, 26);
+    backButton.frame = CGRectMake(0, 0, 35, 35);
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
 

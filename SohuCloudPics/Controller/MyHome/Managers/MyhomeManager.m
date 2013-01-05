@@ -224,11 +224,25 @@ static float OFFSET = 0.f;
         wait = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"加载中..." withView:_controller.view];
         [wait show];
     }
+    if (_isLoading) {
+        if (isRefresh) {
+            [self.controller.homeTable reloadData];
+        }else{
+            _isLoading = NO;
+            UIView *  view = _controller.homeTable.tableFooterView;
+            UILabel * label = (UILabel *)[view viewWithTag:100];
+            label.text  = @"加载更多...";
+            UIActivityIndicatorView * act = (UIActivityIndicatorView *)[view viewWithTag:200];
+            [act stopAnimating];
+        }
+        return;
+    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataArray.count){
         [_requestManager getUserInfoWithID:[SCPLoginPridictive currentUserId]];
     }else{
+        if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit) return;
         [_requestManager getUserInfoFeedWithUserID:[SCPLoginPridictive currentUserId] page:curPage + 1];
     }
 }
@@ -294,6 +308,8 @@ static float OFFSET = 0.f;
             feedCell.maxImageHeigth = MAXIMAGEHEIGTH;
         }
         feedCell.dataSource = [_dataArray objectAtIndex:row - 1];
+        if (_dataArray.count - 1 == indexPath.row)
+            [self loadingMore:nil];
         return feedCell;
     }
 }

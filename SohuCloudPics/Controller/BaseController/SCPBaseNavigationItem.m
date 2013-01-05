@@ -42,7 +42,7 @@
 
 - (void)addsubViews
 {
-    _refreshButton = [[RefreshButton alloc] initWithFrame:CGRectMake(9, 9, 26, 26)];
+    _refreshButton = [[RefreshButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
     [self addSubview:_refreshButton];
 }
 

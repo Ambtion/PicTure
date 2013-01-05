@@ -25,7 +25,6 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
     }
     return sharedTaskManager;
 }
-
 #pragma mark -
 - (void)dealloc
 {
@@ -107,6 +106,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
     [dic setObject:[NSNumber numberWithInt:finished] forKey:@"Finish"];
     [_taskDic setObject:dic forKey:taskList.albumId];
     [dic release];
+    
 }
 - (void)cancelOneRequestWith:(SCPAlbumTaskList *)taskList
 {

@@ -76,7 +76,8 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         if (cell ==  nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"BG_CELL"] autorelease];
             UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-            button.frame = CGRectMake(8, 8, 28, 28);
+//            button.frame = CGRectMake(8, 8, 28, 28);
+            button.frame = CGRectMake(0, 0, 35, 35);
             [button setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
             [button addTarget:self action:@selector(_backbutton:) forControlEvents:UIControlEventTouchUpInside];

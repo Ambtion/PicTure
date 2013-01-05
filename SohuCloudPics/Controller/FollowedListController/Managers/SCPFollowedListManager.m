@@ -112,14 +112,22 @@
 #pragma mark - refresh Data
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
+    if (_isLoading) {
+        if (isRefresh) {
+            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+        }else{
+            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+        }
+        return;
+    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataSource.count){
         [_requestManger getFollowedsInfoWithUseID:_user_ID];
     }else{
+        if (!hasNext && !_isinit) return;
         [_requestManger getfollowedsWihtUseId:_user_ID page:curPage + 1];
     }
-
 }
 
 #pragma mark - dataChange
@@ -204,6 +212,8 @@
         commoncell.delegate = self;
     }
     commoncell.dataSource = [_dataSource objectAtIndex:indexPath.row];
+    if (_dataSource.count - 1 == indexPath.row)
+        [self.controller.pullingController realLoadingMore:nil];
     return commoncell;
 }
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

@@ -213,17 +213,28 @@ static NSInteger lastNum = -1;
 #pragma mark -
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
+    if (_isLoading) {
+        if (isRefresh) {
+            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+        }else{
+            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+        }
+        return;
+    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(isRefresh || !_strategyArray.count){
         _lastCount = 0;
         [self getExploreFrom:0 count:60];
     }else{
+        if ((MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) return;
         [self getExploreFrom:[self offsetOfDataSouce] count:60];
     }
 }
+
 - (void)getExploreFrom:(NSInteger)startIndex count:(NSInteger)count
 {
+    
     [_requestManager getExploreFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
         if (startIndex == 0)
             [_strategyArray removeAllObjects];
@@ -240,7 +251,6 @@ static NSInteger lastNum = -1;
             [frames release];
             [dataSouce release];
         }
-        
         _lastCount = [self offsetOfDataSouce];
         if (_isinit) {
             _isinit = NO;
@@ -277,7 +287,7 @@ static NSInteger lastNum = -1;
     [self.controller showNavigationBar];
 }
 #pragma mark refresh
-//1 点击 2 下拉 3 结束
+//1 点击 2 上拉 3 结束
 - (void)refreshData:(id)sender
 {
     if (_isLoading) {
@@ -304,7 +314,6 @@ static NSInteger lastNum = -1;
 
 #pragma mark more
 //1:下拉刷新 2:刷新结束
-
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
     NSLog(@"NNNNN %s",__FUNCTION__);
@@ -349,21 +358,22 @@ static NSInteger lastNum = -1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     ExploreViewCellDataSource * dataSource = [_strategyArray objectAtIndex:indexPath.row];
     return dataSource.heigth;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     ExploreViewCellDataSource * dataSource = [_strategyArray objectAtIndex:indexPath.row];
     ExploreViewCell * cell = [tableView dequeueReusableCellWithIdentifier:dataSource.identify];
     if (cell == nil) {
         cell = [[[ExploreViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:dataSource.identify andframe:dataSource.viewRectFrame height:dataSource.heigth] autorelease];
         cell.delegate = self;
     }
-    
     cell.dataSource = dataSource;
+    if (_strategyArray.count - 1 == indexPath.row )
+        [self.controller.pullingController realLoadingMore:nil];
     return cell;
 }
 

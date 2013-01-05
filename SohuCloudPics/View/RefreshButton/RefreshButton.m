@@ -16,8 +16,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         CGRect rect = self.frame;
-        rect.size.width = 26;
-        rect.size.height = 26;
+        rect.size.width = 35;
+        rect.size.height = 35;
+        self.frame = rect;
         [self setBackgroundImage:[UIImage imageNamed:@"header_refresh.png"] forState:UIControlStateNormal];
         [self setBackgroundImage:[UIImage imageNamed:@"header_refresh_press.png"] forState:UIControlStateHighlighted];
     }

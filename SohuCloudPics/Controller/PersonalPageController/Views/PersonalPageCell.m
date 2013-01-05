@@ -123,7 +123,7 @@
     [_followButton setHidden:YES];
     [self.contentView addSubview:_followButton];
     
-    CGRect frame = CGRectMake(_backgroundImageView.frame.size.width - 36, _backgroundImageView.frame.size.height - 36 - 113, 26, 26);
+    CGRect frame = CGRectMake(_backgroundImageView.frame.size.width - 36, _backgroundImageView.frame.size.height - 36 - 113 - 5, 35, 35);
     RefreshButton * refreshButton = [[[RefreshButton alloc] initWithFrame:frame] autorelease];
     [refreshButton addTarget:self action:@selector(personalrefreshButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:refreshButton];

@@ -9,6 +9,7 @@
 #import "SCPAlbumTaskList.h"
 #import "JSON.h"
 #import "SCPTaskNotification.h"
+#import "SCPLoginPridictive.h"
 
 @implementation SCPAlbumTaskList
 
@@ -101,7 +102,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s, %d",__FUNCTION__,[request responseStatusCode]);
     [request cancel];
     [request clearDelegatesAndCancel];
     if (self.taskList.count)
@@ -121,7 +122,7 @@
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSLog(@"%s %@",__FUNCTION__,[request responseString]);
+    NSLog(@"%s, %d",__FUNCTION__,[request responseStatusCode]);
     [request cancel];
     [request clearDelegatesAndCancel];
     [self.taskList removeObjectAtIndex:0];
@@ -138,10 +139,10 @@
         }
     }
 }
-
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
-    NSString * str = [NSString stringWithFormat:@"%s/upload/api?folder_id=%@&yuntu_token=%@","http://10.10.79.134",self.albumId,@"123"];
+    NSString * str = [NSString stringWithFormat:@"%s/upload/api?folder_id=%@&access_token=%@","http://10.10.79.134",self.albumId,[SCPLoginPridictive currentToken]];
+    NSLog(@"%@",str);
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
     [request addRequestHeader:@"accept" value:@"application/json"];

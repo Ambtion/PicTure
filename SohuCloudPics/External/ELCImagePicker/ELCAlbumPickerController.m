@@ -30,12 +30,6 @@
 	[self.navigationItem setRightBarButtonItem:doneButtonItem];
     [doneButtonItem release];
     
-    //    UIButton * button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)] autorelease];
-    //    [button setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
-    //    [button setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
-    //
-    //    [button addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
-    //    UIBarButtonItem * cancelButtonItem  = [[UIBarButtonItem alloc] initWithCustomView:button];
     UIBarButtonItem * cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
 	[self.navigationItem setLeftBarButtonItem:cancelButtonItem];
     [cancelButtonItem release];

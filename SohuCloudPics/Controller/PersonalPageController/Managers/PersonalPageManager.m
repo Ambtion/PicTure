@@ -167,12 +167,25 @@ static float OFFSET = 0.f;
         wait = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"加载中..." withView:_controller.view];
         [wait show];
      }
-    
+    if (_isLoading) {
+        if (isRefresh) {
+            [self.controller.tableView reloadData];
+        }else{
+            _isLoading = NO;
+            UIView *  view = _controller.tableView.tableFooterView;
+            UILabel * label = (UILabel *)[view viewWithTag:100];
+            label.text  = @"加载更多...";
+            UIActivityIndicatorView * act = (UIActivityIndicatorView *)[view viewWithTag:200];
+            [act stopAnimating];
+        }
+        return;
+    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataArray.count){
         [_requestManager getUserInfoWithID:_user_ID];
     }else{
+        if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit) return;
         [_requestManager getUserInfoFeedWithUserID:_user_ID page:curPage + 1];
     }
 }
@@ -221,9 +234,7 @@ static float OFFSET = 0.f;
 }
 - (void)showLoadingMore
 {
-    if (_isLoading) {
-        return;
-    }
+    
     UIView * view  = _controller.tableView.tableFooterView;
     UILabel * label = (UILabel *)[view viewWithTag:100];
     UIActivityIndicatorView * acv  = (UIActivityIndicatorView *)[view viewWithTag:200];
@@ -233,9 +244,10 @@ static float OFFSET = 0.f;
 }
 - (void)loadingMore:(id)sender
 {
-    if (sender) {
-        [self showLoadingMore];
+    if (_isLoading) {
+        return;
     }
+    [self showLoadingMore];
     [self dataSourcewithRefresh:NO];
 }
 - (void)loadingMoreFinished
@@ -301,6 +313,9 @@ static float OFFSET = 0.f;
             feedCell.maxImageHeigth = MAXIMAGEHEIGTH;
         }
         feedCell.dataSource = [_dataArray objectAtIndex:row - 1];
+        if (_dataArray.count - 1 == indexPath.row)
+            [self loadingMore:nil];
+
         return feedCell;
     }
 }
@@ -319,8 +334,6 @@ static float OFFSET = 0.f;
     if (personal.datasource.isFollowByMe) {
         [_requestManager destoryFollowing:_user_ID  success:^(NSString *response) {
             NSLog(@"%@",response);
-//            [self dataSourcewithRefresh:YES];
-//            [self refreshFin]
             [self refreshUserinfo];
         } failure:^(NSString *error) {
             [self requestFailed:error];
@@ -329,7 +342,6 @@ static float OFFSET = 0.f;
     }else{
         
         [_requestManager friendshipsFollowing:_user_ID  success:^(NSString *response) {
-//            [self dataSourcewithRefresh:YES];
             [self refreshUserinfo];
         } failure:^(NSString *error) {
             [self requestFailed:error];

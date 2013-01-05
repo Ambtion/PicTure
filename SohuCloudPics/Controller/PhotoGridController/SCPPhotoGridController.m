@@ -88,7 +88,9 @@
 {
     /* customize backButtonItem */
     _backButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _backButton.frame = CGRectMake(0, 0, 28, 28);
+//    _backButton.frame = CGRectMake(0, 0, 28, 28);
+    _backButton.frame = CGRectMake(0, 0, 35, 35);
+
     [_backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [_backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [_backButton addTarget:self action:@selector(barButtonBack:) forControlEvents:UIControlEventTouchUpInside];
@@ -98,47 +100,50 @@
     
     /* customize rightBarItems */
     int rightBarWidth = 250;
-    _rightBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rightBarWidth, 28)];
+    _rightBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rightBarWidth, 35)];
     _rightBarView.backgroundColor = [UIColor clearColor];
     
     if ([self longinPridecate]) {
         /* iMark button */
         _iMarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _iMarkButton.frame = CGRectMake(rightBarWidth - 94 - 10, 0, 28, 28);
+         _iMarkButton.frame = CGRectMake(rightBarWidth - 105 , 0, 35, 35);
         [_iMarkButton setImage:[UIImage imageNamed:@"header_info.png"] forState:UIControlStateNormal];
         [_iMarkButton setImage:[UIImage imageNamed:@"header_info_press.png"] forState:UIControlStateHighlighted];
         [_iMarkButton addTarget:self action:@selector(oniMarkClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_rightBarView addSubview:_iMarkButton];
         /* trash button */
         _trashButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _trashButton.frame = CGRectMake(rightBarWidth - 62 - 5, 0, 28, 28);
+        _trashButton.frame = CGRectMake(rightBarWidth - 70, 0, 35, 35);
         [_trashButton setImage:[UIImage imageNamed:@"header_delete.png"] forState:UIControlStateNormal];
         [_trashButton setImage:[UIImage imageNamed:@"header_delete_press.png"] forState:UIControlStateHighlighted];
         [_trashButton addTarget:self action:@selector(onTrashClicked:) forControlEvents:UIControlEventTouchUpInside];
+
         [_rightBarView addSubview:_trashButton];
         /* pen button */
         _penButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _penButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        _penButton.frame = CGRectMake(rightBarWidth - 35, 0, 35, 35);
+
         [_penButton setImage:[UIImage imageNamed:@"header_edit.png"] forState:UIControlStateNormal];
         [_penButton setImage:[UIImage imageNamed:@"header_edit_press.png"] forState:UIControlStateHighlighted];
         [_penButton addTarget:self action:@selector(onPenClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
         [_rightBarView addSubview:_penButton];
         /* ok button, not added first */
         _okButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _okButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        _okButton.frame = CGRectMake(rightBarWidth - 35, 0, 35, 35);
         [_okButton setImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
         [_okButton setImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
         [_okButton addTarget:self action:@selector(onDeleteOKClicked:) forControlEvents:UIControlEventTouchUpInside];
         /* cancel button, not added first */
         _cancelButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _cancelButton.frame = CGRectMake(0, 0, 28, 28);
+        _cancelButton.frame = CGRectMake(0, 0, 35, 35);
         [_cancelButton setImage:[UIImage imageNamed:@"header_cancel_normal.png"] forState:UIControlStateNormal];
         [_cancelButton setImage:[UIImage imageNamed:@"header_cancel_press.png"] forState:UIControlStateHighlighted];
         [_cancelButton addTarget:self action:@selector(onDeleteCancelClicked:) forControlEvents:UIControlEventTouchUpInside];
     }else{
         /* iMark button */
         _iMarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _iMarkButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        _iMarkButton.frame = CGRectMake(rightBarWidth - 35, 0, 35, 35);
         [_iMarkButton setImage:[UIImage imageNamed:@"header_info.png"] forState:UIControlStateNormal];
         [_iMarkButton setImage:[UIImage imageNamed:@"header_info_press.png"] forState:UIControlStateHighlighted];
         [_iMarkButton addTarget:self action:@selector(oniMarkClicked:) forControlEvents:UIControlEventTouchUpInside];

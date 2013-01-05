@@ -12,7 +12,9 @@
 #import "SCPLoginPridictive.h"
 #import "JSON.h"
 
+//外网
 #define BASICURL_V1 @"http://61.135.181.37:8888/api/v1"
+//内网
 //#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
 
 #define TIMEOUT 30.f
@@ -221,7 +223,7 @@
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
             
             NSString * str = [request responseString];
-            NSLog(@"%@",str);
+//            NSLog(@"%@",str);
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"folderinfo"];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {

@@ -67,7 +67,7 @@
     label.text = @"加载更多...";
     label.backgroundColor = [UIColor clearColor];
     [_footView addSubview:label];
-
+    
     UIActivityIndicatorView * active = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
     active.tag = 200;
     active.frame = CGRectMake(320 - 66 + 22,30, 0, 0);
@@ -99,10 +99,6 @@
     [self.tableView setContentOffset:CGPointZero animated:YES];
     [self showNavigationBar];
 }
-- (void)didReceiveMemoryWarning
-{
-//    NSLog(@"%s",__FUNCTION__)
-}
 #pragma mark -
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated
@@ -112,7 +108,9 @@
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(navigationBack:) forControlEvents:UIControlEventTouchUpInside];
-    backButton.frame = CGRectMake(0, 0, 26, 26);
+//    backButton.frame = CGRectMake(0, 0, 26, 26);
+    backButton.frame = CGRectMake(0, 0, 35, 35);
+
     UIBarButtonItem * left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
     [super viewWillAppear:animated];
@@ -121,8 +119,5 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-}
+
 @end

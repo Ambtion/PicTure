@@ -103,32 +103,32 @@
 - (void)initNavigationItem
 {
     int rightBarWidth = 250;
-    _rightBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rightBarWidth, 28)];
+    _rightBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rightBarWidth, 35)];
     _rightBarView.backgroundColor = [UIColor clearColor];
     
     if ([self loginPridecate]) {
         /* switch button */
         _switchButton = [[self switchButtonView] retain];
-        _switchButton.frame = CGRectMake(rightBarWidth - 60, 0, 28, 28);
+        _switchButton.frame = CGRectMake(rightBarWidth - 70, 0, 35, 35);
         [_switchButton addTarget:self action:@selector(onSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_rightBarView addSubview:_switchButton];
         
         /* upload button */
         _uploadButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _uploadButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        _uploadButton.frame = CGRectMake(rightBarWidth - 35, 0, 35, 35);
         [_uploadButton setImage:[UIImage imageNamed:@"header_upload.png"] forState:UIControlStateNormal];
         [_uploadButton setImage:[UIImage imageNamed:@"header_upload_press.png"] forState:UIControlStateHighlighted];
         [_uploadButton addTarget:self action:@selector(onUploadClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_rightBarView addSubview:_uploadButton];
         /* ok button, not added first */
         _okButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _okButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        _okButton.frame = CGRectMake(rightBarWidth - 35, 0, 35, 35);
         [_okButton setImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
         [_okButton setImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
         [_okButton addTarget:self action:@selector(onOKClicked:) forControlEvents:UIControlEventTouchUpInside];
     }else{
         _switchButton = [[self switchButtonView] retain];
-        _switchButton.frame = CGRectMake(rightBarWidth - 30, 0, 28, 28);
+        _switchButton.frame = CGRectMake(rightBarWidth - 35, 0, 35, 35);
         [_switchButton addTarget:self action:@selector(onSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_rightBarView addSubview:_switchButton];
     }
@@ -138,11 +138,11 @@
     [item release];
     /* customize backButtonIteam */
     _backButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _backButton.frame = CGRectMake(0, 0, 28, 28);
+//    _backButton.frame = CGRectMake(0, 0, 28, 28);
+    _backButton.frame = CGRectMake(0, 0, 35, 35);
     [_backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [_backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [_backButton addTarget:self action:@selector(barButtonBack:) forControlEvents:UIControlEventTouchUpInside];
-    
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     [backButtonItem release];
@@ -297,9 +297,9 @@
         case SCPAlbumControllerStateNormal:
         {
             /* go into the album */
-			NSLog(@"imageView.tag = %d", imageView.tag);
+//			NSLog(@"imageView.tag = %d", imageView.tag);
             SCPAlbum *album = [_albumList objectAtIndex:imageView.tag];
-            NSLog(@"%@ %@",album.albumId,album.creatorId);
+//            NSLog(@"%@ %@",album.albumId,album.creatorId);
             SCPPhotoGridController *ctrl = [[[SCPPhotoGridController alloc] initWithNibName:nil bundle:nil] autorelease];
             ctrl.albumData = album;
             [self.navigationController pushViewController:ctrl animated:YES];
