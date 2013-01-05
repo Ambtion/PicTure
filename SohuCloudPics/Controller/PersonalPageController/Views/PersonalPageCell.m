@@ -125,6 +125,8 @@
     
     CGRect frame = CGRectMake(_backgroundImageView.frame.size.width - 36, _backgroundImageView.frame.size.height - 36 - 113 - 5, 35, 35);
     RefreshButton * refreshButton = [[[RefreshButton alloc] initWithFrame:frame] autorelease];
+    [refreshButton setBackgroundImage:[UIImage imageNamed:@"header_user_refresh.png"] forState:UIControlStateNormal];
+    [refreshButton setBackgroundImage:[UIImage imageNamed:@"header_user_refresh_press.png"] forState:UIControlStateHighlighted];
     [refreshButton addTarget:self action:@selector(personalrefreshButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:refreshButton];
 

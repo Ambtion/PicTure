@@ -105,8 +105,8 @@
 {
     [self.navigationItem setHidesBackButton:YES];
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"header_user_back.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"header_user_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(navigationBack:) forControlEvents:UIControlEventTouchUpInside];
 //    backButton.frame = CGRectMake(0, 0, 26, 26);
     backButton.frame = CGRectMake(0, 0, 35, 35);
