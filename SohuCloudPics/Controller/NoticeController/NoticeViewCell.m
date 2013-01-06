@@ -71,13 +71,6 @@
     _descLabel.textColor = [UIColor colorWithRed:98.f/255 green:98.f/255 blue:98.f/255 alpha:1];
     [self.contentView addSubview:_descLabel];
     
-//    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 16, 28 + 86, 28)];
-//    _timeLabel.textAlignment = UITextAlignmentRight;
-//    _timeLabel.backgroundColor = [UIColor greenColor];
-//    _timeLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12];
-//    _timeLabel.textColor = [UIColor colorWithRed:98.f/255 green:98.f/255 blue:98.f/255 alpha:1];
-//    [self.contentView addSubview:_timeLabel];
-    
     UIImageView * lineView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
     lineView.frame = CGRectMake(0, 59, 320, 1);
     [self.contentView addSubview:lineView];

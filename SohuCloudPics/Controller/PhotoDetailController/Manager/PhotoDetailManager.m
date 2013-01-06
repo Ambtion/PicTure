@@ -74,6 +74,7 @@
     if (_willRefresh){
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
+        NSLog(@"%@",self.infoFromSuper);
         FeedCellDataSource *fAdapter = [[FeedCellDataSource alloc] init];
         fAdapter.allInfo = self.infoFromSuper;
         fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
@@ -90,8 +91,7 @@
         
         FeedDescriptionSource * data = [[FeedDescriptionSource alloc] init];
         data.describtion = [self.infoFromSuper objectForKey:@"photo_desc"];
-        NSLog(@"%@",data.describtion);
-        data.bookMark = @"OK";
+//        data.bookMark = @"OK";
         [_dataSourceArray addObject:data];
         [data release];
     }
@@ -165,7 +165,7 @@
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
     //目前仅仅是为了初始化时候的圈圈
-    [self dataSourcewithRefresh:YES];
+    [self dataSourcewithRefresh:NO];
 }
 - (void)moreDataFinishLoad:(id)sender
 {

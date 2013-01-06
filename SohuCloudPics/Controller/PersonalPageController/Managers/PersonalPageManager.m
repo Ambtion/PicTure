@@ -66,7 +66,7 @@ static float OFFSET = 0.f;
 - (void)refreshUserinfo
 {
     if (_isinit || !_user_ID) return;
-    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",_user_ID]success:^(NSDictionary *response) {
+    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",_user_ID] asy:YES success:^(NSDictionary *response) {
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
         _personalDataSource.desc = [response objectForKey:@"user_desc"];
@@ -144,14 +144,6 @@ static float OFFSET = 0.f;
     [alertView show];
     [self restNetWorkState];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex != 0) {
-//        [self dataSourcewithRefresh:_willRefresh];
-//    }else{
-//        [self restNetWorkState];
-//    }
-//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -167,25 +159,20 @@ static float OFFSET = 0.f;
         wait = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"加载中..." withView:_controller.view];
         [wait show];
      }
-    if (_isLoading) {
-        if (isRefresh) {
-            [self.controller.tableView reloadData];
-        }else{
+    _isLoading = YES;
+    _willRefresh = isRefresh;
+    if(_willRefresh | !_dataArray.count){
+        [_requestManager getUserInfoWithID:_user_ID];
+    }else{
+        if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit){
             _isLoading = NO;
             UIView *  view = _controller.tableView.tableFooterView;
             UILabel * label = (UILabel *)[view viewWithTag:100];
             label.text  = @"加载更多...";
             UIActivityIndicatorView * act = (UIActivityIndicatorView *)[view viewWithTag:200];
             [act stopAnimating];
+            return;
         }
-        return;
-    }
-    _isLoading = YES;
-    _willRefresh = isRefresh;
-    if(_willRefresh | !_dataArray.count){
-        [_requestManager getUserInfoWithID:_user_ID];
-    }else{
-        if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit) return;
         [_requestManager getUserInfoFeedWithUserID:_user_ID page:curPage + 1];
     }
 }
@@ -194,7 +181,7 @@ static float OFFSET = 0.f;
 #pragma mark  Limit Scrollview
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height + 44 && scrollView.contentOffset.y >= 44 && !self.controller.footView.hidden) {
+    if (scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height + 44 && scrollView.contentOffset.y >= 44 && !self.controller.footView.hidden && !_isLoading) {
         [self showLoadingMore];
         _loadingMore = YES;
     }
@@ -205,7 +192,7 @@ static float OFFSET = 0.f;
     if (scrollView.contentOffset.y < 368 - 480) {
         scrollView.contentOffset = CGPointMake(0, 368  - 480);
     }
-    if (scrollView.contentOffset.y <= scrollView.contentSize.height - scrollView.frame.size.height) {
+    if (scrollView.contentOffset.y <= scrollView.contentSize.height - scrollView.frame.size.height ) {
         if (_loadingMore) {
             _loadingMore = NO;
             [self loadingMore:nil];

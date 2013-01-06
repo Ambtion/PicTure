@@ -41,7 +41,6 @@
     [button setImage:[UIImage imageNamed:@"header_list_press.png"] forState:UIControlStateHighlighted];
     return button;
 }
-
 - (SCPAlbumController *)switchController
 {
 	return [[[SCPAlbumListController alloc] initWithNibName:nil bundle:nil useID:self.user_id] autorelease];
@@ -66,14 +65,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     static NSString *identifier = @"albumCell";
     SCPAlbumGridCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[[SCPAlbumGridCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier photoCount:_photoCount] autorelease];
         cell.selectionStyle = UITableViewCellEditingStyleNone;
         cell.delegate = self;
-        
     }
     [cell hideAllViews];
     int offset = indexPath.row * _photoCount;

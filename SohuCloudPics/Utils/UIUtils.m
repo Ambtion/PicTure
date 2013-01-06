@@ -69,12 +69,14 @@
 {
     label.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
     label.textColor = [UIColor whiteColor];
-	//    label.layer.cornerRadius = 9.0;
+    label.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
+    label.layer.cornerRadius = 9.f;
+    label.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4].CGColor;
+    label.layer.borderWidth = 1.f;
     label.clipsToBounds = YES;
     label.textAlignment = UITextAlignmentCenter;
     label.font = [label.font fontWithSize:13];
 }
-
 + (CGSize)getLabelWidth:(UILabel *)label text:(NSString *)text
 {
     CGSize maxSize = CGSizeMake(9999, label.font.lineHeight);

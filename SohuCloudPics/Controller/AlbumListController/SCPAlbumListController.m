@@ -30,9 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.pullingController.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-//    self.pullingController.tableView.separatorColor = [UIColor colorWithRed:222.0 / 255.0 green:222.0 / 255.0 blue:222.0 / 255.0 alpha:1.0];
-    
+    //    self.pullingController.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    //    self.pullingController.tableView.separatorColor = [UIColor colorWithRed:222.0 / 255.0 green:222.0 / 255.0 blue:222.0 / 255.0 alpha:1.0];
 }
 
 #pragma mark -
@@ -59,12 +58,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    //    if (self.albumList.count != 0)
+    //        tableView.separatorColor = [UIColor colorWithRed:218/255.f green:218/255.f blue:218/255.f alpha:1.f];
     return self.albumList.count;
 }
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 95.0;
+    return 100;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -76,9 +76,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
     }
-    
     SCPAlbum * album = [self.albumList objectAtIndex:indexPath.row];
-    
     [cell updateViewWithAlbum:album preToDel:(_state == SCPAlbumControllerStateDelete)];
 	cell.photoImageView.tag = indexPath.row;
     
@@ -94,7 +92,7 @@
             self.curProgreeeView = cell.progressView;
         }
     }
-    
+    //    cell.contentView.backgroundColor = [UIColor redColor];
 	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 5) {
 		[self loadNextPage];
 	}

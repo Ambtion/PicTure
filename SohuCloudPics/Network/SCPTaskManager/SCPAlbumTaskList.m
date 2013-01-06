@@ -10,13 +10,12 @@
 #import "JSON.h"
 #import "SCPTaskNotification.h"
 #import "SCPLoginPridictive.h"
+#define UPTIMEOUT 10.f
 
 @implementation SCPAlbumTaskList
-
 @synthesize taskList = _taskList;
 @synthesize albumId = _albumId;
 @synthesize isUpLoading = _isUpLoading;
-//@synthesize operationQuene = _operationQuene;
 @synthesize delegate = _delegate;
 
 @synthesize currentTask = _currentTask;
@@ -27,8 +26,6 @@
     [self.currentTask.request cancel];
     [self.currentTask.request clearDelegatesAndCancel];
     self.currentTask = nil;
-//    [NSObject cancelPreviousPerformRequestsWithTarget:_operationQuene];
-//    self.operationQuene  = nil;
     [super dealloc];
 }
 -(id)initWithTaskList:(NSMutableArray *)taskList album_id:(NSString *)albumID
@@ -38,7 +35,6 @@
         self.taskList = taskList;
         self.albumId = albumID;
         _isUpLoading = NO;
- 
     }
     return self;
 }
@@ -51,18 +47,18 @@
 {
     if (!self.currentTask) self.currentTask = [self.taskList objectAtIndex:0];
     self.currentTask.request = [self getUploadRequest:nil];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit *unit) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
-                if (!self.currentTask.request.isCancelled)
-                    [self.currentTask.request startAsynchronous];
-            });
-        } failture:^(NSError *error, SCPTaskUnit *unit) {
-            NSLog(@"%s, %@",__FUNCTION__,error);
-            unit.taskState = UPLoadStatusFailedUpload;
-        }];
-//    });
+    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit *unit) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
+            if (!self.currentTask.request.isCancelled)
+                [self.currentTask.request startAsynchronous];
+        });
+    } failture:^(NSError *error, SCPTaskUnit *unit) {
+        NSLog(@"%s, %@",__FUNCTION__,error);
+        unit.taskState = UPLoadStatusFailedUpload;
+    }];
+    //    });
     return;
 }
 
@@ -92,17 +88,45 @@
     for (SCPTaskUnit * unit in _taskList)
         NSLog(@"after Remove::unit ::%@",unit.thumbnail);
 }
+
 - (void)clearProgreessView
 {
     for (SCPTaskUnit * unit in _taskList) {
         [unit.request setUploadProgressDelegate:nil];
     }
 }
+
+- (void)addDescriptionAboutImage:(NSString *)photo_id des:(NSString *)des success:(void (^)(NSString * response))success failture:(void (^)(NSString * error))failure
+{
+    if (![SCPLoginPridictive isLogin]) return;
+    NSString * str = [NSString stringWithFormat:@"%@/photos/%@",BASICURL_V1,photo_id];
+    NSLog(@"%@",str);
+    __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
+    [request setPostValue:des  forKey:@"description"];
+    [request setRequestMethod:@"PUT"];
+	[request setCompletionBlock:^{
+        NSLog(@"%@",[request responseString]);
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+            success([request responseString]);
+        }else{
+            failure(@"网络连接异常");
+        }
+    }];
+    [request setFailedBlock:^{
+        failure(@"网络连接异常");
+    }];
+    [request startAsynchronous];
+
+}
 #pragma mark - Requsetdelgate
 
-- (void)requestFinished:(ASIHTTPRequest *)request
+- (void):(ASIHTTPRequest *)request
 {
-    NSLog(@"%s, %d",__FUNCTION__,[request responseStatusCode]);
+    
+    NSDictionary * dic = [[request responseString] JSONValue];
+    NSLog(@"%s,%d, %@",__FUNCTION__,[request responseStatusCode], dic);
     [request cancel];
     [request clearDelegatesAndCancel];
     if (self.taskList.count)
@@ -122,15 +146,15 @@
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSLog(@"%s, %d",__FUNCTION__,[request responseStatusCode]);
+    NSLog(@"%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
-    [self.taskList removeObjectAtIndex:0];
+    if (self.taskList.count)
+        [self.taskList removeObjectAtIndex:0];
     if ([_delegate respondsToSelector:@selector(albumTask:requsetFailed:)]) {
         [_delegate performSelector:@selector(albumTask:requsetFailed:) withObject:self withObject:request];
     }
-    
-    if (!self.taskList.count) {
+    if (self.taskList.count) {
         [self goNextTask];
     }else{
         NSLog(@"Task Finished");
@@ -147,10 +171,8 @@
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
     [request addRequestHeader:@"accept" value:@"application/json"];
     [request setDelegate:self];
-//    [request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
-    [request setTimeOutSeconds:10];
+    [request setTimeOutSeconds:UPTIMEOUT];
     [request setShowAccurateProgress:YES];
-    
 #if __IPHONE_OS_VERSION_MIN_ALLOWED >= __IPHONE_4_0
     [request setShouldContinueWhenAppEntersBackground:YES];
 #endif

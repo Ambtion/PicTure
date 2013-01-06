@@ -129,7 +129,6 @@
     _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 236, 320, 12)];
     _descLabel.font = [UIFont  fontWithName:@"STHeitiTC-Medium" size:12];
     _descLabel.textAlignment = UITextAlignmentCenter;
-    _descLabel.lineBreakMode = UILineBreakModeWordWrap;
     _descLabel.numberOfLines = 0;
     _descLabel.backgroundColor = [UIColor clearColor];
     _descLabel.textColor = [UIColor whiteColor];

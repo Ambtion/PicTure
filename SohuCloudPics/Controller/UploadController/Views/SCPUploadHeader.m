@@ -137,32 +137,25 @@
     }
     if ([[info objectForKey:@"has_next"] intValue]){
         [_requestmanager getFoldersWithID:[SCPLoginPridictive currentUserId] page:[[info objectForKey:@"page"] intValue] + 1];
-        
     }else{
-        
         [_albumsTable reloadData];
-
         if (array.count == 0) {
             [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"add_new_albume_btn_normal.png"] forState:UIControlStateNormal];
             [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"add_new_albume_btn_press.png"] forState:UIControlStateHighlighted];
         }else{
             [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"share_btn_down_normal.png"] forState:UIControlStateNormal];
             [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"share_btn_down_press.png"] forState:UIControlStateHighlighted];
+           
             self.currentAlbum = 0;
-            
         }
     }
-   
 }
-//- (void)requestFailed:(NSString *)error
-//{
-//    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
-//    [alertView show];
-//}
 #pragma mark Create Folder
 - (void)renameAlertView:(SCPAlert_Rename *)view OKClicked:(UITextField *)textField
 {
     if (!textField.text ||[textField.text isEqualToString:@""]) return;
+    if (self.albumChooseButton.selected)
+            [self albumChooseButtonClicked];
     [_requestmanager createAlbumWithName:textField.text success:^(NSString *response) {
         [self refreshData];
     } failure:^(NSString *error) {
@@ -199,16 +192,6 @@
     [_albumsTable removeFromSuperview];
 }
 
-//- (void)setAlbumsArray:(NSArray *)albumsArray
-//{
-//    if (_albumsArray != albumsArray) {
-//        [_albumsArray release];
-//        _albumsArray = [albumsArray retain];
-//        [_albumsTable reloadData];
-//        self.currentAlbum = _currentAlbum;
-//
-//    }
-//}
 - (void)setCurrentAlbum:(NSInteger)currentAlbum
 {
     _currentAlbum = currentAlbum;
@@ -219,7 +202,6 @@
 }
 
 @end
-
 @implementation AlbumsTableManager
 
 @synthesize header = _header;
@@ -239,6 +221,7 @@
         }
         cell.labelText.text = @"新建相册";
         cell.addView.image = [UIImage imageNamed:@"add_new_albume.png"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     static NSString *REUSE_ID = @"__AlbumsTableManager";
@@ -247,6 +230,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:REUSE_ID] autorelease];
         cell.textLabel.font = [UIFont systemFontOfSize:15];
         cell.textLabel.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     cell.textLabel.text = ((FoldersMode *)[_header.foldersArray objectAtIndex:(row - 1)]).foldrsName;
     return cell;
@@ -259,7 +243,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     int row = indexPath.row;
     if (row == 0) {
         SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:_header name:@"专辑名"] autorelease];

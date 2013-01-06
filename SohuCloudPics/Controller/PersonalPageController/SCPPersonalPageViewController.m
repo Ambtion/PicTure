@@ -55,7 +55,7 @@
     _footView.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
     UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self.manager action:@selector(loadingMore:)] autorelease];
     [_footView addGestureRecognizer:gesture];
-    UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(110, 18, 18, 18)] autorelease];
+    UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(110, 19, 18, 18)] autorelease];
     imageview.image = [UIImage imageNamed:@"load_more_pics.png"];
     [_footView addSubview:imageview];
     
@@ -84,15 +84,14 @@
     
     [view addSubview:_footView];
     _tableView.tableFooterView = view;
-    [self.manager dataSourcewithRefresh:YES];
-    
-    
     _topButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     [_topButton setBackgroundImage:[UIImage imageNamed:@"explore_up_page_icon.png"] forState:UIControlStateNormal];
     _topButton.frame = CGRectMake(self.view.bounds.size.width - 10 - 45, self.view.bounds.size.height - 55, 45, 45);
     [_topButton addTarget:self action:@selector(personalTopButtonHandle:) forControlEvents:UIControlEventTouchUpInside];
     [_topButton setHidden:YES];
     [self.view addSubview:_topButton];
+    
+    [self.manager dataSourcewithRefresh:YES];
 }
 - (void)personalTopButtonHandle:(id)sender
 {
@@ -108,9 +107,8 @@
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_user_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_user_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(navigationBack:) forControlEvents:UIControlEventTouchUpInside];
-//    backButton.frame = CGRectMake(0, 0, 26, 26);
     backButton.frame = CGRectMake(0, 0, 35, 35);
-
+    
     UIBarButtonItem * left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
     [super viewWillAppear:animated];

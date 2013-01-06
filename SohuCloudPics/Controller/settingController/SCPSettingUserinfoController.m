@@ -49,45 +49,54 @@
         [alterview release];
     }];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self addSubviews];
+    if (![SCPLoginPridictive currentUserId]) return;
+    [_request getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:NO success:^(NSDictionary *response) {
+        [_portraitView setImageWithURL:[NSURL URLWithString:[response objectForKey:@"user_icon"]] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
+        _nameFiled.text = [response objectForKey:@"user_nick"];
+        _description.text = [response objectForKey:@"user_desc"];
+        NSLog(@"%@",response);
+    } failure:^(NSString *error) {
+        NSLog(@"%s, %@",__FUNCTION__, error);
+    }];
+}
+- (void)addSubviews
+{
     
     UIImageView * imageView = [[[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     imageView.image = [UIImage imageNamed:@"personal_setting.png"];
     [self.view addSubview:imageView];
-    
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(settingnavigationBack:) forControlEvents:UIControlEventTouchUpInside];
-//    backButton.frame = CGRectMake(0, 0, 26, 26);
-    backButton.frame = CGRectMake(0, 0, 35, 35);
+    backButton.frame = CGRectMake(5, 2, 35, 35);
     [self.view addSubview:backButton];
+    
     UIButton* okButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [okButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
     [okButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
     [okButton addTarget:self action:@selector(saveButton:) forControlEvents:UIControlEventTouchUpInside];
-    okButton.frame = CGRectMake(320 - 26, 0, 26, 26);
+    okButton.frame = CGRectMake(320 - 35, 0, 35, 35);
     [self.view addSubview:okButton];
     
     _portraitView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 100, 60, 60)];
     _portraitView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_portraitView];
-    [_request getUserInfoWithID:[SCPLoginPridictive currentUserId] success:^(NSDictionary *response) {
-        [_portraitView setImageWithURL:[NSURL URLWithString:[response objectForKey:@"user_icon"]]placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
-    } failure:^(NSString *error) {
-        
-    }];
     _nameFiled = [[UITextField alloc] initWithFrame:CGRectMake(83, 121, 200, 20)];
     _nameFiled.backgroundColor = [UIColor clearColor];
     _nameFiled.returnKeyType = UIReturnKeyNext;
-    _nameFiled.placeholder = @"昵称";
+    _nameFiled.delegate = self;
+    
     _nameFiled.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:15];
     _nameFiled.textColor = [UIColor colorWithRed:102.f/255 green:102.f/255 blue:102.f/255 alpha:1];
     _nameFiled.delegate = self;
     [self.view addSubview:_nameFiled];
-
+    
     _description = [[UITextView alloc] initWithFrame:CGRectMake(8, 170, 310, self.view.bounds.size.height - 250 - 170)];
     NSLog(@"%@",NSStringFromCGRect(_description.frame));
     _description.backgroundColor = [UIColor clearColor];
@@ -95,25 +104,35 @@
     _description.returnKeyType = UIReturnKeyDefault;
     _description.delegate = self;
     _description.textColor = [UIColor colorWithRed:102.f/255 green:102.f/255 blue:102.f/255 alpha:1];
-    _description.text = @"个性签名,随便写点什么吧";
     [self.view addSubview:_description];
     
 }
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    return (newLength > 12) ? NO : YES;
+}
 
-- (BOOL) textViewShouldBeginEditing:(UITextView *)textView
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    _description.text = @"";
-    return YES;
+    NSUInteger newLength = [textView.text length] + [text length] - range.length;
+    return (newLength > 400) ? NO : YES;
 }
-- (BOOL)textViewShouldEndEditing:(UITextView *)textView
-{
-    NSLog(@"%@",textView);
-    if (textView.text.length == 0) {
-        _description.text = @"个性签名,随便写点什么吧";
-        [_description resignFirstResponder];
-    }
-    return YES;
-}
+
+//- (BOOL) textViewShouldBeginEditing:(UITextView *)textView
+//{
+//    _description.text = @"";
+//    return YES;
+//}
+//- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+//{
+//    NSLog(@"%@",textView);
+//    if (textView.text.length == 0) {
+//        _description.text = @"个性签名,随便写点什么吧";
+//        [_description resignFirstResponder];
+//    }
+//    return YES;
+//}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == _nameFiled) {

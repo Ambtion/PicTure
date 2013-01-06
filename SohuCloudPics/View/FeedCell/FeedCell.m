@@ -40,7 +40,7 @@ enum {
 static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 
 @implementation FeedCell
-@synthesize delegate = _delegate; 
+@synthesize delegate = _delegate;
 @synthesize maxImageHeigth = _maxImageHeigth;
 @synthesize photoImageView = _photoImageView;
 - (void)dealloc
@@ -50,10 +50,10 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     [_portraitView release];
     [_nameLabel release];
     [_positionTimeLabel release];
-//    [_favorButton release];
-//    [_commentButton release];
+    //    [_favorButton release];
+    //    [_commentButton release];
     [_dataSource release];
-    [_gifPlayView release];
+    [_gifPlayButton release];
     [super dealloc];
 }
 
@@ -110,26 +110,24 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     _nameLabel.backgroundColor = [UIColor clearColor];
     [tailerView addSubview:_nameLabel];
     
-//    UIImageView * location = [[[UIImageView alloc] initWithFrame:CGRectMake(65, 31 + OFFSETY, 15, 15)] autorelease];
-//    location.image = [UIImage imageNamed:@"location_icon.png"];
-//    [tailerView addSubview:location];
+    //    UIImageView * location = [[[UIImageView alloc] initWithFrame:CGRectMake(65, 31 + OFFSETY, 15, 15)] autorelease];
+    //    location.image = [UIImage imageNamed:@"location_icon.png"];
+    //    [tailerView addSubview:location];
     
     _positionTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(85 - 20, 32.5 + OFFSETY, 150, 14)];
     _positionTimeLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:14];
     _positionTimeLabel.textColor = [UIColor colorWithRed:97.0/255 green:120.0/255 blue:137.0/255 alpha:1];
     _positionTimeLabel.backgroundColor = [UIColor clearColor];
     [tailerView addSubview:_positionTimeLabel];
-
-//    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(205 - 7, 5 + OFFSETY, 51, 18)];
     
-//    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
-//    [_favorButton addtarget:self action:@selector(favorButtonClicked)];
-//    [tailerView addSubview:_favorButton];
-
-//    _commentButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
-//    [_commentButton addtarget:self action:@selector(commentButtonClicked)];
-//    _commentButton.imageView.image = [UIImage imageNamed:@"comments.png"];
-//    [tailerView addSubview:_commentButton];
+    //    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(205 - 7, 5 + OFFSETY, 51, 18)];
+    //    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
+    //    [_favorButton addtarget:self action:@selector(favorButtonClicked)];
+    //    [tailerView addSubview:_favorButton];
+    //    _commentButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
+    //    [_commentButton addtarget:self action:@selector(commentButtonClicked)];
+    //    _commentButton.imageView.image = [UIImage imageNamed:@"comments.png"];
+    //    [tailerView addSubview:_commentButton];
     [self.contentView addSubview:tailerView];
 }
 
@@ -138,17 +136,18 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 - (void)showGifButton
 {
     if (_dataSource.isGif) {
-        
-        if (!_gifPlayView) {
-            _gifPlayView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,65, 65)];
-            _gifPlayView.image = [UIImage imageNamed:@"GIF_play_normal.png"];
+        if (!_gifPlayButton) {
+            _gifPlayButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,65, 65)];
+            [_gifPlayButton setImage:[UIImage imageNamed:@"GIF_play_normal.png"] forState:UIControlStateNormal];
+            [_gifPlayButton setImage:[UIImage imageNamed:@"GIF_play_press.png"] forState:UIControlStateHighlighted];
+            [_gifPlayButton addTarget:self action:@selector(photoImageViewClicked) forControlEvents:UIControlEventTouchUpInside];
         }
-        _gifPlayView.center = CGPointMake(_photoImageView.superview.bounds.size.width /2.f, _photoImageView.superview.bounds.size.height/ 2.f);
-        if (!_gifPlayView.superview)
-            [_photoImageView.superview addSubview:_gifPlayView];
+        _gifPlayButton.center = CGPointMake(_photoImageView.superview.bounds.size.width /2.f, _photoImageView.superview.bounds.size.height/ 2.f);
+        if (!_gifPlayButton.superview)
+            [_photoImageView.superview addSubview:_gifPlayButton];
     }else{
-        if (_gifPlayView.superview)
-            [_gifPlayView removeFromSuperview];
+        if (_gifPlayButton.superview)
+            [_gifPlayButton removeFromSuperview];
     }
 }
 - (void)updataData
@@ -157,8 +156,7 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     //图片按照320压缩获得高度
     //小于320,高度扩大到320;图片居中,左右两边截掉;
     //大于固定的高度Max...,上下图片截掉;
-//    CGFloat
-    
+    //    CGFloat
     CGFloat widht = [[[self.dataSource allInfo] objectForKey:@"width"] floatValue];
     CGFloat height = [[[self.dataSource allInfo] objectForKey:@"height"] floatValue];
     if (widht <= 320 && height <= 320) {
@@ -192,58 +190,58 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     }
     [self showGifButton];
     
-//    if ([[self.dataSource.allInfo objectForKey:@"wigth"] intValue] > 320) {
-//        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-//        [_photoImageView cancelCurrentImageLoad];
-//        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
-//        [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
-//        return;
-//    }else{
-//        NSString * str = [NSString stringWithFormat:@"%@",_dataSource.photoImage];
-//        [_photoImageView cancelCurrentImageLoad];
-//        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
-//        [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
-//        return;
-//    }
-//    CGFloat maxHeigth = self.maxImageHeigth;
-//    
-//    if (!maxHeigth)
-//        maxHeigth = 320;
-//    
-//    if (_dataSource.heigth < 320) {
-//        
-//        CGFloat width = 320.f * (320.f / _dataSource.heigth);
-//        _photoImageView.frame  = CGRectMake(0, 0, width, 320);
-//        CGPoint center = _photoImageView.center;
-//        center.x = 160;
-//        _photoImageView.center = center;
-//        _photoImageView.superview.frame = CGRectMake(0, 0, 320, 320);
-//    }else if(_dataSource.heigth > maxHeigth){
-//        _photoImageView.frame = CGRectMake(0, 0, 320, _dataSource.heigth);
-//        _photoImageView.superview.frame = CGRectMake(0, 0, 320, maxHeigth);
-//    }else{
-//        _photoImageView.frame = CGRectMake(0, 0, 320, _dataSource.heigth);
-//        _photoImageView.superview.frame = CGRectMake(0, 0, 320, _photoImageView.frame.size.height);
-//    }
-//    
-//    _photoImageView.frame = _photoImageView.superview.bounds;
-//    
-//    CGRect frame = tailerView.frame;
-//    frame.origin.y = _photoImageView.superview.frame.size.height;
-//    tailerView.frame = frame;
-//    [self showGifButton];
-//    NSString * str  = nil;
-//    if (self.dataSource.heigth > 320) {
-//        str = [NSString stringWithFormat:@"%@_h960",_dataSource.photoImage];
-//    }else{
-//        str = [NSString stringWithFormat:@"%@_w640",_dataSource.photoImage];
-//    }
-//    
-//    str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-//
-//    [_photoImageView cancelCurrentImageLoad];
-//    [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
-//    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
+    //    if ([[self.dataSource.allInfo objectForKey:@"wigth"] intValue] > 320) {
+    //        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
+    //        [_photoImageView cancelCurrentImageLoad];
+    //        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
+    //        [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
+    //        return;
+    //    }else{
+    //        NSString * str = [NSString stringWithFormat:@"%@",_dataSource.photoImage];
+    //        [_photoImageView cancelCurrentImageLoad];
+    //        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
+    //        [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
+    //        return;
+    //    }
+    //    CGFloat maxHeigth = self.maxImageHeigth;
+    //
+    //    if (!maxHeigth)
+    //        maxHeigth = 320;
+    //
+    //    if (_dataSource.heigth < 320) {
+    //
+    //        CGFloat width = 320.f * (320.f / _dataSource.heigth);
+    //        _photoImageView.frame  = CGRectMake(0, 0, width, 320);
+    //        CGPoint center = _photoImageView.center;
+    //        center.x = 160;
+    //        _photoImageView.center = center;
+    //        _photoImageView.superview.frame = CGRectMake(0, 0, 320, 320);
+    //    }else if(_dataSource.heigth > maxHeigth){
+    //        _photoImageView.frame = CGRectMake(0, 0, 320, _dataSource.heigth);
+    //        _photoImageView.superview.frame = CGRectMake(0, 0, 320, maxHeigth);
+    //    }else{
+    //        _photoImageView.frame = CGRectMake(0, 0, 320, _dataSource.heigth);
+    //        _photoImageView.superview.frame = CGRectMake(0, 0, 320, _photoImageView.frame.size.height);
+    //    }
+    //
+    //    _photoImageView.frame = _photoImageView.superview.bounds;
+    //
+    //    CGRect frame = tailerView.frame;
+    //    frame.origin.y = _photoImageView.superview.frame.size.height;
+    //    tailerView.frame = frame;
+    //    [self showGifButton];
+    //    NSString * str  = nil;
+    //    if (self.dataSource.heigth > 320) {
+    //        str = [NSString stringWithFormat:@"%@_h960",_dataSource.photoImage];
+    //    }else{
+    //        str = [NSString stringWithFormat:@"%@_w640",_dataSource.photoImage];
+    //    }
+    //
+    //    str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
+    //
+    //    [_photoImageView cancelCurrentImageLoad];
+    //    [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
+    //    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
     
     if (!_dataSource ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"佚名";
@@ -251,25 +249,12 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
         _nameLabel.text = [_dataSource name];
     }
     if (!_dataSource.update ||![_dataSource.update isKindOfClass:[NSString class]] || [_dataSource.update isEqualToString:@""]) {
-      _positionTimeLabel.text = @"时间未知";
+        _positionTimeLabel.text = @"时间未知";
     }else{
         _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
     }
+    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
 }
-//- (void)setFavorButtonImage
-//{
-//    if (_dataSource.ismyLike) {
-//        [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
-//    }else{
-//        [_favorButton.textLabel setText:[NSString stringWithFormat:@"%d", _dataSource.favourtecount]];
-//    }
-//    if (_dataSource.ismyLike) {
-//        [_favorButton.imageView setImage:[UIImage imageNamed:LikeCover[MyLike]]];
-//    }else{
-//        [_favorButton.imageView setImage:[UIImage imageNamed:LikeCover[NotMyLick]]];
-//    }
-//
-//}
 - (FeedCellDataSource *)dataSource
 {
     return _dataSource;
@@ -284,7 +269,7 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 }
 
 #pragma mark -
-#pragma mark FeedCellDelegate 
+#pragma mark FeedCellDelegate
 
 - (void)photoImageViewClicked
 {
@@ -302,8 +287,8 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 
 - (void)favorButtonClicked
 {
-//    [self setFavorButtonImage];
-//     _dataSource.ismyLike = !_dataSource.ismyLike;
+    //    [self setFavorButtonImage];
+    //     _dataSource.ismyLike = !_dataSource.ismyLike;
     if ([_delegate respondsToSelector:@selector(feedCell:clickedAtFavorButton:)]) {
         [self.delegate feedCell:self clickedAtFavorButton:nil];
     }

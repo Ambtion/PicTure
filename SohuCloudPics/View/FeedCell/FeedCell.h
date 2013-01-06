@@ -51,7 +51,7 @@
 //    MyFavouriteView * _favorButton;
 //    MyFavouriteView * _commentButton;
     FeedCellDataSource * _dataSource;
-    UIImageView * _gifPlayView;
+    UIButton * _gifPlayButton;
     UIWebView * _webView;
 
 }

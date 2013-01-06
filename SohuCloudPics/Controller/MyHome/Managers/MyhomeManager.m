@@ -64,7 +64,7 @@ static float OFFSET = 0.f;
 - (void)refreshUserinfo
 {
     if (_isinit || ![SCPLoginPridictive currentUserId]) return;
-    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
+    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
 //        NSLog(@"%@",response);
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
@@ -83,7 +83,6 @@ static float OFFSET = 0.f;
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
     }
-    
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
@@ -111,7 +110,6 @@ static float OFFSET = 0.f;
         [_dataArray addObject:adapter];
         [adapter release];
     }
-    
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
@@ -127,18 +125,14 @@ static float OFFSET = 0.f;
 #pragma mark - networkFailed
 - (void)requestFailed:(NSString *)error
 {
+    if (wait) {
+        [wait dismissWithClickedButtonIndex:0 animated:YES];
+        [wait release],wait = nil;
+    }
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
     [self restNetWorkState];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex != 0) {
-//        [self dataSourcewithRefresh:_willRefresh];
-//    }else{
-//        [self restNetWorkState];
-//    }
-//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -150,11 +144,10 @@ static float OFFSET = 0.f;
 #pragma mark - limit scrollview
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height + 44 && scrollView.contentOffset.y >= 44 && !self.controller.footView.hidden) {
+    if (scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height + 44 && scrollView.contentOffset.y >= 44 && !self.controller.footView.hidden && !_isLoading) {
         [self showLoadingMore];
         _loadingMore = YES;
     }
-    
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -167,7 +160,6 @@ static float OFFSET = 0.f;
             [self loadingMore:nil];
         }
     }
-    
     if (scrollView.contentOffset.y >= scrollView.bounds.size.width && scrollView.contentOffset.y < OFFSET && scrollView.contentOffset.y < scrollView.contentSize.height - 580) {
         [_controller.topButton setHidden:NO];
     }else{
@@ -175,6 +167,7 @@ static float OFFSET = 0.f;
     }
     OFFSET = scrollView.contentOffset.y;
 }
+
 - (void)MyPersonalCell:(MyPersonalCell *)cell refreshClick:(id)sender
 {
     if (_isLoading) {
@@ -187,13 +180,10 @@ static float OFFSET = 0.f;
 {
     _isLoading = NO;
     [self.controller.homeTable reloadData];
-    //    [self.controller.homeTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 - (void)showLoadingMore
 {
-    if (_isLoading) {
-        return;
-    }
+    
     UIView * view  = _controller.homeTable.tableFooterView;
     UILabel * label = (UILabel *)[view viewWithTag:100];
     UIActivityIndicatorView * acv  = (UIActivityIndicatorView *)[view viewWithTag:200];
@@ -202,11 +192,13 @@ static float OFFSET = 0.f;
 }
 - (void)loadingMore:(id)sender
 {
-    if (sender) {
-        [self showLoadingMore];
+    if (_isLoading) {
+        return;
     }
+    [self showLoadingMore];
     [self dataSourcewithRefresh:NO];
 }
+
 - (void)loadingMoreFinished
 {
     _isLoading = NO;
@@ -224,25 +216,20 @@ static float OFFSET = 0.f;
         wait = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"加载中..." withView:_controller.view];
         [wait show];
     }
-    if (_isLoading) {
-        if (isRefresh) {
-            [self.controller.homeTable reloadData];
-        }else{
+    _isLoading = YES;
+    _willRefresh = isRefresh;
+    if(_willRefresh | !_dataArray.count){
+        [_requestManager getUserInfoWithID:[SCPLoginPridictive currentUserId]];
+    }else{
+        if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit) {
             _isLoading = NO;
             UIView *  view = _controller.homeTable.tableFooterView;
             UILabel * label = (UILabel *)[view viewWithTag:100];
             label.text  = @"加载更多...";
             UIActivityIndicatorView * act = (UIActivityIndicatorView *)[view viewWithTag:200];
             [act stopAnimating];
+            return;
         }
-        return;
-    }
-    _isLoading = YES;
-    _willRefresh = isRefresh;
-    if(_willRefresh | !_dataArray.count){
-        [_requestManager getUserInfoWithID:[SCPLoginPridictive currentUserId]];
-    }else{
-        if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit) return;
         [_requestManager getUserInfoFeedWithUserID:[SCPLoginPridictive currentUserId] page:curPage + 1];
     }
 }

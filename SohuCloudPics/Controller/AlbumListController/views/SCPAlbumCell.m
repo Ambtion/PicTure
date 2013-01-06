@@ -37,12 +37,12 @@ static UIImage *emptyFolderCoverImage = nil;
 
 - (void)onImageViewLongPressed:(UILongPressGestureRecognizer *)gesture
 {
-    if (gesture.state != UIGestureRecognizerStateBegan) {
-        NSLog(@"%s",__FUNCTION__);
-        if ([_delegate respondsToSelector:@selector(onImageViewLongPressed:)]) {
-            [_delegate onImageViewLongPressed:(UIImageView *) gesture.view];
-        }
+//    if (gesture.state != UIGestureRecognizerStateBegan) {
+    NSLog(@"%s",__FUNCTION__);
+    if ([_delegate respondsToSelector:@selector(onImageViewLongPressed:)]) {
+        [_delegate onImageViewLongPressed:(UIImageView *) gesture.view];
     }
+//    }
    
 }
 

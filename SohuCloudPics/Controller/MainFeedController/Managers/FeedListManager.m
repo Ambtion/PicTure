@@ -61,7 +61,7 @@
 {
     NSLog(@"%s",__FUNCTION__);
     if (_isInit || ![SCPLoginPridictive currentUserId]) return;
-    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]success:^(NSDictionary *response) {
+    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
         NSLog(@"%@",response);
         allFollowed = [[response objectForKey:@"followings"] intValue];
         [self.controller.pullingController.headView BannerreloadDataSource];
@@ -116,14 +116,6 @@
     [alertView show];
     [self restNetWorkState];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex != 0) {
-//        [self dataSourcewithRefresh:_willRefresh];
-//    }else{
-//        [self restNetWorkState];
-//    }
-//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -147,20 +139,16 @@
         [self showViewForNoLogin];
         return;
     }
-    if (_isLoading) {
-        if (isRefresh) {
-            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-        }else{
-            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-        }
-        return;
-    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(isRefresh || !_dataArray.count){
         [_requestManager getFeedMineInfo];
     }else{
-        if ((MAXPICTURE < _dataArray.count || !hasNextPage)&&  !_isInit) return;
+        if ((MAXPICTURE < _dataArray.count || !hasNextPage)&&  !_isInit){
+            _isLoading = NO;
+            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+            return;
+        }
         [_requestManager getFeedMineWithPage:curpage + 1];
     }
 }
@@ -170,22 +158,19 @@
     [self.controller showNavigationBar];
 }
 #pragma mark Refresh Action
-//1 点击 2 下拉 3 结束
+//1:下拉刷新 2:刷新结束
 - (void)refreshData:(id)sender
 {
-    if (_isLoading) {
-        return;
-    }
+    if (_isLoading)  return;
     [self dataSourcewithRefresh:YES];
 }
-
 - (void)pullingreloadTableViewDataSource:(id)sender
 {
+    
     SCPBaseNavigationItem * item = self.controller.item;
     [item.refreshButton rotateButton];
     [self refreshData:nil];
 }
-
 - (void)feedRefreshDataFinishLoad
 {
     _isLoading = NO;
@@ -193,9 +178,9 @@
     [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
     
 }
-#pragma mark More Action
-//1:下拉刷新 2:刷新结束
 
+#pragma mark More Action
+//更多
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
     [self dataSourcewithRefresh:NO];
@@ -206,12 +191,10 @@
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
-
 #pragma mark -
 #pragma mark No LoginView
 - (void)showViewForNoLogin
 {
-    
     if (_LoginTip == nil) {
         _LoginTip = [[LoginTipView alloc] initWithFrame:_controller.pullingController.view.bounds];
         [_LoginTip addtarget:self action:@selector(tipForLogin:)];
@@ -318,6 +301,7 @@
 
 - (void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
+    NSLog(@"feedCell: %@",cell.dataSource.allInfo);
     SCPPhotoDetailViewController *controller = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];

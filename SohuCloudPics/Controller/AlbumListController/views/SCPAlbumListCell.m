@@ -47,16 +47,17 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.frame = CGRectMake(0, 0, 320, 105);
-        
+        self.frame = CGRectMake(0, 0, 320, 100);
         /* album frame image view */
         UIImageView *frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 95, 95)];
         frameImageView.image = [UIImage imageNamed:@"150.png"];
-        [self addSubview:frameImageView];
+        [frameImageView setUserInteractionEnabled:YES];
+        [self.contentView addSubview:frameImageView];
         [frameImageView release];
         
         /* photo image view */
-        _photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 75, 75)];
+        _photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 75, 75)];
+//        [_photoImageView setBackgroundColor:[UIColor redColor]];
         _photoImageView.userInteractionEnabled = YES;
         
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
@@ -69,20 +70,19 @@
         [l_gesture release];
         l_gesture = nil;
         
-        [self addSubview:_photoImageView];
-        
+        [frameImageView addSubview:_photoImageView];
         /* progressView */
         _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20, 73, 64, 8)];
         [_progressView setProgressImage:[UIImage imageNamed:@"prog_done.png"]];
         [_progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0]];
         _progressView.layer.borderColor = [[UIColor blackColor] CGColor];
-        [self addSubview:_progressView];
+        [self.contentView addSubview:_progressView];
         
         /* deleteView, not display first */
         _deleteView = [[UIImageView alloc] initWithFrame:CGRectMake(5, -2, 29, 29)];
         _deleteView.image = [UIImage imageNamed:@"album_delete.png"];
         _deleteView.hidden = YES;
-        [self addSubview:_deleteView];
+        [self.contentView addSubview:_deleteView];
         
         /* photoNum label */
         _photoNumLabel = [[UILabel alloc] initWithFrame:PHOTONUM_RECT];
@@ -90,7 +90,7 @@
         _photoNumLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 		_photoNumLabel.font = [_photoNumLabel.font fontWithSize:10];
 		_photoNumLabel.textAlignment = NSTextAlignmentLeft;
-        [self addSubview:_photoNumLabel];
+        [self.contentView addSubview:_photoNumLabel];
         
         /* name label */
         _nameLabel = [[UILabel alloc] initWithFrame:NAME_RECT];
@@ -99,7 +99,7 @@
 		_nameLabel.font = [UIFont boldSystemFontOfSize:14];
 //        _nameLabel.lineBreakMode = UILineBreakMode;
         _nameLabel.numberOfLines = 2;
-        [self addSubview:_nameLabel];
+        [self.contentView addSubview:_nameLabel];
         
         /* view count label */
         _viewCountLabel = [[UILabel alloc] initWithFrame:VIEWCOUNT_RECT];
@@ -107,7 +107,7 @@
         _viewCountLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
         _viewCountLabel.font = [_nameLabel.font fontWithSize:10];
         _viewCountLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        [self addSubview:_viewCountLabel];
+        [self.contentView addSubview:_viewCountLabel];
         
 		/* state label */
 		_updatedAtDescLabel = [[UILabel alloc] initWithFrame:UPDATEDESC_RECT];
@@ -115,11 +115,10 @@
 		_updatedAtDescLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 		_updatedAtDescLabel.font = [_updatedAtDescLabel.font fontWithSize:10];
 		_updatedAtDescLabel.textAlignment = NSTextAlignmentRight;
-		[self addSubview:_updatedAtDescLabel];
+		[self.contentView addSubview:_updatedAtDescLabel];
         UIImageView * lineView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]] autorelease];
-        lineView.frame = CGRectMake(0, self.frame.size.height - 8, 320, 1);
-        [self addSubview:lineView];
-
+        lineView.frame = CGRectMake(0, self.frame.size.height - 1, 320, 1);
+        [self.contentView addSubview:lineView];
     }
     return self;
 }
@@ -128,7 +127,6 @@
 - (void)updateViewWithAlbum:(SCPAlbum *)album preToDel:(BOOL)deleting
 {
 	self.album = album;
-	
 	/* set photo image */
 	if (self.album.coverURL == nil || [self.album.coverURL isKindOfClass:[NSNull class]] || self.album.coverURL.length == 0) {
 		[_photoImageView setImage:[self getEmptyFolderCoverImage]];
@@ -136,7 +134,6 @@
         NSString * coverUrl  =[NSString stringWithFormat:@"%@_c100",_album.coverURL];
 		[_photoImageView setImageWithURL:[NSURL URLWithString:coverUrl] placeholderImage:nil options:0];
 	}
-
     /* progress view */
     [_progressView setHidden:!self.album.isUploading];
     
@@ -161,8 +158,8 @@
     }else{
         str = [NSString stringWithFormat:@"私有专辑  %d次浏览",self.album.viewCount];
     }
-	[_viewCountLabel setText:str];
     
+	[_viewCountLabel setText:str];
 	/* state label */
 	_updatedAtDescLabel.frame = UPDATEDESC_RECT;
 	// TODO

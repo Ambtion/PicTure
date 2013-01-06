@@ -112,20 +112,16 @@
 #pragma mark - refresh Data
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
-    if (_isLoading) {
-        if (isRefresh) {
-            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-        }else{
-            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-        }
-        return;
-    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataSource.count){
         [_requestManger getFollowingInfoWithUserID:_user_ID];
     }else{
-        if (!hasNext && !_isinit) return;
+        if (!hasNext && !_isinit){
+            _isLoading = NO;
+            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+            return;
+        }
         [_requestManger getfollowingsWihtUseId:_user_ID page:curPage + 1];
     }
 }

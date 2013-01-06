@@ -21,7 +21,6 @@
 }
 - (void)setSubViews
 {
-    
     [self setUserInteractionEnabled:YES];
     self.backgroundColor = [UIColor clearColor];
     self.image = [UIImage imageNamed:@"switch_btn.png"];
@@ -38,12 +37,9 @@
         _button.frame = (CGRect) {0, 0, 51, 27};
     }
     [self setbuttinImage];
-    
-    NSLog(@"%@",self.subviews);
 }
 -(void)setbuttinImage
 {
-    
     if (originalImage) {
         [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateNormal];
         [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateHighlighted];
@@ -58,11 +54,9 @@
 }
 -(void)buttonDrag:(UISwipeGestureRecognizer *)gesture
 {
-    NSLog(@"buttonDrag");
-    
     originalImage = !originalImage;
-    UIViewAnimationOptions  options = UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionNone;
-    [UIView animateWithDuration:0.4 delay:0 options:options animations:^{
+    UIViewAnimationOptions  options = UIViewAnimationOptionCurveLinear;
+    [UIView animateWithDuration:0.2 delay:0 options:options animations:^{
         if (!originalImage) {
             _button.frame = CGRectMake(40, 0, 51, 27);
         }else {
@@ -70,8 +64,6 @@
         }
     } completion:^(BOOL finished) {
         [self setbuttinImage];
-//        [_button setUserInteractionEnabled:YES];
-
     }];
 }
 

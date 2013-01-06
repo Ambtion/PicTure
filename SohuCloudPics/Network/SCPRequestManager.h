@@ -12,6 +12,12 @@
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 
+//外网
+//#define BASICURL_V1 @"http://61.135.181.37:8888/api/v1"
+//内网
+#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+//内网延时
+//#define BASICURL_V1 @"http://10.10.68.104:8889/api/v1"
 
 @class SCPRequestManager;
 
@@ -34,7 +40,7 @@
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture;
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID;
 //personal Home
-- (void)getUserInfoWithID:(NSString *)user_ID success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure;
+- (void)getUserInfoWithID:(NSString *)user_ID asy:(BOOL)isAsy success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure;
 - (void)getUserInfoWithID:(NSString *)user_ID;
 - (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page;
 //Folders

@@ -27,8 +27,6 @@
     [super viewDidLoad];
 
     [self addTableView];
-//    [self.manager dataSourcewithRefresh:YES];
-//    [self.pullingController showLoadingMore];
     [self.pullingController realLoadingMore:nil];
 }
 
@@ -58,7 +56,8 @@
     if ([self.pullingController.tableView numberOfSections]){
         [self.pullingController.tableView setContentOffset:CGPointZero];
     }
-    [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
+    [self.manager refreshData:nil];
+//    [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
 }
 
 #pragma mark -

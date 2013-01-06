@@ -104,22 +104,21 @@
 }
 - (void)customizeNavigationBar
 {
+    
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    backButton.frame = CGRectMake(15, 10, 26, 26);
-    backButton.frame = CGRectMake(5, 10, 35, 35);
+    backButton.frame = CGRectMake(5, 2, 35, 35);
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backTotop:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
-    
     UIButton* selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
     [selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
     [selectButton addTarget:self action:@selector(dismissModalView:) forControlEvents:UIControlEventTouchUpInside];
-    selectButton.frame = CGRectMake(284 - 5, 10, 26, 26);
+    selectButton.frame = CGRectMake(320 - 40, 2, 35, 35);
     [self.view addSubview:selectButton];
+    
 }
-
 - (void)viewWillAppear:(BOOL)animated
 {
     if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])

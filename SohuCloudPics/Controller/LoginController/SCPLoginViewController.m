@@ -126,7 +126,7 @@
     //返回按钮
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
 //    backButton.frame = CGRectMake(10, 8, 28, 28);
-    backButton.frame = CGRectMake(8, 6, 35, 35);
+    backButton.frame = CGRectMake(5, 2, 35, 35);
     [backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(cancelLogin:) forControlEvents:UIControlEventTouchUpInside];

@@ -19,7 +19,7 @@
 #import "SCPAlert_DetailView.h"
 #import "FunctionguideScroll.h"
 
-#import "ASIHTTPRequest.h"
+#import "ASIFormDataRequest.h"
 
 void customedExceptionHandler(NSException *exception)
 {
@@ -37,31 +37,54 @@ void customedExceptionHandler(NSException *exception)
     [_window release];
     [_fgc release];
     [super dealloc];
+    
 }
 - (void)pragramerSetting
 {
 //    NSLog(@"home::%@",NSHomeDirectory());
 //    NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
+//    NSLog(@"%@",[dic allKeys]);
 //    NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
 //    NSUserDefaults *appUserDefaults = [[NSUserDefaults alloc] init];
 //    NSLog(@"Start dumping userDefaults for %@", bundleId);
 //    NSLog(@"userDefaults dump: %@", [appUserDefaults persistentDomainForName: bundleId]);
 //    NSLog(@"Finished dumping userDefaults for %@", bundleId);
 //    [appUserDefaults release];
-    NSLog(@"%@",NSHomeDirectory());
+//    NSLog(@"%@",NSHomeDirectory());
+    
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
+}
+- (void)addDescriptionAboutImage
+{
+    if (![SCPLoginPridictive isLogin]) return;
+    NSString * str = [NSString stringWithFormat:@"%@/photos/%@",BASICURL_V1,@"50831598828003328"];
+    NSLog(@"%@",str);
+    __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
+    [request setPostValue:@"描述sBBBB"  forKey:@"description"];
+    [request setRequestMethod:@"PUT"];
+	[request setCompletionBlock:^{
+        NSLog(@"%@ %d",[request responseString],[request responseStatusCode]);
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"%@",[request error]);
+
+    }];
+    [request startAsynchronous];
+    
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self pragramerSetting];
+//    [self addDescriptionAboutImage];
+//    [self pragramerSetting];
     [UIApplication sharedApplication].statusBarHidden = YES;
     SCPMainTabController *mainTab = [[SCPMainTabController alloc] initWithNibName:nil bundle:NULL];
     SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     _window.rootViewController = nav;
-        
     [_window makeKeyAndVisible];
     [self showfunctionGuide];
     [mainTab release];

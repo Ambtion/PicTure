@@ -50,7 +50,6 @@
     NSDictionary * userinfo = [info objectForKey:@"userInfo"];
     if (userinfo)
         _maxNum = [[userinfo objectForKey:@"followers"] intValue];
-    
     NSDictionary  * followings = [info objectForKey:@"Followers"];
     hasNext = [[followings  objectForKey:@"has_next"] boolValue];
     curPage = [[followings  objectForKey:@"page"] intValue];
@@ -92,14 +91,6 @@
     [alertView show];
     [self restNetWorkState];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex != 0) {
-//        [self dataSourcewithRefresh:_willRefresh];
-//    }else{
-//        [self restNetWorkState];
-//    }
-//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -112,20 +103,16 @@
 #pragma mark - refresh Data
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
-    if (_isLoading) {
-        if (isRefresh) {
-            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-        }else{
-            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-        }
-        return;
-    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataSource.count){
         [_requestManger getFollowedsInfoWithUseID:_user_ID];
     }else{
-        if (!hasNext && !_isinit) return;
+        if (!hasNext && !_isinit){
+            _isLoading = NO;
+            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+            return;
+        }
         [_requestManger getfollowedsWihtUseId:_user_ID page:curPage + 1];
     }
 }
@@ -139,7 +126,6 @@
     if (_isLoading) {
         return;
     }
-    
     [self dataSourcewithRefresh:YES];
 }
 
@@ -168,7 +154,6 @@
     _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-    
 }
 
 #pragma mark -

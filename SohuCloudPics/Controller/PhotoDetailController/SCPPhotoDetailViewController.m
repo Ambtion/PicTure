@@ -53,9 +53,9 @@
     self.pullingController.delegate = self.manager;
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
+    [self.pullingController.tableView.tableFooterView setHidden:YES];
     [self.view addSubview:self.pullingController.view];
-    [self.pullingController realLoadingMore:nil];
-    
+    [self.manager dataSourcewithRefresh:YES];
     
     _commentPostBar = [[CommentPostBar alloc] initWithFrame:CGRectMake(0, self.view.bounds.origin.y + self.view.bounds.size.height, 320, 45)];
     _commentPostBar.delegate = self;
@@ -76,7 +76,6 @@
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(navigationBack:) forControlEvents:UIControlEventTouchUpInside];
-//    backButton.frame = CGRectMake(0, 0, 26, 26);
     backButton.frame = CGRectMake(0, 0, 35, 35);
 
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];

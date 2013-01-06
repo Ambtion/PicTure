@@ -17,7 +17,6 @@
 
 - (id)initWithcontroller:(id)controller
 {
-    
     SCPSettingRootViewController * sc = [[SCPSettingRootViewController alloc] initwithController:controller];
     self = [super initWithRootViewController:sc];
     if (self) {

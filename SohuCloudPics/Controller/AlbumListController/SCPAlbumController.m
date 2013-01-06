@@ -70,15 +70,10 @@
     _pullingController.delegate = self;
     _pullingController.tableView.dataSource = self;
     _pullingController.headView.datasouce = self;
-    _pullingController.tableView.separatorColor = [UIColor clearColor];
+    _pullingController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_pullingController.view];
 	[self updateBanner];
     [self initNavigationItem];
-//	if (_albumList.count == 0) {
-//		[self refresh];
-//	} else {
-//		[_pullingController.tableView reloadData];
-//	}
 }
 
 - (void)updateBanner
@@ -138,7 +133,6 @@
     [item release];
     /* customize backButtonIteam */
     _backButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-//    _backButton.frame = CGRectMake(0, 0, 28, 28);
     _backButton.frame = CGRectMake(0, 0, 35, 35);
     [_backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [_backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];

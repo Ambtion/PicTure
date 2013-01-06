@@ -31,17 +31,15 @@
         _dataSource = [[NSMutableArray alloc] initWithCapacity:0];
         _resqust = [[SCPRequestManager alloc] init];
         _resqust.delegate = self;
-//        [self dataSourcewithRefresh:YES];
     }
     return self;
 }
-
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     [_dataSource removeAllObjects];
     numFollowing = [[info objectForKey:@"followed"] intValue];
     NSLog(@"numFollowing %d",numFollowing);
-    [_resqust getUserInfoWithID:[SCPLoginPridictive currentUserId] success:^(NSDictionary *response) {
+    [_resqust getUserInfoWithID:[SCPLoginPridictive currentUserId] asy:NO success:^(NSDictionary *response) {
         if (numFollowing != 0) {
             NoticeDataSource * dataSouce =  [[NoticeDataSource alloc] init];
             dataSouce.name = [response objectForKey:@"user_nick"];
@@ -50,21 +48,18 @@
             [_dataSource addObject:dataSouce];
             [dataSouce release];
         }
-        
         NoticeDataSource * dataSouces =  [[NoticeDataSource alloc] init];
         dataSouces.name = @"系统管理员";
         dataSouces.content = @"最新版本敬请期待";
         dataSouces.image = [UIImage imageNamed:@"systerm.png"];
         [_dataSource addObject:dataSouces];
         [dataSouces release];
-        
         [self.controller.pullingController refreshDoneLoadingTableViewData];
         [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-        
     } failure:^(NSString *error) {
-        
+        _isLoading = NO;
     }];
-  
+
 }
 #pragma Network Failed
 - (void)requestFailed:(NSString *)error
@@ -73,14 +68,6 @@
     [alertView show];
     [self restNetWorkState];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex != 0) {
-//        [self dataSourcewithRefresh:YES];
-//    }else{
-//        [self restNetWorkState];
-//    }
-//}
 - (void)restNetWorkState
 {
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
@@ -108,7 +95,6 @@
 {
     [self refreshData:nil];
 }
-
 - (void)followedRefreshDataFinishLoad
 {
     _isLoading = NO;

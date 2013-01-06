@@ -52,9 +52,7 @@
     [self.view addSubview:_homeTable];
     [self addTableFootView];
     
-    if ([SCPLoginPridictive isLogin]) {
-        [self.manager dataSourcewithRefresh:YES];
-    }
+    if ([SCPLoginPridictive isLogin]) [self.manager dataSourcewithRefresh:YES];
 }
 - (void)addTableFootView
 {
@@ -62,7 +60,7 @@
     _footView.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
     UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self.manager action:@selector(loadingMore:)] autorelease];
     [_footView addGestureRecognizer:gesture];
-    UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(110, 21, 18, 18)] autorelease];
+    UIImageView * imageview = [[[UIImageView alloc] initWithFrame:CGRectMake(110, 19, 18, 18)] autorelease];
     imageview.image = [UIImage imageNamed:@"load_more_pics.png"];
     [_footView addSubview:imageview];
     
@@ -76,7 +74,7 @@
     
     UIActivityIndicatorView * active = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
     active.tag = 200;
-    active.frame = CGRectMake(320 - 66 + 22,30, 0, 0);
+    active.frame = CGRectMake(320 - 66 + 22,22, 0, 0);
     active.color = [UIColor blackColor];
     active.hidesWhenStopped = YES;
     [active stopAnimating];
@@ -105,7 +103,6 @@
     [self.homeTable setContentOffset:CGPointZero animated:YES];
     [self showNavigationBar];
 }
-
 #pragma mark -
 #pragma mark customerNavigationIteam
 
@@ -115,9 +112,8 @@
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_user_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_user_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(myHomeNavigationBack:) forControlEvents:UIControlEventTouchUpInside];
-//    backButton.frame = CGRectMake(0, 0, 26, 26);
     backButton.frame = CGRectMake(0, 0, 35, 35);
-
+    
     UIBarButtonItem * left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
     [self.manager refreshUserinfo];
@@ -126,11 +122,4 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    NSLog(@"%s",__FUNCTION__);
-}
-
 @end

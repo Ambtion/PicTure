@@ -12,13 +12,8 @@
 #import "SCPLoginPridictive.h"
 #import "JSON.h"
 
-//外网
-#define BASICURL_V1 @"http://61.135.181.37:8888/api/v1"
-//内网
-//#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
 
-#define TIMEOUT 30.f
-
+#define TIMEOUT 10.f
 @implementation SCPRequestManager
 @synthesize delegate = _delegate;
 
@@ -36,7 +31,6 @@
     //    [NSObject cancelPreviousPerformRequestsWithTarget:_delegate];
     [tempDic release];
     [super dealloc];
-    
 }
 #pragma mark - Explore
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture
@@ -88,7 +82,7 @@
     [request startAsynchronous];
 }
 #pragma mark - Personal Home
-- (void)getUserInfoWithID:(NSString *)user_ID success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure
+- (void)getUserInfoWithID:(NSString *)user_ID asy:(BOOL)isAsy success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure
 {
     NSString  * str = nil;
     if ([SCPLoginPridictive currentToken]) {
@@ -112,8 +106,11 @@
     [request setFailedBlock:^{
         failure(@"网络连接异常");
     }];
-    
-    [request startAsynchronous];
+    if (isAsy) {
+        [request startAsynchronous];
+    }else{
+        [request startSynchronous];
+    }
     
 }
 - (void)getUserInfoWithID:(NSString *)user_ID
@@ -135,6 +132,7 @@
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
+            NSLog(@"tempdic %@",[tempDic objectForKey:@"userInfo"]);
             [self getUserInfoFeedWithUserID:user_ID page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
@@ -143,6 +141,7 @@
         }
     }];
     [request setFailedBlock:^{
+        NSLog(@"%@ ------- %d",[request error], [request responseStatusCode]);
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
         }
@@ -159,7 +158,6 @@
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"feedList"];
-            NSLog(@"tempdic %@",[tempDic objectForKey:@"userInfo"]);
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
                 [tempDic removeAllObjects];

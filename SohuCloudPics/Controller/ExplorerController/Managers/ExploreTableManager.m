@@ -213,25 +213,20 @@ static NSInteger lastNum = -1;
 #pragma mark -
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
-    if (_isLoading) {
-        if (isRefresh) {
-            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-        }else{
-            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-        }
-        return;
-    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(isRefresh || !_strategyArray.count){
         _lastCount = 0;
         [self getExploreFrom:0 count:60];
     }else{
-        if ((MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) return;
+        if ((MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
+            _isLoading = NO;
+            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+            return;
+        }
         [self getExploreFrom:[self offsetOfDataSouce] count:60];
     }
 }
-
 - (void)getExploreFrom:(NSInteger)startIndex count:(NSInteger)count
 {
     
@@ -287,23 +282,19 @@ static NSInteger lastNum = -1;
     [self.controller showNavigationBar];
 }
 #pragma mark refresh
-//1 点击 2 上拉 3 结束
+//1:下拉刷新 2:刷新结束
+
 - (void)refreshData:(id)sender
 {
-    if (_isLoading) {
-        return;
-    }
+    NSLog(@"%s, %d",__FUNCTION__, _isLoading);
+    if (_isLoading)  return;
     [self dataSourcewithRefresh:YES];
 }
-
 - (void)pullingreloadTableViewDataSource:(id)sender
 {
-    if (_isLoading) {
-        return;
-    }
     SCPBaseNavigationItem * item = self.controller.item;
     [item.refreshButton rotateButton];
-    [self dataSourcewithRefresh:YES];
+    [self refreshData:nil];
 }
 - (void)refreshDataFinishLoad
 {
@@ -311,12 +302,10 @@ static NSInteger lastNum = -1;
     [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
     _isLoading = NO;
 }
-
+//更多
 #pragma mark more
-//1:下拉刷新 2:刷新结束
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
-    NSLog(@"NNNNN %s",__FUNCTION__);
     [self dataSourcewithRefresh:NO];
 }
 - (void)moreDataFinishLoad

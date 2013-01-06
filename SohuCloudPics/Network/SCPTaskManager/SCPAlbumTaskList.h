@@ -12,6 +12,9 @@
 #import "ASINetworkQueue.h"
 #import "ASIFormDataRequest.h"
 #import "SCPURLLibaray.h"
+//just for url define
+#import "SCPRequestManager.h"
+
 @class SCPAlbumTaskList;
 @protocol SCPAlbumTaskListDelegate <NSObject>
 - (void)albumTask:(SCPAlbumTaskList *)albumTaskList requsetFinish:(ASIHTTPRequest *)requset;

@@ -88,7 +88,6 @@
 {
     /* customize backButtonItem */
     _backButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-//    _backButton.frame = CGRectMake(0, 0, 28, 28);
     _backButton.frame = CGRectMake(0, 0, 35, 35);
 
     [_backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];

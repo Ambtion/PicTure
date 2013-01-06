@@ -56,7 +56,7 @@
     CGRect frame = CGRectZero;
     frame = self.bounds;
     // 读取gif图片数据
-    
+//    [self.actV startAnimating];
     NSData *gif = [NSData dataWithContentsOfURL:url];
     // view生成
     self.webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];

@@ -42,10 +42,8 @@
 {
     UIScrollView* _scrollView;
     BannerForHeadView* _headView;
-    
     UITableView* _tableView;
     EGORefreshTableHeaderView * _refreshView;
-    
     DelegateManager * _manager;
     id<PullingRefreshDelegate> _delegate;
     UIView * _footView;

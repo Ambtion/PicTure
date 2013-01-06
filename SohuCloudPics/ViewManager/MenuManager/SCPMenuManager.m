@@ -570,7 +570,6 @@ static NSString *menuPress[6] = {
         toPoint.y -= menuHeight * 2;
     }
     ribbon.layer.position = toPoint;
-    
 }
 
 - (void)hideRibbonWithAnimation:(BOOL)animation
@@ -595,9 +594,8 @@ static NSString *menuPress[6] = {
     }
     ribbon.layer.position = CGPointMake(ribbon.layer.position.x, -27.5);
     ribbon.layer.opacity = 0.0;
-
+    
 }
-
 - (void)showRibbonWithAnimation:(BOOL)animation
 
 {

@@ -44,8 +44,10 @@
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier photoCount:(int)count
 {
+    
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        
         _coverImageViewList = [[NSMutableArray alloc] init];
         _frameImageViewList = [[NSMutableArray alloc] init];
         _progressViewList = [[NSMutableArray alloc] init];
@@ -53,18 +55,26 @@
         _countLabelList = [[NSMutableArray alloc] init];
         _deleteViewList = [[NSMutableArray alloc] init];
 		_albumList = [[NSMutableArray alloc] initWithCapacity:count];
-		
         _photoCount = count;
         int frameSize = 320 / count;
         self.frame = CGRectMake(0, 0, 320, GRID_CELL_HEIGHT);
         
         UIImage *background = [UIImage imageNamed:@"150.png"];
-        
         for (int i = 0; i < _photoCount; i++) {
-            /* cover image view */
-            UIImageView *coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 15, 5, 75, 75)];
-            coverImageView.userInteractionEnabled = YES;
+            
+            /* frame image view */
+            UIImageView *frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 5, 0, 95, 95)];
+            [frameImageView setImage:background];
+            [frameImageView setUserInteractionEnabled:YES];
 
+            [_frameImageViewList addObject:frameImageView];
+            [self.contentView addSubview:frameImageView];
+            [frameImageView release];
+            
+            /* cover image view */
+            UIImageView *coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10,10, 75, 75)];
+            coverImageView.userInteractionEnabled = YES;
+            
             UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
             [coverImageView addGestureRecognizer:gesture];
             [gesture release];
@@ -73,54 +83,43 @@
             [gesture release];
             gesture = nil;
             
+            [frameImageView addSubview:coverImageView];
             [_coverImageViewList addObject:coverImageView];
-            [self addSubview:coverImageView];
             [coverImageView release];
-            
-            /* frame image view */
-            UIImageView *frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 5, -5, 95, 95)];
-            [frameImageView setImage:background];
-            
-            [_frameImageViewList addObject:frameImageView];
-            [self addSubview:frameImageView];
-            [frameImageView release];
-            
-                       
             /* name label view */
-            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 5, 93, frameSize - 10, 20)];
+            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 5, 100, frameSize - 10, 20)];
             [UIUtils updateNormalLabel:nameLabel title:nil];
             [nameLabel setTextAlignment:UITextAlignmentCenter];
-            
             [_nameLabelList addObject:nameLabel];
-            [self addSubview:nameLabel];
+            [self.contentView addSubview:nameLabel];
             [nameLabel release];
-            
             /* count label view */
-            UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 56, 60, 30, 16)];
+            //            UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 56, 60, 30, 16)];
+            UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(75 - 30, 75 - 16, 30, 18)];
             [UIUtils updateAlbumCountLabel:countLabel];
-            [countLabel setTextAlignment:UITextAlignmentCenter];
             
+            [countLabel setTextAlignment:UITextAlignmentCenter];
             [_countLabelList addObject:countLabel];
-            [self addSubview:countLabel];
+            [coverImageView addSubview:countLabel];
             [countLabel release];
             
             /* progress view */
             UIProgressView * progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 63, 64, 8)];
             [progressView setProgressImage:[UIImage imageNamed:@"prog_done.png"]];
-    
+            
             [progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0]];
             progressView.progress = 0.f;
             
             [_progressViewList addObject:progressView];
-            [self addSubview:progressView];
+            [self.contentView addSubview:progressView];
             [progressView release];
-
+            
             /* delete ? */
             UIImageView *deleteView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"album_delete.png"]];
             deleteView.frame = CGRectMake(i * frameSize + 5, -2, 29, 29);
             
             [_deleteViewList addObject:deleteView];
-            [self addSubview:deleteView];
+            [self.contentView addSubview:deleteView];
             [deleteView release];
         }
     }
@@ -214,7 +213,9 @@
 
 - (void)updateViewWithAlbum:(SCPAlbum *)album position:(int)position preToDel:(BOOL)deleting
 {
-    
+    /* set frame image view */
+    UIImageView *frameImageView = [self frameImageViewAt:position];
+    [frameImageView setHidden:NO];
 	[_albumList setObject:album atIndexedSubscript:position];
     /* set cover image view */
     UIImageView *coverImageView = [self coverImageViewAt:position];
@@ -225,9 +226,7 @@
 	} else {
 		[coverImageView setImage:[self getEmptyFolderCoverImage]];
 	}
-    /* set frame image view */
-    UIImageView *frameImageView = [self frameImageViewAt:position];
-    [frameImageView setHidden:NO];
+   
     
     /* set progess view */
     UIProgressView *progressView = [self progressViewAt:position];
@@ -241,7 +240,10 @@
     /* set count label */
     UILabel *countLabel = [self countLabelAt:position];
     [countLabel setHidden:album.isUploading];
-    [countLabel setText:[NSString stringWithFormat:@"%d", album.photoNum]];
+    [countLabel setText:[NSString stringWithFormat:@" %d ", album.photoNum]];
+    [countLabel sizeToFit];
+    countLabel.frame = CGRectMake(75 - countLabel.frame.size.width - 5, 75 - countLabel.frame.size.height - 5,
+                                  countLabel.frame.size.width > 18 ? countLabel.frame.size.width : 18 , 18);
     
     /* delete ? */
     UIImageView *deleteView = [self deleteViewAt:position];

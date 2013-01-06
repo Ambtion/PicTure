@@ -10,8 +10,8 @@
 #import "MySettingCell.h"
 #import "SCPLoginPridictive.h"
 #import "SCPSettingUserinfoController.h"
+#import "SCPAboutController.h"
 
-#import "SCPAlert_About.h"
 #import "SCPAlert_FeedBack.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPMainTabController.h"
@@ -47,11 +47,10 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.separatorColor = [UIColor clearColor];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.scrollEnabled = NO;
     [self.view addSubview:_tableView];    
     //custimize iteam
-
 }
 - (void)_backbutton:(UIButton*)button
 {
@@ -76,8 +75,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         if (cell ==  nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"BG_CELL"] autorelease];
             UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-//            button.frame = CGRectMake(8, 8, 28, 28);
-            button.frame = CGRectMake(0, 0, 35, 35);
+            button.frame = CGRectMake(5, 2, 35, 35);
             [button setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
             [button addTarget:self action:@selector(_backbutton:) forControlEvents:UIControlEventTouchUpInside];
@@ -134,9 +132,9 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     }
 
     if (indexPath.row == 6) {
-        SCPAlert_About * about = [[[SCPAlert_About alloc] initWithTitle:nil] autorelease];
-        [about show];
+        [self.navigationController pushViewController:[[[SCPAboutController alloc] init] autorelease] animated:YES];
     }
+    
     if (indexPath.row == 7) {
         loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认登出" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
         [loginView show];
