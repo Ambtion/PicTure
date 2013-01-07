@@ -173,7 +173,9 @@
         NSLog(@"%s",__FUNCTION__);
         self.view.frame = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
         [self initSubViews];
-        self.view.transform = [self getTransfrom];
+        if (self.view.frame.size.width < self.view.superview.frame.size.height)
+            self.view.transform = [self getTransfrom];
+        self.view.frame  = self.view.superview.bounds;
     }
 }
 
@@ -280,10 +282,10 @@
 
 - (void)initSubViews
 {
+    
     CGRect rect = self.view.frame;
     rect.size.width += OFFSET * 2;
     rect.origin.x -= OFFSET;
-    
     self.bgView = [[[UIView alloc] initWithFrame:rect] autorelease];
     self.bgView.backgroundColor = [UIColor blackColor];
     [self.view  addSubview:self.bgView];
