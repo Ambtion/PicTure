@@ -47,9 +47,10 @@
 {
     if (!self.currentTask) self.currentTask = [self.taskList objectAtIndex:0];
     self.currentTask.request = [self getUploadRequest:nil];
-    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit *unit) {
+    [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit * unit) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (unit.description && ![unit.description isEqualToString:@""])
+                [self.currentTask.request setPostValue:unit.description forKey:@"desc"];
             [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
             if (!self.currentTask.request.isCancelled)
                 [self.currentTask.request startAsynchronous];
@@ -58,7 +59,6 @@
         NSLog(@"%s, %@",__FUNCTION__,error);
         unit.taskState = UPLoadStatusFailedUpload;
     }];
-    //    });
     return;
 }
 
@@ -67,7 +67,6 @@
     NSLog(@"%s",__FUNCTION__);
     [self addTaskUnitToQuene];
 }
-
 - (void)cancelupLoadWithTag:(NSArray *)unitArray
 {
     NSLog(@"requset cancel %d",_taskList.count);
@@ -96,35 +95,10 @@
     }
 }
 
-- (void)addDescriptionAboutImage:(NSString *)photo_id des:(NSString *)des success:(void (^)(NSString * response))success failture:(void (^)(NSString * error))failure
-{
-    if (![SCPLoginPridictive isLogin]) return;
-    NSString * str = [NSString stringWithFormat:@"%@/photos/%@",BASICURL_V1,photo_id];
-    NSLog(@"%@",str);
-    __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setStringEncoding:NSUTF8StringEncoding];
-    [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
-    [request setPostValue:des  forKey:@"description"];
-    [request setRequestMethod:@"PUT"];
-	[request setCompletionBlock:^{
-        NSLog(@"%@",[request responseString]);
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
-            success([request responseString]);
-        }else{
-            failure(@"网络连接异常");
-        }
-    }];
-    [request setFailedBlock:^{
-        failure(@"网络连接异常");
-    }];
-    [request startAsynchronous];
-
-}
 #pragma mark - Requsetdelgate
 
-- (void):(ASIHTTPRequest *)request
+- (void)requestFinished:(ASIHTTPRequest *)request
 {
-    
     NSDictionary * dic = [[request responseString] JSONValue];
     NSLog(@"%s,%d, %@",__FUNCTION__,[request responseStatusCode], dic);
     [request cancel];
@@ -134,6 +108,7 @@
     if ([_delegate respondsToSelector:@selector(albumTask:requsetFinish:)]) {
         [_delegate performSelector:@selector(albumTask:requsetFinish:) withObject:self withObject:request];
     }
+    
     self.currentTask = nil;
     if (self.taskList.count) {
         [self goNextTask];
@@ -169,6 +144,7 @@
     NSLog(@"%@",str);
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
+    [request setStringEncoding:NSUTF8StringEncoding];
     [request addRequestHeader:@"accept" value:@"application/json"];
     [request setDelegate:self];
     [request setTimeOutSeconds:UPTIMEOUT];

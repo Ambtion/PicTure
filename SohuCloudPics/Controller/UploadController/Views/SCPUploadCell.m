@@ -17,7 +17,6 @@
 @implementation SCPUploadCell
 
 @synthesize uploadController = _uploadController;
-
 @synthesize portraitImageView = _portraitImageView;
 @synthesize descBackgroundImageView = _descBackgroundImageView;
 @synthesize descTextView = _descTextView;
@@ -29,7 +28,6 @@
     [_descBackgroundImageView release];
     [_descTextView release];
     [_descCountLabel release];
-    
     [super dealloc];
 }
 
@@ -71,7 +69,6 @@
         _descTextView.returnKeyType = UIReturnKeyDefault;
         _descTextView.scrollEnabled = NO;
         _descTextView.delegate = self;
-//        _descTextView.layer.cornerRadius = 4;
         _descTextView.backgroundColor = [UIColor clearColor];
         [self addSubview:_descTextView];
         
@@ -84,13 +81,6 @@
         [self textViewDidChange:_descTextView];
     }
     return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
 }
 
 #pragma mark

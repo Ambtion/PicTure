@@ -58,11 +58,9 @@
         view.backgroundColor = [UIColor clearColor];
         view.clipsToBounds = YES;
     
-//        imageView = [[UIImageView alloc] initWithFrame:[(NSValue *)[frames objectAtIndex:i] CGRectValue]];
         imageView = [[UIImageView alloc] initWithFrame:view.bounds];
         imageView.tag = i;
         imageView.image = [UIImage imageNamed:@"default_cell.png"];
-//        imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.backgroundColor = [UIColor whiteColor];
         UITapGestureRecognizer * gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlegesture:)];
         [imageView addGestureRecognizer:gesture];
@@ -70,7 +68,7 @@
         [view addSubview:imageView];
         [self.contentView addSubview:view];
         [_imageViewArray addObject:imageView];
-                
+        
         [gesture release];
         [imageView release];
         [view release];
@@ -89,7 +87,6 @@
 {
     return _dataSource;
 }
-
 - (void)setDataSource:(ExploreViewCellDataSource *)dataSource
 {
     
@@ -105,7 +102,6 @@
         NSDictionary * dic = [_dataSource.infoArray objectAtIndex:i];
         UIImageView * imageView = [_imageViewArray objectAtIndex:i];
         imageView.frame = [[_dataSource.imageFrame objectAtIndex:i] CGRectValue];
-        
         //现在取图c205
         NSString * imageUrl = [NSString stringWithFormat:@"%@_c205",[dic objectForKey:@"photo_url"]];
         NSURL * url = [NSURL URLWithString:imageUrl];

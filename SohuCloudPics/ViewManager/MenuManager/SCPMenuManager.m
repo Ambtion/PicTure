@@ -240,6 +240,7 @@ static NSString *menuPress[6] = {
     self.navController.delegate = self;
     [self popNavigationInDuration:0.03];
 }
+
 - (void)popNavigationInDuration:(CGFloat)duration
 {
     if (self.navController.childViewControllers.count == 1) {
@@ -249,7 +250,7 @@ static NSString *menuPress[6] = {
         [tabCtrl switchToindex:index == 3 ? 0 : 1];
         return;
     }
-    [self.navController popToRootViewControllerAnimated:NO];
+    [self.navController popToRootViewControllerAnimated:YES];
 }
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -266,7 +267,6 @@ static NSString *menuPress[6] = {
         [self restIcon:index];
         [tabCtrl switchToindex:index == 3 ? 0 : 1];        
     }
-    
 }
 
 #pragma mark -
@@ -282,7 +282,7 @@ static NSString *menuPress[6] = {
         [navController presentModalViewController:nav animated:YES];
         return;
     }
-    [self restIcon:1];
+//    [self restIcon:1];
     AlbumControllerManager * manager = [[AlbumControllerManager alloc] initWithpresentController:self.navController];
 	[self.navController presentModalViewController:manager animated:YES];
     [manager release];
@@ -353,8 +353,7 @@ static NSString *menuPress[6] = {
     if ([self.navController.visibleViewController isKindOfClass:[NoticeViewController class]]) {
         return;
     }
-    [self restIcon:1];
-    NoticeViewController * nvc = [[[NoticeViewController alloc] init] autorelease];
+     NoticeViewController * nvc = [[[NoticeViewController alloc] init] autorelease];
     [self.navController pushViewController:nvc animated:YES];
 }
 

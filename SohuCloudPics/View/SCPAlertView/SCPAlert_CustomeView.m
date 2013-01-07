@@ -42,7 +42,7 @@
         }
     }
     [[[UIApplication sharedApplication].delegate window] addSubview:self];
-    [self performSelector:@selector(dismiss)withObject:nil afterDelay:2.f];
+    [self performSelector:@selector(dismiss)withObject:nil afterDelay:1.5f];
 }
 - (void)dismiss
 {

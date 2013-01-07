@@ -153,10 +153,6 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 - (void)updataData
 {
     
-    //图片按照320压缩获得高度
-    //小于320,高度扩大到320;图片居中,左右两边截掉;
-    //大于固定的高度Max...,上下图片截掉;
-    //    CGFloat
     CGFloat widht = [[[self.dataSource allInfo] objectForKey:@"width"] floatValue];
     CGFloat height = [[[self.dataSource allInfo] objectForKey:@"height"] floatValue];
     if (widht <= 320 && height <= 320) {
@@ -189,59 +185,6 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
         [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     }
     [self showGifButton];
-    
-    //    if ([[self.dataSource.allInfo objectForKey:@"wigth"] intValue] > 320) {
-    //        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-    //        [_photoImageView cancelCurrentImageLoad];
-    //        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
-    //        [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
-    //        return;
-    //    }else{
-    //        NSString * str = [NSString stringWithFormat:@"%@",_dataSource.photoImage];
-    //        [_photoImageView cancelCurrentImageLoad];
-    //        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
-    //        [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
-    //        return;
-    //    }
-    //    CGFloat maxHeigth = self.maxImageHeigth;
-    //
-    //    if (!maxHeigth)
-    //        maxHeigth = 320;
-    //
-    //    if (_dataSource.heigth < 320) {
-    //
-    //        CGFloat width = 320.f * (320.f / _dataSource.heigth);
-    //        _photoImageView.frame  = CGRectMake(0, 0, width, 320);
-    //        CGPoint center = _photoImageView.center;
-    //        center.x = 160;
-    //        _photoImageView.center = center;
-    //        _photoImageView.superview.frame = CGRectMake(0, 0, 320, 320);
-    //    }else if(_dataSource.heigth > maxHeigth){
-    //        _photoImageView.frame = CGRectMake(0, 0, 320, _dataSource.heigth);
-    //        _photoImageView.superview.frame = CGRectMake(0, 0, 320, maxHeigth);
-    //    }else{
-    //        _photoImageView.frame = CGRectMake(0, 0, 320, _dataSource.heigth);
-    //        _photoImageView.superview.frame = CGRectMake(0, 0, 320, _photoImageView.frame.size.height);
-    //    }
-    //
-    //    _photoImageView.frame = _photoImageView.superview.bounds;
-    //
-    //    CGRect frame = tailerView.frame;
-    //    frame.origin.y = _photoImageView.superview.frame.size.height;
-    //    tailerView.frame = frame;
-    //    [self showGifButton];
-    //    NSString * str  = nil;
-    //    if (self.dataSource.heigth > 320) {
-    //        str = [NSString stringWithFormat:@"%@_h960",_dataSource.photoImage];
-    //    }else{
-    //        str = [NSString stringWithFormat:@"%@_w640",_dataSource.photoImage];
-    //    }
-    //
-    //    str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-    //
-    //    [_photoImageView cancelCurrentImageLoad];
-    //    [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
-    //    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
     
     if (!_dataSource ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"佚名";

@@ -69,7 +69,6 @@
         [self addUesrphotoView];
         [self addUserPhotoLabel];
         [self addMenuView];
-
     }
     return self;
 }
@@ -92,6 +91,7 @@
     
     bgCircleView = [[UIImageView alloc] initWithFrame:CGRectMake(109, 100, 102, 102)];
     [self.contentView addSubview:bgCircleView];
+    
 }
 - (void)setHomeBackGroudImage
 {
@@ -123,17 +123,15 @@
     _nameLabel.textAlignment = UITextAlignmentCenter;
     _nameLabel.backgroundColor = [UIColor clearColor];
     _nameLabel.textColor = [UIColor whiteColor];
-    
+
     [self.contentView addSubview:_nameLabel];
-    
-    _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 236, 320, 12)];
+    _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, 320, 12)];
     _descLabel.font = [UIFont  fontWithName:@"STHeitiTC-Medium" size:12];
-    _descLabel.textAlignment = UITextAlignmentCenter;
     _descLabel.numberOfLines = 0;
-    _descLabel.backgroundColor = [UIColor clearColor];
     _descLabel.textColor = [UIColor whiteColor];
-    _descLabel.shadowColor = [UIColor blackColor];
+    _descLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
     _descLabel.shadowOffset = CGSizeMake(0, 1);
+    _descLabel.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_descLabel];
     
     _settingButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
@@ -187,11 +185,18 @@
     }else{
         _nameLabel.text = [_dataSource name];
     }
+    
     if (!_dataSource.desc ||[_dataSource.desc isKindOfClass:[NSNull class]] || [_dataSource.desc isEqualToString:@""]) {
         _descLabel.text = @"赶快装扮下吧";
     }else{
         _descLabel.text = self.datasource.desc;
+        CGSize size = [_descLabel.text sizeWithFont:_descLabel.font constrainedToSize:CGSizeMake(280, 35) lineBreakMode:_descLabel.lineBreakMode];
+        _descLabel.frame = CGRectMake((self.frame.size.width - size.width)/2.f, 240, size.width, size.height);
     }
+    CGRect rect = _settingButton.frame;
+    rect.origin.y = _descLabel.frame.size.height + _descLabel.frame.origin.y + 20;
+    _settingButton.frame = rect;
+    
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
@@ -225,9 +230,6 @@
     if ([menuView isEqual:_albumButton]) {
         [self photoBookClick:gesture];
     }else
-//        if ([menuView isEqual:_favorButton]) {
-//        [self favoriteButtonClicked:gesture];
-//    }else
         if ([menuView isEqual:_followedButton]) {
         [self followedButtonClicked:gesture];
     }else {

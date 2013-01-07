@@ -14,7 +14,7 @@
 
 @class PhotoDetailManager;
 
-@interface InfoImageView : UIImageView
+@interface InfoImageView : UIImageView<UIWebViewDelegate>
 
 @property(nonatomic,retain)NSDictionary * info;
 @property(nonatomic,assign)UIActivityIndicatorView * actV;

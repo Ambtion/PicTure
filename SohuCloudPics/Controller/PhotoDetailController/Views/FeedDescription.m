@@ -27,6 +27,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         UIImageView * image = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 15, 15)] autorelease];
         image.image = [UIImage imageNamed:@"description_icon.png"];

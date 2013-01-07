@@ -27,7 +27,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
 
 - (id)initwithController:(id)controller
 {
-    self = [super initWithNibName:nil bundle:nil];
+    self = [super init];
     if (self) {
         _controller = controller;
     }
@@ -38,7 +38,6 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     [_tableView release];
     [loginView release];
     [cacheView release];
-    
     [super dealloc];
 }
 - (void)viewDidLoad
@@ -49,12 +48,12 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.scrollEnabled = NO;
-    [self.view addSubview:_tableView];    
+    _tableView.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
+    [self.view addSubview:_tableView];
     //custimize iteam
 }
 - (void)_backbutton:(UIButton*)button
 {
-    NSLog(@"backbutton");
     [_controller dismissModalViewControllerAnimated:YES];
 }
 #pragma mark -
@@ -111,6 +110,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     }
     return 55;
 }
+
 #pragma mark -
 #pragma mark delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -126,15 +126,15 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         [cacheView show];
     }
     if (indexPath.row == 4) {
+        //
         NSLog(@"%s",__FUNCTION__);
         SCPAlert_FeedBack * feedBack = [[[SCPAlert_FeedBack alloc] init] autorelease];
         [feedBack show];
     }
-
     if (indexPath.row == 6) {
+        //
         [self.navigationController pushViewController:[[[SCPAboutController alloc] init] autorelease] animated:YES];
     }
-    
     if (indexPath.row == 7) {
         loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认登出" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
         [loginView show];
@@ -162,14 +162,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
             SCPAlert_CustomeView * alert = [[[SCPAlert_CustomeView alloc] initWithTitle:[NSString stringWithFormat:@"%@",error]] autorelease];
             [alert show];
         }
-
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

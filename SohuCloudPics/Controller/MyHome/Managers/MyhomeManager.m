@@ -339,7 +339,7 @@ static float OFFSET = 0.f;
 #pragma mark CELL - Method
 - (void)MyPersonalCell:(MyPersonalCell *)cell settingClick:(id)sender
 {
-    SCPSetttingController * setting = [[[SCPSetttingController alloc] initWithcontroller:_controller.navigationController] autorelease];
+    SCPSetttingController * setting = [[[SCPSetttingController alloc] initWithcontroller:_controller] autorelease];
     [_controller.navigationController presentModalViewController:setting animated:YES];
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender

@@ -635,10 +635,13 @@
     
     if (!taskTotal )  return;
     NSDictionary * requsetInfo = [[[notification userInfo] objectForKey:@"RequsetInfo"] objectForKey:@"data"];
+    NSLog(@"%s, %@",__FUNCTION__ , requsetInfo);
     if (requsetInfo) self.albumData.photoNum++;
     SCPPhoto * photo = [_photoList objectAtIndex:self.uploadTaskList.taskList.count];
-    photo.photoID = [requsetInfo objectForKey:@"id"];
-    photo.photoUrl = [requsetInfo objectForKey:@"big_url"];
+    if (requsetInfo && ![requsetInfo isKindOfClass:[NSNull class]]) {
+        photo.photoID = [requsetInfo objectForKey:@"id"];
+        photo.photoUrl = [requsetInfo objectForKey:@"big_url"];
+    }
     self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:self.albumData.albumId];
     [self.pullingController reloadDataSourceWithAniamtion:NO];
 }

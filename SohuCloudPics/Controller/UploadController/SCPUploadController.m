@@ -10,6 +10,7 @@
 
 #import "SCPUploadCell.h"
 #import "SCPMenuNavigationController.h"
+#import "SCPAlert_CustomeView.h"
 #import "SCPAlertView_LoginTip.h"
 
 //#import "SCPTaskManager.h"
@@ -24,7 +25,6 @@
 //@synthesize labelList = _labelList;
 @synthesize curAlbumID = _curAlbumID;
 @synthesize albumList = _albumList;
-//@synthesize uploadAlbum = _uploadAlbum;
 
 @synthesize uploadHeader = _uploadHeader;
 @synthesize uploadTableView = _uploadTableView;
@@ -34,6 +34,7 @@
 
 - (void)dealloc
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_requsetManager setDelegate:nil];
     [_requsetManager release];
     [_preLabelObjs release];
@@ -42,7 +43,6 @@
     
     self.curAlbumID = nil;
     [_albumList release];
-    
     [_uploadHeader release];
     [_uploadTableView release];
     [_labelBox release];
@@ -99,7 +99,6 @@
     _uploadTableView.delegate = self;
     _uploadTableView.bounces = NO;
     [self.view addSubview:_uploadTableView];
-    
     [self customizeNavigationBar];
 }
 - (void)customizeNavigationBar
@@ -160,7 +159,6 @@ done:
 #pragma mark  UPData OK
 - (void)dismissModalView:(UIButton*)button
 {
-    
     if (!self.curAlbumID) {
         SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"请选择专辑" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterView show];
@@ -176,20 +174,21 @@ done:
             unit.data = [dic objectForKey:@"ImageData"];
         }
         unit.thumbnail = [dic objectForKey:@"UIImagePickerControllerThumbnail"];
+        SCPUploadCell * cell = [_cells objectAtIndex:i];
+        unit.description = cell.descTextView.text;
         [array addObject:unit];
         [unit release];
     }
-    
     SCPAlbumTaskList * album = [[[SCPAlbumTaskList alloc] initWithTaskList:array album_id:self.curAlbumID] autorelease];
     [[SCPUploadTaskManager currentManager] addTaskList:album];
-    SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"图片已在后台上传" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
-    [alterView show];
-    return;
+    
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片已在后台上传"] autorelease];
+    [alertView show];
+    [self.view setUserInteractionEnabled:NO];
+    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:1.5f];
+    
 }
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.f];
-}
+
 #pragma mark Back
 - (void)backTotop:(UIButton*)button
 {

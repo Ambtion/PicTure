@@ -153,7 +153,6 @@
     NSLog(@"dataSourcewithRefresh");
     [self refreshData:nil];
 }
-
 - (void)refreshDataFinishLoad:(id)sender
 {
     _isLoading = NO;
@@ -277,14 +276,13 @@
     CGFloat Y = ((SCPPhotoDetailViewController *)self.controller).pullingController.tableView.contentOffset.y;
     rect.origin.y -= Y;
     rect.size.height -= 70;
-    cell.photoImageView.image = nil;
-    
+        
     [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
     
 }
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
-    UINavigationController *nav = _controller.navigationController;
+    UINavigationController * nav = _controller.navigationController;
     SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
     [nav pushViewController:ctrl animated:YES];
     [ctrl release];

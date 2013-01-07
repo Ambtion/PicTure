@@ -104,7 +104,7 @@
             [countLabel release];
             
             /* progress view */
-            UIProgressView * progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 63, 64, 8)];
+            UIProgressView * progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 73, 64, 8)];
             [progressView setProgressImage:[UIImage imageNamed:@"prog_done.png"]];
             
             [progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0]];

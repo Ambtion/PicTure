@@ -9,6 +9,9 @@
 #import "SCPSettingUserinfoController.h"
 #import "UIImageView+WebCache.h"
 #import "SCPLoginPridictive.h"
+
+#define DESC_COUNT_LIMIT 50
+#define NAME_COUNT_LIMIT 12
 @interface SCPSettingUserinfoController ()
 
 @end
@@ -81,7 +84,7 @@
     [okButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
     [okButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
     [okButton addTarget:self action:@selector(saveButton:) forControlEvents:UIControlEventTouchUpInside];
-    okButton.frame = CGRectMake(320 - 35, 0, 35, 35);
+    okButton.frame = CGRectMake(320 - 40, 2, 35, 35);
     [self.view addSubview:okButton];
     
     _portraitView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 100, 60, 60)];
@@ -110,13 +113,13 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
-    return (newLength > 12) ? NO : YES;
+    return (newLength > NAME_COUNT_LIMIT) ? NO : YES;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSUInteger newLength = [textView.text length] + [text length] - range.length;
-    return (newLength > 400) ? NO : YES;
+    return (newLength > DESC_COUNT_LIMIT) ? NO : YES;
 }
 
 //- (BOOL) textViewShouldBeginEditing:(UITextView *)textView

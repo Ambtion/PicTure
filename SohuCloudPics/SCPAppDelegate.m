@@ -41,44 +41,52 @@ void customedExceptionHandler(NSException *exception)
 }
 - (void)pragramerSetting
 {
-//    NSLog(@"home::%@",NSHomeDirectory());
-//    NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
-//    NSLog(@"%@",[dic allKeys]);
-//    NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
-//    NSUserDefaults *appUserDefaults = [[NSUserDefaults alloc] init];
-//    NSLog(@"Start dumping userDefaults for %@", bundleId);
-//    NSLog(@"userDefaults dump: %@", [appUserDefaults persistentDomainForName: bundleId]);
-//    NSLog(@"Finished dumping userDefaults for %@", bundleId);
-//    [appUserDefaults release];
-//    NSLog(@"%@",NSHomeDirectory());
-    
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
+    [self removeCache];
 }
-- (void)addDescriptionAboutImage
+- (void)removeCache
 {
-    if (![SCPLoginPridictive isLogin]) return;
-    NSString * str = [NSString stringWithFormat:@"%@/photos/%@",BASICURL_V1,@"50831598828003328"];
-    NSLog(@"%@",str);
-    __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setStringEncoding:NSUTF8StringEncoding];
-    [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
-    [request setPostValue:@"描述sBBBB"  forKey:@"description"];
-    [request setRequestMethod:@"PUT"];
-	[request setCompletionBlock:^{
-        NSLog(@"%@ %d",[request responseString],[request responseStatusCode]);
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"%@",[request error]);
-
-    }];
-    [request startAsynchronous];
+    NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
+    NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
+    NSUserDefaults *appUserDefaults = [[[NSUserDefaults alloc] init] autorelease];
+    NSLog(@"Start dumping userDefaults for %@", bundleId);
+    NSDictionary * cacheDic = [appUserDefaults persistentDomainForName: bundleId];
+    NSLog(@"%@",[cacheDic allKeys]);
     
-}
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * _use_id = nil;
+    NSString * _use_token = nil;
+    NSNumber * GuideViewShowed = nil;
+    NSNumber * FunctionShowed = nil;
+    //read
+    if ([defaults objectForKey:@"__USER_ID__"])
+        _use_id = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"__USER_ID__"]];
+    if ([defaults objectForKey:@"__USER_TOKEN__"])
+        _use_token = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"__USER_TOKEN__"]];
+    if ([defaults objectForKey:@"GuideViewShowed"])
+        GuideViewShowed = [[defaults objectForKey:@"GuideViewShowed"] copy];
+    if ([defaults objectForKey:@"FunctionShowed"])
+        FunctionShowed = [[defaults objectForKey:@"FunctionShowed"] copy];
+    
+    //remove
+    for (NSString * str in [cacheDic allKeys])
+        [defaults removeObjectForKey:str];
+    if (_use_id)
+        [defaults setObject:_use_id forKey:@"__USER_ID__"];
+    if (_use_token)
+        [defaults setObject:_use_token forKey:@"__USER_TOKEN__"];
+    if (GuideViewShowed)
+        [defaults setObject:GuideViewShowed forKey:@"GuideViewShowed"];
+    if (FunctionShowed)
+        [defaults setObject:FunctionShowed forKey:@"FunctionShowed"];
+    [defaults synchronize];
+    NSDictionary * cacheDic_c = [appUserDefaults persistentDomainForName: bundleId];
+    NSLog(@"cache_c %@",[cacheDic_c allKeys]);
 
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    [self addDescriptionAboutImage];
-//    [self pragramerSetting];
+    [self pragramerSetting];
     [UIApplication sharedApplication].statusBarHidden = YES;
     SCPMainTabController *mainTab = [[SCPMainTabController alloc] initWithNibName:nil bundle:NULL];
     SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];

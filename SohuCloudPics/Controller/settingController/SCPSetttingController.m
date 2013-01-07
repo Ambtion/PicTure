@@ -9,10 +9,6 @@
 #import "SCPSetttingController.h"
 #import "SCPSettingRootViewController.h"
 
-@interface SCPSetttingController ()
-
-@end
-
 @implementation SCPSetttingController
 
 - (id)initWithcontroller:(id)controller
@@ -30,12 +26,6 @@
 {
     [super viewDidLoad];
     [self.navigationBar setHidden:YES];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
