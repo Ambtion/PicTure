@@ -303,6 +303,7 @@
         case SCPAlbumControllerStateDelete:
         {
             /* delete */
+			NSLog(@"hererererererererererer");
             SCPAlert_LoginView *alertView = [[[SCPAlert_LoginView alloc] initWithMessage:@"确定要删除吗？" delegate:self] autorelease];
             alertView.tag = imageView.tag;
             [alertView show];

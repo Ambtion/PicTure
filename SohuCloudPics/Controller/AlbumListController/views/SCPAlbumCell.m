@@ -29,7 +29,6 @@ static UIImage *emptyFolderCoverImage = nil;
 #pragma mark - inner call
 - (void)onImageViewTapped:(UIGestureRecognizer *)gesture
 {
-
     if ([_delegate respondsToSelector:@selector(onImageViewClicked:)]) {
         [_delegate onImageViewClicked:(UIImageView *) gesture.view];
     }
