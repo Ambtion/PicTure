@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class FunctionguideScroll;
-@interface SCPAppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate>
+@interface SCPAppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate,UIWebViewDelegate>
 {
     FunctionguideScroll * _fgc;
 }

@@ -9,6 +9,7 @@
 #import "SCPMenuNavigationController.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import "SCPMainTabController.h"
 
 
 static CATransform3D CATransform3DMakePerspective(CGFloat z)
@@ -110,7 +111,6 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
         [menuView addSubview:menu];
         i++;
     }
-    
     menuManager.rootView = menuView;
     
     // add ribbon
@@ -229,9 +229,24 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
 {
     UIViewController * vc  = [super popViewControllerAnimated:animated];
+    if (self.childViewControllers.count == 1) [self reseticon];
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
     return vc;
 }
+- (void)reseticon
+{
+    SCPMainTabController * maintab = [self.childViewControllers objectAtIndex:0];
+    switch (maintab.selectedIndex) {
+        case 0:
+            [self.menuManager restIcon:3];
+            break;
+        case 1:
+            [self.menuManager restIcon:2];
+            break;
+        default:
+            break;
+    }
+} 
 - (void)resetMenu
 {
     if ([self.menuManager isMenuShowing]) [self hideMenu];

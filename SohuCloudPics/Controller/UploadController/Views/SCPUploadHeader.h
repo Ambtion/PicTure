@@ -35,7 +35,7 @@
 @property (assign, nonatomic) NSInteger currentAlbum;
 
 // view
-@property (strong, nonatomic) UILabel *nameLabel;
+//@property (strong, nonatomic) UILabel *nameLabel;
 @property (strong, nonatomic) UILabel *albumChooseLabel;
 @property (strong, nonatomic) UIButton *albumChooseButton;
 @property (strong, nonatomic) UILabel * albumNameLabel;

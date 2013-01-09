@@ -21,6 +21,7 @@
 }
 - (void)setSubViews
 {
+    
     [self setUserInteractionEnabled:YES];
     self.backgroundColor = [UIColor clearColor];
     self.image = [UIImage imageNamed:@"switch_btn.png"];
@@ -29,7 +30,8 @@
     gesutre.direction = UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight;
     [_button addGestureRecognizer:gesutre];
     [self addSubview:_button];
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"] || ![[[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"] boolValue]) {
+    id imageInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"];
+    if (!imageInfo ||[imageInfo boolValue]) {
         originalImage = 0;
         _button.frame = (CGRect) {40,0, 51, 27};
     }else{
@@ -51,7 +53,9 @@
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"JPEG"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
+    NSLog(@"after : store %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"]);
 }
+
 -(void)buttonDrag:(UISwipeGestureRecognizer *)gesture
 {
     originalImage = !originalImage;

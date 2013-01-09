@@ -232,7 +232,7 @@
 {
     [_tampview.layer removeAllAnimations];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    NSLog(@"animationDidStop is %d",isForwardImage);
+    
     if (isBack) {
         isBack = NO;
         [self.navigationController.navigationBar setHidden:NO];
@@ -244,7 +244,6 @@
         UINavigationController * nav = [[[UINavigationController alloc]initWithRootViewController:imageEdting] autorelease];
         self.imageForTemp  = nil;
         [self presentModalViewController:nav animated:YES];
-        
     }else if (isForwardGif){
         isForwardGif  = NO;
         GiFViewController * gif_c = [[[GiFViewController alloc] initWithImages:[[_gifArray copy] autorelease] andDurationTimer:durationSeconds :self] autorelease];

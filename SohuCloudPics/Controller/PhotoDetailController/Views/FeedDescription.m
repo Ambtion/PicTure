@@ -60,11 +60,10 @@
 {
     if (!_dataSource.describtion ||![_dataSource.describtion isKindOfClass:[NSString class]]||[_dataSource.describtion isEqualToString:@""]) {
         describLabel.text = @"该图片无描述";
-    }else{
-        
+    }else{        
         describLabel.text = _dataSource.describtion;
-        [describLabel sizeToFit];
     }
+    [describLabel sizeToFit];
 }
 -(FeedDescriptionSource*)dataScoure
 {

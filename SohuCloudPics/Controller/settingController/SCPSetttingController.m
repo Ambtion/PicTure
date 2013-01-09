@@ -16,16 +16,10 @@
     SCPSettingRootViewController * sc = [[SCPSettingRootViewController alloc] initwithController:controller];
     self = [super initWithRootViewController:sc];
     if (self) {
-        
+        [self.navigationBar setHidden:YES];
     }
     [sc release];
     return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self.navigationBar setHidden:YES];
 }
 
 @end

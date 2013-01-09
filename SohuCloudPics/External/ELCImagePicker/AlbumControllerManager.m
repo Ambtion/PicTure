@@ -26,7 +26,6 @@
     albumController.delController = delCtrl;
     elcPicker.backTo = controller;
     self = [super initWithRootViewController:delCtrl];
-  
     if (self) {
         self.view.autoresizesSubviews = YES;
         self.navigationBar.tintColor = [UIColor clearColor];

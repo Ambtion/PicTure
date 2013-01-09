@@ -30,7 +30,6 @@
 @implementation SCPUploadHeader
 @synthesize delegate = _delegate;
 @synthesize currentAlbum = _currentAlbum;
-@synthesize nameLabel = _nameLabel;
 @synthesize albumChooseLabel = _albumChooseLabel;
 @synthesize albumChooseButton = _albumChooseButton;
 @synthesize albumNameLabel = _albumNameLabel;
@@ -43,7 +42,6 @@
     [_foldersArray release];
     [_albumsTable release];
     [_manager release];
-    [_nameLabel release];
     [_albumChooseLabel release];
     [_albumNameLabel release];
     [_albumChooseButton release];
@@ -64,10 +62,10 @@
 }
 - (void)addSubviews
 {
-    // name title
-    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 320, 36)];
-    [UIUtils updateTitleLabel:_nameLabel title:@"分享图片"];
-    [self addSubview:_nameLabel];
+    
+    UIImageView * titleImage = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title_save_photos.png"]] autorelease];
+    titleImage.frame = CGRectMake(110, 43, 100, 24);
+    [self.contentView addSubview:titleImage];
     
     // album choose
     _albumChooseLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 86, 300, 20)];
@@ -75,18 +73,13 @@
     [self addSubview:_albumChooseLabel];
     _currentAlbum = 0;
     
-    _albumChooseButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-    _albumChooseButton.frame = CGRectMake(10, 111, 200, 40);
-    _albumChooseButton.selected = NO;
- 
-    [_albumChooseButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"share_btn_up_normal.png"] forState:UIControlStateSelected];
-
-    [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"share_btn_down_normal.png"] forState:UIControlStateNormal];
-    [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"share_btn_down_press.png"] forState:UIControlStateHighlighted];
-    
-//    [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"share_btn_up_press.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    _albumChooseButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    _albumChooseButton.frame = CGRectMake(10, 111 + 10, 200, 40);
+    _albumChooseButton.tag = 0;
+    [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_normal.png"] forState:UIControlStateNormal | UIControlStateSelected];
+    [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_press.png"] forState:UIControlStateHighlighted | UIControlStateSelected];
     [_albumChooseButton addTarget:self action:@selector(albumChooseButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    
     [self addSubview:_albumChooseButton];
     
     _albumNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, 40)];
@@ -94,15 +87,13 @@
     _albumNameLabel.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
     _albumNameLabel.font = [_albumChooseButton.titleLabel.font fontWithSize:15];
     _albumNameLabel.textAlignment = UITextAlignmentCenter;
-//    _albumNameLabel.text = @"新建相册";
-    
     [_albumChooseButton addSubview:_albumNameLabel];
     
-    
-    _albumsTable = [[UITableView alloc] initWithFrame:CGRectMake(10, 156, 200, 120) style:UITableViewStylePlain];
+    _albumsTable = [[UITableView alloc] initWithFrame:CGRectMake(10, 163, 200, 120) style:UITableViewStylePlain];
     _albumsTable.layer.borderWidth = 1.0;
-    _albumsTable.layer.cornerRadius = 3.0;
-    
+    _albumsTable.layer.borderColor = [UIColor colorWithRed:145.f/255 green:145.f/255 blue:145.f/255 alpha:1].CGColor;
+    _albumsTable.layer.cornerRadius = 8.f;
+
 }
 - (void)initManager
 {
@@ -140,11 +131,11 @@
     }else{
         [_albumsTable reloadData];
         if (array.count == 0) {
-            [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"add_new_albume_btn_normal.png"] forState:UIControlStateNormal];
-            [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"add_new_albume_btn_press.png"] forState:UIControlStateHighlighted];
+            [_albumChooseButton setImage:[UIImage imageNamed:@"add_new_albume_btn_normal.png"] forState:UIControlStateNormal];
+            [_albumChooseButton setImage:[UIImage imageNamed:@"add_new_albume_btn_press.png"] forState:UIControlStateHighlighted];
         }else{
-            [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"share_btn_down_normal.png"] forState:UIControlStateNormal];
-            [_albumChooseButton setBackgroundImage:[UIImage imageNamed:@"share_btn_down_press.png"] forState:UIControlStateHighlighted];
+            [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_normal.png"] forState:UIControlStateNormal];
+            [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_press.png"] forState:UIControlStateHighlighted];
            
             self.currentAlbum = 0;
         }
@@ -173,11 +164,11 @@
         [aln show];
         return;
     }
-    _albumChooseButton.selected = !_albumChooseButton.selected;
-    if (_albumChooseButton.selected) {
+    _albumChooseButton.tag = !_albumChooseButton.tag;
+    if (_albumChooseButton.tag) {
         // very very bad design, must be fixed later!!!
         UITableView *table = (UITableView *) self.superview;
-        _albumsTable.frame = CGRectMake(10, 156 - table.contentOffset.y, 200, 120);
+        _albumsTable.frame = CGRectMake(10, 163 - table.contentOffset.y, 200, 120);
         [self.superview.superview addSubview:_albumsTable];
         [self.superview.superview bringSubviewToFront:_albumsTable];
         [_albumsTable becomeFirstResponder];
@@ -208,31 +199,29 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 35;
+    return 38;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     int row = indexPath.row;
+    SCPNewFoldersCell * cell = [tableView dequeueReusableCellWithIdentifier:@"NewFolders"];
+    if (!cell) {
+        cell = [[SCPNewFoldersCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NewFolders"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
     if (row == 0) {
-        SCPNewFoldersCell * cell = [tableView dequeueReusableCellWithIdentifier:@"NewFolders"];
-        if (!cell) {
-            cell = [[SCPNewFoldersCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NewFolders"];
-        }
         cell.labelText.text = @"新建相册";
         cell.addView.image = [UIImage imageNamed:@"add_new_albume.png"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
+    }else{
+        FoldersMode * model = [_header.foldersArray objectAtIndex:(row - 1)];
+        cell.labelText.text = model.foldrsName;
+        if (model.isPublic) {
+            cell.addView.image = [UIImage imageNamed:@"unlock_albume.png"];
+        }else{
+            cell.addView.image = [UIImage imageNamed:@"lock_albume.png"];
+        }
     }
-    static NSString *REUSE_ID = @"__AlbumsTableManager";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REUSE_ID];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:REUSE_ID] autorelease];
-        cell.textLabel.font = [UIFont systemFontOfSize:15];
-        cell.textLabel.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-    }
-    cell.textLabel.text = ((FoldersMode *)[_header.foldersArray objectAtIndex:(row - 1)]).foldrsName;
     return cell;
 }
 

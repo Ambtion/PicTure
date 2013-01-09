@@ -66,7 +66,7 @@
             UIImageView *frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 5, 0, 95, 95)];
             [frameImageView setImage:background];
             [frameImageView setUserInteractionEnabled:YES];
-
+            
             [_frameImageViewList addObject:frameImageView];
             [self.contentView addSubview:frameImageView];
             [frameImageView release];
@@ -104,10 +104,9 @@
             [countLabel release];
             
             /* progress view */
-            UIProgressView * progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 73, 64, 8)];
-            [progressView setProgressImage:[UIImage imageNamed:@"prog_done.png"]];
-            
-            [progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0]];
+            UIProgressView * progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 73 + 5, 64, 9)];
+            [progressView setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
+            [progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             progressView.progress = 0.f;
             
             [_progressViewList addObject:progressView];
@@ -226,12 +225,11 @@
 	} else {
 		[coverImageView setImage:[self getEmptyFolderCoverImage]];
 	}
-   
+    
     
     /* set progess view */
     UIProgressView *progressView = [self progressViewAt:position];
     [progressView setHidden:!album.isUploading];
-    
     /* set name label */
     UILabel *nameLabel = [self nameLabelAt:position];
     [nameLabel setHidden:NO];

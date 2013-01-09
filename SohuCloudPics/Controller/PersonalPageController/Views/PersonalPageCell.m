@@ -180,11 +180,6 @@
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
     
-    if (self.datasource.isMe ) {
-        [_followButton setHidden:YES];
-    }else{
-        [_followButton setHidden:NO];
-    }
     
     if (self.datasource.isInit) {
         _portraitImageView.image = nil;
@@ -197,6 +192,12 @@
     }else{
         [_followButton setHidden:NO];
         bgCircleView.image = [UIImage imageNamed:@"user_bg_photo.png"];
+    }
+    
+    if (self.datasource.isMe ) {
+        [_followButton setHidden:YES];
+    }else{
+        [_followButton setHidden:NO];
     }
 }
 

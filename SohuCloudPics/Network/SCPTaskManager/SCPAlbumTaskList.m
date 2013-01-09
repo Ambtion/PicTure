@@ -49,9 +49,11 @@
     self.currentTask.request = [self getUploadRequest:nil];
     [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit * unit) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
+            
             if (unit.description && ![unit.description isEqualToString:@""])
                 [self.currentTask.request setPostValue:unit.description forKey:@"desc"];
-            [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
             if (!self.currentTask.request.isCancelled)
                 [self.currentTask.request startAsynchronous];
         });
@@ -124,6 +126,7 @@
     NSLog(@"%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
+    
     if (self.taskList.count)
         [self.taskList removeObjectAtIndex:0];
     if ([_delegate respondsToSelector:@selector(albumTask:requsetFailed:)]) {

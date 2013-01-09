@@ -10,7 +10,7 @@
 #import "SCPFollowedListViewController.h"
 
 #import "SCPPersonalPageViewController.h"
-
+#import "SCPMyHomeViewController.h"
 @implementation SCPFollowedListManager
 @synthesize controller = _controller;
 
@@ -256,7 +256,15 @@
 -(void)follweCommonCell:(SCPFollowCommonCell *)cell followImage:(id)image
 {
     NSLog(@"follweCommonCell followImage");
-    SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:cell.dataSource.user_id] autorelease];
-    [_controller.navigationController pushViewController:scp animated:YES];
+    if ([SCPLoginPridictive currentUserId] &&
+        [cell.dataSource.user_id isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
+        
+        SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
+        [_controller.navigationController pushViewController:myhome animated:YES];
+
+    }else{
+        SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:cell.dataSource.user_id] autorelease];
+        [_controller.navigationController pushViewController:scp animated:YES];
+    }
 }
 @end

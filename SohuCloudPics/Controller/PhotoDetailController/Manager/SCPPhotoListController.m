@@ -21,6 +21,7 @@
 @synthesize info;
 @synthesize actV;
 @synthesize webView;
+@synthesize requset;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -56,10 +57,46 @@
     self.webView = [[[UIWebView alloc] initWithFrame:self.frame] autorelease];
     self.webView.userInteractionEnabled = NO;//用户不可交互
     self.webView.delegate = self;
-    [self.superview addSubview:self.webView];
     self.webView.backgroundColor = [UIColor clearColor];
-    [self.webView loadRequest:[NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageAllowed timeoutInterval:20]];
+    [self.superview addSubview:self.webView];
     [self.superview sendSubviewToBack:self.webView];
+    NSData * data = nil;
+    NSFileManager * manager  = [NSFileManager defaultManager];
+    NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
+    str = [str stringByAppendingFormat:@"%@/%@",str, [url absoluteString]];
+    NSLog(@"Gif: %@",str);
+    if ([manager fileExistsAtPath:str])
+        data = [NSData dataWithContentsOfFile:str];
+    if (data) {
+        NSLog(@"read Form Memory");
+        [self.webView loadData:data MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
+    }else{
+        self.requset = [ASIHTTPRequest requestWithURL:url];
+        self.requset.delegate = self;
+        [self.requset setTimeOutSeconds:5.f];
+        [self.requset startAsynchronous];
+        NSLog(@"read Form NetWork");
+    }
+}
+#pragma mark -RequseDelegate
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSData * data = [requset responseData];
+    if (self.webView)
+        [self.webView loadData:data MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
+    NSLog(@"start play gif");
+    NSFileManager * manager  = [NSFileManager defaultManager];
+    NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
+    str = [str stringByAppendingFormat:@"%@/%@",str, [request.url absoluteString]];
+    if ([manager fileExistsAtPath:str])
+        [manager removeItemAtPath:str error:nil];
+    [data writeToFile:str atomically:YES];
+    NSLog(@"store into Memory");
+}
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    SCPAlert_CustomeView * cusView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"gif加载失败"] autorelease];
+    [cusView show];
 }
 #pragma mark - WebViewDelegate
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -73,6 +110,8 @@
 }
 - (void)resetGigView
 {
+    [self.requset clearDelegatesAndCancel];
+    self.requset = nil;
     [self.webView removeFromSuperview];
     self.webView = nil;
 }
@@ -81,6 +120,7 @@
     self.info = nil;
     self.actV = nil;
     self.webView = nil;
+    self.requset = nil;
     [super dealloc];
 }
 @end
@@ -132,7 +172,6 @@
         animation = NO;
         hasNextPage = YES;
         self.info = info;
-        isInit = YES;
         isLoading = NO;
         _requestManger = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
@@ -164,20 +203,20 @@
     return CGAffineTransformIdentity;
 }
 
-- (void)listOrientationinit
-{
-    if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
-        self.view.frame = [UIScreen mainScreen].bounds;
-        [self initSubViews];
-    }else{
-        NSLog(@"%s",__FUNCTION__);
-        self.view.frame = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
-        [self initSubViews];
-        if (self.view.frame.size.width < self.view.superview.frame.size.height)
-            self.view.transform = [self getTransfrom];
-        self.view.frame  = self.view.superview.bounds;
-    }
-}
+//- (void)listOrientationinit
+//{
+//    if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
+//        self.view.frame = [UIScreen mainScreen].bounds;
+//        [self initSubViews];
+//    }else{
+//        NSLog(@"%s",__FUNCTION__);
+//        self.view.frame = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
+//        [self initSubViews];
+//        if (self.view.frame.size.width < self.view.superview.frame.size.height)
+//            self.view.transform = [self getTransfrom];
+//        self.view.frame  = self.view.superview.bounds;
+//    }
+//}
 
 - (void)listOrientationChanged:(NSNotification *)notification
 {
@@ -205,8 +244,9 @@
         }
         transform = [self getTransfrom];
     }
+    
     transform  = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(scale, scale));
-    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut    animations:^{
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut    animations:^{
         [self getCurrentImageView].transform = transform;
     } completion:^(BOOL finished) {
         self.view.transform = [self getTransfrom];
@@ -223,7 +263,6 @@
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     isLoading = NO;
-    //    NSLog(@"%@",info);
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolist = [info objectForKey:@"photoList"];
     if ([folderinfo allKeys]) {
@@ -380,7 +419,7 @@
     [_dataManager dataSourcewithRefresh:YES];
     animation = YES;
     [_dataManager.controller showNavigationBar];
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         [self.currentImageView setAlpha:0];
     } completion:^(BOOL finished) {
         [self.view removeFromSuperview];
@@ -433,7 +472,7 @@
     [[[[UIApplication sharedApplication] delegate] window] addSubview:self.view];
     animation = NO;
     [self.view setUserInteractionEnabled:YES];
-    [self listOrientationinit];
+//    [self listOrientationinit];
 }
 - (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect
 {
@@ -506,7 +545,6 @@
 }
 - (void)resetImageFrame:(InfoImageView*)imageView
 {
-    
     if (!imageView.info) {
         return;
     }
@@ -523,7 +561,6 @@
     if (w > frameRect.size.width || h > frameRect.size.height) {
         CGFloat scale = MIN(frameRect.size.width / w, frameRect.size.height / h);
         rect = CGRectMake(0, 0, w * scale, h * scale);
-        
         if ([imageView isEqual:self.currentImageView]){
             self.curscrollView.maximumZoomScale = MIN(frameRect.size.width * 2 / rect.size.width, frameRect.size.height * 2 / rect.size.height);
         }
@@ -563,10 +600,8 @@
     [imageView resetGigView];
     [self resetModel:imageView];
     
-    
     if ([[imageView info] objectForKey:@"photo_url"]);
     {
-        [imageView cancelCurrentImageLoad];
         if (![[[imageView info] objectForKey:@"multi_frames"] boolValue])
             [imageView.actV startAnimating];
         NSString * str = nil;
@@ -586,8 +621,7 @@
             imageView.frame = CGRectMake(0, 0, w, h);
             imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
             [self setModelForGif:imageView];
-//            if (self.currentImageView == imageView)
-                [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
+            [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
         }
     }
 }
@@ -661,8 +695,8 @@
         self.rearImageView.info = [curImages objectAtIndex:2];
         self.info = self.currentImageView.info;
         
-        [self resetImageFrame:self.fontImageView];
         [self resetImageFrame:self.currentImageView];
+        [self resetImageFrame:self.fontImageView];
         [self resetImageFrame:self.rearImageView];
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
     }
@@ -673,11 +707,11 @@
     if (!imageArray || imageArray.count == 0) {
         return;
     }
-    if (isInit){
-        isInit = NO;
-        return;
-    }
-    
+//    if (isInit){
+//        isInit = NO;
+//        return;
+//    }
+//    
     NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
     if (photoNum < 3) {
         [self refreshScrollviewWhenPhotonumLessThree];
@@ -721,6 +755,7 @@
             return;
         }
         curPage = [self validPageValue:curPage+1];
+        dirction = upTomore;
         [self refreshScrollView];
     }
     
@@ -732,6 +767,7 @@
             return;
         }
         curPage = [self validPageValue:curPage-1];
+        dirction = downToless;
         [self refreshScrollView];
     }
     

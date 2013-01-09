@@ -41,7 +41,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]){
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]){
             success([[[request responseString] JSONValue] objectForKey:@"photos"]);
         }else {
             faiture([NSString stringWithFormat:@"网络连接异常"]);
@@ -62,7 +62,7 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
@@ -94,7 +94,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             success(dic);
@@ -127,7 +127,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
@@ -154,7 +154,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"feedList"];
@@ -187,7 +187,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
@@ -218,7 +218,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             
             NSString * str = [request responseString];
 //            NSLog(@"%@",str);
@@ -255,7 +255,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
@@ -288,7 +288,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
 //            NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
@@ -314,10 +314,12 @@
 - (void)getFeedMineInfo
 {
     NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentUserId],[SCPLoginPridictive currentToken]];
+    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
@@ -344,7 +346,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"feedList"];
@@ -374,7 +376,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
@@ -405,7 +407,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"Followings"];
@@ -434,7 +436,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
@@ -464,7 +466,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"Followers"];
@@ -493,7 +495,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setCompletionBlock:^{
 //        NSLog(@"%@",[request responseString]);
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 &&[[request responseString] JSONValue]) {
+        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
@@ -521,7 +523,7 @@
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
 	[request setCompletionBlock:^{
 //        NSLog(@"%@",[request responseString]);
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
             failure(@"网络连接异常");
@@ -542,7 +544,7 @@
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
             failure(@"网络连接异常");
@@ -561,7 +563,7 @@
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
             failure(@"网络连接异常");
@@ -580,7 +582,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.requestMethod = @"DELETE";
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
             failure(@"网络连接异常");
@@ -602,7 +604,7 @@
         [request setPostValue:ob withoutRemoveforKey:@"photo_id"];
     [request setPostValue:folder_id forKey:@"folder_id"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
             failure(@"网络连接异常");
@@ -625,7 +627,7 @@
     [request setPostValue:[NSNumber numberWithBool:NO] forKey:@"is_public"];
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
             failure(@"网络连接异常");
@@ -645,7 +647,7 @@
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
 //        NSLog(@"%@",[request responseString]);
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
             failure(@"网络连接异常");
@@ -666,7 +668,7 @@
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
         NSLog(@"%@",[request responseString]);
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] <= 300) {
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
             failure(@"网络连接异常");

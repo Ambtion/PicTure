@@ -9,16 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "UIImageView+WebCache.h"
 #import "SCPRequestManager.h"
-//#import "PhotoDetailManager.h"
 #import  <QuartzCore/QuartzCore.h>
+#import "ASIHTTPRequest.h"
 
 @class PhotoDetailManager;
 
-@interface InfoImageView : UIImageView<UIWebViewDelegate>
+@interface InfoImageView : UIImageView<UIWebViewDelegate,ASIHTTPRequestDelegate>
 
 @property(nonatomic,retain)NSDictionary * info;
 @property(nonatomic,assign)UIActivityIndicatorView * actV;
 @property(nonatomic,retain)UIWebView * webView;
+@property(nonatomic,retain)ASIHTTPRequest * requset;
 - (void)playGif:(NSURL *)url;
 - (void)resetGigView;
 @end
@@ -28,6 +29,13 @@
 @protocol SCPPhotoListControllerDeletate <NSObject>
 - (void)whenViewRemveFromSuperview:(SCPPhotoListController *)controller;
 @end
+enum Dirction {
+    upTomore = 0,
+    downToless = 1,
+    upMax = 2,
+    downMin = 3
+};
+
 @interface SCPPhotoListController : UIViewController <UIScrollViewDelegate,SCPRequestManagerDelegate>
 {
     UIView * _bgView;
@@ -51,8 +59,9 @@
     BOOL hasNextPage;
     //for animation
     BOOL animation;
-    BOOL isInit;
+//    BOOL isInit;
     BOOL isLoading;
+    enum Dirction dirction;
 }
 @property (nonatomic,retain)UIView * tempView;
 @property (nonatomic,retain)NSDictionary * info;

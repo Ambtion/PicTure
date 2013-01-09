@@ -52,7 +52,7 @@
 + (void)updateCountLabel:(UILabel *)label
 {
     label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor colorWithRed:98.0/255.0 green:98.0/255.0 blue:98.0/255.0 alpha:1.0];
+    label.textColor = [UIColor colorWithRed:125/255.0 green:125/255.0 blue:125/255.0 alpha:1.0];
     label.textAlignment = UITextAlignmentRight;
     label.font = [label.font fontWithSize:15];
 }

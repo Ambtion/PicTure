@@ -43,18 +43,14 @@
         [alter show];
         return;
     }
-    NSLog(@"selectedAssets");
 	NSMutableArray *returnArray = [[[NSMutableArray alloc] init] autorelease];
-	
 	for(ALAsset *asset in _assets) {
 
 		NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
 		[workingDictionary setObject:[asset valueForProperty:ALAssetPropertyType] forKey:@"UIImagePickerControllerMediaType"];
-//        [workingDictionary setObject:[UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]] forKey:@"UIImagePickerControllerOriginalImage"];
-//		[workingDictionary setObject:[[asset valueForProperty:ALAssetPropertyURLs] valueForKey:[[[asset valueForProperty:ALAssetPropertyURLs] allKeys] objectAtIndex:0]] forKey:@"UIImagePickerControllerReferenceURL"];
-        
+        NSLog(@"thumb :%zu  thumbRation: %zu",CGImageGetWidth([asset thumbnail]), CGImageGetWidth([asset aspectRatioThumbnail]));
         [workingDictionary setObject:asset.defaultRepresentation.url forKey:@"UIImagePickerControllerRepresentationURL"];
-        [workingDictionary setObject:[UIImage imageWithCGImage:[asset thumbnail] ]forKey:@"UIImagePickerControllerThumbnail"];
+        [workingDictionary setObject:[UIImage imageWithCGImage:[asset aspectRatioThumbnail] ]forKey:@"UIImagePickerControllerThumbnail"];
 		[returnArray addObject:workingDictionary];
 		
 		[workingDictionary release];	

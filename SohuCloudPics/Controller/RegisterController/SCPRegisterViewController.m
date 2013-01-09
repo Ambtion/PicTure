@@ -128,8 +128,8 @@
     [backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
+    
 }
-
 - (void)backButtonClick:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -156,16 +156,17 @@
     [self allTextFieldsResignFirstResponder];
     _displayPasswordButton.selected = !_displayPasswordButton.selected;
     _passwordTextField.secureTextEntry = !_displayPasswordButton.selected;
+    
 }
-
 - (void)doRegister
 {
+    
+    NSLog(@"%s",__FUNCTION__);
     UINavigationController *nav = self.navigationController;
     SCPFinishRegisterViewController *ctrl = [[SCPFinishRegisterViewController alloc] initWithEmail:_usernameTextField.text];
     [nav popViewControllerAnimated:NO];
     [nav pushViewController:ctrl animated:YES];
     [ctrl release];
-    
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification

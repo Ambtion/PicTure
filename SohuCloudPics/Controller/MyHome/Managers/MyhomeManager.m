@@ -254,12 +254,6 @@ static float OFFSET = 0.f;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger i = indexPath.row;
-    //    switch (i) {
-    //        case 0:
-    //            return 367 + 60 + 10;//for PersonalPageCell
-    //        default:
-    //            return MAX(((FeedCellDataSource *)[_dataArray objectAtIndex:indexPath.row]).heigth + 70 + 10, 390 + 10);;//for FeedCell
-    //    }
     if (i == 0) {
         return 367 + 60 + 10;//for PersonalPageCell
     }
@@ -277,6 +271,7 @@ static float OFFSET = 0.f;
 {
     
     NSInteger row = indexPath.row;
+    
     if (row == 0) {
         MyPersonalCell* pageCell = [tableView dequeueReusableCellWithIdentifier:@"PAGECELL"];
         if (pageCell == nil) {
@@ -339,7 +334,7 @@ static float OFFSET = 0.f;
 #pragma mark CELL - Method
 - (void)MyPersonalCell:(MyPersonalCell *)cell settingClick:(id)sender
 {
-    SCPSetttingController * setting = [[[SCPSetttingController alloc] initWithcontroller:_controller] autorelease];
+    SCPSetttingController * setting = [[[SCPSetttingController alloc] initWithcontroller:_controller.navigationController] autorelease];
     [_controller.navigationController presentModalViewController:setting animated:YES];
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender
@@ -347,9 +342,6 @@ static float OFFSET = 0.f;
     SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [_controller.navigationController pushViewController:alb animated:YES];
     [alb release];
-//    SCPAlbumGridController * alb = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:]];
-//    [_controller.navigationController pushViewController:alb animated:YES];
-//    [alb release];
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell favoriteClicked:(id)sender
 {

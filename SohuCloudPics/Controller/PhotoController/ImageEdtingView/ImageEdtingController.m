@@ -38,6 +38,7 @@
     [_clipview release];
     [_fitteBar release];
     [_library release];
+    [_shadowView release];
     self.assetURL = nil;
     self.groupName = nil;
     [Filterlibrary removeCachedAllImageData];
@@ -47,6 +48,7 @@
 #pragma customize NavigationBar
 -(void)viewWillAppear:(BOOL)animated
 {
+    
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController.navigationBar setHidden:YES];
     if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
@@ -60,20 +62,29 @@
 {
     self = [super init];
     if (self) {
+        
+        
         controller = Acontroller;
         NSLog(@"initWithUIImage %@",NSStringFromCGSize(image.size));
         [self initdataContainer];
         [self compressImage:image];
-        [self writeImageToalbum:image];
+        
+        UIGraphicsBeginImageContext(image.size);
+        [image drawInRect:(CGRect){0,0,image.size}];
+        UIImage* N_image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        self.originalImage = N_image;
+        
+//        [self writeImageToalbum:image];
         [self addSubViews];
     }
-    
     return self;
 }
 -(id)initWithAsset:(NSURL *)url info:(id)info :(NSInteger)num
 {
     self = [super init];
     if (self) {
+        self.originalImage = nil;
         infoNum = num;
         _info = info;
         self.assetURL = url;
@@ -82,7 +93,6 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIImage * image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
                 [self compressImage:image];
-                _writeEnd = YES;
                 [self addSubViews];
             });
         } failureBlock:^(NSError *error) {
@@ -98,7 +108,6 @@
     }
     NSLog(@"initdataContainer");
     _isBlured = NO;
-    _writeEnd = NO;
     _filternum = -1;
     _angleNum = 0;
     _roationScale = 1.f;
@@ -124,36 +133,7 @@
         _scale_compress = 1;
     }
     self.filterImage = self.originalThumbImage;
-    
     NSLog(@"compressImage size:%@",NSStringFromCGSize(image.size));
-    
-}
--(void)writeImageToalbum:(UIImage*)image
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        @autoreleasepool {
-            UIGraphicsBeginImageContext(image.size);
-            [image drawInRect:(CGRect){0,0,image.size}];
-            UIImage* N_image = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            [_library writeImageToSavedPhotosAlbum:N_image.CGImage orientation:(ALAssetOrientation)[self.originalImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
-                if (error) {
-                    NSLog(@"error%@",error);
-                    return ;
-                }
-                [_library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-                    self.assetURL = asset.defaultRepresentation.url;
-                    _writeEnd = YES;
-                    NSLog(@"asset %@",asset.description);
-//                    [self stopWait];
-                } failureBlock:^(NSError *error) {
-                    NSLog(@"asset ::%@",error);
-                }];
-            }];
-            
-        }
-    });
-    
 }
 
 #pragma mark -
@@ -187,7 +167,6 @@
     NSLog(@"%@",NSStringFromCGRect(self.view.frame));
     
     CGRect rect = CGRectMake(0, 0, self.originalThumbImage.size.width /2, self.originalThumbImage.size.height /2);
-    
     _imageview = [[UIImageView alloc] initWithFrame:rect];
     
     CATransition *transition = [CATransition animation];
@@ -369,7 +348,6 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.3];
     _imageview.transform = CGAffineTransformIdentity;
-    
     [UIView commitAnimations];
 }
 
@@ -447,15 +425,7 @@
 }
 -(void)buttonSave:(UIButton*)button
 {
-    
-    //考虑到文件写入速度和处理的先后问题??
-    if (_writeEnd == NO) {
-//        UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"图像处理中,请稍等..." message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] autorelease];
-//        [alterView show];
-        return;
-    }
     [self renderDefaultImage];
-    
 }
 - (void)dismissController
 {
@@ -464,57 +434,45 @@
 }
 -(void)renderDefaultImage
 {
-    //图片未最任何处理....
-    if (_filternum == -1 && !_isBlured &&!_clipview.superview && !_angleNum) {
-        
-        if (![SCPLoginPridictive isLogin]) {
-            [self waitForMomentsWithTitle:@"保存到相册..."];
-            [self performSelector:@selector(dismissController) withObject:nil afterDelay:1.f];
-            return ;
-        }
-        [_library assetForURL:self.assetURL resultBlock:^(ALAsset *asset) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
-                [workingDictionary setObject:[asset valueForProperty:ALAssetPropertyType] forKey:@"UIImagePickerControllerMediaType"];
-                [workingDictionary setObject:asset.defaultRepresentation.url forKey:@"UIImagePickerControllerRepresentationURL"];
-                [workingDictionary setObject:[UIImage imageWithCGImage:[asset thumbnail] ]forKey:@"UIImagePickerControllerThumbnail"];
-                
-                SCPUploadController * ctrl = [[[SCPUploadController alloc] initWithImageToUpload:[NSArray arrayWithObject:workingDictionary] :controller] autorelease];
-                [self.navigationController pushViewController:ctrl animated:YES];
-                [workingDictionary release];
-                
-            });
-        } failureBlock:^(NSError *error) {
-        }];
+    
+    if (self.originalImage) {
+        [self waitForMomentsWithTitle:@"保存到相册..."];
+        dispatch_async(dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self modifImage];
+        });
         return;
     }
-    //图片做出处理
+    [self waitForMomentsWithTitle:@"保存到相册..."];
     [_library assetForURL:self.assetURL resultBlock:^(ALAsset *asset) {
         self.originalImage = [UIImage imageWithCGImage:[asset defaultRepresentation].fullResolutionImage];
-        [self waitForMomentsWithTitle:@"保存到相册..."];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (_filternum != -1)
-                self.originalImage = [ImageUtil imageWithImage:self.originalImage withMatrixNum:_filternum];
-            if (_isBlured)
-                self.originalImage = [ImageToolBox image:self.originalImage addRadiuOnBlurimage:_clearPoint scale:_scale_compress];
-            if (_clipview.superview)
-                self.originalImage = [ImageToolBox image:self.originalImage clipinRect:[_clipview getclipRect] scale:_scale_compress];
-            if (_angleNum)
-                self.originalImage = [ImageToolBox image:self.originalImage afterRotate:_angleNum];
-            [self fixImageView];
-            [self writeToAlbum];
-            [self stopWait];
-            [self initdataContainer];
+        dispatch_async(dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self modifImage];
         });
-        
     } failureBlock:^(NSError *error) {
         NSLog(@"error %@",error);
     }];
     
 }
+- (void)modifImage
+{
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    if (_filternum != -1)
+        self.originalImage = [ImageUtil imageWithImage:self.originalImage withMatrixNum:_filternum];
+    if (_isBlured)
+        self.originalImage = [ImageToolBox image:self.originalImage addRadiuOnBlurimage:_clearPoint scale:_scale_compress];
+    if (_clipview.superview)
+        self.originalImage = [ImageToolBox image:self.originalImage clipinRect:[_clipview getclipRect] scale:_scale_compress];
+    if (_angleNum)
+        self.originalImage = [ImageToolBox image:self.originalImage afterRotate:_angleNum];
+    
+    [self fixImageView];
+    [self writeToAlbum];
+    [self initdataContainer];
+    //    });
+}
+
 -(void)fixImageView
 {
-    
     _imageview.transform = CGAffineTransformIdentity;
     if (_clipview.superview)
         _imageview.image = [ImageToolBox image:_imageview.image clipinRect:[_clipview getclipRect] scale:1];
@@ -532,12 +490,11 @@
             NSLog(@"error%@",error);
             return ;
         }
-        
+    
         if (![SCPLoginPridictive isLogin]) {
             [controller dismissModalViewControllerAnimated:YES];
             return ;
         }
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([delegate respondsToSelector:@selector(imageEdtingDidSave:imageinfo:info:num:)]) {
                 [delegate imageEdtingDidSave:self imageinfo:assetURL info:_info num:infoNum];
@@ -548,8 +505,8 @@
                     NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
                     [workingDictionary setObject:[asset valueForProperty:ALAssetPropertyType] forKey:@"UIImagePickerControllerMediaType"];
                     [workingDictionary setObject:asset.defaultRepresentation.url forKey:@"UIImagePickerControllerRepresentationURL"];
-                    [workingDictionary setObject:[UIImage imageWithCGImage:[asset thumbnail] ]forKey:@"UIImagePickerControllerThumbnail"];
-                    
+                    [workingDictionary setObject:[UIImage imageWithCGImage:[asset aspectRatioThumbnail] ]forKey:@"UIImagePickerControllerThumbnail"];
+                    [self stopWait];
                     SCPUploadController * ctrl = [[[SCPUploadController alloc] initWithImageToUpload:[NSArray arrayWithObject:workingDictionary] :controller] autorelease];
                     [self.navigationController pushViewController:ctrl animated:YES];
                     [workingDictionary release];
@@ -561,7 +518,6 @@
         });
         
     }];
-    
 }
 
 #pragma mark-

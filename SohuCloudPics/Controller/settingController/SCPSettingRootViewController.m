@@ -6,21 +6,24 @@
 //
 //
 
+#import "SCPMenuNavigationController.h"
+#import "SCPMainTabController.h"
+
 #import "SCPSettingRootViewController.h"
+
 #import "MySettingCell.h"
 #import "SCPLoginPridictive.h"
 #import "SCPSettingUserinfoController.h"
 #import "SCPAboutController.h"
+#import "SCPFeedBackController.h"
+#import "ImageQualitySwitch.h"
 
-#import "SCPAlert_FeedBack.h"
-#import "SCPMenuNavigationController.h"
-#import "SCPMainTabController.h"
 
 static NSString* SettingMenu[7] = {@"个人资料设置",@"上传图片质量",@"清除缓存",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
 static NSString* SettingCover[7] = {@"settings_user.png",@"settings_push.png",@"settings_feedback.png",
                                 @"settings_feedback.png",@"settings_refresh.png",@"settings_about.png",@"settings_logout.png"};
 
-static BOOL SettingNext[7] = {YES,NO,NO,NO,NO,NO,NO};
+static BOOL SettingNext[7] = {YES,NO,NO,YES,NO,YES,NO};
 static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
 
 @implementation SCPSettingRootViewController
@@ -43,6 +46,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -70,6 +74,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
+        
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"BG_CELL"];
         if (cell ==  nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"BG_CELL"] autorelease];
@@ -93,16 +98,18 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     }
     cell.c_ImageView.image = [UIImage imageNamed:SettingCover[indexPath.row - 1]];
     cell.c_Label.text = SettingMenu[indexPath.row - 1];
-    if (SettingNext[indexPath.row - 1]) {
+    if (SettingNext[indexPath.row - 1])
         cell.accessoryImage.image = [UIImage imageNamed:@"settings_arrow.png"];
-    }
+    
     if (SwitchShow[indexPath.row - 1]) {
-        [cell.imageSwitch setHidden:NO];
+        cell.imageSwitch = [[[ImageQualitySwitch alloc] initWithFrame:CGRectMake(320 - 90 - 5, (55 - 27)/2, 0, 0)] autorelease];
+        [cell.contentView addSubview:cell.imageSwitch];
     }else{
         [cell.imageSwitch setHidden:YES];
     }
     return cell;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
@@ -122,28 +129,24 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         [self.navigationController pushViewController:[[[SCPSettingUserinfoController alloc] init] autorelease] animated:YES];
     }
     if (indexPath.row == 3) { //清除缓存
-        cacheView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认清除缓存" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
+        cacheView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认清除缓存" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil];
         [cacheView show];
     }
     if (indexPath.row == 4) {
-        //
-        NSLog(@"%s",__FUNCTION__);
-        SCPAlert_FeedBack * feedBack = [[[SCPAlert_FeedBack alloc] init] autorelease];
-        [feedBack show];
+        [self.navigationController pushViewController:[[[SCPFeedBackController alloc] init] autorelease] animated:YES];
     }
     if (indexPath.row == 6) {
-        //
         [self.navigationController pushViewController:[[[SCPAboutController alloc] init] autorelease] animated:YES];
     }
     if (indexPath.row == 7) {
-        loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认登出" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消",nil];
+        loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认登出" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil];
         [loginView show];
     }
-
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (loginView == alertView && buttonIndex == 0) {
+    
+    if (loginView == alertView && buttonIndex == 1) {
         [SCPLoginPridictive logout];
         SCPMenuNavigationController * mnv = (SCPMenuNavigationController *)_controller;
         [mnv popToRootViewControllerAnimated:NO];
@@ -151,18 +154,60 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         mainTab.selectedIndex = 0;
         [_controller dismissModalViewControllerAnimated:YES];
     }
-    
-    if (cacheView == alertView && buttonIndex == 0) {
+    if (cacheView == alertView && buttonIndex == 1) {
         
         NSFileManager * manager  = [NSFileManager defaultManager];
         NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
         NSError * error = nil;
         [manager removeItemAtPath:str error:&error];
         if (error) {
-            SCPAlert_CustomeView * alert = [[[SCPAlert_CustomeView alloc] initWithTitle:[NSString stringWithFormat:@"%@",error]] autorelease];
-            [alert show];
+            
+//            SCPAlert_CustomeView * alert = [[[SCPAlert_CustomeView alloc] initWithTitle:[NSString stringWithFormat:@"%@",error]] autorelease];
+//            [alert show];
         }
+        [self removeCache];
     }
+}
+- (void)removeCache
+{
+    
+    NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
+    NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
+    NSUserDefaults *appUserDefaults = [[[NSUserDefaults alloc] init] autorelease];
+    NSDictionary * cacheDic = [appUserDefaults persistentDomainForName: bundleId];
+    
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * _use_id = nil;
+    NSString * _use_token = nil;
+    NSNumber * GuideViewShowed = nil;
+    NSNumber * FunctionShowed = nil;
+    NSNumber * JPEG = nil;
+    //read
+    if ([defaults objectForKey:@"__USER_ID__"])
+        _use_id = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"__USER_ID__"]];
+    if ([defaults objectForKey:@"__USER_TOKEN__"])
+        _use_token = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"__USER_TOKEN__"]];
+    if ([defaults objectForKey:@"GuideViewShowed"])
+        GuideViewShowed = [[[defaults objectForKey:@"GuideViewShowed"] copy] autorelease];
+    if ([defaults objectForKey:@"FunctionShowed"])
+        FunctionShowed = [[[defaults objectForKey:@"FunctionShowed"] copy] autorelease];
+    if ([defaults objectForKey:@"JPEG"]) {
+        JPEG = [[[defaults objectForKey:@"JPEG"] copy] autorelease];
+    }
+    //remove
+    for (NSString * str in [cacheDic allKeys])
+        [defaults removeObjectForKey:str];
+    if (_use_id)
+        [defaults setObject:_use_id forKey:@"__USER_ID__"];
+    if (_use_token)
+        [defaults setObject:_use_token forKey:@"__USER_TOKEN__"];
+    if (GuideViewShowed)
+        [defaults setObject:GuideViewShowed forKey:@"GuideViewShowed"];
+    if (FunctionShowed)
+        [defaults setObject:FunctionShowed forKey:@"FunctionShowed"];
+    if (JPEG)
+        [defaults setObject:JPEG forKey:@"JPEG"];
+    [defaults synchronize];
 }
 
 @end

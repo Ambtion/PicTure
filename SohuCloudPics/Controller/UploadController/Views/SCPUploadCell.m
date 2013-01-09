@@ -40,12 +40,12 @@
     if (self) {
         self.frame = CGRectMake(0, 0, 320, 0);
         
-        _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 50, 50)];
+        _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 17, 50, 50)];
         _portraitImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
-        _portraitImageView.layer.borderWidth = 2.0;
-        _portraitImageView.layer.shadowOffset = CGSizeMake(1.0, 1.0);
-        _portraitImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
-        _portraitImageView.layer.shadowOpacity = 0.6;
+//        _portraitImageView.layer.borderWidth = 2.0;
+//        _portraitImageView.layer.shadowOffset = CGSizeMake(1.0, 1.0);
+//        _portraitImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
+//        _portraitImageView.layer.shadowOpacity = 0.6;
         _portraitImageView.layer.masksToBounds = NO;
         _portraitImageView.layer.shouldRasterize = YES;
         [self addSubview:_portraitImageView];
@@ -59,6 +59,7 @@
         frame.origin.y += 2;
         frame.size.width -= 12;
         frame.size.height -= 20;
+        
         _descTextView = [[UITextView alloc] initWithFrame:frame];
         _descTextView.font = [_descTextView.font fontWithSize:15];
         _descTextView.textColor = [UIColor colorWithRed:128.0 / 255 green:128.0 / 255 blue:128.0 / 255 alpha:1];

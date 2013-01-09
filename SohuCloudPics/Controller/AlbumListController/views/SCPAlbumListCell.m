@@ -72,10 +72,11 @@
         
         [frameImageView addSubview:_photoImageView];
         /* progressView */
-        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20, 73, 64, 8)];
-        [_progressView setProgressImage:[UIImage imageNamed:@"prog_done.png"]];
-        [_progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0]];
-        _progressView.layer.borderColor = [[UIColor blackColor] CGColor];
+        
+        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20, 73, 64, 9)];
+        [_progressView setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
+        [_progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
+
         [self.contentView addSubview:_progressView];
         
         /* deleteView, not display first */
@@ -97,7 +98,6 @@
         _nameLabel.backgroundColor = [UIColor clearColor];
         _nameLabel.textColor = [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0];
 		_nameLabel.font = [UIFont boldSystemFontOfSize:14];
-//        _nameLabel.lineBreakMode = UILineBreakMode;
         _nameLabel.numberOfLines = 2;
         [self.contentView addSubview:_nameLabel];
         
@@ -116,6 +116,7 @@
 		_updatedAtDescLabel.font = [_updatedAtDescLabel.font fontWithSize:10];
 		_updatedAtDescLabel.textAlignment = NSTextAlignmentRight;
 		[self.contentView addSubview:_updatedAtDescLabel];
+        
         UIImageView * lineView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]] autorelease];
         lineView.frame = CGRectMake(0, self.frame.size.height - 1, 320, 1);
         [self.contentView addSubview:lineView];
@@ -131,7 +132,7 @@
 	if (self.album.coverURL == nil || [self.album.coverURL isKindOfClass:[NSNull class]] || self.album.coverURL.length == 0) {
 		[_photoImageView setImage:[self getEmptyFolderCoverImage]];
 	} else {
-        NSString * coverUrl  =[NSString stringWithFormat:@"%@_c100",_album.coverURL];
+        NSString * coverUrl  =[NSString stringWithFormat:@"%@_c150",_album.coverURL];
 		[_photoImageView setImageWithURL:[NSURL URLWithString:coverUrl] placeholderImage:nil options:0];
 	}
     /* progress view */

@@ -139,5 +139,4 @@
     self.curProgreeeView.progress = pro;
 }
 
-
 @end

@@ -8,9 +8,6 @@
 
 #import "SCPAboutController.h"
 
-@interface SCPAboutController ()
-
-@end
 
 @implementation SCPAboutController
 
@@ -21,6 +18,7 @@
     UIImageView * image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"about.png"]];
     image.frame = self.view.bounds;
     [self.view addSubview:image];
+    
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];

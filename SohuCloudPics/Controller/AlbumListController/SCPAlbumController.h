@@ -11,7 +11,6 @@
 #import "SCPSecondLayerController.h"
 #import "SCPAlbumCell.h"
 #import "PullingRefreshController.h"
-#import "SCPAlert_LoginView.h"
 #import "SCPRequestManager.h"
 
 #import "SCPUploadTaskManager.h"
@@ -21,7 +20,7 @@ typedef enum {
     SCPAlbumControllerStateDelete = 1,
 } SCPAlbumControllerState;
 
-@interface SCPAlbumController : SCPSecondLayerController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPAlbumCellDelegate, SCPAlertLoginViewDelegate, SCPRequestManagerDelegate>
+@interface SCPAlbumController : SCPSecondLayerController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPAlbumCellDelegate, SCPRequestManagerDelegate,UIAlertViewDelegate>
 {
     SCPAlbumControllerState _state;
     
@@ -37,6 +36,8 @@ typedef enum {
 	int _currentPage;
 	int _loadedPage;
     BOOL isLoading;
+    BOOL isSwitch;
+    id tempRibbon;
 }
 
 /* Data */

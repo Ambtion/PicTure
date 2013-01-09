@@ -13,9 +13,6 @@
 {
     if (self = [super init]) {
         
-//        UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//        backgroundImageView.image = [UIImage imageNamed:@"pop_bg.png"];
-//        [self addSubview:backgroundImageView];
         CGRect rect = [[UIScreen mainScreen] bounds];
         _alertboxImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 240, 60)];
         _alertboxImageView.image = [UIImage imageNamed:@"popup_alert.png"];
@@ -26,7 +23,6 @@
         _title.textAlignment = UITextAlignmentCenter;
         _title.backgroundColor = [UIColor clearColor];
         _title.font = [UIFont systemFontOfSize:16];
-//        _title.textColor = [UIColor colorWithRed:98/255.f green:98/255.f blue:98/255.f alpha:1];
         _title.textColor = [UIColor whiteColor];
         _title.text = title;
         [_alertboxImageView addSubview:_title];

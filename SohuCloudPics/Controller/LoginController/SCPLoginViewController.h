@@ -10,6 +10,8 @@
 
 #import "EmailTextField.h"
 
+#import "SCPAuthorizeViewController.h"
+
 @class SCPLoginViewController;
 
 @protocol SCPLoginViewDelegate <NSObject>
@@ -19,7 +21,7 @@
 
 @end
 
-@interface SCPLoginViewController : UIViewController
+@interface SCPLoginViewController : UIViewController<SCPAuthorizeViewControllerDelegate>
 
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIControl *backgroundControl;

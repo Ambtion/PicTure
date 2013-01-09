@@ -105,6 +105,19 @@
     externalLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     externalLabel.font = [UIFont systemFontOfSize:15.f];
     
+    UILabel * forget = [[[UILabel alloc] initWithFrame:CGRectMake(320 - 35 - 150, 290, 150, 15)] autorelease];
+    forget.text = @"忘记密码";
+    forget.textAlignment = UITextAlignmentRight;
+    forget.backgroundColor = [UIColor clearColor];
+    forget.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
+    forget.font = [UIFont systemFontOfSize:15.f];
+    [forget setUserInteractionEnabled:YES];
+    UIButton * forgetPassWord = [UIButton buttonWithType:UIButtonTypeCustom];
+    forgetPassWord.frame = forget.bounds;
+    forgetPassWord.backgroundColor = [UIColor clearColor];
+    [forgetPassWord addTarget:self action:@selector(forgetPassWord:) forControlEvents:UIControlEventTouchUpInside];
+    [forget addSubview:forgetPassWord];
+    
     //登陆按钮
     _loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _loginButton.frame = CGRectMake(175, 239, 110, 35);
@@ -120,9 +133,10 @@
     [self.view addSubview:_usernameTextField];
     [self.view addSubview:_passwordTextField];
     [self.view addSubview:externalLabel];
-
     [self.view addSubview:_registerButton];
     [self.view addSubview:_loginButton];
+    [self.view addSubview:forget];
+
     //返回按钮
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
 //    backButton.frame = CGRectMake(10, 8, 28, 28);
@@ -131,6 +145,7 @@
     [backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(cancelLogin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
+    
     
     //第三方登陆
     UIButton * qqbutton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -197,7 +212,6 @@
     SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登陆中..." withView: self.view] autorelease];
     [waitView show];
     [AccountSystemRequset sohuLoginWithuseName:_usernameTextField.text password:_passwordTextField.text sucessBlock:^(NSDictionary *response) {
-        NSLog(@"%@",response);
         [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];
         if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
             [_delegate SCPLogin:self doLogin:button];
@@ -207,22 +221,49 @@
         SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
         [alterView show];
         [waitView dismissWithClickedButtonIndex:0 animated:NO];
+        
     }];
-
 }
 
 - (void)sinaLogin:(UIButton*)button
 {
-    
+    SCPAuthorizeViewController * author = [[[SCPAuthorizeViewController alloc] initWithMode:LoginModelSina controller:self] autorelease];
+    author.delegate = self;
+    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:author];
+    [self presentModalViewController:nav animated:YES];
 }
 - (void)qqLogin:(UIButton *)button
 {
-    
+    SCPAuthorizeViewController * author = [[[SCPAuthorizeViewController alloc] initWithMode:LoginModelQQ controller:self] autorelease];
+    author.delegate = self;
+    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:author];
+    [self presentModalViewController:nav animated:YES];
 }
 - (void)renrenLogin:(UIButton *)button
 {
-    
+    SCPAuthorizeViewController * author = [[[SCPAuthorizeViewController alloc] initWithMode:LoginModelRenRen controller:self] autorelease];
+    author.delegate = self;
+    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:author];
+    [self presentModalViewController:nav animated:YES];
 }
+- (void)forgetPassWord:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://passport.sohu.com/web/recover.jsp"]];
+}
+#pragma mark third_part_Login_deletate
+- (void)loginSucessInfo:(NSDictionary *)dic
+{
+    [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]] withToken:[dic objectForKey:@"access_token"]];
+    if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
+        [_delegate SCPLogin:self doLogin:nil];
+
+}
+- (void)loginFailture:(NSString *)error
+{
+    SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
+    [alterView show];
+}
+#pragma mark resiteruseinfo
 - (void)registerButtonClicked:(UIButton *)button
 {
     SCPRegisterViewController *reg = [[[SCPRegisterViewController alloc] init] autorelease];

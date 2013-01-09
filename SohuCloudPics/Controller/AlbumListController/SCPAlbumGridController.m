@@ -129,7 +129,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALBUMTASKCHANGE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALBUMUPLOADOVER  object:nil];
 }
-
 - (void)albumTaskOver:(NSNotification *)notification
 {
     [self.curProgreeeView setHidden:YES];

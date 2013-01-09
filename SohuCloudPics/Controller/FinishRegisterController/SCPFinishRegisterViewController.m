@@ -91,7 +91,6 @@
 - (void)gotoEmail
 {
     UINavigationController *nav = self.navigationController;
-    
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://mail.163.com"]];
     [nav popViewControllerAnimated:YES];
 }

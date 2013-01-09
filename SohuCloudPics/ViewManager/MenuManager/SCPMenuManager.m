@@ -252,6 +252,7 @@ static NSString *menuPress[6] = {
     }
     [self.navController popToRootViewControllerAnimated:YES];
 }
+
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (animated && isMenudone) {
@@ -282,7 +283,6 @@ static NSString *menuPress[6] = {
         [navController presentModalViewController:nav animated:YES];
         return;
     }
-//    [self restIcon:1];
     AlbumControllerManager * manager = [[AlbumControllerManager alloc] initWithpresentController:self.navController];
 	[self.navController presentModalViewController:manager animated:YES];
     [manager release];

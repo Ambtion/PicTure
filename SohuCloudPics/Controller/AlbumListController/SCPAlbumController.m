@@ -12,11 +12,7 @@
 #import "AlbumControllerManager.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPPhotoGridController.h"
-
-
-#define PIC @"http://10.10.68.104:8080/cloudpics/pic?"
-
-
+#import "SCPAlertView_LoginTip.h"
 
 @implementation SCPAlbumController
 
@@ -58,6 +54,7 @@
         _albumList = [[NSMutableArray alloc] init];
 		_request = [[SCPRequestManager alloc] init];
 		_request.delegate = self;
+        isSwitch = NO;
     }
     return self;
 }
@@ -127,7 +124,6 @@
         [_switchButton addTarget:self action:@selector(onSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_rightBarView addSubview:_switchButton];
     }
-    
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_rightBarView];
     self.navigationItem.rightBarButtonItem = item;
     [item release];
@@ -161,12 +157,11 @@
 		}
 	}
 }
-
 - (void)barButtonBack:(UIButton*)button
 {
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
-
 - (UIButton *)switchButtonView
 {
     /* subclasses should override this method */
@@ -178,17 +173,15 @@
     /* subclasses should override this method */
     return nil;
 }
-
 - (void)onSwitchClicked:(id)sender
 {
+    isSwitch = YES;
     SCPAlbumController *ctrl = [self switchController];
 	ctrl.user_id = self.user_id;
     ctrl.albumList = self.albumList;
 	ctrl.bannerLeftString = self.bannerLeftString;
 	ctrl.bannerRightString = self.bannerRightString;
-    
     UINavigationController *nav = self.navigationController;
-    
     CATransition *animation = [CATransition animation];
     animation.type = kCATransitionFade;
     [nav.navigationBar.layer addAnimation:animation forKey:nil];
@@ -199,7 +192,6 @@
 
 - (void)onUploadClicked:(id)sender
 {
-    if (![self loginPridecate]) return;
     AlbumControllerManager *manager = [[AlbumControllerManager alloc] initWithpresentController:self.navigationController];
     [self.navigationController presentModalViewController:manager animated:YES];
     [manager release];
@@ -208,6 +200,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+    tempRibbon = ((SCPMenuNavigationController *) self.navigationController).ribbonView;
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
     [self refresh];
@@ -216,10 +209,13 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:NO];
-	
 }
-
+- (void)viewDidDisappear:(BOOL)animated
+{
+    //pop 则还原,qie不是switch;
+    if (!self.navigationController && !isSwitch)
+        [tempRibbon setHidden:NO];
+}
 #pragma mark -
 #pragma mark SCPRequestManagerDelegate
 
@@ -227,7 +223,6 @@
 {
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
-//    NSLog(@"folderinfo %@",[folderinfo allKeys]);
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
 	_hasNextPage = [[folderinfo objectForKey:@"has_next"] boolValue];
     _loadedPage = _currentPage;
@@ -239,7 +234,6 @@
 		[_albumList removeAllObjects];
 	}
 	NSArray *folderList = [folderinfo  objectForKey:@"folders"];
-//    NSLog(@"%@",[folderList lastObject]);
 	for (int i = 0; i < folderList.count; ++i) {
 		NSDictionary *Afolder = [folderList objectAtIndex:i];
 		SCPAlbum *album = [[SCPAlbum alloc] init];
@@ -279,8 +273,6 @@
 - (BOOL)loginPridecate
 {
     if (![SCPLoginPridictive isLogin] || ![self.user_id isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
-//        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
-//        [alte show];
         return NO;
     }
     return YES;
@@ -291,9 +283,7 @@
         case SCPAlbumControllerStateNormal:
         {
             /* go into the album */
-//			NSLog(@"imageView.tag = %d", imageView.tag);
             SCPAlbum *album = [_albumList objectAtIndex:imageView.tag];
-//            NSLog(@"%@ %@",album.albumId,album.creatorId);
             SCPPhotoGridController *ctrl = [[[SCPPhotoGridController alloc] initWithNibName:nil bundle:nil] autorelease];
             ctrl.albumData = album;
             [self.navigationController pushViewController:ctrl animated:YES];
@@ -302,10 +292,9 @@
             
         case SCPAlbumControllerStateDelete:
         {
-            /* delete */
-            SCPAlert_LoginView *alertView = [[[SCPAlert_LoginView alloc] initWithMessage:@"确定要删除吗？" delegate:self] autorelease];
-            alertView.tag = imageView.tag;
-            [alertView show];
+            SCPAlertView_LoginTip * loginTip = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"确定要删除吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil] autorelease];
+            loginTip.tag = imageView.tag;
+            [loginTip show];
             break;
         }
         default:
@@ -315,7 +304,6 @@
 - (void)onImageViewLongPressed:(UIImageView *)imageView
 {
     
-    NSLog(@"%s",__FUNCTION__);
     if (![self loginPridecate]) return;
     switch (_state) {
         case SCPAlbumControllerStateNormal:
@@ -327,15 +315,11 @@
             animation.subtype = kCATransitionFromRight;
             animation.endProgress = 0.7;
             animation.duration = 0.2;
-
             [_rightBarView.layer addAnimation:animation forKey:nil];
-            
             [_switchButton removeFromSuperview];
             [_uploadButton removeFromSuperview];
             [_rightBarView addSubview:_okButton];
-            
             _backButton.hidden = YES;
-            
             [_pullingController.tableView reloadData];
             
             break;
@@ -361,14 +345,14 @@
     [_pullingController.tableView reloadData];
 }
 
-
 #pragma mark -
 #pragma mark SCPAlertDelegate
-- (void)alertViewOKClicked:(SCPAlert_LoginView *)view
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (buttonIndex == 0) return;
+    SCPAlbum *album = [[_albumList objectAtIndex:alertView.tag] retain];
+    [_albumList removeObjectAtIndex:alertView.tag];
     
-    SCPAlbum *album = [[_albumList objectAtIndex:view.tag] retain];
-    [_albumList removeObjectAtIndex:view.tag];
     // TODO
     [[SCPUploadTaskManager currentManager] cancelOperationWithAlbumID:album.albumId];
     // delete album
@@ -394,11 +378,5 @@
 {
 	[self refresh];
 }
-
-//- (void)pullingreloadMoreTableViewData:(id)sender
-//{
-//	NSLog(@"here");
-//	[_pullingController moreDoneLoadingTableViewData];
-//}
 
 @end

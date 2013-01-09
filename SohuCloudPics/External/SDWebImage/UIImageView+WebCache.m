@@ -48,18 +48,18 @@
 
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options success:(void (^)(UIImage *image))success failure:(void (^)(NSError *error))failure;
 {
+    
     SDWebImageManager *manager = [SDWebImageManager sharedManager];
-
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
-
     self.image = placeholder;
-
+    
     if (url)
     {
         [manager downloadWithURL:url delegate:self options:options success:success failure:failure];
     }
 }
+
 #endif
 
 - (void)cancelCurrentImageLoad
@@ -83,11 +83,11 @@
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image
 {
-    self.image = image;
-////    [self setNeedsDisplay];
-    return; 
-    NSString * str;
-    [UIView transitionWithView:self duration:0.5 options:UIViewAnimationOptionCurveEaseInOut |
+//    self.image = image;
+//////    [self setNeedsDisplay];
+//    return; 
+//    NSString * str;
+    [UIView transitionWithView:self duration:0.2 options:UIViewAnimationOptionCurveEaseInOut |
                    UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                     animations:^{
                         if (image) {

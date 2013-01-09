@@ -55,19 +55,17 @@
                            {
                                return;
                            }
-                           
                            [self.assetGroups addObject:group];
-                           
                            // Reload albums
                            [self performSelectorOnMainThread:@selector(reloadTableView) withObject:nil waitUntilDone:YES];
                        };
-                       
                        // Group Enumerator Failure Block
                        void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
                            
-                           UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"%@,%@", [error localizedDescription], [error localizedRecoverySuggestion]] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                           UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"本地上传请先在手机'设置->隐私->照片->'中打开" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
                            [alert show];
                            [alert release];
+                           
                            NSLog(@"A problem occured %@", [error description]);
                        };
                        
@@ -118,8 +116,8 @@
     return 1;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
     // Return the number of rows in the section.
     return [assetGroups count];
 }

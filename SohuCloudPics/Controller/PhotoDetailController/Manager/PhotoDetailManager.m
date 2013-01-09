@@ -261,7 +261,6 @@
 {
     cell.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
 }
-
 #pragma mark -
 #pragma mark FeedCell Method
 - (void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
@@ -274,6 +273,7 @@
     self.listView = [[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self];
     CGRect rect = cell.frame;
     CGFloat Y = ((SCPPhotoDetailViewController *)self.controller).pullingController.tableView.contentOffset.y;
+    cell.photoImageView.image = nil;
     rect.origin.y -= Y;
     rect.size.height -= 70;
         
@@ -283,9 +283,16 @@
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     UINavigationController * nav = _controller.navigationController;
-    SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
-    [nav pushViewController:ctrl animated:YES];
-    [ctrl release];
+    if ([SCPLoginPridictive currentUserId] &&
+        [_user_ID isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
+        SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
+        [nav pushViewController:myhome animated:YES];
+
+    }else{
+        SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
+        [nav pushViewController:ctrl animated:YES];
+        [ctrl release];
+    }
 }
 
 - (void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object
@@ -300,12 +307,7 @@
 
 - (void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx
 {
-    //    if (![SCPLoginPridictive isLogin]) {
-    //        SCPAlertView *alert = [[[SCPAlertView alloc] initWithMessage:LOGIN_HINT delegate:self] autorelease];
-    //        [alert show];
-    //        return;
-    //    }
-    //    [_controller displayCommentPostBar];
+    
 }
 
 #pragma mark Comment Method

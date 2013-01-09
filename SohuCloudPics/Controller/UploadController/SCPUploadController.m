@@ -58,7 +58,6 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         controller = decontrller;
-               
         _requsetManager = [[SCPRequestManager alloc] init];
         _imageList = [imageList retain];
         int count = _imageList.count;
@@ -120,6 +119,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    
     if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
         [((SCPMenuNavigationController *) self.navigationController) setDisableMenu:YES];
     if (!self.navigationController.navigationBar.hidden) {
@@ -192,7 +192,7 @@ done:
 #pragma mark Back
 - (void)backTotop:(UIButton*)button
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [controller dismissModalViewControllerAnimated:YES];
 }
 #pragma mark -
 #pragma mark SCPUploadDelegate
@@ -229,15 +229,9 @@ done:
     _uploadTableView.frame = self.view.frame;
     [UIView commitAnimations];
 }
-
-- (void)setViewMoveUp:(BOOL)moveUp
-{
-    
-}
-
-
 #pragma mark -
 #pragma mark tableViewDelegate & datasource
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = indexPath.row;

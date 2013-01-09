@@ -20,14 +20,16 @@
 #import "FunctionguideScroll.h"
 
 #import "ASIFormDataRequest.h"
+#import "AccountSystemRequset.h"
 
 void customedExceptionHandler(NSException *exception)
 {
+
     NSLog(@"CRASH name: %@\n", [exception name]);
     NSLog(@"CRASH reason: %@\n", [exception reason]);
     NSLog(@"StackTrace: %@\n", [exception callStackSymbols]);
+    
 }
-
 
 @implementation SCPAppDelegate
 @synthesize window = _window;
@@ -42,48 +44,8 @@ void customedExceptionHandler(NSException *exception)
 - (void)pragramerSetting
 {
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
-    [self removeCache];
 }
-- (void)removeCache
-{
-    NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
-    NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
-    NSUserDefaults *appUserDefaults = [[[NSUserDefaults alloc] init] autorelease];
-    NSLog(@"Start dumping userDefaults for %@", bundleId);
-    NSDictionary * cacheDic = [appUserDefaults persistentDomainForName: bundleId];
-    NSLog(@"%@",[cacheDic allKeys]);
-    
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSString * _use_id = nil;
-    NSString * _use_token = nil;
-    NSNumber * GuideViewShowed = nil;
-    NSNumber * FunctionShowed = nil;
-    //read
-    if ([defaults objectForKey:@"__USER_ID__"])
-        _use_id = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"__USER_ID__"]];
-    if ([defaults objectForKey:@"__USER_TOKEN__"])
-        _use_token = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"__USER_TOKEN__"]];
-    if ([defaults objectForKey:@"GuideViewShowed"])
-        GuideViewShowed = [[defaults objectForKey:@"GuideViewShowed"] copy];
-    if ([defaults objectForKey:@"FunctionShowed"])
-        FunctionShowed = [[defaults objectForKey:@"FunctionShowed"] copy];
-    
-    //remove
-    for (NSString * str in [cacheDic allKeys])
-        [defaults removeObjectForKey:str];
-    if (_use_id)
-        [defaults setObject:_use_id forKey:@"__USER_ID__"];
-    if (_use_token)
-        [defaults setObject:_use_token forKey:@"__USER_TOKEN__"];
-    if (GuideViewShowed)
-        [defaults setObject:GuideViewShowed forKey:@"GuideViewShowed"];
-    if (FunctionShowed)
-        [defaults setObject:FunctionShowed forKey:@"FunctionShowed"];
-    [defaults synchronize];
-    NSDictionary * cacheDic_c = [appUserDefaults persistentDomainForName: bundleId];
-    NSLog(@"cache_c %@",[cacheDic_c allKeys]);
 
-}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self pragramerSetting];
@@ -97,6 +59,13 @@ void customedExceptionHandler(NSException *exception)
     [self showfunctionGuide];
     [mainTab release];
     [nav release];
+    
+    [AccountSystemRequset resigiterWithuseName:@"824338493@qq.com" password:@"123456" nickName:@"ok" sucessBlock:^(NSDictionary *response) {
+        
+    } failtureSucess:^(NSString *error) {
+        
+    }];
+    
     return YES;
 }
 

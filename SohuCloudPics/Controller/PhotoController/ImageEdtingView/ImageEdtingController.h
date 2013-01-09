@@ -43,7 +43,6 @@
     
     ALAssetsLibrary * _library;
     BOOL _isBlured;
-    BOOL _writeEnd;
     SCPAlert_WaitView * _alterView;
     id _info;
     NSInteger infoNum;

@@ -16,9 +16,10 @@
 static SDImageCache *instance;
 
 static NSInteger cacheMaxCacheAge = 60*60*24*7; // 1 week
-static natural_t minFreeMemLeft = 1024*1024*12*2; // reserve 12MB RAM
+static natural_t minFreeMemLeft = 1024*1024*12; // reserve 12MB RAM
 
 // inspired by http://stackoverflow.com/questions/5012886/knowing-available-ram-on-an-ios-device
+
 static natural_t get_free_memory(void)
 {
     mach_port_t host_port;
@@ -36,7 +37,7 @@ static natural_t get_free_memory(void)
         NSLog(@"Failed to fetch vm statistics");
         return 0;
     }
-
+    
     /* Stats in bytes */
     natural_t mem_free = vm_stat.free_count * pagesize;
     return mem_free;
@@ -153,6 +154,7 @@ static natural_t get_free_memory(void)
         // If no data representation given, convert the UIImage in JPEG and store it
         // This trick is more CPU/memory intensive and doesn't preserve alpha channel
         UIImage *image = SDWIReturnRetained([self imageFromKey:key fromDisk:YES]); // be thread safe with no lock
+        
         if (image)
         {
 #if TARGET_OS_IPHONE
@@ -165,12 +167,12 @@ static natural_t get_free_memory(void)
             SDWIRelease(image);
         }
     }
-
     SDWIRelease(fileManager);
 }
 
 - (void)notifyDelegate:(NSDictionary *)arguments
 {
+    
     NSString *key = [arguments objectForKey:@"key"];
     id <SDImageCacheDelegate> delegate = [arguments objectForKey:@"delegate"];
     NSDictionary *info = [arguments objectForKey:@"userInfo"];
@@ -178,12 +180,14 @@ static natural_t get_free_memory(void)
 
     if (image)
     {
+        
         if (get_free_memory() < minFreeMemLeft)
         {
             [memCache removeAllObjects];
-        }    
+        }
+        
         [memCache setObject:image forKey:key];
-
+        
         if ([delegate respondsToSelector:@selector(imageCache:didFindImage:forKey:userInfo:)])
         {
             //硬盘中找到文件;;;;

@@ -32,8 +32,8 @@
 }
 - (void)addsubVies
 {
+    
     self.c_ImageView = [[[UIImageView alloc] initWithFrame:CGRectMake((50.f - 32.f)/2, (55.f - 32.f)/2, 32, 32)]autorelease];
-    NSLog(@"self.bounds.size.height %f",self.bounds.size.height);
     self.c_ImageView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.c_ImageView];
     
@@ -47,8 +47,10 @@
     self.accessoryImage.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.accessoryImage];
     
-    self.imageSwitch = [[ImageQualitySwitch alloc] initWithFrame:CGRectMake(320 - 90 - 5, (55 - 27)/2, 0, 0)];
-    [self.contentView addSubview:self.imageSwitch];
+//    NSLog(@"%s, start",__FUNCTION__);
+//    self.imageSwitch = [[ImageQualitySwitch alloc] initWithFrame:CGRectMake(320 - 90 - 5, (55 - 27)/2, 0, 0)];
+//    [self.contentView addSubview:self.imageSwitch];
+//    NSLog(@"%s, end",__FUNCTION__);
     
     UIImageView * lineView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
     lineView.frame = CGRectMake(0, 54, 320, 1);

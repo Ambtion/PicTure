@@ -190,13 +190,14 @@
         _descLabel.text = @"赶快装扮下吧";
     }else{
         _descLabel.text = self.datasource.desc;
-        CGSize size = [_descLabel.text sizeWithFont:_descLabel.font constrainedToSize:CGSizeMake(280, 35) lineBreakMode:_descLabel.lineBreakMode];
-        _descLabel.frame = CGRectMake((self.frame.size.width - size.width)/2.f, 240, size.width, size.height);
+        
     }
+    CGSize size = [_descLabel.text sizeWithFont:_descLabel.font constrainedToSize:CGSizeMake(280, 35) lineBreakMode:_descLabel.lineBreakMode];
+    _descLabel.frame = CGRectMake((self.frame.size.width - size.width)/2.f, 240, size.width, size.height);
+
     CGRect rect = _settingButton.frame;
     rect.origin.y = _descLabel.frame.size.height + _descLabel.frame.origin.y + 20;
     _settingButton.frame = rect;
-    
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];

@@ -41,7 +41,6 @@
 {
     NSString * des = nil;
     if ([_description.text isEqualToString:@"个性签名,随便写点什么吧"]) {
-        NSLog(@"%@",_description.text);
         des = @"";
     }
     [_request renameUserinfWithnewName:_nameFiled.text Withdescription:_description.text success:^(NSString *response) {
@@ -122,20 +121,6 @@
     return (newLength > DESC_COUNT_LIMIT) ? NO : YES;
 }
 
-//- (BOOL) textViewShouldBeginEditing:(UITextView *)textView
-//{
-//    _description.text = @"";
-//    return YES;
-//}
-//- (BOOL)textViewShouldEndEditing:(UITextView *)textView
-//{
-//    NSLog(@"%@",textView);
-//    if (textView.text.length == 0) {
-//        _description.text = @"个性签名,随便写点什么吧";
-//        [_description resignFirstResponder];
-//    }
-//    return YES;
-//}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == _nameFiled) {
@@ -152,7 +137,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

@@ -97,13 +97,9 @@ static float OFFSET = 0.f;
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
         _personalDataSource.isFollowByMe = [[userInfo objectForKey:@"is_following"] boolValue];
-        if ([SCPLoginPridictive currentUserId]) {
-            _personalDataSource.isMe = [_user_ID isEqualToString:(NSString *)[SCPLoginPridictive currentUserId]];
-        }else{
-            _personalDataSource.isMe = NO;
-        }
+        _personalDataSource.isMe = NO;
+
     }
-    
     NSDictionary * feedinfo = [info objectForKey:@"feedList"];
     hasNextpage = [[feedinfo objectForKey:@"has_next"] boolValue];
     curPage = [[feedinfo objectForKey:@"page"] intValue];
