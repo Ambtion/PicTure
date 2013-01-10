@@ -77,15 +77,16 @@
 {
 
     self.image = image;
-//    [self setNeedsDisplay];
+    [self setNeedsDisplay];
     
 }
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image
 {
-//    self.image = image;
-//////    [self setNeedsDisplay];
-//    return; 
+    self.image = image;
+    [self setNeedsDisplay];
+    return;
+//    return;
 //    NSString * str;
     [UIView transitionWithView:self duration:0.2 options:UIViewAnimationOptionCurveEaseInOut |
                    UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction

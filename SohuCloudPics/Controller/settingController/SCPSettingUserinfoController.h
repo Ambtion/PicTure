@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SCPRequestManager.h"
+#import "SCPSecondLayerController.h"
 
-@interface SCPSettingUserinfoController : UIViewController<UITextFieldDelegate,UITextViewDelegate>
+@interface SCPSettingUserinfoController : SCPSecondLayerController<UITextFieldDelegate,UITextViewDelegate>
 {
     SCPRequestManager * _request;
     UIImageView * _portraitView;

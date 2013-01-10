@@ -29,10 +29,7 @@
         bgView.image = [UIImage imageNamed:@"pop_bg.png"];
         [self  addSubview:bgView];
         backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
-        NSString * retina;
-        
         backgroundView.frame = CGRectMake(0, 0, 130, 130);
-//        backgroundView.frame = CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height);
         backgroundView.center = CGPointMake(bgView.frame.size.width / 2.f, bgView.frame.size.height / 2.f);
         [self addSubview:backgroundView];
 		alertTextLabel = [[UILabel alloc] initWithFrame:CGRectZero];

@@ -103,15 +103,14 @@
 
 - (void)showNavigationBar
 {
-    if (self.navigationController.navigationBarHidden)
+    if (self.navigationController.navigationBarHidden && [self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
         [((SCPMenuNavigationController *)self.navigationController) resetMenu];
 }
 - (void)hideNavigationBar {
-    if ((!self.navigationController.navigationBarHidden)) {
+    if (!self.navigationController.navigationBarHidden && [self.navigationController isKindOfClass:[SCPMenuNavigationController class]]) 
         [self.navigationController setNavigationBarHidden:YES animated:YES];
-    }
 }
 
 #pragma mark -

@@ -25,6 +25,7 @@
     
     id<SCPAlertRenameViewDelegate> _delegate;
 }
+
 - (id)initWithDelegate:(id<SCPAlertRenameViewDelegate>)delegate name:(NSString *)name;
 - (void)show;
 

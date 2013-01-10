@@ -13,7 +13,7 @@
 #import "SCPRequestManager.h"
 
 #import "SCPAlert_DeletView.h"
-#import "SCPAlert_Rename.h"
+#import "SCPAlert_AlbumProperty.h"
 #import "SCPAlert_DetailView.h"
 #import "SCPUploadTaskManager.h"
 
@@ -23,16 +23,14 @@ typedef enum {
 } PhotoGridState;
 
 
-@interface SCPPhotoGridController : SCPSecondLayerController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPPhotoGridCellDelegate, SCPRequestManagerDelegate,SCPAlertDeletViewDelegate,SCPAlertRenameViewDelegate,SCPAlert_DetailViewDelegate,UIAlertViewDelegate>
+@interface SCPPhotoGridController : SCPSecondLayerController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPPhotoGridCellDelegate, SCPRequestManagerDelegate,SCPAlertDeletViewDelegate,SCPAlert_AlbumPropertyDelegate,SCPAlert_DetailViewDelegate,UIAlertViewDelegate>
 {
     PhotoGridState _state;
     NSMutableSet *_tasksToDel;
     NSMutableSet *_imagesToDel;
     
     UIButton *_backButton;
-    
     UIView *_rightBarView;
-    
     UIButton *_iMarkButton;
     UIButton *_trashButton;
     UIButton *_penButton;

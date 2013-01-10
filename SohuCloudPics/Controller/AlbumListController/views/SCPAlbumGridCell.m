@@ -226,7 +226,6 @@
 		[coverImageView setImage:[self getEmptyFolderCoverImage]];
 	}
     
-    
     /* set progess view */
     UIProgressView *progressView = [self progressViewAt:position];
     [progressView setHidden:!album.isUploading];

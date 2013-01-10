@@ -10,6 +10,11 @@
 
 #import "SCPMenuNavigationController.h"
 #import "SCPFinishRegisterViewController.h"
+#import "SCPLoginPridictive.h"
+
+#import "AccountSystemRequset.h"
+#import "SCPAlertView_LoginTip.h"
+#import "SCPLoginViewController.h"
 
 #define EMAIL_ARRAY ([NSArray arrayWithObjects:@"126.com", @"163.com", @"qq.com", @"sohu.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
 
@@ -91,7 +96,6 @@
     _nicknameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _nicknameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     _nicknameTextField.placeholder = @"名号";
-    [_nicknameTextField addTarget:self action:@selector(doRegister) forControlEvents:UIControlEventEditingDidEndOnExit];
     
     _displayPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _displayPasswordButton.frame = CGRectMake(35, 291, 100, 22);
@@ -160,13 +164,39 @@
 }
 - (void)doRegister
 {
+    if (!_usernameTextField.text || [_usernameTextField.text isEqualToString:@""]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"请输入用户名" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [tip  show];
+        [tip release];
+        return;
+    }
+    if (!_passwordTextField.text || [_passwordTextField.text isEqualToString:@""]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"请输入密码" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [tip  show];
+        [tip release];
+        return;
+    }
     
-    NSLog(@"%s",__FUNCTION__);
-    UINavigationController *nav = self.navigationController;
-    SCPFinishRegisterViewController *ctrl = [[SCPFinishRegisterViewController alloc] initWithEmail:_usernameTextField.text];
-    [nav popViewControllerAnimated:NO];
-    [nav pushViewController:ctrl animated:YES];
-    [ctrl release];
+    [self allTextFieldsResignFirstResponder];
+    [AccountSystemRequset resigiterWithuseName:_usernameTextField.text password:_passwordTextField.text nickName:nil sucessBlock:^(NSDictionary *response) {
+        [AccountSystemRequset sohuLoginWithuseName:_usernameTextField.text password:_passwordTextField.text sucessBlock:^(NSDictionary * response) {
+            
+            [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];
+            SCPLoginViewController * vc = [[self.navigationController childViewControllers] objectAtIndex:0];
+            if ([vc.delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
+                [vc.delegate  SCPLogin:vc doLogin:nil];
+            
+        } failtureSucess:^(NSString *error) {
+            SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [tip  show];
+            [tip release];
+        }];
+        
+    } failtureSucess:^(NSString *error) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [tip  show];
+        [tip release];
+    }];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -201,11 +231,6 @@
     
     CGSize size = view.bounds.size;
     view.contentSize = size;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

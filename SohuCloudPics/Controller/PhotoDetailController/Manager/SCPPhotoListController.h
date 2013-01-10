@@ -29,12 +29,6 @@
 @protocol SCPPhotoListControllerDeletate <NSObject>
 - (void)whenViewRemveFromSuperview:(SCPPhotoListController *)controller;
 @end
-enum Dirction {
-    upTomore = 0,
-    downToless = 1,
-    upMax = 2,
-    downMin = 3
-};
 
 @interface SCPPhotoListController : UIViewController <UIScrollViewDelegate,SCPRequestManagerDelegate>
 {
@@ -59,13 +53,14 @@ enum Dirction {
     BOOL hasNextPage;
     //for animation
     BOOL animation;
-//    BOOL isInit;
     BOOL isLoading;
-    enum Dirction dirction;
 }
-@property (nonatomic,retain)UIView * tempView;
-@property (nonatomic,retain)NSDictionary * info;
-@property (nonatomic,retain)UIView * bgView;
+@property (nonatomic,retain) UIView * tempView;
+@property (nonatomic,retain) NSDictionary * info;
+@property (nonatomic,retain) NSString * folder_id;
+@property (nonatomic,retain) NSString * user_id;
+
+@property (nonatomic,retain) UIView * bgView;
 @property (nonatomic,retain) InfoImageView * fontImageView;
 @property (nonatomic,retain) UIScrollView *  fontScrollview;
 @property (nonatomic,retain) InfoImageView * currentImageView;

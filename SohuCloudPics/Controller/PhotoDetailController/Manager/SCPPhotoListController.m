@@ -62,21 +62,23 @@
     [self.superview sendSubviewToBack:self.webView];
     NSData * data = nil;
     NSFileManager * manager  = [NSFileManager defaultManager];
-    NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
-    str = [str stringByAppendingFormat:@"%@/%@",str, [url absoluteString]];
-    NSLog(@"Gif: %@",str);
-    if ([manager fileExistsAtPath:str])
+    NSString * str = [self getStringWithURL:url];
+    if ([manager fileExistsAtPath:str]){
+        NSLog(@"file fileExistsAtPath");
         data = [NSData dataWithContentsOfFile:str];
+    }
     if (data) {
         NSLog(@"read Form Memory");
         [self.webView loadData:data MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
     }else{
+        [self.requset clearDelegatesAndCancel];
         self.requset = [ASIHTTPRequest requestWithURL:url];
         self.requset.delegate = self;
         [self.requset setTimeOutSeconds:5.f];
         [self.requset startAsynchronous];
         NSLog(@"read Form NetWork");
     }
+    
 }
 #pragma mark -RequseDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -86,27 +88,40 @@
         [self.webView loadData:data MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
     NSLog(@"start play gif");
     NSFileManager * manager  = [NSFileManager defaultManager];
-    NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
-    str = [str stringByAppendingFormat:@"%@/%@",str, [request.url absoluteString]];
+    NSString * str = [self getStringWithURL:requset.url];
     if ([manager fileExistsAtPath:str])
         [manager removeItemAtPath:str error:nil];
-    [data writeToFile:str atomically:YES];
-    NSLog(@"store into Memory");
+    
+    NSError * error = nil;
+    [data writeToFile:str options:NSDataWritingAtomic error:&error];
+    if (error) {
+        NSLog(@"%@",error);
+    }else{
+        NSLog(@"store into Memory");
+    }
+}
+- (NSString *)getStringWithURL:(NSURL *)url
+{
+    NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
+    NSArray * array = [[url absoluteString] componentsSeparatedByString:@"/"];
+    str = [str stringByAppendingFormat:@"%@", [array lastObject]];
+    return str;
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    SCPAlert_CustomeView * cusView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"gif加载失败"] autorelease];
-    [cusView show];
+    [requset clearDelegatesAndCancel];
+    [self.actV stopAnimating];
 }
+
 #pragma mark - WebViewDelegate
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    NSLog(@"%s",__FUNCTION__);
     [self.superview bringSubviewToFront:self.webView];
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    SCPAlert_CustomeView * cusView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"gif加载失败"] autorelease];
-    [cusView show];
+
 }
 - (void)resetGigView
 {
@@ -128,6 +143,8 @@
 @implementation SCPPhotoListController
 @synthesize tempView;
 @synthesize info = _info;
+@synthesize folder_id = _folder_id;
+@synthesize user_id = _user_id;
 @synthesize bgView = _bgView;
 @synthesize scrollView = _scrollView;
 @synthesize fontScrollview = _fontScrollview;
@@ -151,6 +168,8 @@
     self.curscrollView  = nil ;
     self.rearImageView = nil;
     self.rearScrollview = nil;
+    self.folder_id = nil;
+    self.user_id = nil;
     [imageArray release];
     [curImages release];
     self.info = nil;
@@ -177,7 +196,9 @@
         _requestManger.delegate = self;
         [self initSubViews];
         [self.view setUserInteractionEnabled:NO];
-        [_requestManger getFolderinfoWihtUserID:[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] WithFolders:[NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]]];
+        self.folder_id = [NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]];
+        self.user_id = [NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]];
+        [_requestManger getFolderinfoWihtUserID:self.user_id WithFolders:self.folder_id];
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(listOrientationChanged:)
@@ -202,31 +223,14 @@
         return CGAffineTransformRotate(CGAffineTransformIdentity, M_PI_2);
     return CGAffineTransformIdentity;
 }
-
-//- (void)listOrientationinit
-//{
-//    if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
-//        self.view.frame = [UIScreen mainScreen].bounds;
-//        [self initSubViews];
-//    }else{
-//        NSLog(@"%s",__FUNCTION__);
-//        self.view.frame = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
-//        [self initSubViews];
-//        if (self.view.frame.size.width < self.view.superview.frame.size.height)
-//            self.view.transform = [self getTransfrom];
-//        self.view.frame  = self.view.superview.bounds;
-//    }
-//}
-
 - (void)listOrientationChanged:(NSNotification *)notification
 {
     if ([[self.currentImageView.info objectForKey:@"multi_frames"]boolValue]) return;
-    
     [self.view setUserInteractionEnabled:NO];
+    
     animation = YES;
     CGFloat scale = 1.0;
     CGAffineTransform transform = CGAffineTransformIdentity;
-    
     if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
         transform = CGAffineTransformInvert(self.view.transform);
         if ([self getCurrentImageView].image.size.height > self.view.frame.size.height ||
@@ -244,7 +248,6 @@
         }
         transform = [self getTransfrom];
     }
-    
     transform  = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(scale, scale));
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut    animations:^{
         [self getCurrentImageView].transform = transform;
@@ -252,11 +255,10 @@
         self.view.transform = [self getTransfrom];
         if (CGAffineTransformEqualToTransform(self.view.transform, CGAffineTransformIdentity))
             self.view.frame = [UIScreen mainScreen].bounds;
+        animation = NO;
         [self initSubViews];
         [self.view setUserInteractionEnabled:YES];
-        animation = NO;
     }];
-    
 }
 
 #pragma mark - Delegate
@@ -280,6 +282,7 @@
         [self refreshScrollView];
     }
 }
+
 - (void)requestFailed:(NSString *)error
 {
     isLoading = NO;
@@ -287,6 +290,7 @@
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
 }
+
 - (NSInteger)getindexofImages
 {
     BOOL isFound = NO;
@@ -306,16 +310,13 @@
 
 - (void)getMoreImage
 {
-    NSLog(@"%s",__FUNCTION__);
     if (photoNum <= imageArray.count || isLoading || !hasNextPage) {
         NSLog(@" MORE  %s",__FUNCTION__);
         return;
     }
-    NSLog(@"%@",self.info);
     isLoading = YES;
     [self.view setUserInteractionEnabled:NO];
-    [_requestManger getPhotosWithUserID :[NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]] FolderID:[NSString stringWithFormat:@"%@",[_info objectForKey:@"folder_id"]] page:Pagenum + 1];
-    
+    [_requestManger getPhotosWithUserID :self.user_id FolderID:self.folder_id page:Pagenum + 1];
 }
 #pragma mark - InitSubView
 
@@ -515,16 +516,15 @@
         }
     }
     
-    
 }
 #pragma mark Refresh ScrollView
 - (void)setScrollViewProperty
 {
     self.scrollView.pagingEnabled = YES;
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 3 , self.scrollView.bounds.size.height);
+    self.scrollView.bounces = NO;
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.showsHorizontalScrollIndicator = NO;
-    
 }
 - (BOOL)getDisplayImagesWithCurpage:(int)page {
     
@@ -532,32 +532,46 @@
     int last = [self validPageValue:curPage+1];
     
     if([curImages count] != 0) [curImages removeAllObjects];
-    
     [curImages addObject:[imageArray objectAtIndex:pre]];
     [curImages addObject:[imageArray objectAtIndex:curPage]];
     [curImages addObject:[imageArray objectAtIndex:last]];
     return YES;
 }
 - (int)validPageValue:(NSInteger)value {
-    //    if(value == -1) value = 0;                   // value＝1为第一张，value = 0为前面一张
-    //    if(value == imageArray.count) value = imageArray.count - 1;
+    
+    if(value <= 0) value = 0;                   // value＝1为第一张，value = 0为前面一张
+    if(value >= imageArray.count) value = imageArray.count - 1;
     return value;
 }
-- (void)resetImageFrame:(InfoImageView*)imageView
+- (void)resetRect:(InfoImageView *)imageView
 {
-    if (!imageView.info) {
-        return;
+    
+    CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
+    CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
+    CGRect frameRect = self.scrollView.frame;
+    frameRect.size.width -= 2  * OFFSET;
+    CGRect rect = CGRectZero;
+    if (w > frameRect.size.width || h > frameRect.size.height) {
+        CGFloat scale = MIN(frameRect.size.width / w, frameRect.size.height / h);
+        rect = CGRectMake(0, 0, w * scale, h * scale);
+    }else{
+        rect = CGRectMake(0, 0, w, h);
     }
+    imageView.frame = rect;
+    imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
+    if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
+        imageView.frame = CGRectMake(0, 0, w, h);
+        imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
+    }
+}
+- (void)resetImageScale:(InfoImageView *)imageView
+{
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
     CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
     CGRect frameRect = self.scrollView.frame;
     frameRect.size.width -= 2  * OFFSET;
     
-    [self.curscrollView  setZoomScale:1];
-    [self.fontScrollview setZoomScale:1];
-    [self.rearScrollview setZoomScale:1];
     CGRect rect = CGRectZero;
-    
     if (w > frameRect.size.width || h > frameRect.size.height) {
         CGFloat scale = MIN(frameRect.size.width / w, frameRect.size.height / h);
         rect = CGRectMake(0, 0, w * scale, h * scale);
@@ -580,11 +594,24 @@
         if ([imageView isEqual:self.rearImageView]) {
             self.rearScrollview.maximumZoomScale = 1.1;
         }
-        rect = CGRectMake(0, 0, w, h);
     }
+}
+- (void)resetImageFrame:(InfoImageView*)imageView
+{
+    if (!imageView.info) {
+        return;
+    }
+    [self.curscrollView  setZoomScale:1];
+    [self.fontScrollview setZoomScale:1];
+    [self.rearScrollview setZoomScale:1];
     
-    imageView.frame = rect;
-    imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
+    CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
+    CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
+    CGRect frameRect = self.scrollView.frame;
+    frameRect.size.width -= 2  * OFFSET;
+    
+    [self resetRect:imageView];
+
     if ([imageView isEqual:self.currentImageView]) {
         self.curscrollView.contentSize = imageView.frame.size;
         [self.curscrollView setContentOffset:CGPointMake(0, 0)];
@@ -597,33 +624,42 @@
         self.rearScrollview.contentSize = imageView.frame.size;
         [self.rearScrollview setContentOffset:CGPointMake(0, 0)];
     }
+    
     [imageView resetGigView];
     [self resetModel:imageView];
     
-    if ([[imageView info] objectForKey:@"photo_url"]);
-    {
-        if (![[[imageView info] objectForKey:@"multi_frames"] boolValue])
+    if (![[[imageView info] objectForKey:@"multi_frames"] boolValue])
             [imageView.actV startAnimating];
-        NSString * str = nil;
-        if (h > w) {
-            str = [NSString stringWithFormat:@"%@_h960",[[imageView info] objectForKey:@"photo_url"]];
-        }else{
-            str = [NSString stringWithFormat:@"%@_w640",[[imageView info] objectForKey:@"photo_url"]];
-        }
-        [imageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options: 0   success:^(UIImage *image) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [imageView.actV stopAnimating];
-            });
-        } failure:^(NSError *error) {
-            NSLog(@"%@",error);
-        }];
-        if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
-            imageView.frame = CGRectMake(0, 0, w, h);
-            imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
-            [self setModelForGif:imageView];
-            [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
-        }
+    
+    NSString * str = nil;
+    if (h > w) {
+        str = [NSString stringWithFormat:@"%@_h960",[[imageView info] objectForKey:@"photo_url"]];
+    }else{
+        str = [NSString stringWithFormat:@"%@_w640",[[imageView info] objectForKey:@"photo_url"]];
     }
+    
+    [imageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options: 0   success:^(UIImage *image) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [imageView.actV stopAnimating];
+            [self resetImageScale:imageView];
+            if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
+                //                    imageView.frame = CGRectMake(0, 0, w, h);
+                //                    imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
+                [self setModelForGif:imageView];
+                [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
+            }
+        });
+    } failure:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
+//                imageView.frame = CGRectMake(0, 0, w, h);
+//                imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
+                [self setModelForGif:imageView];
+                [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
+            }
+        });
+    }];
+    
 }
 - (void)setModelForGif:(InfoImageView *)imageView
 {
@@ -633,7 +669,7 @@
 - (void)resetModel:(InfoImageView *)imageView
 {
     ((UIScrollView *)imageView.superview).scrollEnabled = YES;
-    
+    ((UIScrollView *)imageView.superview).maximumZoomScale = 1.f;
 }
 - (void)refreshScrollviewOnMinBounds
 {
@@ -648,7 +684,6 @@
     
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointZero];
-    curPage++;
 }
 - (void)refreshScrollviewOnMaxBounds
 {
@@ -663,7 +698,7 @@
     
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2,0)];
-    curPage--;
+//    curPage--;
 }
 - (void)refreshScrollviewWhenPhotonumLessThree
 {
@@ -707,11 +742,7 @@
     if (!imageArray || imageArray.count == 0) {
         return;
     }
-//    if (isInit){
-//        isInit = NO;
-//        return;
-//    }
-//    
+    
     NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
     if (photoNum < 3) {
         [self refreshScrollviewWhenPhotonumLessThree];
@@ -721,7 +752,6 @@
         [self refreshScrollviewOnMinBounds];
         return;
     }
-    
     if (curPage == imageArray.count - 1) {
         [self refreshScrollviewOnMaxBounds];
         return;
@@ -733,48 +763,49 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (isLoading) {
-        return;
-    }
-    if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging]|| animation )      return;
+    
+    if (isLoading || animation)  return;
+    if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging])      return;
     if (photoNum < 3) {
         curPage = self.scrollView.contentOffset.x / self.view.frame.size.width;
-        NSLog(@"curpage:%d",curPage);
         return;
     }
+    
     int x = self.scrollView.contentOffset.x;
-    if(x >= (self.scrollView.frame.size.width * 2)) {
-        
-        if (curPage >= photoNum - 2) {
-            curPage = photoNum - 1;
+    if (x == self.scrollView.frame.size.width) {
+        if (curPage == 0) {
+            curPage = 1;
             [self initSubViews];
+            NSLog(@"srollView To less");
             return;
         }
-        if (curPage >= imageArray.count - 2) {
+        if (curPage == photoNum - 1) {
+            curPage = photoNum - 2;
+            [self initSubViews];
+            NSLog(@"srollView To top");
+            return;
+        }
+    }
+    if(x >= (self.scrollView.frame.size.width * 2)) {
+        
+//        if (curPage >= photoNum - 2) {
+//            curPage = photoNum - 1;
+//            [self initSubViews];
+//            return;
+//        }
+        if (curPage >= imageArray.count - 2 && imageArray.count <= photoNum) {
             [self getMoreImage];
             return;
         }
         curPage = [self validPageValue:curPage+1];
-        dirction = upTomore;
         [self refreshScrollView];
     }
     
     if(x <= 0) {
-        
-        if (curPage <= 1) {
-            curPage = 0;
-            [self initSubViews];
-            return;
-        }
         curPage = [self validPageValue:curPage-1];
-        dirction = downToless;
         [self refreshScrollView];
     }
     
-    if (x == self.scrollView.frame.size.width) {
-        self.info = self.currentImageView.info;
-        [self resetImageFrame:self.currentImageView];
-    }
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView

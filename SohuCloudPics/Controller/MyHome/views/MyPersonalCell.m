@@ -8,6 +8,8 @@
 
 #import "MyPersonalCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCPAppDelegate.h"
+#import "SCPMenuNavigationController.h"
 
 @implementation MyPersonalCelldataSource
 
@@ -104,6 +106,12 @@
 }
 - (void)changeBack:(UITapGestureRecognizer *)gesture
 {
+
+    SCPAppDelegate * app = (SCPAppDelegate *)[[UIApplication sharedApplication] delegate];
+    SCPMenuNavigationController * mvc =  (SCPMenuNavigationController *)app.window.rootViewController;
+    if (mvc.menuManager.isMenuShowing)
+            [mvc.menuManager hideMenuWithRibbon:NO];
+    
     CGPoint point = [gesture locationInView:self.contentView];
     if (CGRectContainsPoint(CGRectMake(109, 100, 102, 102), point))        return;
     HomeBackContainer * hc = [[[HomeBackContainer alloc] initWithDelegate:self] autorelease];
@@ -123,8 +131,8 @@
     _nameLabel.textAlignment = UITextAlignmentCenter;
     _nameLabel.backgroundColor = [UIColor clearColor];
     _nameLabel.textColor = [UIColor whiteColor];
-
     [self.contentView addSubview:_nameLabel];
+    
     _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, 320, 12)];
     _descLabel.font = [UIFont  fontWithName:@"STHeitiTC-Medium" size:12];
     _descLabel.numberOfLines = 0;
@@ -194,7 +202,6 @@
     }
     CGSize size = [_descLabel.text sizeWithFont:_descLabel.font constrainedToSize:CGSizeMake(280, 35) lineBreakMode:_descLabel.lineBreakMode];
     _descLabel.frame = CGRectMake((self.frame.size.width - size.width)/2.f, 240, size.width, size.height);
-
     CGRect rect = _settingButton.frame;
     rect.origin.y = _descLabel.frame.size.height + _descLabel.frame.origin.y + 20;
     _settingButton.frame = rect;

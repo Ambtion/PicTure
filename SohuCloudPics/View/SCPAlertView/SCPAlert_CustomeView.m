@@ -29,6 +29,7 @@
     }
     return self;
 }
+
 - (void)show
 {
     UIWindow * win = [[UIApplication sharedApplication].delegate window];

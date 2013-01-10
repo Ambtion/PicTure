@@ -8,7 +8,10 @@
 
 #import "ImageQualitySwitch.h"
 
+static BOOL store = YES;
+
 @implementation ImageQualitySwitch
+@synthesize originalImage;
 - (id)initWithFrame:(CGRect)frame
 {
     frame.size.width = 91.f;
@@ -19,21 +22,33 @@
     }
     return self;
 }
+- (id)initWithFrameWithoutStore:(CGRect)frame  
+{
+    store = NO;
+    return [self initWithFrame:frame];
+}
 - (void)setSubViews
 {
     
     [self setUserInteractionEnabled:YES];
     self.backgroundColor = [UIColor clearColor];
-    self.image = [UIImage imageNamed:@"switch_btn.png"];
     _button = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     UISwipeGestureRecognizer * gesutre = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(buttonDrag:)] autorelease];
     gesutre.direction = UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight;
     [_button addGestureRecognizer:gesutre];
     [self addSubview:_button];
-    id imageInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"];
-    if (!imageInfo ||[imageInfo boolValue]) {
-        originalImage = 0;
-        _button.frame = (CGRect) {40,0, 51, 27};
+
+    if (store) {
+        self.image = [UIImage imageNamed:@"switch_btn.png"];
+        id imageInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"];
+        if (!imageInfo ||[imageInfo boolValue]) {
+            originalImage = 0;
+            _button.frame = (CGRect) {40,0, 51, 27};
+        }else{
+            originalImage = 1;
+            _button.frame = (CGRect) {0, 0, 51, 27};
+        }
+
     }else{
         originalImage = 1;
         _button.frame = (CGRect) {0, 0, 51, 27};
@@ -43,15 +58,25 @@
 -(void)setbuttinImage
 {
     if (originalImage) {
-        [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateNormal];
-        [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateHighlighted];
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"JPEG"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        if (store) {
+            [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateNormal];
+            [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateHighlighted];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"JPEG"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }else{
+            [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateNormal];
+            [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateHighlighted];
+        }
     }else {
-        [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateNormal];
-        [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateHighlighted];
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"JPEG"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        if (store) {
+            [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateNormal];
+            [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateHighlighted];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"JPEG"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }else{
+            [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateNormal];
+            [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateHighlighted];
+        }
     }
     NSLog(@"after : store %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"]);
 }

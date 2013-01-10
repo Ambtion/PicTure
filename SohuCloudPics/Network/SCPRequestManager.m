@@ -285,13 +285,14 @@
     }else{
         str = [NSString stringWithFormat:@"%@/folders/%@/photos?owner_id=%@&page=%d",BASICURL_V1,folder_id,user_id,page];
     }
+    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
-//            NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
+            NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
             [tempDic setObject:dic forKey:@"photoList"];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
@@ -638,15 +639,16 @@
     [request startAsynchronous];
 }
 
-- (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+- (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName ispublic:(BOOL)ispublic success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
     NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     [request setStringEncoding:NSUTF8StringEncoding];
     [request setPostValue:newName forKey:@"name"];
+    [request setPostValue:[NSNumber numberWithBool:ispublic] forKey:@"is_public"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
-//        NSLog(@"%@",[request responseString]);
+        NSLog(@"RENAME:%@",[request responseString]);
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
@@ -654,10 +656,12 @@
         }
     }];
     [request setFailedBlock:^{
+        NSLog(@"RENAME:%@",[request responseString]);
         failure(@"网络连接异常");
     }];
     [request startAsynchronous];
 }
+
 - (void)renameUserinfWithnewName:(NSString *)newName Withdescription:(NSString *)description success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
     NSString *url = [NSString stringWithFormat: @"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
@@ -675,6 +679,7 @@
         }
     }];
     [request setFailedBlock:^{
+        NSLog(@"%@",[request responseString]);
         failure(@"网络连接异常");
     }];
     [request startAsynchronous];

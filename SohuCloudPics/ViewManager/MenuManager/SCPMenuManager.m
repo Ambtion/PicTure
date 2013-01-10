@@ -225,10 +225,11 @@ static NSString *menuPress[6] = {
     [navController dismissModalViewControllerAnimated:NO];
     if (self.homelogin == LoginController) {
         [self onAccountClicked:nil];
-    }else if(self.notLogin == LoginController){
-        [self onNoticeClicked:nil];
-    }else{
+    }else if(self.uLoadLogin == LoginController){
         [self onBatchClicked:nil];
+    }else{
+        [self onNoticeClicked:nil];
+
     }
 }
 

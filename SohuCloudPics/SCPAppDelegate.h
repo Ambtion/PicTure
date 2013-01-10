@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SKPSMTPMessage.h"
+#define DEBUG 1
+#define DEBUGFILE [NSHomeDirectory() stringByAppendingPathComponent:@"Debug"]
 
 @class FunctionguideScroll;
-@interface SCPAppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate,UIWebViewDelegate>
+@interface SCPAppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate,UIWebViewDelegate,SKPSMTPMessageDelegate>
 {
     FunctionguideScroll * _fgc;
 }

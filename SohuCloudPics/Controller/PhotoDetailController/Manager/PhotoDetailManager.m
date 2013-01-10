@@ -270,6 +270,7 @@
     if ([self.listView.view superview]) {
         return;
     }
+   
     self.listView = [[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self];
     CGRect rect = cell.frame;
     CGFloat Y = ((SCPPhotoDetailViewController *)self.controller).pullingController.tableView.contentOffset.y;
@@ -278,8 +279,8 @@
     rect.size.height -= 70;
         
     [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
-    
 }
+
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     UINavigationController * nav = _controller.navigationController;

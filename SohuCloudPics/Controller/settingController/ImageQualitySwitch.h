@@ -11,6 +11,7 @@
 @interface ImageQualitySwitch : UIImageView
 {
     UIButton * _button;
-    BOOL originalImage;
 }
+@property(nonatomic,assign)BOOL originalImage;
+- (id)initWithFrameWithoutStore:(CGRect)frame;
 @end

@@ -256,7 +256,6 @@
     [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]] withToken:[dic objectForKey:@"access_token"]];
     if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
         [_delegate SCPLogin:self doLogin:nil];
-
 }
 - (void)loginFailture:(NSString *)error
 {
@@ -266,6 +265,8 @@
 #pragma mark resiteruseinfo
 - (void)registerButtonClicked:(UIButton *)button
 {
+    [_passwordTextField resignFirstResponder];
+    [_usernameTextField resignFirstResponder];
     SCPRegisterViewController *reg = [[[SCPRegisterViewController alloc] init] autorelease];
     [self.navigationController pushViewController:reg animated:YES];
 }

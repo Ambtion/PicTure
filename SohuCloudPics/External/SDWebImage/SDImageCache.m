@@ -192,8 +192,8 @@ static natural_t get_free_memory(void)
         {
             //硬盘中找到文件;;;;
             NSString * Cache;
-//            [delegate imageCache:self didFindImage:image forKey:key userInfo:info];
-            [delegate imageCache:self didFindImage:image forKey:@"Cache" userInfo:info];
+            [delegate imageCache:self didFindImage:image forKey:key userInfo:info];
+//            [delegate imageCache:self didFindImage:image forKey:@"Cache" userInfo:info];
         }
     }
     else
@@ -328,8 +328,8 @@ static natural_t get_free_memory(void)
         {
 
             NSString * Cache;
-//            [delegate imageCache:self didFindImage:image forKey:key userInfo:info];
-            [delegate imageCache:self didFindImage:image forKey:@"Cache" userInfo:info];
+            [delegate imageCache:self didFindImage:image forKey:key userInfo:info];
+//            [delegate imageCache:self didFindImage:image forKey:@"Cache" userInfo:info];
         }
         return;
     }

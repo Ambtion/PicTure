@@ -20,7 +20,7 @@
 
 
 static NSString* SettingMenu[7] = {@"个人资料设置",@"上传图片质量",@"清除缓存",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
-static NSString* SettingCover[7] = {@"settings_user.png",@"settings_push.png",@"settings_feedback.png",
+static NSString* SettingCover[7] = {@"settings_user.png",@"settings_push.png",@"settings_clear.png",
                                 @"settings_feedback.png",@"settings_refresh.png",@"settings_about.png",@"settings_logout.png"};
 
 static BOOL SettingNext[7] = {YES,NO,NO,YES,NO,YES,NO};
@@ -160,13 +160,8 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
         NSError * error = nil;
         [manager removeItemAtPath:str error:&error];
-        if (error) {
-            
-//            SCPAlert_CustomeView * alert = [[[SCPAlert_CustomeView alloc] initWithTitle:[NSString stringWithFormat:@"%@",error]] autorelease];
-//            [alert show];
-        }
-        [self removeCache];
     }
+    [self removeCache];
 }
 - (void)removeCache
 {
@@ -182,6 +177,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     NSNumber * GuideViewShowed = nil;
     NSNumber * FunctionShowed = nil;
     NSNumber * JPEG = nil;
+    NSLog(@"%@",cacheDic);
     //read
     if ([defaults objectForKey:@"__USER_ID__"])
         _use_id = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"__USER_ID__"]];

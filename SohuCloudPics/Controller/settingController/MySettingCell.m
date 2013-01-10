@@ -33,11 +33,12 @@
 - (void)addsubVies
 {
     
-    self.c_ImageView = [[[UIImageView alloc] initWithFrame:CGRectMake((50.f - 32.f)/2, (55.f - 32.f)/2, 32, 32)]autorelease];
+    self.c_ImageView = [[[UIImageView alloc] initWithFrame:CGRectMake((50.f - 28)/2, (55.f - 28)/2, 28, 28)]autorelease];
     self.c_ImageView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.c_ImageView];
     
     self.c_Label = [[[UILabel alloc] initWithFrame:CGRectMake(self.c_ImageView.frame.origin.x + 32 + 10, self.c_ImageView.frame.origin.y + 9, 200, 14)] autorelease];
+    self.c_Label.center = CGPointMake(self.c_Label.center.x, self.c_ImageView.center.y);
     self.c_Label.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:14];
     self.c_Label.backgroundColor = [UIColor clearColor];
     self.c_Label.textColor = [UIColor colorWithRed:102.f/255 green:102.f/255 blue:102.f/255 alpha:1];
@@ -47,8 +48,8 @@
     self.accessoryImage.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.accessoryImage];
     
-//    NSLog(@"%s, start",__FUNCTION__);
-//    self.imageSwitch = [[ImageQualitySwitch alloc] initWithFrame:CGRectMake(320 - 90 - 5, (55 - 27)/2, 0, 0)];
+    //    NSLog(@"%s, start",__FUNCTION__);
+    //    self.imageSwitch = [[ImageQualitySwitch alloc] initWithFrame:CGRectMake(320 - 90 - 5, (55 - 27)/2, 0, 0)];
 //    [self.contentView addSubview:self.imageSwitch];
 //    NSLog(@"%s, end",__FUNCTION__);
     

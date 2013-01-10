@@ -105,14 +105,13 @@
     _nameLabel.textColor = [UIColor whiteColor];
     [self.contentView addSubview:_nameLabel];
     
-    _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 236, 300, 24)];
+    _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, 320, 12)];
     _descLabel.font = [UIFont  fontWithName:@"STHeitiTC-Medium" size:12];
-    _descLabel.textAlignment = UITextAlignmentCenter;
-    _descLabel.numberOfLines = 2;
-    _descLabel.backgroundColor = [UIColor clearColor];
+    _descLabel.numberOfLines = 0;
     _descLabel.textColor = [UIColor whiteColor];
-    _descLabel.shadowColor = [UIColor blackColor];
+    _descLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
     _descLabel.shadowOffset = CGSizeMake(0, 1);
+    _descLabel.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_descLabel];
     
     _followButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -176,6 +175,12 @@
         [_followButton setImage:[UIImage imageNamed:@"user_add_following_normal.png"] forState:UIControlStateNormal];
         [_followButton setImage:[UIImage imageNamed:@"user_add_following_press.png"] forState:UIControlStateHighlighted];
     }
+    CGSize size = [_descLabel.text sizeWithFont:_descLabel.font constrainedToSize:CGSizeMake(280, 35) lineBreakMode:_descLabel.lineBreakMode];
+    _descLabel.frame = CGRectMake((self.frame.size.width - size.width)/2.f, 240, size.width, size.height);
+    CGRect rect = _followButton.frame;
+    rect.origin.y = _descLabel.frame.size.height + _descLabel.frame.origin.y + 20;
+    _followButton.frame = rect;
+
     _albumButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.albumAmount];
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];

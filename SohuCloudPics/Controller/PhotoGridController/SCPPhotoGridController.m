@@ -14,8 +14,8 @@
 #import "SCPPhotoGridCell.h"
 #import "SCPPhoto.h"
 #import "SCPPhotoDetailViewController.h"
-
 #import "SCPUploadTaskManager.h"
+
 
 @implementation SCPPhotoGridController
 
@@ -195,10 +195,8 @@
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolistinfo = [info objectForKey:@"photoList"];
-    NSLog(@"%@",info);
-          
+    NSLog(@"%@",folderinfo);
     if (folderinfo) {
-        NSLog(@"%@",folderinfo);
         self.albumData.photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
         self.albumData.viewCount = [[folderinfo objectForKey:@"view_count"] intValue];
         self.albumData.creatorId = [NSString stringWithFormat:@"%@",[folderinfo objectForKey:@"user_id"]];
@@ -259,13 +257,13 @@
 - (void)onPenClicked:(id)sender
 {
 //    if (![self longinPridecate]) return;
-    SCPAlert_Rename * rename = [[[SCPAlert_Rename alloc] initWithDelegate:self name:self.albumData.name] autorelease];
+    SCPAlert_AlbumProperty * rename = [[[SCPAlert_AlbumProperty alloc] initWithDelegate:self name:self.albumData.name isPublic:self.albumData.permission] autorelease];
     [rename show];
 }
-- (void)renameAlertView:(SCPAlert_Rename *)view OKClicked:(UITextField *)textField
+- (void)albumProperty:(SCPAlert_AlbumProperty *)view OKClicked:(UITextField *)textField ispublic:(BOOL)isPublic
 {
     NSString * str = textField.text;
-    [_request renameAlbumWithUserId:[SCPLoginPridictive currentUserId] folderId:self.albumData.albumId newName:str success:^(NSString *response) {
+    [_request renameAlbumWithUserId:[SCPLoginPridictive currentUserId] folderId:self.albumData.albumId newName:str ispublic:isPublic success:^(NSString *response) {
         self.albumData.name = str;
         self.pullingController.headView.labelName.text = str;
         [self.pullingController reloadDataSourceWithAniamtion:NO];

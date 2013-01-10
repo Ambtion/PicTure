@@ -61,6 +61,7 @@
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     _pullingController = [[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_album.png"] frame:self.view.bounds];
     _pullingController.tableView.tableFooterView = nil;
@@ -68,11 +69,11 @@
     _pullingController.tableView.dataSource = self;
     _pullingController.headView.datasouce = self;
     _pullingController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [self.view addSubview:_pullingController.view];
 	[self updateBanner];
     [self initNavigationItem];
 }
-
 - (void)updateBanner
 {
 	[self.pullingController.headView BannerreloadDataSource];
@@ -91,7 +92,11 @@
     self.bannerRightString = [NSString stringWithFormat:@"作者:%@", name];
     [self.pullingController.headView BannerreloadDataSource];
 }
-
+- (void)pullingreloadMoreTableViewData:(id)sender
+{
+    NSLog(@"%s",__FUNCTION__);
+    [self.pullingController moreDoneLoadingTableViewData];
+}
 - (void)initNavigationItem
 {
     int rightBarWidth = 250;
@@ -140,19 +145,21 @@
 
 - (void)refresh
 {
+    NSLog(@"%s",__FUNCTION__);
 	_hasNextPage = NO;
 	_currentPage = 0;
 	_loadedPage = 0;
+    if (isLoading) return;
     [_request getFoldersinfoWithID:_user_id];
-    NSLog(@"%s",__FUNCTION__);
 }
 
 - (void)loadNextPage
 {
     if (isLoading) return;
-    isLoading = YES;
+    NSLog(@"%s",__FUNCTION__);
 	if (_hasNextPage) {
 		if (_currentPage == _loadedPage) {
+            isLoading = YES;
             [_request getFoldersWithID:_user_id page:_currentPage + 1];
 		}
 	}
@@ -256,6 +263,7 @@
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
     [self.pullingController refreshDoneLoadingTableViewData];
+    [_pullingController moreDoneLoadingTableViewData];
 }
 #pragma mark -
 #pragma mark BannerDataSource
