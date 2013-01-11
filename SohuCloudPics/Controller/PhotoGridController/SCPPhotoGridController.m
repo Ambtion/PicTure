@@ -210,7 +210,6 @@
     
     hasNextPage = [[photolistinfo objectForKey:@"has_next"] boolValue];
     curpage = [[photolistinfo objectForKey:@"page"] intValue];
-    
 	NSArray * photoList = [photolistinfo objectForKey:@"photos"];
 	for (int i = 0; i < photoList.count; ++i) {
 		NSDictionary *photoInfo = [photoList objectAtIndex:i];
@@ -265,6 +264,7 @@
     NSString * str = textField.text;
     [_request renameAlbumWithUserId:[SCPLoginPridictive currentUserId] folderId:self.albumData.albumId newName:str ispublic:isPublic success:^(NSString *response) {
         self.albumData.name = str;
+        self.albumData.permission = !self.albumData.permission;
         self.pullingController.headView.labelName.text = str;
         [self.pullingController reloadDataSourceWithAniamtion:NO];
     } failure:^(NSString *error) {

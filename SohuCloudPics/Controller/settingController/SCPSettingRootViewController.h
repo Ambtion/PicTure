@@ -15,6 +15,7 @@
     id _controller;
     SCPAlertView_LoginTip * loginView;
     SCPAlertView_LoginTip * cacheView;
+    SCPAlertView_LoginTip * updataView;
 }
 - (id)initwithController:(id)controller;
 @end

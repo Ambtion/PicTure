@@ -9,6 +9,7 @@
 #import "AccountSystemRequset.h"
 #import "ASIFormDataRequest.h"
 #import "JSON.h"
+#import "SCPLoginPridictive.h"
 
 #define CLIENT_ID @"355d0ee5-d1dc-3cd3-bdc6-76d729f61655"
 
@@ -31,22 +32,20 @@
             NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[[request responseString] JSONValue]];
             ASIHTTPRequest * user_id = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
             [user_id startSynchronous];
-            
             if ([user_id responseStatusCode]>= 200 && [user_id responseStatusCode] < 300 && [user_id responseString]) {
                 [dic setObject:[[[user_id responseString] JSONValue] objectForKey:@"user_id"] forKey:@"user_id"];
                 success(dic);
             }else{
-                faiture([NSString stringWithFormat:@"user:%d,未知错误",[user_id responseStatusCode]]);
-                NSLog(@"user: %@",[user_id responseString]);
+                faiture(@"登陆失败");
             }
-            
+        }else if([request responseStatusCode] == 403){
+            faiture(@"账号或密码不匹配");
         }else{
-            NSLog(@"oauth2: %@",[request responseString]);
-            faiture([NSString stringWithFormat:@"oauth2:%d,未知错误",[request responseStatusCode]]);
+            faiture(@"登陆失败");
         }
     }];
     [request setFailedBlock:^{
-        faiture(@"连接失败");
+        faiture(@"网络异常");
     }];
     [request startAsynchronous];
 }
@@ -57,10 +56,8 @@
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:useName forKey:@"passport"];
     [request setPostValue:password forKey:@"password"];
-    //    [request setPostValue:nick forKey:@"nickname"];
     [request setTimeOutSeconds:5.f];
     [request setCompletionBlock:^{
-        NSLog(@" %s, %@ : %d",__FUNCTION__,[request responseString],[request responseStatusCode]);
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 ) {
             success(nil);
         }else if([request responseStatusCode] == 403){
@@ -87,14 +84,19 @@
                     break;
             }
         }else{
-            
-            faiture(@"请求失败");
+            faiture(@"注册失败");
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@" %s, %@ : %d",__FUNCTION__,[request responseString],[request responseStatusCode]);
-        faiture(@"请求失败");
+        faiture(@"网络异常");
     }];
     [request startAsynchronous];
+}
++ (void)refreshToken
+{
+    if (![SCPLoginPridictive isLogin]) return;
+    NSString * str = [NSString stringWithFormat:@"%@/oauth2/access_token?grant_type=refresh_token",BASICURL_V1];
+//    client_id=355d0ee5-d1dc-3cd3-bdc6-76d729f61655&client_secret=47ae8860-2f8d-36c3-be99-3ebba8f1e7e7&refresh_token=4639f5b2-02b6-37ab-8bc3-a938d6eb40dd" http://10.10.79.134/oauth2/access_token?grant_type=refresh_token
+    
 }
 @end

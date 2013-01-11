@@ -19,35 +19,56 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self customizeNavigation];
     [self readAlbum];
     
 }
+
 - (void) customizeNavigation
 {
     UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
 	[self.navigationItem setRightBarButtonItem:doneButtonItem];
     [doneButtonItem release];
-    
     UIBarButtonItem * cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
 	[self.navigationItem setLeftBarButtonItem:cancelButtonItem];
     [cancelButtonItem release];
+    [self.navigationItem setTitle:@"相册"];
+}
+- (void)customizeNavigationWhenALbumCannotRead
+{
+    UIImageView * imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 64, 320, [[UIScreen mainScreen] bounds].size.height - 64)] autorelease];
+    if ([[UIScreen mainScreen] bounds].size.height > 480) {
+        imageView.image  = [UIImage imageNamed:@"serect_bg_ios6.png"];
+    }else{
+        imageView.image = [UIImage imageNamed:@"secret_bg.png"];
+    }
+    imageView.backgroundColor = [UIColor redColor];
+    [imageView setUserInteractionEnabled:YES];
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"Iknow_btn_normal.png"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"Iknow_btn_press.png"] forState:UIControlStateHighlighted];
+    [button addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
+    button.frame = CGRectMake((320 - 127)/2.f, imageView.frame.size.height - 50, 127, 42);
+    [imageView addSubview:button];
+    [self.tabBarController.view addSubview:imageView];
+    
+    [self.navigationItem setTitle:@"隐私设置"];
+	[self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationItem setRightBarButtonItem:nil];
+    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
     
 }
+
 - (void) readAlbum
 {
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
 	self.assetGroups = tempArray;
     [tempArray release];
-    
     library = [[ALAssetsLibrary alloc] init];
-    
     // Load Albums into assetGroups
     dispatch_async(dispatch_get_main_queue(), ^
                    {
                        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-                       
                        // Group enumerator Block
                        void (^assetGroupEnumerator)(ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop)
                        {
@@ -61,14 +82,9 @@
                        };
                        // Group Enumerator Failure Block
                        void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
-                           
-                           UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"本地上传请先在手机'设置->隐私->照片->'中打开" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                           [alert show];
-                           [alert release];
-                           
+                           [self customizeNavigationWhenALbumCannotRead];
                            NSLog(@"A problem occured %@", [error description]);
                        };
-                       
                        // Enumerate Albums
                        [library enumerateGroupsWithTypes:ALAssetsGroupAll
                                               usingBlock:assetGroupEnumerator
@@ -97,17 +113,13 @@
 
 -(void)reloadTableView
 {
-	
 	[self.tableView reloadData];
-	[self.navigationItem setTitle:@"相册"];
 }
 
 -(void)selectedAssets:(NSArray*)_assets
 {
-	
 	[(ELCImagePickerController*)parent selectedAssets:_assets];
 }
-
 #pragma mark -
 #pragma mark Table view data source
 

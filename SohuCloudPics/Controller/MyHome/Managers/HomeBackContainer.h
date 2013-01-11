@@ -12,7 +12,7 @@
 @protocol HomeBackContainerDelegate <NSObject>
 - (void)homeBackContainerSeleced:(UIImage *)image;
 @end
-@interface HomeBackContainer : UIImageView <UIScrollViewDelegate>
+@interface HomeBackContainer : UIImageView <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 {
     UIImageView * _boxViews;
 }

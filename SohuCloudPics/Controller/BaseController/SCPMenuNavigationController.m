@@ -233,8 +233,16 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
     return vc;
 }
+- (NSArray *)popToRootViewControllerAnimated:(BOOL)animated
+{
+    NSArray * vcArray  = [super popToRootViewControllerAnimated:animated];
+    if (self.childViewControllers.count == 1) [self reseticon];
+    [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
+    return vcArray;
+}
 - (void)reseticon
 {
+    NSLog(@"%s",__FUNCTION__);
     SCPMainTabController * maintab = [self.childViewControllers objectAtIndex:0];
     switch (maintab.selectedIndex) {
         case 0:

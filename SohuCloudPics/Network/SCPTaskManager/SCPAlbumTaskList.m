@@ -49,9 +49,7 @@
     self.currentTask.request = [self getUploadRequest:nil];
     [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit * unit) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
-            
             if (unit.description && ![unit.description isEqualToString:@""])
                 [self.currentTask.request setPostValue:unit.description forKey:@"desc"];
             if (!self.currentTask.request.isCancelled)
@@ -110,7 +108,6 @@
     if ([_delegate respondsToSelector:@selector(albumTask:requsetFinish:)]) {
         [_delegate performSelector:@selector(albumTask:requsetFinish:) withObject:self withObject:request];
     }
-    
     self.currentTask = nil;
     if (self.taskList.count) {
         [self goNextTask];
@@ -144,7 +141,7 @@
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
     NSString * str = [NSString stringWithFormat:@"%s/upload/api?folder_id=%@&access_token=%@","http://10.10.79.134",self.albumId,[SCPLoginPridictive currentToken]];
-    NSLog(@"%@",str);
+    NSLog(@"NNNN:: %@",str);
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
     [request setStringEncoding:NSUTF8StringEncoding];

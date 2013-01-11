@@ -102,8 +102,8 @@
         NSDictionary * dic = [_dataSource.infoArray objectAtIndex:i];
         UIImageView * imageView = [_imageViewArray objectAtIndex:i];
         imageView.frame = [[_dataSource.imageFrame objectAtIndex:i] CGRectValue];
-        //现在取图c205
-        NSString * imageUrl = [NSString stringWithFormat:@"%@_c205",[dic objectForKey:@"photo_url"]];
+        //现在取图c410
+        NSString * imageUrl = [NSString stringWithFormat:@"%@_c410",[dic objectForKey:@"photo_url"]];
         NSURL * url = [NSURL URLWithString:imageUrl];
         [imageView setImageWithURL:url placeholderImage:nil options:0];
     }

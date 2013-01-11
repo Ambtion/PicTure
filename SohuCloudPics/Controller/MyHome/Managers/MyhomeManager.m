@@ -340,6 +340,8 @@ static float OFFSET = 0.f;
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender
 {
     SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
+    [alb refresh];
+
     [_controller.navigationController pushViewController:alb animated:YES];
     [alb release];
 }

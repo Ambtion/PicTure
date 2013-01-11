@@ -26,25 +26,19 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
         self.delegate = Adelegete;
         self.frame = [[UIScreen mainScreen] bounds];
         self.image = [UIImage imageNamed:@"pop_bg.png"];
-        //        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandle:)] autorelease];
-        //        [self addGestureRecognizer:gesture];
-        
+        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandle:)] autorelease];
+        gesture.delegate = self;
+        [self addGestureRecognizer:gesture];
         [self addSubviews];
     }
     return self;
 }
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    UITouch * touch = [touches anyObject];
-    CGPoint point = [touch locationInView:self];
-    NSLog(@"%@",NSStringFromCGPoint(point));
-    
-    if (CGRectContainsPoint(CGRectMake(0, 0, 320, 480 - 162), point)) {
-        [self tapGestureHandle:nil];
-        return;
-    }
-    [super touchesBegan:touches withEvent:event];
+    if ([touch.view isKindOfClass:[UIButton class]]) return NO;
+    return YES;
 }
+
 - (void)addSubviews
 {
     _boxViews = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.bounds.size.height, self.bounds.size.width, 162)];
@@ -53,7 +47,6 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
     [self addSubview:_boxViews];
     [_boxViews setUserInteractionEnabled:YES];
     [self setUserInteractionEnabled:YES];
-    
     [self boxviewaddSubViews];
 }
 - (void)boxviewaddSubViews
@@ -71,6 +64,7 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
         [_boxViews addSubview:imageview];
         [_boxViews addSubview:button];
     }
+    
     [self setSelecteStateonButton];
 }
 - (void)tapGestureHandle:(id)gesture

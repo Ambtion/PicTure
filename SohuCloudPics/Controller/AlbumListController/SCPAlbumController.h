@@ -46,7 +46,6 @@ typedef enum {
 @property (strong, nonatomic) NSString *bannerLeftString;
 @property (strong, nonatomic) NSString *bannerRightString;
 @property (nonatomic,retain ) UIProgressView * curProgreeeView;
-
 /* UI */
 @property (strong, nonatomic) PullingRefreshController *pullingController;
 

@@ -52,14 +52,16 @@
 //    MyFavouriteView * _commentButton;
     FeedCellDataSource * _dataSource;
     UIButton * _gifPlayButton;
-    UIWebView * _webView;
+//    UIWebView * _webView;
 
 }
 //@property (strong, nonatomic) NSObject <FeedCellDataSource> *dataSource;
 @property (assign, nonatomic) id <FeedCellDelegate> delegate;
 @property (nonatomic,retain) FeedCellDataSource * dataSource;
-@property (nonatomic,assign)CGFloat maxImageHeigth;
-@property (nonatomic,retain)UIImageView * photoImageView;
+@property (nonatomic,assign) CGFloat maxImageHeigth;
+@property (nonatomic,retain) UIImageView * photoImageView;
+@property (nonatomic,retain) UIButton * gifPlayButton;
+
 - (void)photoImageViewClicked;
 
 @end

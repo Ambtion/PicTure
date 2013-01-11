@@ -23,6 +23,7 @@
     UITextField *_renameField;
     ImageQualitySwitch * _public;
     id<SCPAlert_AlbumPropertyDelegate> _delegate;
+    BOOL shouldRemove;
 }
 - (id)initWithDelegate:(id<SCPAlert_AlbumPropertyDelegate>)delegate name:(NSString *)name isPublic:(BOOL)isPublic;
 - (void)show;

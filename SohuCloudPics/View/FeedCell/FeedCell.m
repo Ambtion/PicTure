@@ -21,6 +21,7 @@ update = _update;
 @synthesize isGif = _isGif;
 //@synthesize allInfo = _allInfo;
 @synthesize heigth = _heigth;
+
 - (void)dealloc
 {
     self.photoImage = nil;
@@ -43,6 +44,7 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 @synthesize delegate = _delegate;
 @synthesize maxImageHeigth = _maxImageHeigth;
 @synthesize photoImageView = _photoImageView;
+@synthesize gifPlayButton = _gifPlayButton;
 - (void)dealloc
 {
     [_photoImageView release];
@@ -158,32 +160,32 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     if (widht <= 320 && height <= 320) {
         _photoImageView.frame = CGRectMake(0, 0, 320, 320);
         _photoImageView.center = CGPointMake(160, 160);
-        [_photoImageView cancelCurrentImageLoad];
-        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
+//        [_photoImageView cancelCurrentImageLoad];
+//        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
+//        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     }
     if (widht > 320 && height <= 320) {
         _photoImageView.frame = CGRectMake(0, 0, 320 , 320);
         _photoImageView.center = CGPointMake(160, 160);
-        [_photoImageView cancelCurrentImageLoad];
-        
-        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
+//        [_photoImageView cancelCurrentImageLoad];
+//        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
+//        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     }
     if (widht <= 320 && height > 320) {
         _photoImageView.frame = CGRectMake(0, 0, 320,320);
         _photoImageView.center = CGPointMake(160, 160);
-        [_photoImageView cancelCurrentImageLoad];
-        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
+//        [_photoImageView cancelCurrentImageLoad];
+//        NSString * str = [NSString stringWithFormat:@"%@_c640",_dataSource.photoImage];
+//        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     }
     if (widht > 320 && height > 320 ) {
         _photoImageView.frame = CGRectMake(0, 0, 320, 320);
         _photoImageView.center = CGPointMake(160, 160);
-        [_photoImageView cancelCurrentImageLoad];
-        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     }
+    [_photoImageView cancelCurrentImageLoad];
+    NSString * str = [NSString stringWithFormat:@"%@_c640",_dataSource.photoImage];
+    [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
+
     [self showGifButton];
     
     if (!_dataSource ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {

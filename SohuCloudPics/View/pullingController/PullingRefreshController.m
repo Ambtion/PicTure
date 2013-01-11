@@ -546,7 +546,7 @@ static CGFloat OFFSET = 0.f;
 }
 - (void)reloadDataSourceWithAniamtion:(BOOL)animation
 {    
-    if (animation) {
+    if (animation && [_tableView numberOfRowsInSection:0]) {
         [_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }else{
         [_tableView reloadData];

@@ -55,7 +55,6 @@
 {
     
     self.webView = [[[UIWebView alloc] initWithFrame:self.frame] autorelease];
-    
     self.webView.userInteractionEnabled = NO;//用户不可交互
     self.webView.delegate = self;
     self.webView.backgroundColor = [UIColor clearColor];
@@ -92,7 +91,6 @@
     NSString * str = [self getStringWithURL:requset.url];
     if ([manager fileExistsAtPath:str])
         [manager removeItemAtPath:str error:nil];
-    
     NSError * error = nil;
     [data writeToFile:str options:NSDataWritingAtomic error:&error];
     if (error) {
@@ -127,6 +125,7 @@
 {
     [self.requset clearDelegatesAndCancel];
     self.requset = nil;
+    [self.webView stopLoading];
     [self.webView removeFromSuperview];
     self.webView = nil;
 }
@@ -155,8 +154,8 @@
 @synthesize rearScrollview = _rearScrollview;
 - (void)dealloc
 {
-    
-    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications])
+        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [_requestManger setDelegate:nil];
     [_requestManger release];
     self.tempView = nil;
@@ -204,12 +203,18 @@
                                                  selector:@selector(listOrientationChanged:)
                                                      name:UIDeviceOrientationDidChangeNotification
                                                    object:nil];
-}
+    }
     return self;
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications])
+        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    
 }
 #pragma mark Ratation
 - (CGAffineTransform )getTransfrom
@@ -227,7 +232,6 @@
 {
     if ([[self.currentImageView.info objectForKey:@"multi_frames"]boolValue]) return;
     [self.view setUserInteractionEnabled:NO];
-    
     animation = YES;
     CGFloat scale = 1.0;
     CGAffineTransform transform = CGAffineTransformIdentity;
@@ -417,16 +421,16 @@
 - (void)handlesignalGesture:(UITapGestureRecognizer *)gesture
 {
     [self.view setUserInteractionEnabled:NO];
+    NSLog(@"%s, %@, \n______+++++view %@",__FUNCTION__ , self.currentImageView,[[gesture view] subviews]);
     _dataManager.photo_ID = [NSString stringWithFormat:@"%@",[self.info objectForKey:@"photo_id"]];
     [_dataManager dataSourcewithRefresh:YES];
     animation = YES;
     [_dataManager.controller showNavigationBar];
-    [self.currentImageView resetGigView];
-    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-        [self.currentImageView setAlpha:0];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        [[[gesture view].subviews objectAtIndex:0] setAlpha:0];
     } completion:^(BOOL finished) {
-//        [self.view removeFromSuperview];
-//        [self.view setUserInteractionEnabled:YES];
+        [self.view removeFromSuperview];
+        [self.view setUserInteractionEnabled:YES];
         [self.tempView removeFromSuperview];
         animation = NO;
     }];

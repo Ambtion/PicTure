@@ -17,6 +17,7 @@
 #import "SCPAlert_WaitView.h"
 #import "SCPAlertView_LoginTip.h"
 
+
 #define EMAIL_ARRAY ([NSArray arrayWithObjects:\
 @"sohu.com", @"vip.sohu.com", @"chinaren.com", @"sogou.com", @"17173.com", @"focus.cn", @"game.sohu.com", @"37wanwan.com",\
 @"126.com", @"163.com", @"qq.com", @"gmail.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
@@ -45,12 +46,12 @@
 - (void)loadView
 {
     [super loadView];
-    self.view.backgroundColor = [UIColor colorWithRed:244.0f/255.f green:244.0f/255.f blue:244.0f/255.f alpha:1];
     CGRect frame = [[UIScreen mainScreen] bounds];
     UIScrollView *view = [[[UIScrollView alloc] initWithFrame:frame] autorelease];
     view.bounces = NO;
     view.contentSize = frame.size;
     self.view = view;
+    self.view.backgroundColor = [UIColor colorWithRed:244.0f/255.f green:244.0f/255.f blue:244.0f/255.f alpha:1];
 }
 
 - (void)viewDidLoad
@@ -165,6 +166,14 @@
     [renrenbutton setImage:[UIImage imageNamed:@"renrenLogin.png"] forState:UIControlStateNormal];
     [renrenbutton addTarget:self action:@selector(renrenLogin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:renrenbutton];
+    
+    UIImageView * sohu2003 = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sohu-2013.png"]] autorelease];
+    CGRect rect = CGRectMake(0, 0, 320, 10);
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    rect.origin.y = screenRect.size.height - 20;
+    sohu2003.frame = rect;
+    [self.view addSubview:sohu2003];
+        
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -125,7 +125,6 @@
 - (void)cancelClicked
 {
     if ([_renameField isFirstResponder]) {
-        NSLog(@"%s",__FUNCTION__);
         [_renameField resignFirstResponder];
     }else{
         [self removeFromSuperview];

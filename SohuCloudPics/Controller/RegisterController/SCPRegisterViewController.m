@@ -9,7 +9,6 @@
 #import "SCPRegisterViewController.h"
 
 #import "SCPMenuNavigationController.h"
-#import "SCPFinishRegisterViewController.h"
 #import "SCPLoginPridictive.h"
 
 #import "AccountSystemRequset.h"
@@ -17,7 +16,6 @@
 #import "SCPLoginViewController.h"
 
 #define EMAIL_ARRAY ([NSArray arrayWithObjects:@"126.com", @"163.com", @"qq.com", @"sohu.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
-
 
 
 @implementation SCPRegisterViewController
@@ -44,7 +42,7 @@
 - (void)loadView
 {
     [super loadView];
-    UIScrollView *view = [[[UIScrollView alloc] initWithFrame:self.view.bounds] autorelease];
+    UIScrollView *view = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)] autorelease];
     view.bounces = NO;
     view.contentSize = view.frame.size;
     self.view = view;
@@ -57,12 +55,12 @@
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
 }
 - (void)addViews
 {
-    _checked = [[UIImage imageNamed:@"check_box_select.png"] stretchableImageWithLeftCapWidth:44 topCapHeight:0];
-    _noChecked = [[UIImage imageNamed:@"check_box_no_select.png"] stretchableImageWithLeftCapWidth:44 topCapHeight:0];
+    
+    _checked = [[UIImage imageNamed:@"check_box_select.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 22, 0, 0)];
+    _noChecked = [[UIImage imageNamed:@"check_box_no_select.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 22, 0, 0)];
     CGRect frame = self.view.bounds;
     _backgroundImageView = [[UIImageView alloc] initWithFrame:frame];
     _backgroundImageView.image = [UIImage imageNamed:@"signin_bg.png"];
@@ -132,6 +130,13 @@
     [backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
+    
+    UIImageView * sohu2003 = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sohu-2013.png"]] autorelease];
+    CGRect rect = CGRectMake(0, 0, 320, 10);
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    rect.origin.y = screenRect.size.height - 20;
+    sohu2003.frame = rect;
+    [self.view addSubview:sohu2003];
     
 }
 - (void)backButtonClick:(UIButton*)button

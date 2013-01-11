@@ -13,5 +13,5 @@
     UIButton * _button;
 }
 @property(nonatomic,assign)BOOL originalImage;
-- (id)initWithFrameWithoutStore:(CGRect)frame;
+- (id)initWithFrame:(CGRect)frame WithOriginalImage:(BOOL)isPublic;
 @end

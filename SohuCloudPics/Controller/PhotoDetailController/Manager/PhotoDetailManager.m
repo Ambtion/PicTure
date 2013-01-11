@@ -80,7 +80,7 @@
         fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
         fAdapter.name = [self.infoFromSuper objectForKey:@"user_nick"];
         fAdapter.portrailImage = [self.infoFromSuper objectForKey:@"user_icon"];
-
+        
         //图像信息
         fAdapter.photoImage = [self.infoFromSuper objectForKey:@"photo_url"];
         fAdapter.isGif = [[self.infoFromSuper objectForKey:@"multi_frames"] intValue];
@@ -91,7 +91,7 @@
         
         FeedDescriptionSource * data = [[FeedDescriptionSource alloc] init];
         data.describtion = [self.infoFromSuper objectForKey:@"photo_desc"];
-//        data.bookMark = @"OK";
+        //        data.bookMark = @"OK";
         [_dataSourceArray addObject:data];
         [data release];
     }
@@ -187,7 +187,7 @@
 }
 - (NSString*)bannerDataSouceRightLabel
 {
-//    return [self.controller getTimeString];
+    //    return [self.controller getTimeString];
     return [NSString stringWithFormat:@"浏览数:%d",numCount];
 }
 #pragma mark -
@@ -245,7 +245,7 @@
         picture.dataSource = [_dataSourceArray objectAtIndex:row];
         return picture;
     }
-
+    
     FeedDescription* des = [tableView dequeueReusableCellWithIdentifier:@"FeedDescribtion"];
     if (des == nil){
         des = [[[FeedDescription alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FeedDescribtion"] autorelease];
@@ -270,14 +270,15 @@
     if ([self.listView.view superview]) {
         return;
     }
-   
     self.listView = [[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self];
     CGRect rect = cell.frame;
     CGFloat Y = ((SCPPhotoDetailViewController *)self.controller).pullingController.tableView.contentOffset.y;
     cell.photoImageView.image = nil;
+    if (cell.gifPlayButton.superview)
+        [cell.gifPlayButton removeFromSuperview];
     rect.origin.y -= Y;
     rect.size.height -= 70;
-        
+    
     [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
 }
 
@@ -288,7 +289,7 @@
         [_user_ID isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
         SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
         [nav pushViewController:myhome animated:YES];
-
+        
     }else{
         SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
         [nav pushViewController:ctrl animated:YES];

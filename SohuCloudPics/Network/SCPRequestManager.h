@@ -28,11 +28,11 @@
 @end
 
 
-
 @interface SCPRequestManager : NSObject<ASIHTTPRequestDelegate>
 {
     NSMutableDictionary * tempDic;
     id<SCPRequestManagerDelegate> _delegate;
+    
 }
 
 @property (nonatomic,assign) id<SCPRequestManagerDelegate> delegate;
@@ -75,5 +75,5 @@
 - (void)createAlbumWithName:(NSString *)newName success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure;
 - (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName ispublic:(BOOL)ispublic success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure;
 - (void)renameUserinfWithnewName:(NSString *)newName Withdescription:(NSString *)description success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure;
-
+- (void)feedBackWithidea:(NSString *)idea success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure;
 @end

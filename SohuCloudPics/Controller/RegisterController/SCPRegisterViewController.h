@@ -10,7 +10,7 @@
 #import "SCPSecondLayerController.h"
 #import "EmailTextField.h"
 
-@interface SCPRegisterViewController : UIViewController
+@interface SCPRegisterViewController : SCPSecondLayerController
 {
     UIImage *_checked, *_noChecked;
 }

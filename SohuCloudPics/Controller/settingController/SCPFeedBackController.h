@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "SCPSecondLayerController.h"
+#import "SCPRequestManager.h"
 
 @interface SCPFeedBackController : SCPSecondLayerController<UITextViewDelegate>
 {
     UITextView * _textView;
     UITextField * _placeHolder;
+    SCPRequestManager * requset;
 }
 @end

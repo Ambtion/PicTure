@@ -246,9 +246,9 @@ static NSString *menuPress[6] = {
 {
     if (self.navController.childViewControllers.count == 1) {
         SCPMainTabController *tabCtrl = [navController.childViewControllers objectAtIndex:0];
-        [self restIcon:index];
         [self hideMenuWithRibbon:NO];
         [tabCtrl switchToindex:index == 3 ? 0 : 1];
+        [self restIcon:index];
         return;
     }
     [self.navController popToRootViewControllerAnimated:YES];
@@ -266,8 +266,9 @@ static NSString *menuPress[6] = {
         if (tabCtrl.selectedIndex == 1 && index == 2) {
             return;
         }
+        [tabCtrl switchToindex:index == 3 ? 0 : 1];
         [self restIcon:index];
-        [tabCtrl switchToindex:index == 3 ? 0 : 1];        
+
     }
 }
 
@@ -304,9 +305,10 @@ static NSString *menuPress[6] = {
     if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeViewController class]]) {
         return;
     }
-    [self restIcon:1];
     SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
     [self.navController pushViewController:myhome animated:YES];
+    [self restIcon:1];
+
 }
 
 - (void)onFollowedClicked:(id)sender

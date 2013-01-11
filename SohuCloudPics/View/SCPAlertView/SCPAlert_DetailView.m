@@ -120,9 +120,9 @@
         [_okButton setBackgroundImage:[UIImage imageNamed:@"pop_up_btn_L.png"] forState:UIControlStateNormal];
         [_okButton setBackgroundImage:[UIImage imageNamed:@"pop_up_btn_L_press.png"] forState:UIControlStateHighlighted];
         [_okButton addTarget:self action:@selector(okClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
         [_alertboxImageView addSubview:_okButton];
         _delegate = delegate;
-        
     }
     return self;
 }
@@ -130,7 +130,6 @@
 {
     [[[UIApplication sharedApplication].delegate window] addSubview:self];
 }
-
 
 - (void)okClicked:(UIButton*)button
 {

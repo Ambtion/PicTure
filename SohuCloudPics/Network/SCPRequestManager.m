@@ -28,7 +28,7 @@
 
 - (void)dealloc
 {
-    //    [NSObject cancelPreviousPerformRequestsWithTarget:_delegate];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [tempDic release];
     [super dealloc];
 }
@@ -151,6 +151,7 @@
 - (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page
 {
     NSString * str = [NSString stringWithFormat:@"%@/feed?user_id=%@&page=%d",BASICURL_V1,user_ID,page];
+    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -184,6 +185,7 @@
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,uses_id];
     }
+    NSLog(@"%s, %@",__FUNCTION__, str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -205,7 +207,6 @@
         }
     }];
     [request startAsynchronous];
-    
 }
 - (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page
 {
@@ -670,6 +671,7 @@
     [request setPostValue:newName forKey:@"name"];
     [request setPostValue:description forKey:@"description"];
     [request setRequestMethod:@"PUT"];
+    
 	[request setCompletionBlock:^{
         NSLog(@"%@",[request responseString]);
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
@@ -684,5 +686,25 @@
     }];
     [request startAsynchronous];
 }
-
+- (void)feedBackWithidea:(NSString *)idea success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+{
+    NSString * str =[NSString stringWithFormat:@"%@/feedback?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
+    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setPostValue:idea forKey:@"content"];
+    [request setCompletionBlock:^{
+        NSLog(@"%@",[request responseString]);
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+            success([request responseString]);
+        }else{
+            failure(@"网络连接异常");
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"%@",[request responseString]);
+        failure(@"网络连接异常");
+    }];
+    [request startAsynchronous];
+    
+}
 @end

@@ -69,7 +69,7 @@
 - (void)addSubviews
 {
     
-    UIImageView * imageView = [[[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    UIImageView * imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)] autorelease];
     imageView.image = [UIImage imageNamed:@"personal_setting.png"];
     [self.view addSubview:imageView];
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];

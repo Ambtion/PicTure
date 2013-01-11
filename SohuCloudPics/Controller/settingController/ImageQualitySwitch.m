@@ -22,10 +22,17 @@ static BOOL store = YES;
     }
     return self;
 }
-- (id)initWithFrameWithoutStore:(CGRect)frame  
+- (id)initWithFrame:(CGRect)frame WithOriginalImage:(BOOL)isPublic
 {
     store = NO;
-    return [self initWithFrame:frame];
+    self.originalImage = isPublic;
+    frame.size.width = 91.f;
+    frame.size.height = 27.f;
+    if (self = [super initWithFrame:frame]) {
+        [self setSubViews];
+    }
+    return self;
+
 }
 - (void)setSubViews
 {
@@ -50,8 +57,12 @@ static BOOL store = YES;
         }
 
     }else{
-        originalImage = 1;
-        _button.frame = (CGRect) {0, 0, 51, 27};
+        self.image = [UIImage imageNamed:@"alubm_switch_btn.png"];
+        if (self.originalImage) {
+            _button.frame = (CGRect) {0, 0, 51, 27};
+        }else{
+            _button.frame = (CGRect) {40,0, 51, 27};
+        }
     }
     [self setbuttinImage];
 }
@@ -64,8 +75,8 @@ static BOOL store = YES;
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"JPEG"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }else{
-            [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateNormal];
-            [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateHighlighted];
+            [_button setBackgroundImage:[UIImage imageNamed:@"personal_album_btn.png"] forState:UIControlStateNormal];
+            [_button setBackgroundImage:[UIImage imageNamed:@"personal_album_btn.png"] forState:UIControlStateHighlighted];
         }
     }else {
         if (store) {
@@ -74,8 +85,8 @@ static BOOL store = YES;
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"JPEG"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }else{
-            [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateNormal];
-            [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateHighlighted];
+            [_button setBackgroundImage:[UIImage imageNamed:@"social_album_btn.png"] forState:UIControlStateNormal];
+            [_button setBackgroundImage:[UIImage imageNamed:@"social_album_btn.png"] forState:UIControlStateHighlighted];
         }
     }
     NSLog(@"after : store %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"]);

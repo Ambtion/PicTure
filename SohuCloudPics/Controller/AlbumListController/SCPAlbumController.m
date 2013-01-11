@@ -73,6 +73,9 @@
     [self.view addSubview:_pullingController.view];
 	[self updateBanner];
     [self initNavigationItem];
+    
+    [_pullingController.tableView reloadData];
+	[_pullingController refreshDoneLoadingTableViewData];
 }
 - (void)updateBanner
 {
@@ -145,14 +148,12 @@
 
 - (void)refresh
 {
-    NSLog(@"%s",__FUNCTION__);
 	_hasNextPage = NO;
 	_currentPage = 0;
 	_loadedPage = 0;
     if (isLoading) return;
     [_request getFoldersinfoWithID:_user_id];
 }
-
 - (void)loadNextPage
 {
     if (isLoading) return;
@@ -166,7 +167,6 @@
 }
 - (void)barButtonBack:(UIButton*)button
 {
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (UIButton *)switchButtonView
@@ -174,7 +174,6 @@
     /* subclasses should override this method */
     return nil;
 }
-
 - (SCPAlbumController *)switchController
 {
     /* subclasses should override this method */
@@ -210,7 +209,8 @@
     tempRibbon = ((SCPMenuNavigationController *) self.navigationController).ribbonView;
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
-    [self refresh];
+//    [self refresh];
+   
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -304,10 +304,6 @@
             loginTip.tag = imageView.tag;
             [loginTip show];
             /* delete */
-//			NSLog(@"hererererererererererer");
-//            SCPAlert_LoginView *alertView = [[[SCPAlert_LoginView alloc] initWithMessage:@"确定要删除吗？" delegate:self] autorelease];
-//            alertView.tag = imageView.tag;
-//            [alertView show];
             break;
         }
         default:

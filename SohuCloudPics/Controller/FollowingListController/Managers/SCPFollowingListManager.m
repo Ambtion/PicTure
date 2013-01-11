@@ -93,14 +93,6 @@
     [alertView show];
     [self restNetWorkState];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex != 0) {
-//        [self dataSourcewithRefresh:_willRefresh];
-//    }else{
-//        [self restNetWorkState];
-//    }
-//}
 - (void)restNetWorkState
 {
     if (_willRefresh) {
@@ -150,7 +142,6 @@
     _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
-    
 }
 #pragma mark more
 //1:下拉刷新 2:刷新结束
@@ -231,7 +222,7 @@
             cell.dataSource.following = !cell.dataSource.following;
             [cell updataData];
         } failure:^(NSString *error) {
-           [self requestFailed:error];
+            [self requestFailed:error];
         }];
     }else{
         [_requestManger friendshipsFollowing:cell.dataSource.user_id success:^(NSString *response) {
@@ -270,7 +261,7 @@
         
         SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
         [_controller.navigationController pushViewController:myhome animated:YES];
-
+        
     }else{
         SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:cell.dataSource.user_id] autorelease];
         [_controller.navigationController pushViewController:scp animated:YES];

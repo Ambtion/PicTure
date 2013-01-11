@@ -26,13 +26,14 @@ void customedExceptionHandler(NSException *exception)
     NSLog(@"CRASH name: %@\n", [exception name]);
     NSLog(@"CRASH reason: %@\n", [exception reason]);
     NSLog(@"StackTrace: %@\n", [exception callStackSymbols]);
-//    NSMutableArray * array =[NSMutableArray arrayWithArray:[exception callStackSymbols]];
-//    [array insertObject:[exception reason] atIndex:0];
-//    [array insertObject:[exception name] atIndex:0];
-//    [array writeToFile:DEBUGFILE atomically:YES];
+    NSMutableArray * array =[NSMutableArray arrayWithArray:[exception callStackSymbols]];
+    [array insertObject:[exception reason] atIndex:0];
+    [array insertObject:[exception name] atIndex:0];
+    [array writeToFile:DEBUGFILE atomically:YES];
 #else
     
 #endif
+    
 }
 
 @implementation SCPAppDelegate
@@ -47,35 +48,7 @@ void customedExceptionHandler(NSException *exception)
 - (void)pragramerSetting
 {
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
-////    NSFileManager * manager = [NSFileManager defaultManager];
-//    if (1) {
-//        
-//        SKPSMTPMessage *forgotPassword = [[SKPSMTPMessage alloc] init];
-//        [forgotPassword setFromEmail:@"mtpcwireless@gmail.com"];  // Change to your email address
-//        [forgotPassword setToEmail:@"634808912@qq.com"]; // Load this, or have user enter this
-//        [forgotPassword setRelayHost:@"smtp.gmail.com"];
-//        [forgotPassword setRequiresAuth:YES]; // GMail requires this
-//        [forgotPassword setLogin:@"mtpcwireless@gmail.com"]; // Same as the "setFromEmail:" email
-//        [forgotPassword setPass:@"QQqq123456"]; // Password for the Gmail account that you are sending from
-//        [forgotPassword setSubject:@"Forgot Password: My App"]; // Change this to change the subject of the email
-//        [forgotPassword setWantsSecure:YES]; // Gmail Requires this
-//        [forgotPassword setDelegate:self]; // Required
-//        
-//        NSString *newpassword = @"helloworld";
-//        NSString *message = [NSString stringWithFormat:@"Your password has been successfully reset. Your new password: %@", newpassword];
-//        NSDictionary *plainPart = [NSDictionary dictionaryWithObjectsAndKeys:@"text/plain", kSKPSMTPPartContentTypeKey, message, kSKPSMTPPartMessageKey, @"8bit" , kSKPSMTPPartContentTransferEncodingKey, nil];
-//        [forgotPassword setParts:[NSArray arrayWithObjects:plainPart, nil]];
-//        [forgotPassword send];
-//    }
 }
-//- (void)messageFailed:(SKPSMTPMessage *)message error:(NSError *)error
-//{
-//    NSLog(@"MMM %@",error);
-//}
-//- (void)messageSent:(SKPSMTPMessage *)message
-//{
-//    NSLog(@"%@",message);
-//}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

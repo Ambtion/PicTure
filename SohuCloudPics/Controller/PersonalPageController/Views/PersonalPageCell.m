@@ -83,14 +83,17 @@
     _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
     [self.contentView addSubview:_backgroundImageView];
     
-    _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(118 , 109, 85, 85)];
-    _portraitImageView.layer.cornerRadius = 42.5;
-    _portraitImageView.clipsToBounds = YES;
-    _portraitImageView.backgroundColor = [UIColor clearColor];
-    [self.contentView addSubview:_portraitImageView];
+    UIView * portraitbg = [[UIView alloc] initWithFrame:CGRectMake(118, 109, 85, 85)];
+    portraitbg.clipsToBounds = YES;
+    portraitbg.layer.cornerRadius = 42.5;
+    [self.contentView addSubview:portraitbg];
+
+    _portraitImageView = [[UIImageView alloc] initWithFrame:portraitbg.bounds];
+    [portraitbg addSubview:_portraitImageView];
     
     bgCircleView = [[[UIImageView alloc] initWithImage:nil] autorelease];
     bgCircleView.frame = CGRectMake(109, 100, 102, 102);
+    [bgCircleView setBackgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:bgCircleView];
 }
 -(void)addUserPhotoLabel
@@ -153,11 +156,33 @@
     [bg_menu addSubview:_followedButton];
 
 }
+- (CGSize)getRectofProtrait:(UIImage *)image
+{
+    CGFloat width = 85;
+    CGSize size = image.size;
+    CGFloat scale = 1.f;
+    if (size.width < width || size.height < width) {
+        scale  = MAX(width / size.width, width / size.height);
+        size.width *= scale;
+        size.height *= scale;
+    }else{
+        scale = MIN(size.width / width, size.height / width);
+        size.width /= scale;
+        size.height /= scale;
+    }
+    
+    return size;
+}
 - (void)updataData
 {
     
-    [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"]];
-    
+    [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"] success:^(UIImage *image) {
+        CGSize size = [self getRectofProtrait:image];
+        _portraitImageView.frame = CGRectMake(0, 0, size.width, size.height);
+        _portraitImageView.center = CGPointMake(85.f/ 2, 85.f/2);
+    } failure:^(NSError *error) {
+        _portraitImageView.frame = _portraitImageView.superview.bounds;
+    }];
     if (!_dataSource.name || ![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"佚名";
     }else{

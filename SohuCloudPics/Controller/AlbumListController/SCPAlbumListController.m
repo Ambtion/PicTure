@@ -30,8 +30,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //    self.pullingController.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    //    self.pullingController.tableView.separatorColor = [UIColor colorWithRed:222.0 / 255.0 green:222.0 / 255.0 blue:222.0 / 255.0 alpha:1.0];
 }
 
 #pragma mark -
@@ -55,11 +53,8 @@
 {
     return 1;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //    if (self.albumList.count != 0)
-    //        tableView.separatorColor = [UIColor colorWithRed:218/255.f green:218/255.f blue:218/255.f alpha:1.f];
     return self.albumList.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
