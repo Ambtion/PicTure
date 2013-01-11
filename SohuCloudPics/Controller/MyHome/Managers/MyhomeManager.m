@@ -69,7 +69,7 @@ static float OFFSET = 0.f;
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
         _personalDataSource.desc = [response objectForKey:@"user_desc"];
-        _personalDataSource.albumAmount = [[response objectForKey:@"public_folders"] intValue];
+        _personalDataSource.albumAmount = [[response objectForKey:@"public_folders"] intValue] + [[response objectForKey:@"private_folders"] intValue];
         _personalDataSource.followedAmount = [[response objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[response objectForKey:@"followings"] intValue];
         [self.controller.homeTable reloadData];

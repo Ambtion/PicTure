@@ -13,6 +13,7 @@
 #import "SCPMenuNavigationController.h"
 #import "SCPPhotoGridController.h"
 #import "SCPAlertView_LoginTip.h"
+#import "SCPLoginPridictive.h"
 
 @implementation SCPAlbumController
 
@@ -236,6 +237,9 @@
 	if (_currentPage == 1) {
 		NSDictionary * creator = [info objectForKey:@"userInfo"];
 		int albumCount = [[creator objectForKey:@"public_folders"] intValue];
+		if ([SCPLoginPridictive currentUserId] && [[SCPLoginPridictive currentUserId] isEqualToString:_user_id]) {
+			albumCount += [[creator objectForKey:@"private_folders"] intValue];
+		}
 		NSString * nickname = [creator objectForKey:@"user_nick"];
 		[self updateBannerWithAlbumCount:albumCount andAuthorName:nickname];
 		[_albumList removeAllObjects];
