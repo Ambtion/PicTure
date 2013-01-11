@@ -692,6 +692,7 @@
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setStringEncoding:NSUTF8StringEncoding];
     [request setPostValue:idea forKey:@"content"];
+    [request setData:nil forKey:@"mm"];
     [request setCompletionBlock:^{
         NSLog(@"%@",[request responseString]);
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
