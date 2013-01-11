@@ -406,6 +406,7 @@
     [view addGestureRecognizer:gesture];
     
 }
+
 #pragma mark TapGesture
 - (void)setZooming:(UIScrollView *)scrollview
 {
@@ -420,11 +421,12 @@
     [_dataManager dataSourcewithRefresh:YES];
     animation = YES;
     [_dataManager.controller showNavigationBar];
+    [self.currentImageView resetGigView];
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         [self.currentImageView setAlpha:0];
     } completion:^(BOOL finished) {
-        [self.view removeFromSuperview];
-        [self.view setUserInteractionEnabled:YES];
+//        [self.view removeFromSuperview];
+//        [self.view setUserInteractionEnabled:YES];
         [self.tempView removeFromSuperview];
         animation = NO;
     }];
@@ -643,8 +645,6 @@
             [imageView.actV stopAnimating];
             [self resetImageScale:imageView];
             if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
-                //                    imageView.frame = CGRectMake(0, 0, w, h);
-                //                    imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
                 [self setModelForGif:imageView];
                 [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
             }
@@ -652,8 +652,6 @@
     } failure:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
-//                imageView.frame = CGRectMake(0, 0, w, h);
-//                imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
                 [self setModelForGif:imageView];
                 [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
             }
@@ -775,13 +773,13 @@
     if (x == self.scrollView.frame.size.width) {
         if (curPage == 0) {
             curPage = 1;
-            [self initSubViews];
+            [self refreshScrollView];
             NSLog(@"srollView To less");
             return;
         }
         if (curPage == photoNum - 1) {
             curPage = photoNum - 2;
-            [self initSubViews];
+            [self refreshScrollView];
             NSLog(@"srollView To top");
             return;
         }
@@ -793,6 +791,7 @@
 //            [self initSubViews];
 //            return;
 //        }
+        
         if (curPage >= imageArray.count - 2 && imageArray.count <= photoNum) {
             [self getMoreImage];
             return;

@@ -71,6 +71,7 @@
         l_gesture = nil;
         
         [frameImageView addSubview:_photoImageView];
+		
         /* progressView */
         
         _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20, 73, 64, 9)];
@@ -82,7 +83,13 @@
         /* deleteView, not display first */
         _deleteView = [[UIImageView alloc] initWithFrame:CGRectMake(5, -2, 29, 29)];
         _deleteView.image = [UIImage imageNamed:@"album_delete.png"];
+		_deleteView.userInteractionEnabled = YES;
         _deleteView.hidden = YES;
+		
+		UITapGestureRecognizer *d_gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
+		[_deleteView addGestureRecognizer:d_gesture];
+		[d_gesture release];
+		
         [self.contentView addSubview:_deleteView];
         
         /* photoNum label */

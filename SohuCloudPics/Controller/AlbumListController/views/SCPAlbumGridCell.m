@@ -116,7 +116,13 @@
             /* delete ? */
             UIImageView *deleteView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"album_delete.png"]];
             deleteView.frame = CGRectMake(i * frameSize + 5, -2, 29, 29);
+			deleteView.userInteractionEnabled = YES;
             
+			gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
+			[deleteView addGestureRecognizer:gesture];
+			[gesture release];
+			gesture = nil;
+			
             [_deleteViewList addObject:deleteView];
             [self.contentView addSubview:deleteView];
             [deleteView release];

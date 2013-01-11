@@ -303,6 +303,11 @@
             SCPAlertView_LoginTip * loginTip = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"确定要删除吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil] autorelease];
             loginTip.tag = imageView.tag;
             [loginTip show];
+            /* delete */
+//			NSLog(@"hererererererererererer");
+//            SCPAlert_LoginView *alertView = [[[SCPAlert_LoginView alloc] initWithMessage:@"确定要删除吗？" delegate:self] autorelease];
+//            alertView.tag = imageView.tag;
+//            [alertView show];
             break;
         }
         default:

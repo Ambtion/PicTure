@@ -80,8 +80,9 @@
         SCPAlbum * album = [self.albumList objectAtIndex:i];
         [cell updateViewWithAlbum:album position:indexInCell preToDel:(_state == SCPAlbumControllerStateDelete)];
         [cell coverImageViewAt:indexInCell].tag = i;
+		[cell deleteViewAt:indexInCell].tag = i; // for delete button
+		
         //显示 所有任务Progress
-        
         for(SCPAlbumTaskList * tasks in [SCPUploadTaskManager currentManager].taskList)
         {
             if ([[NSString stringWithFormat:@"%@",tasks.albumId] isEqualToString: [NSString stringWithFormat:@"%@",album.albumId]]) {
