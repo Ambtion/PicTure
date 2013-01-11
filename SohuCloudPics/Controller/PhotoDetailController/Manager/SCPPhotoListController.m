@@ -55,6 +55,7 @@
 {
     
     self.webView = [[[UIWebView alloc] initWithFrame:self.frame] autorelease];
+    
     self.webView.userInteractionEnabled = NO;//用户不可交互
     self.webView.delegate = self;
     self.webView.backgroundColor = [UIColor clearColor];
@@ -116,12 +117,11 @@
 #pragma mark - WebViewDelegate
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSLog(@"%s",__FUNCTION__);
     [self.superview bringSubviewToFront:self.webView];
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-
+    
 }
 - (void)resetGigView
 {
