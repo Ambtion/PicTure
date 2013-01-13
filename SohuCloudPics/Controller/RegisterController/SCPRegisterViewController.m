@@ -14,9 +14,9 @@
 #import "AccountSystemRequset.h"
 #import "SCPAlertView_LoginTip.h"
 #import "SCPLoginViewController.h"
+#import "SCPReadDealController.h"
 
 #define EMAIL_ARRAY ([NSArray arrayWithObjects:@"126.com", @"163.com", @"qq.com", @"sohu.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
-
 
 @implementation SCPRegisterViewController
 
@@ -24,8 +24,9 @@
 @synthesize backgroundControl = _backgroundControl;
 @synthesize usernameTextField = _usernameTextField;
 @synthesize passwordTextField = _passwordTextField;
-@synthesize nicknameTextField = _nicknameTextField;
 @synthesize displayPasswordButton = _displayPasswordButton;
+@synthesize dealPassButton = _dealPassButton;
+@synthesize readDealButton = _readDealButton;
 @synthesize registerButton = _registerButton;
 
 - (void)dealloc
@@ -34,7 +35,8 @@
     [_backgroundControl release];
     [_usernameTextField release];
     [_passwordTextField release];
-    [_nicknameTextField release];
+    [_dealPassButton release];
+    [_readDealButton release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
@@ -67,17 +69,18 @@
     _backgroundControl = [[UIControl alloc] initWithFrame:frame];
     [_backgroundControl addTarget:self action:@selector(allTextFieldsResignFirstResponder) forControlEvents:UIControlEventTouchDown];
     
-    _usernameTextField = [[EmailTextField alloc] initWithFrame:CGRectMake(79, 129, 200, 22) dropDownListFrame:CGRectMake(69, 158, 214, 200) domainsArray:EMAIL_ARRAY];
+    _usernameTextField = [[EmailTextField alloc] initWithFrame:CGRectMake(78, 128, 198, 22) dropDownListFrame:CGRectMake(69, 158, 214, 200) domainsArray:EMAIL_ARRAY];
     _usernameTextField.font = [UIFont systemFontOfSize:15];
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     _usernameTextField.returnKeyType = UIReturnKeyNext;
     _usernameTextField.placeholder = @"通行证/手机号";
+    _usernameTextField.backgroundColor = [UIColor redColor];
     [_usernameTextField addTarget:self action:@selector(usernameDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     
-    _passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(79, 186, 200, 22)];
+    _passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(78, 195, 198, 22)];
     _passwordTextField.font = [UIFont systemFontOfSize:15];
     _passwordTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
-    _passwordTextField.returnKeyType = UIReturnKeyNext;
+    _passwordTextField.returnKeyType = UIReturnKeyDone;
     _passwordTextField.keyboardType = UIKeyboardTypeASCIICapable;
     _passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -85,18 +88,11 @@
     _passwordTextField.placeholder = @"密码";
     _passwordTextField.secureTextEntry = YES;
     [_passwordTextField addTarget:self action:@selector(passwordDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
-    
-    _nicknameTextField = [[UITextField alloc] initWithFrame:CGRectMake(79, 243, 200, 22)];
-    _nicknameTextField.font = [UIFont systemFontOfSize:15];
-    _nicknameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
-    _nicknameTextField.returnKeyType = UIReturnKeyDone;
-    _nicknameTextField.keyboardType = UIKeyboardTypeASCIICapable;
-    _nicknameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    _nicknameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    _nicknameTextField.placeholder = @"名号";
+    _passwordTextField.backgroundColor = [UIColor redColor];
+
     
     _displayPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _displayPasswordButton.frame = CGRectMake(35, 291, 100, 22);
+    _displayPasswordButton.frame = CGRectMake(35, 245, 100, 22);
     _displayPasswordButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_displayPasswordButton setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1] forState:UIControlStateNormal];
     [_displayPasswordButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
@@ -107,6 +103,23 @@
     [_displayPasswordButton setBackgroundImage:_checked forState:UIControlStateHighlighted | UIControlStateSelected];
     [_displayPasswordButton addTarget:self action:@selector(checkBoxClicked) forControlEvents:UIControlEventTouchUpInside];
     
+    
+    _dealPassButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _dealPassButton.frame = CGRectMake(35, 291, 22, 22);
+    _dealPassButton.selected = YES;
+    [_dealPassButton setBackgroundImage:_noChecked forState:UIControlStateNormal];
+    [_dealPassButton setBackgroundImage:_checked forState:UIControlStateSelected];
+    [_dealPassButton setBackgroundImage:_checked forState:UIControlStateHighlighted];
+    [_dealPassButton setBackgroundImage:_checked forState:UIControlStateHighlighted | UIControlStateSelected];
+    [_dealPassButton addTarget:self action:@selector(agreeDeal:) forControlEvents:UIControlEventTouchUpInside];
+    _dealPassButton.backgroundColor = [UIColor clearColor];
+    
+    _readDealButton  = [UIButton buttonWithType:UIButtonTypeCustom];
+    _readDealButton.frame = CGRectMake(57, 291, 150, 22);
+    [_readDealButton setTitle:@" 同意用户注册协议" forState:UIControlStateNormal];
+    [_readDealButton setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1] forState:UIControlStateNormal];
+    _readDealButton.backgroundColor = [UIColor clearColor];
+
     _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _registerButton.frame = CGRectMake(35, 332, 250, 35);
     [_registerButton setBackgroundImage:[UIImage imageNamed:@"signin_btn_normal"] forState:UIControlStateNormal];
@@ -115,13 +128,16 @@
     [_registerButton setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1] forState:UIControlStateNormal];
     _registerButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_registerButton addTarget:self action:@selector(doRegister) forControlEvents:UIControlEventTouchUpInside];
+
     
     [self.view addSubview:_backgroundImageView];
     [self.view addSubview:_backgroundControl];
     [self.view addSubview:_usernameTextField];
     [self.view addSubview:_passwordTextField];
-    [self.view addSubview:_nicknameTextField];
+//    [self.view addSubview:_nicknameTextField];
     [self.view addSubview:_displayPasswordButton];
+    [self.view addSubview:_dealPassButton];
+    [self.view addSubview:_readDealButton];
     [self.view addSubview:_registerButton];
     
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -139,6 +155,14 @@
     [self.view addSubview:sohu2003];
     
 }
+- (void)agreeDeal:(UIButton *)button
+{
+    button.selected = !button.selected;
+}
+- (void)readDeal:(UIButton *)button
+{
+    
+}
 - (void)backButtonClick:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -147,7 +171,6 @@
 {
     [_usernameTextField resignFirstResponder];
     [_passwordTextField resignFirstResponder];
-    [_nicknameTextField resignFirstResponder];
 }
 
 - (void)usernameDidEndOnExit
@@ -157,7 +180,7 @@
 
 - (void)passwordDidEndOnExit
 {
-    [_nicknameTextField becomeFirstResponder];
+//    [_nicknameTextField becomeFirstResponder];
 }
 
 - (void)checkBoxClicked
@@ -165,6 +188,10 @@
     [self allTextFieldsResignFirstResponder];
     _displayPasswordButton.selected = !_displayPasswordButton.selected;
     _passwordTextField.secureTextEntry = !_displayPasswordButton.selected;
+    
+}
+- (void)dealButton
+{
     
 }
 - (void)doRegister

@@ -158,6 +158,7 @@
 }
 - (CGSize)getRectofProtrait:(UIImage *)image
 {
+    if (!image || !image.size.height) return _portraitImageView.superview.bounds.size;
     CGFloat width = 85;
     CGSize size = image.size;
     CGFloat scale = 1.f;
@@ -170,7 +171,6 @@
         size.width /= scale;
         size.height /= scale;
     }
-    
     return size;
 }
 - (void)updataData
@@ -180,6 +180,7 @@
         CGSize size = [self getRectofProtrait:image];
         _portraitImageView.frame = CGRectMake(0, 0, size.width, size.height);
         _portraitImageView.center = CGPointMake(85.f/ 2, 85.f/2);
+        if (!image.size.width || image.size.height) _portraitImageView.image = [UIImage imageNamed:@"user_bg_photo_defout.png"];
     } failure:^(NSError *error) {
         _portraitImageView.frame = _portraitImageView.superview.bounds;
     }];

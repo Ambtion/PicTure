@@ -19,8 +19,10 @@
 @property (strong, nonatomic) UIControl *backgroundControl;
 @property (strong, nonatomic) EmailTextField *usernameTextField;
 @property (strong, nonatomic) UITextField *passwordTextField;
-@property (strong, nonatomic) UITextField *nicknameTextField;
+//@property (strong, nonatomic) UITextField *nicknameTextField;
 @property (strong, nonatomic) UIButton *displayPasswordButton;
+@property (strong, nonatomic) UIButton *dealPassButton;
+@property (strong, nonatomic) UIButton *readDealButton;
 @property (strong, nonatomic) UIButton *registerButton;
 
 @end

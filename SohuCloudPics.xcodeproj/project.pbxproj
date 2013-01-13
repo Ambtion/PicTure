@@ -438,6 +438,7 @@
 		C59B6054169819C4001BC324 /* header_user_refresh_press.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B6050169819C4001BC324 /* header_user_refresh_press.png */; };
 		C59B6055169819C4001BC324 /* header_user_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B6051169819C4001BC324 /* header_user_refresh.png */; };
 		C5A0A7EE165B10E1005C80D0 /* ExploreViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A0A7ED165B10E1005C80D0 /* ExploreViewCell.m */; };
+		C5AADC2B16A2565700166B86 /* SCPReadDealController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5AADC2A16A2565700166B86 /* SCPReadDealController.m */; };
 		C5AEE2161616BD81005DE811 /* Light.png in Resources */ = {isa = PBXBuildFile; fileRef = C5AEE2151616BD81005DE811 /* Light.png */; };
 		C5CE19051699289F0066A184 /* SCPAboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CE19041699289F0066A184 /* SCPAboutController.m */; };
 		C5D47C80168AD54E00C522E3 /* SCPSettingUserinfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D47C7F168AD54E00C522E3 /* SCPSettingUserinfoController.m */; };
@@ -1062,6 +1063,8 @@
 		C59B6051169819C4001BC324 /* header_user_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header_user_refresh.png; sourceTree = "<group>"; };
 		C5A0A7EC165B10E1005C80D0 /* ExploreViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExploreViewCell.h; path = Controller/ExplorerController/Views/ExploreViewCell.h; sourceTree = "<group>"; };
 		C5A0A7ED165B10E1005C80D0 /* ExploreViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExploreViewCell.m; path = Controller/ExplorerController/Views/ExploreViewCell.m; sourceTree = "<group>"; };
+		C5AADC2916A2565700166B86 /* SCPReadDealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPReadDealController.h; sourceTree = "<group>"; };
+		C5AADC2A16A2565700166B86 /* SCPReadDealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPReadDealController.m; sourceTree = "<group>"; };
 		C5AEE2151616BD81005DE811 /* Light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Light.png; sourceTree = "<group>"; };
 		C5CE19031699289F0066A184 /* SCPAboutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAboutController.h; sourceTree = "<group>"; };
 		C5CE19041699289F0066A184 /* SCPAboutController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAboutController.m; sourceTree = "<group>"; };
@@ -1645,6 +1648,8 @@
 			children = (
 				B7CA5603160014F00015C1BA /* SCPRegisterViewController.h */,
 				B7CA5604160014F00015C1BA /* SCPRegisterViewController.m */,
+				C5AADC2916A2565700166B86 /* SCPReadDealController.h */,
+				C5AADC2A16A2565700166B86 /* SCPReadDealController.m */,
 			);
 			name = RegisterController;
 			sourceTree = "<group>";
@@ -3097,6 +3102,7 @@
 				C5935B73169ACEB800534415 /* SCPFeedBackController.m in Sources */,
 				C50BF49D169C138B00B36B96 /* SCPAuthorizeViewController.m in Sources */,
 				C587AD3A169E705B00F2C16F /* SCPAlert_AlbumProperty.m in Sources */,
+				C5AADC2B16A2565700166B86 /* SCPReadDealController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
