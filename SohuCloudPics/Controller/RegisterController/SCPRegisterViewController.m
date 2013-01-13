@@ -69,7 +69,8 @@
     _backgroundControl = [[UIControl alloc] initWithFrame:frame];
     [_backgroundControl addTarget:self action:@selector(allTextFieldsResignFirstResponder) forControlEvents:UIControlEventTouchDown];
     
-    _usernameTextField = [[EmailTextField alloc] initWithFrame:CGRectMake(78, 128, 198, 22) dropDownListFrame:CGRectMake(69, 158, 214, 200) domainsArray:EMAIL_ARRAY];
+//    _usernameTextField = [[EmailTextField alloc] initWithFrame:CGRectMake(78, 128, 198, 22) dropDownListFrame:CGRectMake(69, 158, 214, 200) domainsArray:EMAIL_ARRAY];
+	_usernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(78, 128, 198, 22)];
     _usernameTextField.font = [UIFont systemFontOfSize:15];
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     _usernameTextField.returnKeyType = UIReturnKeyNext;
