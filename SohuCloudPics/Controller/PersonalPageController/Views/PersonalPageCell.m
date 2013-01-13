@@ -53,7 +53,7 @@
     [_portraitImageView release];
     [_nameLabel release];
     [_descLabel release];
-    
+    [bgCircleView release];
     [_albumButton release];
     [_followingButton release];
     [_followedButton release];
@@ -83,7 +83,7 @@
     _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
     [self.contentView addSubview:_backgroundImageView];
     
-    UIView * portraitbg = [[UIView alloc] initWithFrame:CGRectMake(118, 109, 85, 85)];
+    UIView * portraitbg = [[[UIView alloc] initWithFrame:CGRectMake(118, 109, 85, 85)] autorelease];
     portraitbg.clipsToBounds = YES;
     portraitbg.layer.cornerRadius = 42.5;
     [self.contentView addSubview:portraitbg];
@@ -91,7 +91,7 @@
     _portraitImageView = [[UIImageView alloc] initWithFrame:portraitbg.bounds];
     [portraitbg addSubview:_portraitImageView];
     
-    bgCircleView = [[[UIImageView alloc] initWithImage:nil] autorelease];
+    bgCircleView = [[UIImageView alloc] initWithImage:nil];
     bgCircleView.frame = CGRectMake(109, 100, 102, 102);
     [bgCircleView setBackgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:bgCircleView];

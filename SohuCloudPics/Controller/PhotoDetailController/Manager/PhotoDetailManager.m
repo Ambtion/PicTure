@@ -270,7 +270,7 @@
     if ([self.listView.view superview]) {
         return;
     }
-    self.listView = [[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self];
+    self.listView = [[[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self] autorelease];
     CGRect rect = cell.frame;
     CGFloat Y = ((SCPPhotoDetailViewController *)self.controller).pullingController.tableView.contentOffset.y;
     cell.photoImageView.image = nil;

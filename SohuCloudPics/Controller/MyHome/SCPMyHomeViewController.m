@@ -46,7 +46,6 @@
     _homeTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) style:UITableViewStylePlain];
     _homeTable.separatorColor = [UIColor clearColor];
     _homeTable.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
-
     _homeTable.dataSource = _manager;
     _homeTable.delegate = _manager;
     [self.view addSubview:_homeTable];

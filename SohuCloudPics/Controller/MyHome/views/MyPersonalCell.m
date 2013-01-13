@@ -84,7 +84,7 @@
     [_backgroundImageView setUserInteractionEnabled:YES];
     [self setHomeBackGroudImage];
     
-    UIView * portraitbg = [[UIView alloc] initWithFrame:CGRectMake(118, 109, 85, 85)];
+    UIView * portraitbg = [[[UIView alloc] initWithFrame:CGRectMake(118, 109, 85, 85)] autorelease];
     portraitbg.clipsToBounds = YES;
     portraitbg.layer.cornerRadius = 42.5;
     [self.contentView addSubview:portraitbg];
@@ -92,7 +92,6 @@
     [portraitbg addSubview:_portraitImageView];
     bgCircleView = [[UIImageView alloc] initWithFrame:CGRectMake(109, 100, 102, 102)];
     [self.contentView addSubview:bgCircleView];
-    
 }
 
 - (void)setHomeBackGroudImage

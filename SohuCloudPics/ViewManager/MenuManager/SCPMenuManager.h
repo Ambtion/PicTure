@@ -29,6 +29,7 @@
 }
 @property (assign, nonatomic) id<SCPMenuDelegate> menuDelegate;
 @property (assign, nonatomic) SCPMenuNavigationController *navController;
+
 @property (retain, nonatomic) SCPLoginViewController * homelogin;
 @property (retain, nonatomic) SCPLoginViewController * notLogin;
 @property (retain, nonatomic) SCPLoginViewController * uLoadLogin;
@@ -60,6 +61,7 @@
 - (void)restIcon:(NSInteger)sender;
 
 //animationDelegate
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag;
 
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag;
+- (void)onAccountClicked:(id)sender;
 @end

@@ -44,11 +44,11 @@
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]){
             success([[[request responseString] JSONValue] objectForKey:@"photos"]);
         }else {
-            faiture([NSString stringWithFormat:@"网络连接异常"]);
+            faiture(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        faiture(@"网络连接异常");
+        faiture(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
 }
@@ -70,13 +70,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -100,11 +100,11 @@
             success(dic);
             
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     if (isAsy) {
         [request startAsynchronous];
@@ -136,14 +136,14 @@
             [self getUserInfoFeedWithUserID:user_ID page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@ ------- %d",[request error], [request responseStatusCode]);
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -165,13 +165,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -197,13 +197,13 @@
             [self getFoldersWithID:uses_id page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -231,13 +231,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -265,14 +265,14 @@
             
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -301,13 +301,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -330,13 +330,13 @@
             
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -358,13 +358,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -386,13 +386,13 @@
             [self getfollowingsWihtUseId:use_id page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -419,13 +419,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -446,13 +446,13 @@
             [self getfollowedsWihtUseId:user_id page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -478,13 +478,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -505,13 +505,13 @@
             }
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
             }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"网络连接异常"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
     }];
     [request startAsynchronous];
@@ -528,12 +528,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request error]);
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     
     [request startAsynchronous];
@@ -549,12 +549,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request error]);
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     
     [request startAsynchronous];
@@ -568,11 +568,11 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
 }
@@ -587,11 +587,11 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
 }
@@ -609,12 +609,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         [request setFailedBlock:^{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }];
     }];
     [request startAsynchronous];
@@ -632,10 +632,10 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }    }];
     [request setFailedBlock:^{
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
 }
@@ -653,12 +653,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"RENAME:%@",[request responseString]);
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
 }
@@ -677,12 +677,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request responseString]);
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
 }
@@ -698,12 +698,12 @@
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
-            failure(@"网络连接异常");
+            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request responseString]);
-        failure(@"网络连接异常");
+        failure(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
     

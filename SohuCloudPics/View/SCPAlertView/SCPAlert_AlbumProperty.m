@@ -7,7 +7,7 @@
 //
 
 #import "SCPAlert_AlbumProperty.h"
-#define OFFSET 5
+#define OFFSET 10
 @implementation SCPAlert_AlbumProperty
 - (void)dealloc
 {
@@ -40,7 +40,7 @@
         [_backgroundImageView addGestureRecognizer:gesture];
         [self addSubview:_backgroundImageView];
         
-        _alertboxImageView = [[UIImageView alloc] initWithFrame:CGRectMake(40, (self.bounds.size.height - 202) / 2, 240, 202)];
+        _alertboxImageView = [[UIImageView alloc] initWithFrame:CGRectMake(40, (self.bounds.size.height - 202) / 2, 240, 215)];
         _alertboxImageView.image = [UIImage imageNamed:@"pop_alert_M_bg.png"];
         [self addSubview:_alertboxImageView];
         [_alertboxImageView setUserInteractionEnabled:YES];
@@ -53,19 +53,18 @@
         label.text = @"编辑相册";
         [_alertboxImageView addSubview:label];
         
-        UILabel * rename = [[UILabel alloc] initWithFrame:CGRectMake(14 , 40 + OFFSET, 200, 15)];
+        UILabel * rename = [[[UILabel alloc] initWithFrame:CGRectMake(20 , 40 + OFFSET, 200, 15)] autorelease];
         rename.backgroundColor = [UIColor clearColor];
         rename.textColor =  [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
-        label.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:16];
         rename.textAlignment = UITextAlignmentLeft;
         rename.text = @"重命名";
         [_alertboxImageView addSubview:rename];
-
-        UIImageView * bg_view = [[[UIImageView alloc] initWithFrame:CGRectMake(14, 62 + OFFSET, 240 - 28, 35)] autorelease];
+        
+        UIImageView * bg_view = [[[UIImageView alloc] initWithFrame:CGRectMake(20, 62 + OFFSET, 200, 35)] autorelease];
         [bg_view setUserInteractionEnabled:YES];
         bg_view.image = [UIImage imageNamed:@"pop_up_filed.png"];
         bg_view.backgroundColor = [UIColor whiteColor];
-        _renameField = [[UITextField alloc] initWithFrame:CGRectMake(5, 6, 240 - 38, 23)];
+        _renameField = [[UITextField alloc] initWithFrame:CGRectMake(5, 6, 195, 23)];
         _renameField.backgroundColor = [UIColor clearColor];
         _renameField.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         _renameField.font = [_renameField.font fontWithSize:15];
@@ -76,20 +75,19 @@
         [bg_view addSubview:_renameField];
         [_alertboxImageView addSubview:bg_view];
         
-        UILabel * public = [[UILabel alloc] initWithFrame:CGRectMake(14, 110 + OFFSET, 109, 16)];
+        UILabel * public = [[[UILabel alloc] initWithFrame:CGRectMake(20, 115 + OFFSET, 109, 16)] autorelease];
         public.backgroundColor = [UIColor clearColor];
         public.textColor =  [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
-        label.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:16];
         public.text = @"相册权限";
         public.textAlignment = UITextAlignmentLeft;
         [_alertboxImageView addSubview:public];
         //相反的 ..
-        _public = [[ImageQualitySwitch alloc] initWithFrame:CGRectMake(135, 107 + OFFSET, 0, 0) WithOriginalImage:!isPublic];
+        _public = [[ImageQualitySwitch alloc] initWithFrame:CGRectMake(130, 112 + OFFSET, 0, 0) WithOriginalImage:!isPublic];
         [_alertboxImageView addSubview:_public];
         
         //外面不用
         UIButton* _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _cancelButton.frame = CGRectMake(22, 202 - 35 - 20 + OFFSET, 90, 35);
+        _cancelButton.frame = CGRectMake(22, 215 - 35 - 20, 90, 35);
         _cancelButton.titleLabel.font = [_cancelButton.titleLabel.font fontWithSize:16];
         [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
         [_cancelButton setTitleColor:[UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1] forState:UIControlStateNormal];
@@ -100,7 +98,7 @@
         [_alertboxImageView addSubview:_cancelButton];
         
         UIButton* _okButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _okButton.frame = CGRectMake(128, 202 - 35 - 20 + OFFSET, 90, 35);
+        _okButton.frame = CGRectMake(128, 215 - 35 - 20, 90, 35);
         _okButton.titleLabel.font = [_okButton.titleLabel.font fontWithSize:16];
         [_okButton setTitle:@"确定" forState:UIControlStateNormal];
         [_okButton setTitleColor:[UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1] forState:UIControlStateNormal];

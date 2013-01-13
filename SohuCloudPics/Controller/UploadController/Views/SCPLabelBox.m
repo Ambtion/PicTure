@@ -403,19 +403,18 @@
                 [pageView release]; // note that pageView can be still used
             }
             
-            SCPLabelView *view = [[SCPLabelView alloc] init];
+            SCPLabelView *view = [[[SCPLabelView alloc] init] autorelease];
             view.labelObject = [_labelObjects objectAtIndex:i];
             view.parentBox = self;
             
             CGSize size = view.frame.size;
             if (size.width > 300.0) {
-                @throw [[NSException alloc] initWithName:@"BAD_LABEL_SIZE" reason:@"The label is too loooooooooooooooooog!" userInfo:nil];
+                @throw [[[NSException alloc] initWithName:@"BAD_LABEL_SIZE" reason:@"The label is too loooooooooooooooooog!" userInfo:nil] autorelease];
             }
             
             if (insertPoint.x + size.width <= 305.0) {
                 view.frame = CGRectMake(insertPoint.x, insertPoint.y, size.width, 27);
                 [pageView addSubview:view];
-                [view release];
                 insertPoint.x += size.width + 15;
             } else {
                 if (line == 0) {

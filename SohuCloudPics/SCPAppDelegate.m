@@ -74,7 +74,6 @@ void customedExceptionHandler(NSException *exception)
         [_window addSubview:_fgc.view];
     }
 }
-
 - (void)removeFromWindows
 {
     CATransition * animation = [CATransition animation];

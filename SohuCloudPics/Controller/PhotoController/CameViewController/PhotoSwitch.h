@@ -22,4 +22,5 @@
 @property(assign)id<phothswitchDelegate> delegate;
 @property(nonatomic,retain)UIButton * button;
 - (id)initWithFrame:(CGRect)frame delegate:(id<phothswitchDelegate>)delegate;
+- (id)initWithFrameForIphone5:(CGRect)frame delegate:(id<phothswitchDelegate>)delegate;
 @end

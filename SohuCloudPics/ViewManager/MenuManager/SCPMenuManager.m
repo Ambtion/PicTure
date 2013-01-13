@@ -217,19 +217,18 @@ static NSString *menuPress[6] = {
 - (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
 {
     [navController dismissModalViewControllerAnimated:YES];
+    
 }
-
 - (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
-    NSLog(@"SCPLogin");
     [navController dismissModalViewControllerAnimated:NO];
     if (self.homelogin == LoginController) {
+        self.homelogin = nil;
         [self onAccountClicked:nil];
     }else if(self.uLoadLogin == LoginController){
         [self onBatchClicked:nil];
     }else{
         [self onNoticeClicked:nil];
-
     }
 }
 
@@ -256,19 +255,17 @@ static NSString *menuPress[6] = {
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    
     if (animated && isMenudone) {
-        SCPMainTabController *tabCtrl = [navController.childViewControllers objectAtIndex:0];
+        SCPMainTabController * tabCtrl = [navController.childViewControllers objectAtIndex:0];
         [self hideMenuWithRibbon:NO];
         isMenudone = NO;
-        if (tabCtrl.selectedIndex == 0 && index == 3) {
+        if (tabCtrl.selectedIndex == 0 && index == 3)
             return;
-        }
-        if (tabCtrl.selectedIndex == 1 && index == 2) {
+        if (tabCtrl.selectedIndex == 1 && index == 2) 
             return;
-        }
         [tabCtrl switchToindex:index == 3 ? 0 : 1];
         [self restIcon:index];
-
     }
 }
 
@@ -285,10 +282,10 @@ static NSString *menuPress[6] = {
         [navController presentModalViewController:nav animated:YES];
         return;
     }
+    
     AlbumControllerManager * manager = [[AlbumControllerManager alloc] initWithpresentController:self.navController];
 	[self.navController presentModalViewController:manager animated:YES];
     [manager release];
-    
 }
 
 - (void)onAccountClicked:(id)sender
@@ -298,8 +295,9 @@ static NSString *menuPress[6] = {
     if (![SCPLoginPridictive isLogin]) {
         self.homelogin = [[[SCPLoginViewController alloc] init] autorelease];
         self.homelogin.delegate = self;
-        UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:self.homelogin] autorelease];
-        [navController presentModalViewController:nav animated:YES];
+        UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:self.homelogin];
+        [self.navController presentModalViewController:nav animated:YES];
+        [nav release];
         return;
     }
     if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeViewController class]]) {

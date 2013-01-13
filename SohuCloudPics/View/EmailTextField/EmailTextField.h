@@ -16,7 +16,6 @@
     BOOL _isOn;
     
     NSArray *_domains;
-    
     EmailTextFieldManager *_manager;
 }
 

@@ -10,5 +10,7 @@
 #import "SCPSecondLayerController.h"
 
 @interface SCPReadDealController : SCPSecondLayerController
-
+{
+    UIButton * _backbutton;
+}
 @end

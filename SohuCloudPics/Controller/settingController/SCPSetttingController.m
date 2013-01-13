@@ -13,12 +13,11 @@
 
 - (id)initWithcontroller:(id)controller
 {
-    SCPSettingRootViewController * sc = [[SCPSettingRootViewController alloc] initwithController:controller];
+    SCPSettingRootViewController * sc = [[[SCPSettingRootViewController alloc] initwithController:controller] autorelease];
     self = [super initWithRootViewController:sc];
     if (self) {
         [self.navigationBar setHidden:YES];
     }
-    [sc release];
     return self;
 }
 

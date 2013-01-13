@@ -10,7 +10,7 @@
 #import "SCPAlertView_LoginTip.h"
 #import "SCPAlert_CustomeView.h"
 
-#define DESC_COUNT_LIMIT 100
+#define DESC_COUNT_LIMIT 200
 #define PLACEHOLDER  @"Bug,崩溃或其他建议"
 @implementation SCPFeedBackController
 - (void)dealloc

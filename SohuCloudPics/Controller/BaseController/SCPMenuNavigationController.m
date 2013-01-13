@@ -160,13 +160,6 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [menuManager hideMenuWithRibbon:NO];
 }
 
-//- (void)resetMenu
-//{
-//    disableRibbon = NO;
-//    [self setNavigationBarHidden:NO];
-//    [self setDisableMenus:NO];
-//}
-
 - (void)setDisableMenus:(BOOL)disable
 {
     

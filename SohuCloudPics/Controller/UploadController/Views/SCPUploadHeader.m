@@ -207,7 +207,7 @@
     int row = indexPath.row;
     SCPNewFoldersCell * cell = [tableView dequeueReusableCellWithIdentifier:@"NewFolders"];
     if (!cell) {
-        cell = [[SCPNewFoldersCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NewFolders"];
+        cell = [[[SCPNewFoldersCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NewFolders"] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     if (row == 0) {
@@ -234,7 +234,7 @@
 {
     int row = indexPath.row;
     if (row == 0) {
-        SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:_header name:@"专辑名"] autorelease];
+        SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:_header name:@"相册名"] autorelease];
         [aln show];
     } else {
         _header.currentAlbum = row - 1;

@@ -49,7 +49,7 @@
     if (self) {
         eTextField = textField;
         domains = eTextField.domains;
-		filtered_domains = [[NSMutableArray array] retain];
+		filtered_domains = [[NSMutableArray arrayWithCapacity:0] retain];
     }
     return self;
 }
@@ -172,7 +172,6 @@
 {
     return [self initWithFrame:frame dropDownListFrame:CGRectZero domainsArray:nil];
 }
-
 - (id)initWithFrame:(CGRect)frame dropDownListFrame:(CGRect)dFrame domainsArray:(NSArray *)domains
 {
     self = [super initWithFrame:frame];
@@ -188,8 +187,7 @@
         _dropDownListTable.layer.borderColor = [[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1] CGColor];
         _isOn = NO;
         
-        _domains = [domains retain];
-        
+        _domains = [[NSArray arrayWithArray:domains] retain];
         _manager = [[EmailTextFieldManager alloc] initWithEmailTextField:self];
         _dropDownListTable.delegate = _manager;
         _dropDownListTable.dataSource = _manager;
@@ -239,10 +237,10 @@
 
 - (void)dealloc
 {
-    [_dropDownListTable release];
     [[NSNotificationCenter defaultCenter] removeObserver:_manager];
     [_manager release];
     [_domains release];
+    [_dropDownListTable release];
     [super dealloc];
 }
 

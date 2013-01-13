@@ -39,10 +39,10 @@
 }
 - (void)saveButton:(UIButton *)button
 {
-    NSString * des = nil;
     if ([_description.text isEqualToString:@"个性签名,随便写点什么吧"]) {
-        des = @"";
+        
     }
+    
     [_request renameUserinfWithnewName:_nameFiled.text Withdescription:_description.text success:^(NSString *response) {
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
@@ -61,7 +61,7 @@
         [_portraitView setImageWithURL:[NSURL URLWithString:[response objectForKey:@"user_icon"]] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
         _nameFiled.text = [response objectForKey:@"user_nick"];
         _description.text = [response objectForKey:@"user_desc"];
-        NSLog(@"%@",response);
+        
     } failure:^(NSString *error) {
         NSLog(@"%s, %@",__FUNCTION__, error);
     }];

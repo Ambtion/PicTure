@@ -122,9 +122,9 @@
     if (!camerBox)
         camerBox = [[CameraImageBox alloc] init];
     [camerBox embedPreviewInView:self.preview];
-
-//    [CameraImageHelper initialize];
-//    [CameraImageHelper embedPreviewInView:self.preview];
+    
+    //    [CameraImageHelper initialize];
+    //    [CameraImageHelper embedPreviewInView:self.preview];
     [self photoSwitch:nil setPhotoTypeOfImage:outPutImage];
     
     NSLog(@"initializeCamera end");
@@ -132,7 +132,6 @@
 }
 -(void)addPreviews
 {
-    
     self.preview = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)] autorelease];
     [self.preview setUserInteractionEnabled:YES];
     [self.view addSubview:_preview];
@@ -150,50 +149,43 @@
     [_flashButton addtarget:self action:@selector(flashswitch:)];
     
     [self.preview addSubview:_flashButton.view];
-    
     //add secenSwitch preview
     _secenSwitch = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     _secenSwitch.frame = CGRectMake(240, 10, 70, 40);
     [_secenSwitch addTarget:self action:@selector(secenSwitch:) forControlEvents:UIControlEventTouchUpInside];
-    
     [_secenSwitch setImage:[UIImage imageNamed:@"摄像头.png"] forState:UIControlStateNormal];
     [_secenSwitch setImage:[UIImage imageNamed:@"摄像头-2.png"] forState:UIControlStateHighlighted];
     [self.preview addSubview:_secenSwitch];
     
     //add TabbarBg selfView
+    if ([[UIScreen mainScreen] bounds].size.height <= 480) {
+        _tabBarView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 49, 320, 49)] autorelease];
+        _tabBarView.image = [UIImage imageNamed:@"camera_bar.png"];
+    }else{
+        _tabBarView = [[[UIImageView alloc] initWithFrame:CGRectMake(0,[UIScreen mainScreen].bounds.size.height - 196/2.f, 320, 196/2.f)] autorelease];
+        _tabBarView.image = [UIImage imageNamed:@"camera_bar5.png"];
+    }
     
-    //
-    _tabBarView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 49)] autorelease];
-    _tabBarView.image = [UIImage imageNamed:@"camera_bar.png"];
     [_tabBarView setUserInteractionEnabled:YES];
     _tabBarView.userInteractionEnabled = YES;
-    
-    UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 431, 320, 300)] autorelease];
-    view.backgroundColor = [UIColor blackColor];
-    [view addSubview:_tabBarView];
-    [self.view addSubview:view];
+    [self.view addSubview:_tabBarView];
     
     //add BackButton tabBarView
     _backButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _backButton.frame = CGRectMake(10, 4, 41, 41);
+    _backButton.frame = CGRectMake(10, (_tabBarView.frame.size.height - 41)/2, 41, 41);
     [_backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
     [_backButton setImage:[UIImage imageNamed:@"camera_back_btn_normal.png"] forState:UIControlStateNormal];
     [_backButton setImage:[UIImage imageNamed:@"camera_back_btn_press.png"] forState:UIControlStateHighlighted];
     [_tabBarView addSubview:_backButton];
     
     //add switch tabBarView
-    _photoSwitch = [[PhotoSwitch alloc] initWithFrame:CGRectMake(0, 5, 120, 41) delegate:self];
-    _photoSwitch.center = CGPointMake(160, 25.5);
+    if ([[UIScreen mainScreen] bounds].size.height <= 480) {
+        _photoSwitch = [[PhotoSwitch alloc] initWithFrame:CGRectZero delegate:self];
+    }else{
+        _photoSwitch = [[PhotoSwitch alloc] initWithFrameForIphone5:CGRectZero delegate:self];
+    }
+    _photoSwitch.center = CGPointMake(160, _backButton.center.y);
     [_tabBarView addSubview:_photoSwitch];
-    
-    //去点相机进入照片接口
-    //    //add photoBook tabBarView
-    //    _photoBook = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    //    _photoBook.frame = CGRectMake(247, 0, 73, 49);
-    //    [_photoBook addTarget:self action:@selector(photoBookClick:) forControlEvents:UIControlEventTouchUpInside];
-    //    [_photoBook setImage:[UIImage imageNamed:@"album_btn.png"] forState:UIControlStateNormal];
-    //    [_photoBook setImage:[UIImage imageNamed:@"album_btn_press.png"] forState:UIControlStateHighlighted];
-    //    [_tabBarView addSubview:_photoBook];
     
 }
 
@@ -208,7 +200,7 @@
     transiton.fillMode = kCAFillModeForwards;
     transiton.duration = 0.5;
     transiton.speed = 1.0;
-//    transiton.type = @"cameraIrisHollowOpen";
+    //    transiton.type = @"cameraIrisHollowOpen";
     transiton.type = kCATransitionFade;
     transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [_tampview.layer addAnimation:transiton forKey:@"Open"];
@@ -218,14 +210,14 @@
 {
     
     [self.view setUserInteractionEnabled:NO];
-//    [CameraImageHelper stopRunning];
+    //    [CameraImageHelper stopRunning];
     [camerBox stopRunning];
     CATransition * transiton = [CATransition animation];
     transiton.fillMode = kCAFillModeBoth;
     transiton.duration = 0.5;
     transiton.speed = 1.0;
     transiton.delegate = self;
-//    transiton.type = @"cameraIrisHollowClose";
+    //    transiton.type = @"cameraIrisHollowClose";
     transiton.type = kCATransitionFade;
     transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [_tampview.layer addAnimation:transiton forKey:@"close"];
@@ -290,7 +282,7 @@
 }
 -(void)flashswitch:(FlashButton*)button
 {
-//    [CameraImageHelper setFlashMode:button.selection];
+    //    [CameraImageHelper setFlashMode:button.selection];
     [camerBox setFlashMode:button.selection];
 }
 -(void)secenSwitch:(UIButton*)button
@@ -298,9 +290,8 @@
     NSLog(@"secenSwitch");
     // [self closeCamera];
     [self photoSwitch:nil setPhotoTypeOfImage:outPutImage];
-//    [CameraImageHelper switchCameraPosition];
     [camerBox switchCameraPosition];
-
+    
     
 }
 -(void)backClick:(UIButton*)button
@@ -331,7 +322,6 @@
             [UIView commitAnimations];
             [self performSelector:@selector(resignFocusView) withObject:nil afterDelay:1.f];
         }
-//        [CameraImageHelper focusAtpoint:point];
         [camerBox focusAtpoint:point];
     }
 }
@@ -350,13 +340,12 @@
     outPutImage = isImage;
     [self resetFlashButton];
     if (isImage) {
-//        [CameraImageHelper changeOutPutToimage];
         [camerBox changeOutPutToimage];
         [_flashButton.view setUserInteractionEnabled:YES];
         NSLog(@"changeOutPutToimage");
     }else {
         NSLog(@"changeOutPutToMoveFile");
-//        [CameraImageHelper changeOutPutToMoveFile];
+        //        [CameraImageHelper changeOutPutToMoveFile];
         [camerBox changeOutPutToMoveFile];
         [_flashButton.view setUserInteractionEnabled:NO];
     }
@@ -371,7 +360,6 @@
     if (outPutImage) {
         [self takePicture];
     }else {
-//        if ([[[CameraImageHelper sharedInstance] movieFileOutPut] isRecording]) {
         if ([[camerBox movieFileOutPut] isRecording]) {
             [self stopRecordVideo];
         }else {
@@ -386,14 +374,13 @@
     NSURL * url = [NSURL fileURLWithPath:outputPath];
     
     MPMoviePlayerViewController * pm = [[[MPMoviePlayerViewController alloc] initWithContentURL:url] autorelease];
-    
     [self presentMoviePlayerViewControllerAnimated:pm];
     NSLog(@"playMovie end");
     
 }
 -(void)takePicture
 {
-//    [CameraImageHelper CaptureStillImageWithblockSucecces:^(UIImage *image) {
+    //    [CameraImageHelper CaptureStillImageWithblockSucecces:^(UIImage *image) {
     [camerBox CaptureStillImageWithblockSucecces:^(UIImage *image) {
         NSLog(@"CaptureStillImageWithblockSucecces");
         self.imageForTemp = image;
@@ -404,19 +391,21 @@
 -(void)startRecordVideo
 {
     [self.view setUserInteractionEnabled:NO];
-//    [CameraImageHelper startRunning];
     [camerBox startRunning];
     
     [self updateTimeLabel];
     _timer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLabel) userInfo:nil repeats:YES] retain];
-    //    [self performSelector:@selector(stopRecord_over) withObject:nil afterDelay:16.2];
-    [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_normal_2.png"] forState:UIControlStateNormal];
-    [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_press_2.png"] forState:UIControlStateHighlighted];
+    if ([[UIScreen mainScreen] bounds].size.height > 480) {
+        [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_normal_2_ios6.png"] forState:UIControlStateNormal];
+        [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_press_2_ios6.png"] forState:UIControlStateHighlighted];
+    }else{
+        [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_normal_2.png"] forState:UIControlStateNormal];
+        [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_press_2.png"] forState:UIControlStateHighlighted];
+    }
     
-//    [CameraImageHelper recordingAtPath:[self getMoviePath]];
+    
     [camerBox recordingAtPath:[self getMoviePath]];
-
-//    if ([[[CameraImageHelper sharedInstance] movieFileOutPut] isRecording]) {
+    
     if ([[camerBox  movieFileOutPut] isRecording]) {
         NSLog(@"CameraImageHelper isRecording ");
         [self.view setUserInteractionEnabled:YES];
@@ -429,34 +418,34 @@
     if ([_timer isValid])
         [_timer invalidate];
     [_timer release];
-//    [CameraImageHelper stopRecoding];
-//    [CameraImageHelper stopRunning];
     [camerBox stopRecoding];
     [camerBox stopRunning];
-    
-    [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_normal.png"] forState:UIControlStateNormal];
-    [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_press.png"] forState:UIControlStateHighlighted];
-    //    [self playMovie];
-    
+    if ([[UIScreen mainScreen] bounds].size.height > 480) {
+        [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_normal_ios6.png"] forState:UIControlStateNormal];
+        [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_press_2_ios6.png"] forState:UIControlStateHighlighted];
+    }else{
+        [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_normal.png"] forState:UIControlStateNormal];
+        [_photoSwitch.button setBackgroundImage:[UIImage imageNamed:@"btn_camera_video_press.png"] forState:UIControlStateHighlighted];
+    }
     [self generatSequenceofImage];
-    //    [_timeLabel timerZreo];
     
 }
 -(void)updateTimeLabel
 {
     if (_timeLabel == nil) {
-        _timeLabel = [[Time alloc] initWithFrame:CGRectMake(230, 380, 80, 40)];
+        if ([[UIScreen mainScreen] bounds].size.height > 480) {
+            _timeLabel = [[Time alloc] initWithFrame:CGRectMake(230, 380 + 39, 80, 40)];
+        }else{
+            _timeLabel = [[Time alloc] initWithFrame:CGRectMake(230, 380, 80, 40)];
+        }
         [self.view addSubview:_timeLabel];
     }
+    
     [_timeLabel updateTime];
 }
 -(void)stopRecord_over
 {
-//    if ([[[CameraImageHelper sharedInstance] movieFileOutPut] isRecording]) {
-        if ([[camerBox  movieFileOutPut] isRecording]) {
-
-        [self stopRecordVideo];
-    }
+    if ([[camerBox  movieFileOutPut] isRecording]) [self stopRecordVideo];
 }
 -(NSString*)getMoviePath
 {
@@ -468,14 +457,12 @@
         NSError *error;
         if ([fileManager removeItemAtPath:outputPath error:&error] == NO)
         {
-            //Error - handle if requried
             NSLog(@"removeItemAtPath %@",error);
         }else{
             NSLog(@"removeItemAtPath ");
         }
     }
     NSLog(@"getMovie Path end");
-    
     return [outputPath autorelease];
 }
 
@@ -502,7 +489,6 @@
         @autoreleasepool {
             
             if (result == AVAssetImageGeneratorSucceeded) {
-                
                 [_gifArray addObject:[UIImage imageByResize:image]];
                 if (! CMTimeCompare([myAsset duration], requestedTime)) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -523,9 +509,9 @@
             if (result == AVAssetImageGeneratorCancelled) {
                 NSLog(@"Canceled");
             }
-
+            
         }
-               
+        
     }];
 }
 -(void)creatimageGenerator:(AVURLAsset*)myAsset
@@ -549,7 +535,7 @@
 }
 -(void)closesActivityIndicator
 {
-//    [_alview stopAnimating];
+    //    [_alview stopAnimating];
     [_alview removeFromSuperview];
     [_alview release];
     [self.view setUserInteractionEnabled:YES];

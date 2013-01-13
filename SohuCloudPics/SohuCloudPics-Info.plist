@@ -39,6 +39,8 @@
 	<true/>
 	<key>UIPrerenderedIcon</key>
 	<true/>
+	<key>versionCode</key>
+	<integer>1</integer>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

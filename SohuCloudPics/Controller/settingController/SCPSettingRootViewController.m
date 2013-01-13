@@ -42,7 +42,6 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     [_tableView release];
     [loginView release];
     [cacheView release];
-    [updataView release];
     [super dealloc];
 }
 - (void)viewDidLoad
@@ -144,54 +143,40 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         [self.navigationController pushViewController:[[[SCPAboutController alloc] init] autorelease] animated:YES];
     }
     if (indexPath.row == 7) {//
-        loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认登出" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil];
+        loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确定要登出吗?" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil];
         [loginView show];
     }
 }
 -(void)onCheckVersion
 {
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
-    NSString *currentVersion = [infoDic objectForKey:@"CFBundleVersion"];
-
+    NSNumber *currentVersion = [infoDic objectForKey:@"versionCode"];
     NSString *URL =[NSString stringWithFormat:@"%@/version?app=ios",BASICURL_V1];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+    
     [request setURL:[NSURL URLWithString:URL]];
     [request setHTTPMethod:@"GET"];
     NSHTTPURLResponse *urlResponse = nil;
     NSError *error = nil;
     NSData *recervedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
-    NSString *results = [[NSString alloc] initWithBytes:[recervedData bytes] length:[recervedData length] encoding:NSUTF8StringEncoding];
+    NSString *results = [[[NSString alloc] initWithBytes:[recervedData bytes] length:[recervedData length] encoding:NSUTF8StringEncoding] autorelease];
     NSDictionary *dic = [results JSONValue];
-    NSString * newVersion = [dic objectForKey:@"version"];
+    NSNumber * newVersion = [dic objectForKey:@"versionCode"];
     BOOL isUpata = [self CompareVersionFromOldVersion:currentVersion newVersion:newVersion];
     if (isUpata) {
-        updataView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"通知" message:@"您的版本不是最新" delegate:self cancelButtonTitle:@"关闭" otherButtonTitles:@"更新", nil];
-        [updataView show];
+        NSLog(@"%@",[dic allKeys]);
+        UIApplication *application = [UIApplication sharedApplication];
+        [application openURL:[NSURL URLWithString:[dic objectForKey:@"updateURL"]]];
     }else{
         SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"通知" message:@"已经是最新版本" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [tip show];
         [tip release];
     }
 }
--(BOOL)CompareVersionFromOldVersion : (NSString *)oldVersion newVersion : (NSString *)newVersion
+-(BOOL)CompareVersionFromOldVersion : (NSNumber *)oldVersion newVersion : (NSNumber *)newVersion
 {
-    
-    NSArray*oldV = [oldVersion componentsSeparatedByString:@"."];
-    NSArray*newV = [newVersion componentsSeparatedByString:@"."];
-    if (oldV.count == newV.count) {
-        for (NSInteger i = 0; i < oldV.count; i++) {
-            NSInteger old = [(NSString *)[oldV objectAtIndex:i] integerValue];
-            NSInteger new = [(NSString *)[newV objectAtIndex:i] integerValue];
-            if (old < new) {
-                return YES;
-            }
-        }
-        return NO;
-    } else {
-        return NO;
-    }
+    return ([oldVersion intValue] < [newVersion intValue]);
 }
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
@@ -208,10 +193,6 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
         NSError * error = nil;
         [manager removeItemAtPath:str error:&error];
-    }
-    if(updataView == alertView && buttonIndex == 1){
-        UIApplication *application = [UIApplication sharedApplication];
-        [application openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/camera360-ultimate/id443354861?mt=8&uo=4"]];
     }
     [self removeCache];
 }

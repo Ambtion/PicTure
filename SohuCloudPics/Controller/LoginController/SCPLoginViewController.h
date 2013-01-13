@@ -29,6 +29,7 @@
 @property (strong, nonatomic) UITextField *passwordTextField;
 @property (strong, nonatomic) UIButton *registerButton;
 @property (strong, nonatomic) UIButton *loginButton;
+
 @property (assign,nonatomic) id<SCPLoginViewDelegate> delegate;
 
 @end

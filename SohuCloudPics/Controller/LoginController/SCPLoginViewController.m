@@ -22,7 +22,6 @@
 @"sohu.com", @"vip.sohu.com", @"chinaren.com", @"sogou.com", @"17173.com", @"focus.cn", @"game.sohu.com", @"37wanwan.com",\
 @"126.com", @"163.com", @"qq.com", @"gmail.com", @"sina.com.cn", @"sina.com", @"yahoo.com", @"yahoo.com.cn", @"yahoo.cn", nil])
 
-
 @implementation SCPLoginViewController
 @synthesize delegate = _delegate;
 @synthesize backgroundImageView = _backgroundImageView;
@@ -36,11 +35,15 @@
 {
     [_backgroundImageView release];
     [_backgroundControl release];
+    _usernameTextField.placeholder = nil;
+    _passwordTextField.placeholder = nil;
+    _usernameTextField.text = nil;
+    _passwordTextField.text = nil;
     [_usernameTextField release];
     [_passwordTextField release];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
+    NSLog(@"%s end",__FUNCTION__);
 }
 
 - (void)loadView
@@ -53,7 +56,6 @@
     self.view = view;
     self.view.backgroundColor = [UIColor colorWithRed:244.0f/255.f green:244.0f/255.f blue:244.0f/255.f alpha:1];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -76,8 +78,9 @@
     _usernameTextField.font = [UIFont systemFontOfSize:15];
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     _usernameTextField.returnKeyType = UIReturnKeyNext;
-    _usernameTextField.placeholder = @"通行证/用户名";
+    _usernameTextField.placeholder = @"通行证";
     [_usernameTextField addTarget:self action:@selector(usernameDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
+    
     //输入密码
     _passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(79, 189, 200, 22)];
     _passwordTextField.font = [UIFont systemFontOfSize:15];
@@ -89,6 +92,7 @@
     _passwordTextField.secureTextEntry = YES;
     _passwordTextField.placeholder = @"密码";
     [_passwordTextField addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventEditingDidEndOnExit];
+    
     //注册
     _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _registerButton.frame = CGRectMake(35, 239, 110, 35);
@@ -140,13 +144,11 @@
 
     //返回按钮
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    backButton.frame = CGRectMake(10, 8, 28, 28);
     backButton.frame = CGRectMake(5, 2, 35, 35);
     [backButton setImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(cancelLogin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
-    
     
     //第三方登陆
     UIButton * qqbutton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -202,16 +204,15 @@
         [_delegate SCPLogin:self cancelLogin:button];
     }
 }
-
 - (void)loginButtonClicked:(UIButton*)button
 {
     if (!_usernameTextField.text|| [_usernameTextField.text isEqualToString:@""]) {
-        SCPAlertView_LoginTip * alterview = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"请输入账号" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+        SCPAlertView_LoginTip * alterview = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"您还没有填写用户名" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterview show];
         return;
     }
     if (!_passwordTextField.text || [_passwordTextField.text isEqualToString:@""]) {
-        SCPAlertView_LoginTip * alterview = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"请输入密码" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+        SCPAlertView_LoginTip * alterview = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"您还没有填写密码" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterview show];
         return;
     }
@@ -220,17 +221,18 @@
     
     SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登陆中..." withView: self.view] autorelease];
     [waitView show];
-    [AccountSystemRequset sohuLoginWithuseName:_usernameTextField.text password:_passwordTextField.text sucessBlock:^(NSDictionary *response) {
+    NSString * useName = [NSString stringWithFormat:@"%@",_usernameTextField.text];
+    NSString * passWord = [NSString stringWithFormat:@"%@",_passwordTextField.text];
+    [AccountSystemRequset sohuLoginWithuseName:useName password:passWord sucessBlock:^(NSDictionary *response) {
         [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];
         if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
             [_delegate SCPLogin:self doLogin:button];
         [waitView dismissWithClickedButtonIndex:0 animated:YES];
 
     } failtureSucess:^(NSString *error) {
-        SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];
+        SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterView show];
         [waitView dismissWithClickedButtonIndex:0 animated:NO];
-        
     }];
 }
 
@@ -238,21 +240,21 @@
 {
     SCPAuthorizeViewController * author = [[[SCPAuthorizeViewController alloc] initWithMode:LoginModelSina controller:self] autorelease];
     author.delegate = self;
-    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:author];
+    UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:author] autorelease];
     [self presentModalViewController:nav animated:YES];
 }
 - (void)qqLogin:(UIButton *)button
 {
     SCPAuthorizeViewController * author = [[[SCPAuthorizeViewController alloc] initWithMode:LoginModelQQ controller:self] autorelease];
     author.delegate = self;
-    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:author];
+    UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:author] autorelease];
     [self presentModalViewController:nav animated:YES];
 }
 - (void)renrenLogin:(UIButton *)button
 {
     SCPAuthorizeViewController * author = [[[SCPAuthorizeViewController alloc] initWithMode:LoginModelRenRen controller:self] autorelease];
     author.delegate = self;
-    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:author];
+    UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:author] autorelease];
     [self presentModalViewController:nav animated:YES];
 }
 - (void)forgetPassWord:(id)sender
@@ -276,6 +278,7 @@
 {
     [_passwordTextField resignFirstResponder];
     [_usernameTextField resignFirstResponder];
+    
     SCPRegisterViewController *reg = [[[SCPRegisterViewController alloc] init] autorelease];
     [self.navigationController pushViewController:reg animated:YES];
 }

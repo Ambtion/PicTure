@@ -484,7 +484,7 @@
 - (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect
 {
     
-    self.tempView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.tempView = [[[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.tempView.backgroundColor = [UIColor blackColor];
     [self.view setUserInteractionEnabled:NO];
     animation = YES;
