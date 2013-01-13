@@ -69,13 +69,15 @@
     _backgroundControl = [[UIControl alloc] initWithFrame:frame];
     [_backgroundControl addTarget:self action:@selector(allTextFieldsResignFirstResponder) forControlEvents:UIControlEventTouchDown];
     
-    _usernameTextField = [[EmailTextField alloc] initWithFrame:CGRectMake(78, 128, 198, 22) dropDownListFrame:CGRectMake(69, 158, 214, 200) domainsArray:EMAIL_ARRAY];
+    _usernameTextField = [[EmailTextField alloc] initWithFrame:CGRectMake(78, 128, 150, 22) dropDownListFrame:CGRectMake(69, 158, 214, 200) domainsArray:EMAIL_ARRAY];
     _usernameTextField.font = [UIFont systemFontOfSize:15];
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     _usernameTextField.returnKeyType = UIReturnKeyNext;
-    _usernameTextField.placeholder = @"通行证/手机号";
+    _usernameTextField.placeholder = @"通行证/用户名";
     _usernameTextField.backgroundColor = [UIColor redColor];
     [_usernameTextField addTarget:self action:@selector(usernameDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
+    
+    
     
     _passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(78, 195, 198, 22)];
     _passwordTextField.font = [UIFont systemFontOfSize:15];
@@ -92,7 +94,7 @@
 
     
     _displayPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _displayPasswordButton.frame = CGRectMake(35, 245, 100, 22);
+    _displayPasswordButton.frame = CGRectMake(35, 258, 100, 22);
     _displayPasswordButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_displayPasswordButton setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1] forState:UIControlStateNormal];
     [_displayPasswordButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
@@ -117,14 +119,17 @@
     _readDealButton  = [UIButton buttonWithType:UIButtonTypeCustom];
     _readDealButton.frame = CGRectMake(57, 291, 150, 22);
     [_readDealButton setTitle:@" 同意用户注册协议" forState:UIControlStateNormal];
+    [_registerButton setTitle:@" 同意用户注册协议" forState:UIControlStateHighlighted];
     [_readDealButton setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1] forState:UIControlStateNormal];
     _readDealButton.backgroundColor = [UIColor clearColor];
-
+    [_readDealButton addTarget:self action:@selector(readDeal:) forControlEvents:UIControlEventTouchUpInside];
+    
     _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _registerButton.frame = CGRectMake(35, 332, 250, 35);
     [_registerButton setBackgroundImage:[UIImage imageNamed:@"signin_btn_normal"] forState:UIControlStateNormal];
     [_registerButton setBackgroundImage:[UIImage imageNamed:@"signin_btn_press"] forState:UIControlStateHighlighted];
     [_registerButton setTitle:@"完成注册" forState:UIControlStateNormal];
+    [_registerButton setTitle:@"完成注册" forState:UIControlStateHighlighted];
     [_registerButton setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1] forState:UIControlStateNormal];
     _registerButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_registerButton addTarget:self action:@selector(doRegister) forControlEvents:UIControlEventTouchUpInside];
@@ -134,11 +139,15 @@
     [self.view addSubview:_backgroundControl];
     [self.view addSubview:_usernameTextField];
     [self.view addSubview:_passwordTextField];
-//    [self.view addSubview:_nicknameTextField];
     [self.view addSubview:_displayPasswordButton];
     [self.view addSubview:_dealPassButton];
     [self.view addSubview:_readDealButton];
     [self.view addSubview:_registerButton];
+    
+    UILabel * label = [[[UILabel alloc] initWithFrame:CGRectMake(200, 128, 100, 22)] autorelease];
+    label.backgroundColor = [UIColor greenColor];
+    label.text = @"@sohu.com";
+    [self.view addSubview:label];
     
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(5, 2, 35, 35);
@@ -161,7 +170,7 @@
 }
 - (void)readDeal:(UIButton *)button
 {
-    
+    [self.navigationController pushViewController:[[[SCPReadDealController alloc] init] autorelease] animated:YES];
 }
 - (void)backButtonClick:(UIButton*)button
 {
@@ -180,7 +189,7 @@
 
 - (void)passwordDidEndOnExit
 {
-//    [_nicknameTextField becomeFirstResponder];
+    
 }
 
 - (void)checkBoxClicked

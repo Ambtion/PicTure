@@ -8,9 +8,6 @@
 
 #import "SCPReadDealController.h"
 
-@interface SCPReadDealController ()
-
-@end
 
 @implementation SCPReadDealController
 

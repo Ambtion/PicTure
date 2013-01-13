@@ -76,7 +76,7 @@
     _usernameTextField.font = [UIFont systemFontOfSize:15];
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     _usernameTextField.returnKeyType = UIReturnKeyNext;
-    _usernameTextField.placeholder = @"通行证/手机号";
+    _usernameTextField.placeholder = @"通行证/用户名";
     [_usernameTextField addTarget:self action:@selector(usernameDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     //输入密码
     _passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(79, 189, 200, 22)];

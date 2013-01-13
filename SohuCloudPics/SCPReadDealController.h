@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCPSecondLayerController.h"
 
-@interface SCPReadDealController : UIViewController
+@interface SCPReadDealController : SCPSecondLayerController
 
 @end
