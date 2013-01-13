@@ -17,7 +17,8 @@
 
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIControl *backgroundControl;
-@property (strong, nonatomic) EmailTextField *usernameTextField;
+//@property (strong, nonatomic) EmailTextField *usernameTextField;
+@property (strong, nonatomic) UITextField *usernameTextField;
 @property (strong, nonatomic) UITextField *passwordTextField;
 //@property (strong, nonatomic) UITextField *nicknameTextField;
 @property (strong, nonatomic) UIButton *displayPasswordButton;
