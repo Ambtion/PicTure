@@ -409,7 +409,6 @@ static NSString *menuPress[6] = {
         transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
 
         transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeRotation(DEGREES_TO_RADIANS(90), fx, 0,0)];
-        
         transformAnimation.duration = animationDuration;
         transformAnimation.timeOffset = animationDuration;
         transformAnimation.autoreverses = YES;

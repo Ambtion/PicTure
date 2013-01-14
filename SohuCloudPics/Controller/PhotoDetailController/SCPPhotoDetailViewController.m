@@ -18,11 +18,11 @@
 
 - (void)dealloc
 {
-    [super dealloc];
     [_manager release];
     [_pullingController release];
     [_commentPostBar release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
 
 }
 - (id)initWithuseId:(NSString*) useId photoId:(NSString*)photoId
@@ -112,7 +112,6 @@
         return;
     
     barFrame.origin.y = self.view.bounds.size.height;
-    
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];

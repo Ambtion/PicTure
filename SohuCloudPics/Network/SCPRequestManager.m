@@ -7,7 +7,6 @@
 //
 
 #import "SCPRequestManager.h"
-#import "SCPURLLibaray.h"
 #import "ASIFormDataRequest.h"
 #import "SCPLoginPridictive.h"
 #import "JSON.h"

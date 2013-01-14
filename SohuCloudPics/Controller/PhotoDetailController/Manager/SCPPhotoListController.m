@@ -140,6 +140,7 @@
 @end
 
 @implementation SCPPhotoListController
+@synthesize delegate = _delegate;
 @synthesize tempView;
 @synthesize info = _info;
 @synthesize folder_id = _folder_id;
@@ -152,8 +153,10 @@
 @synthesize currentImageView = _currentImageView;
 @synthesize rearImageView = _rearImageView;
 @synthesize rearScrollview = _rearScrollview;
+
 - (void)dealloc
 {
+    NSLog(@"%s",__FUNCTION__);
     if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications])
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [_requestManger setDelegate:nil];
@@ -179,10 +182,10 @@
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
 {
     self = [super initWithNibName:nil bundle:nil];
+    
     if (self) {
         self.view.backgroundColor = [UIColor blackColor];
         _dataManager = dataManager;
-        
         imageArray = [[NSMutableArray alloc] initWithCapacity:0];
         curImages = [[NSMutableArray alloc] initWithCapacity:0];
         curPage = 0;
@@ -326,22 +329,22 @@
 
 - (void)initSubViews
 {
-    
     CGRect rect = self.view.frame;
     rect.size.width += OFFSET * 2;
     rect.origin.x -= OFFSET;
     self.bgView = [[[UIView alloc] initWithFrame:rect] autorelease];
     self.bgView.backgroundColor = [UIColor blackColor];
     [self.view  addSubview:self.bgView];
-    
+
     self.scrollView = [[[UIScrollView alloc] initWithFrame:self.bgView.bounds] autorelease];
     self.scrollView.delegate = self;
     self.scrollView.backgroundColor = [UIColor blackColor];
     [self.bgView addSubview:self.scrollView];
-    
+
     [self addFontScrollView];
     [self addCurScrollView];
     [self addrearScrollView];
+
     [self setScrollViewProperty];
     [self refreshScrollView];
     
@@ -387,11 +390,9 @@
     self.rearScrollview.delegate = self;
     self.rearScrollview.minimumZoomScale = 1.f;
     self.rearScrollview.contentMode = UIViewContentModeCenter;
-    
     self.rearImageView = [[[InfoImageView alloc] initWithFrame:self.rearScrollview.bounds] autorelease];
     [self addGestureRecognizeronView:self.rearScrollview];
     [self.rearScrollview  addSubview:self.rearImageView];
-    
     self.curscrollView.showsHorizontalScrollIndicator = NO;
     self.curscrollView.showsVerticalScrollIndicator = NO;
     [self.scrollView addSubview:self.rearScrollview];
@@ -404,7 +405,6 @@
     
     UITapGestureRecognizer * gesture1 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlesignalGesture:)] autorelease];
     gesture1.numberOfTapsRequired = 1;
-    
     [gesture1 requireGestureRecognizerToFail:gesture];
     [view addGestureRecognizer:gesture1];
     [view addGestureRecognizer:gesture];
@@ -421,7 +421,6 @@
 - (void)handlesignalGesture:(UITapGestureRecognizer *)gesture
 {
     [self.view setUserInteractionEnabled:NO];
-    NSLog(@"%s, %@, \n______+++++view %@",__FUNCTION__ , self.currentImageView,[[gesture view] subviews]);
     _dataManager.photo_ID = [NSString stringWithFormat:@"%@",[self.info objectForKey:@"photo_id"]];
     [_dataManager dataSourcewithRefresh:YES];
     animation = YES;
@@ -433,8 +432,11 @@
         [self.view setUserInteractionEnabled:YES];
         [self.tempView removeFromSuperview];
         animation = NO;
+        
+        if ([_delegate respondsToSelector:@selector(whenViewRemveFromSuperview)]) {
+            [_delegate performSelector:@selector(whenViewRemveFromSuperview)];
+        }
     }];
-    return;
 }
 - (void)setTempRect:(CGRect *)tempRect PhotoRect:(CGRect *)photoRect with:(CGFloat)heigth
 {
@@ -457,7 +459,6 @@
 {
     CGFloat finalHeigth = 0.f;
     finalHeigth = O_height * (320.f / O_width);
-    //    NSLog(@"finalHeigth %f",finalHeigth);
     if (!finalHeigth) {
         finalHeigth = 320;
     }
@@ -479,7 +480,6 @@
     [[[[UIApplication sharedApplication] delegate] window] addSubview:self.view];
     animation = NO;
     [self.view setUserInteractionEnabled:YES];
-//    [self listOrientationinit];
 }
 - (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect
 {
@@ -488,7 +488,8 @@
     self.tempView.backgroundColor = [UIColor blackColor];
     [self.view setUserInteractionEnabled:NO];
     animation = YES;
-    CATransition * startAnimations = [[CATransition animation] retain];
+    
+    CATransition * startAnimations = [CATransition animation];
     startAnimations.type = kCATransitionFade;
     startAnimations.duration = 0.5;
     startAnimations.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.30 :0 :0.6 :0.8];
@@ -500,7 +501,6 @@
 - (void)handleTapGesture:(UITapGestureRecognizer *)gesture
 {
     if ([[gesture view] isEqual:self.fontScrollview]) {
-        NSLog(@"%s , scale :%f",__FUNCTION__ ,self.fontScrollview.maximumZoomScale);
         if (self.fontScrollview.zoomScale != self.fontScrollview.maximumZoomScale) {
             [self.fontScrollview setZoomScale:self.fontScrollview.maximumZoomScale animated:YES];
         }else{
@@ -615,7 +615,6 @@
     CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
     CGRect frameRect = self.scrollView.frame;
     frameRect.size.width -= 2  * OFFSET;
-    
     [self resetRect:imageView];
 
     if ([imageView isEqual:self.currentImageView]) {
@@ -630,38 +629,31 @@
         self.rearScrollview.contentSize = imageView.frame.size;
         [self.rearScrollview setContentOffset:CGPointMake(0, 0)];
     }
-    
     [imageView resetGigView];
     [self resetModel:imageView];
     
     if (![[[imageView info] objectForKey:@"multi_frames"] boolValue])
             [imageView.actV startAnimating];
-    
     NSString * str = nil;
     if (h > w) {
         str = [NSString stringWithFormat:@"%@_h960",[[imageView info] objectForKey:@"photo_url"]];
     }else{
         str = [NSString stringWithFormat:@"%@_w640",[[imageView info] objectForKey:@"photo_url"]];
     }
-    
     [imageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options: 0   success:^(UIImage *image) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [imageView.actV stopAnimating];
-            [self resetImageScale:imageView];
-            if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
-                [self setModelForGif:imageView];
-                [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
-            }
-        });
+        [imageView.actV stopAnimating];
+        [self resetImageScale:imageView];
+        if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
+            [self setModelForGif:imageView];
+            [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
+        }
     } failure:^(NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
-                [self setModelForGif:imageView];
-                [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
-            }
-        });
+        
+        if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
+            [self setModelForGif:imageView];
+            [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
+        }
     }];
-    
 }
 - (void)setModelForGif:(InfoImageView *)imageView
 {

@@ -18,10 +18,10 @@
 
 - (void)dealloc
 {
-    [super dealloc];
     [_pullingController release];
     [_manager release];
     [_refreshButton release];
+    [super dealloc];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil useID:(NSString *) use_ID
@@ -96,9 +96,9 @@
     self.pullingController = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+//{
+//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+//}
 
 @end

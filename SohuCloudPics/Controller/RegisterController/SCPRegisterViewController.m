@@ -29,13 +29,8 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s start",__FUNCTION__);
     [_backgroundImageView release];
     [_backgroundControl release];
-    _usernameTextField.placeholder = nil;
-    _passwordTextField.placeholder = nil;
-    _usernameTextField.text = nil;
-    _passwordTextField.text = nil;
     [_usernameTextField release];
     [_passwordTextField release];
     [_dealPassButton release];
@@ -44,7 +39,7 @@
     [_displayPasswordButton release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
-    NSLog(@"%s end",__FUNCTION__);
+    
 }
 
 - (void)loadView
@@ -80,6 +75,7 @@
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     _usernameTextField.returnKeyType = UIReturnKeyNext;
     _usernameTextField.placeholder = @"通行证";
+    _usernameTextField.delegate = self;
     _usernameTextField.backgroundColor = [UIColor clearColor];
     _usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [_usernameTextField addTarget:self action:@selector(usernameDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -164,6 +160,12 @@
     sohu2003.frame = rect;
     [self.view addSubview:sohu2003];
     
+}
+#pragma mark - TextFiledDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    textField.text  = [textField.text lowercaseString];
 }
 - (void)agreeDeal:(UIButton *)button
 {
@@ -279,5 +281,4 @@
     CGSize size = view.bounds.size;
     view.contentSize = size;
 }
-
 @end

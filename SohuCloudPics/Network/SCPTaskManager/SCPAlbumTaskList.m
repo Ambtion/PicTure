@@ -10,6 +10,8 @@
 #import "JSON.h"
 #import "SCPTaskNotification.h"
 #import "SCPLoginPridictive.h"
+#define BASICURL_V1 @"http://dev.pp.sohu.com/api/v1"
+
 #define UPTIMEOUT 10.f
 
 @implementation SCPAlbumTaskList
@@ -140,7 +142,7 @@
 }
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
-    NSString * str = [NSString stringWithFormat:@"%s/upload/api?folder_id=%@&access_token=%@","http://10.10.79.134",self.albumId,[SCPLoginPridictive currentToken]];
+    NSString * str = [NSString stringWithFormat:@"%@/upload/api?folder_id=%@&access_token=%@",BASICURL_V1,self.albumId,[SCPLoginPridictive currentToken]];
     NSLog(@"NNNN:: %@",str);
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];

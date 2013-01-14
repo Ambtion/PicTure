@@ -17,11 +17,13 @@ static BOOL store = YES;
     frame.size.width = 91.f;
     frame.size.height = 27.f;
     if (self = [super initWithFrame:frame]) {
+        store = YES;
         originalImage = YES;
         [self setSubViews];
     }
     return self;
 }
+
 - (id)initWithFrame:(CGRect)frame WithOriginalImage:(BOOL)isPublic
 {
     store = NO;
@@ -32,7 +34,6 @@ static BOOL store = YES;
         [self setSubViews];
     }
     return self;
-
 }
 - (void)setSubViews
 {
@@ -44,16 +45,15 @@ static BOOL store = YES;
     gesutre.direction = UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight;
     [_button addGestureRecognizer:gesutre];
     [self addSubview:_button];
-
     if (store) {
         self.image = [UIImage imageNamed:@"switch_btn.png"];
         id imageInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"];
-        if (!imageInfo ||[imageInfo boolValue]) {
-            originalImage = 0;
-            _button.frame = (CGRect) {40,0, 51, 27};
-        }else{
+        if (!imageInfo ||![imageInfo boolValue]) {
             originalImage = 1;
             _button.frame = (CGRect) {0, 0, 51, 27};
+        }else{
+            originalImage = 0;
+            _button.frame = (CGRect) {40,0, 51, 27};
         }
 
     }else{

@@ -15,5 +15,7 @@
     UITextView * _textView;
     UITextField * _placeHolder;
     SCPRequestManager * requset;
+    UIButton * saveButton;
+    UIView * textView_bg;
 }
 @end

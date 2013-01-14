@@ -50,14 +50,10 @@
 {
     [super viewWillAppear:animated];
 }
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
 - (void)showCamera:(id)gesture
 {
     //重载函数,是2级页面失去划出相机的功能;
-    NSLog(@"重载函数,是2级页面失去划出相机的功能");
+//    NSLog(@"重载函数,是2级页面失去划出相机的功能");
 }
 - (void)onBackSwipe:(id)sender
 {

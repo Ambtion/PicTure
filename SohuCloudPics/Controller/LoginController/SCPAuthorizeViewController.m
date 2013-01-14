@@ -10,7 +10,8 @@
 #import "ASIFormDataRequest.h"
 #import "JSON.h"
 
-#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+//#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+#define BASICURL_V1 @"http://dev.pp.sohu.com/api/v1"
 #define CLIENT_ID @"355d0ee5-d1dc-3cd3-bdc6-76d729f61655"
 
 //#define WEIBO_CLIENT_ID @"992243007"

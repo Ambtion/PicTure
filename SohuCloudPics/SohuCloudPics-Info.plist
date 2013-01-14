@@ -15,7 +15,7 @@
 			<key>CFBundleIconFiles</key>
 			<array>
 				<string>114.png</string>
-				<string>icon.png</string>
+				<string>Icon.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
@@ -39,8 +39,6 @@
 	<true/>
 	<key>UIPrerenderedIcon</key>
 	<true/>
-	<key>versionCode</key>
-	<integer>1</integer>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -51,5 +49,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>versionCode</key>
+	<integer>1</integer>
 </dict>
 </plist>

@@ -15,10 +15,7 @@
 #import "CameraViewController.h"
 
 
-#define SYSTERVISION  [[UIDevice currentDevice] systemVersion]
-
 @implementation SCPBaseController
-
 @synthesize naviRecognizerDown;
 @synthesize naviRecognizerUp;
 @synthesize slideRecognizerR2L;
@@ -120,9 +117,8 @@
     return YES;
 }
 
-- (BOOL)shouldAutorotate
-{
-    return NO;
-}
-
+//- (BOOL)shouldAutorotate
+//{
+//    return NO;
+//}
 @end

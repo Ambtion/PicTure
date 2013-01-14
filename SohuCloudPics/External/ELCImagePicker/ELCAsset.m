@@ -7,6 +7,8 @@
 
 #import "ELCAsset.h"
 #import "ELCAssetTablePicker.h"
+#import "SCPAlertView_LoginTip.h"
+
 
 @implementation ELCAsset
 
@@ -78,10 +80,9 @@
     }
     NSString * maxSelected;
     if([(ELCAssetTablePicker*)self.parent totalSelectedAssets] >= 10 && _overlayView.hidden) {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Maximum Reached" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-		[alert show];
-		[alert release];	
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"选择数量已达上限" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [tip show];
+        [tip release];
     }
     else {
         if(toggleDelegate){

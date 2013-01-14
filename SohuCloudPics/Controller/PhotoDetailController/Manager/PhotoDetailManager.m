@@ -63,10 +63,8 @@
     if (!finalHeigth) {
         finalHeigth = 320;
     }
-    
     return finalHeigth;
 }
-
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
@@ -267,13 +265,15 @@
 {
     if ((!self.controller.navigationController.navigationBarHidden))
         [self.controller.navigationController setNavigationBarHidden:YES animated:YES];
-    if ([self.listView.view superview]) {
-        return;
-    }
+    
     self.listView = [[[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self] autorelease];
+    NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
+    self.listView.delegate = self;
+    
     CGRect rect = cell.frame;
     CGFloat Y = ((SCPPhotoDetailViewController *)self.controller).pullingController.tableView.contentOffset.y;
     cell.photoImageView.image = nil;
+    
     if (cell.gifPlayButton.superview)
         [cell.gifPlayButton removeFromSuperview];
     rect.origin.y -= Y;
@@ -281,7 +281,11 @@
     
     [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
 }
-
+- (void)whenViewRemveFromSuperview
+{
+    NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
+    self.listView  = nil;
+}
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     UINavigationController * nav = _controller.navigationController;

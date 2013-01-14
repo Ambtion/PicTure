@@ -9,9 +9,12 @@
 #import "SCPSettingUserinfoController.h"
 #import "UIImageView+WebCache.h"
 #import "SCPLoginPridictive.h"
+#import <QuartzCore/QuartzCore.h>
 
-#define DESC_COUNT_LIMIT 50
+#define DESC_COUNT_LIMIT 400
 #define NAME_COUNT_LIMIT 12
+#define PLACEHOLDER @"请描述一下"
+
 @interface SCPSettingUserinfoController ()
 
 @end
@@ -19,13 +22,16 @@
 @implementation SCPSettingUserinfoController
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_request setDelegate:nil];
     [_request release];
     [_portraitView release];
     [_nameFiled release];
     [_description release];
+    [_placeHolder release];
     [super dealloc];
 }
+
 - (id)init
 {
     if (self = [super init]) {
@@ -33,6 +39,7 @@
     }
     return self;
 }
+
 - (void)settingnavigationBack:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -42,7 +49,6 @@
     if ([_description.text isEqualToString:@"个性签名,随便写点什么吧"]) {
         
     }
-    
     [_request renameUserinfWithnewName:_nameFiled.text Withdescription:_description.text success:^(NSString *response) {
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
@@ -56,12 +62,19 @@
 {
     [super viewDidLoad];
     [self addSubviews];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     if (![SCPLoginPridictive currentUserId]) return;
     [_request getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:NO success:^(NSDictionary *response) {
         [_portraitView setImageWithURL:[NSURL URLWithString:[response objectForKey:@"user_icon"]] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
         _nameFiled.text = [response objectForKey:@"user_nick"];
-        _description.text = [response objectForKey:@"user_desc"];
-        
+        if (![response objectForKey:@"user_desc"]||[[response objectForKey:@"user_desc"] isEqualToString:@""] ) {
+            
+        }else{
+            _description.text = [response objectForKey:@"user_desc"];
+            [_placeHolder setHidden:YES];
+        }
     } failure:^(NSString *error) {
         NSLog(@"%s, %@",__FUNCTION__, error);
     }];
@@ -79,6 +92,10 @@
     backButton.frame = CGRectMake(5, 2, 35, 35);
     [self.view addSubview:backButton];
     
+    UITapGestureRecognizer * tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGuesture:)] autorelease];
+    tap.delegate = self;
+    [self.view addGestureRecognizer:tap];
+    
     UIButton* okButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [okButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
     [okButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
@@ -86,28 +103,75 @@
     okButton.frame = CGRectMake(320 - 40, 2, 35, 35);
     [self.view addSubview:okButton];
     
-    _portraitView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 100, 60, 60)];
+    _portraitView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 100, 35, 35)];
     _portraitView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_portraitView];
-    _nameFiled = [[UITextField alloc] initWithFrame:CGRectMake(83, 121, 200, 20)];
+    
+    _nameFiled = [[UITextField alloc] initWithFrame:CGRectMake(51, 106, 230, 20)];
     _nameFiled.backgroundColor = [UIColor clearColor];
     _nameFiled.returnKeyType = UIReturnKeyNext;
     _nameFiled.delegate = self;
-    
     _nameFiled.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:15];
     _nameFiled.textColor = [UIColor colorWithRed:102.f/255 green:102.f/255 blue:102.f/255 alpha:1];
     _nameFiled.delegate = self;
     [self.view addSubview:_nameFiled];
     
-    _description = [[UITextView alloc] initWithFrame:CGRectMake(8, 170, 310, self.view.bounds.size.height - 250 - 170)];
-    NSLog(@"%@",NSStringFromCGRect(_description.frame));
+    textView_bg = [[[UIView alloc] initWithFrame:CGRectMake(8, 142, 304, 115)] autorelease];
+    textView_bg.backgroundColor = [UIColor whiteColor];
+    textView_bg.layer.cornerRadius = 5.f;
+    textView_bg.layer.borderColor = [UIColor colorWithRed:222.f/255.f green:222.f/255.f blue:222.f/255.f alpha:1].CGColor;
+    textView_bg.layer.borderWidth = 1.f;
+    textView_bg.layer.shouldRasterize = NO;
+    [self.view addSubview:textView_bg];
+
+    _description = [[UITextView alloc] initWithFrame:CGRectMake(2, 2, 300, 111)];
     _description.backgroundColor = [UIColor clearColor];
     _description.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:16];
     _description.returnKeyType = UIReturnKeyDefault;
     _description.delegate = self;
     _description.textColor = [UIColor colorWithRed:102.f/255 green:102.f/255 blue:102.f/255 alpha:1];
-    [self.view addSubview:_description];
+    _description.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    [textView_bg addSubview:_description];
     
+    _placeHolder = [[UITextField alloc] initWithFrame:CGRectMake(10, 7, 250, 20)];
+    _placeHolder.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:16];
+    _placeHolder.backgroundColor = [UIColor clearColor];
+    [_placeHolder setUserInteractionEnabled:NO];
+    _placeHolder.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:15];
+    _placeHolder.textColor = [UIColor colorWithRed:137.f/255 green:137.f/255 blue:137.f/255 alpha:1];
+    _placeHolder.text = PLACEHOLDER;
+    [_description addSubview:_placeHolder];
+
+}
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary * dic = [notification userInfo];
+    CGFloat heigth = [[dic objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    CGRect rect = textView_bg.frame;
+    rect.size.height = self.view.bounds.size.height - heigth - rect.origin.y - 8;
+    [UIView animateWithDuration:0.3 animations:^{
+        textView_bg.frame = rect;
+        _description.frame = CGRectMake(2, 2, textView_bg.frame.size.width - 4, textView_bg.frame.size.height - 4);
+    }];
+}
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        textView_bg.frame = CGRectMake(8, 122, 304, 134);
+        _description.frame = CGRectMake(2, 2, textView_bg.frame.size.width - 4, textView_bg.frame.size.height - 4);
+    }];
+}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    CGPoint point = [touch locationInView:self.view];
+    if ([touch.view isKindOfClass:[UIButton class]] || CGRectContainsPoint(CGRectMake(10, 105, 300, 150), point))
+        return NO;
+    return YES;
+}
+- (void)handleGuesture:(UITapGestureRecognizer *)gesture
+{
+//    [_nameFiled resignFirstResponder];
+//    [_description resignFirstResponder];
 }
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -129,7 +193,16 @@
     }
     return YES;
 }
-
+- (void)textViewDidChange:(UITextView *)textView
+{
+    if (textView.text && ![textView.text isEqualToString:@""]) {
+        if (!_placeHolder.hidden)
+            [_placeHolder setHidden:YES];
+    }else{
+        if (_placeHolder.hidden)
+            [_placeHolder setHidden:NO];
+    }
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [_nameFiled becomeFirstResponder];

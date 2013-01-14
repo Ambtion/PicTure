@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-static NSString *LOGIN_HINT = @"欢迎使用Sohu云图，您还没有登录，请您登录。登录后会记录您所喜欢的照片，可以分享您的照片给好友。";
+static NSString *LOGIN_HINT = @"欢迎使用搜狐云图,留住回忆,分享快乐。登录后即可享受我们为您提供的图片云服务,轻松管理您的照片生活。";
 
 @class SCPAlert_LoginView;
 

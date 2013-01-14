@@ -161,11 +161,10 @@
 
 @end
 
-
-
 @implementation EmailTextField
 
 // domains is read only
+
 @synthesize domains = _domains;
 
 - (id)initWithFrame:(CGRect)frame
@@ -188,6 +187,7 @@
         _isOn = NO;
         
         _domains = [[NSArray arrayWithArray:domains] retain];
+        
         _manager = [[EmailTextFieldManager alloc] initWithEmailTextField:self];
         _dropDownListTable.delegate = _manager;
         _dropDownListTable.dataSource = _manager;

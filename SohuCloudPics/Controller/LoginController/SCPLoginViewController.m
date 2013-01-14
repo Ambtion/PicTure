@@ -35,10 +35,6 @@
 {
     [_backgroundImageView release];
     [_backgroundControl release];
-    _usernameTextField.placeholder = nil;
-    _passwordTextField.placeholder = nil;
-    _usernameTextField.text = nil;
-    _passwordTextField.text = nil;
     [_usernameTextField release];
     [_passwordTextField release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -79,6 +75,7 @@
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
     _usernameTextField.returnKeyType = UIReturnKeyNext;
     _usernameTextField.placeholder = @"通行证";
+    _usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [_usernameTextField addTarget:self action:@selector(usernameDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     
     //输入密码
@@ -221,7 +218,7 @@
     
     SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登陆中..." withView: self.view] autorelease];
     [waitView show];
-    NSString * useName = [NSString stringWithFormat:@"%@",_usernameTextField.text];
+    NSString * useName = [NSString stringWithFormat:@"%@",[_usernameTextField.text lowercaseString]];
     NSString * passWord = [NSString stringWithFormat:@"%@",_passwordTextField.text];
     [AccountSystemRequset sohuLoginWithuseName:useName password:passWord sucessBlock:^(NSDictionary *response) {
         [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];

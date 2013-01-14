@@ -27,7 +27,7 @@
 @class SCPPhotoListController;
 
 @protocol SCPPhotoListControllerDeletate <NSObject>
-- (void)whenViewRemveFromSuperview:(SCPPhotoListController *)controller;
+- (void)whenViewRemveFromSuperview;
 @end
 
 @interface SCPPhotoListController : UIViewController <UIScrollViewDelegate,SCPRequestManagerDelegate>
@@ -55,6 +55,8 @@
     BOOL animation;
     BOOL isLoading;
 }
+@property (nonatomic, assign)id<SCPPhotoListControllerDeletate> delegate;
+
 @property (nonatomic,retain) UIView * tempView;
 @property (nonatomic,retain) NSDictionary * info;
 @property (nonatomic,retain) NSString * folder_id;

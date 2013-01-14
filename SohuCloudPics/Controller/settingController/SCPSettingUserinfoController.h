@@ -17,5 +17,8 @@
     UITextField * _nameFiled;
     UITextView * _description;
     UIImageView * _imageview;
+    UITextField * _placeHolder;
+    UIView * textView_bg;
+
 }
 @end

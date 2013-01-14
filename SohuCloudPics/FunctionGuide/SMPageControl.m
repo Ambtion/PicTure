@@ -38,8 +38,8 @@
 	_alignment = SMPageControlAlignmentCenter;
 	_verticalAlignment = SMPageControlVerticalAlignmentMiddle;
 	
-	_pageImages = [[NSMutableDictionary dictionary] retain];
-	_currentPageImages = [[NSMutableDictionary dictionary] retain];
+	_pageImages = [[NSMutableDictionary dictionaryWithCapacity:0] retain];
+	_currentPageImages = [[NSMutableDictionary dictionaryWithCapacity:0] retain];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -81,7 +81,6 @@
 	UIImage *image = nil;
 	
 	for (NSUInteger i = 0; i < _numberOfPages; i++) {
-		
 		if (i == _displayedPage) {
 			fillColor = _currentPageIndicatorTintColor ? _currentPageIndicatorTintColor : [UIColor whiteColor];
 			image = _currentPageImages[@(i)];
@@ -323,7 +322,6 @@
 	if (currentPage < 0 || currentPage >= _numberOfPages) {
 		return;
 	}
-	
 	_currentPage = currentPage;
 	if (NO == self.defersCurrentPageDisplay || NO == defer) {
 		_displayedPage = _currentPage;
@@ -340,8 +338,8 @@
 	if ([currentPageIndicatorImage isEqual:_currentPageIndicatorImage]) {
 		return;
 	}
-	
-	_currentPageIndicatorImage = currentPageIndicatorImage;
+	[_currentPageIndicatorImage release];
+	_currentPageIndicatorImage = [currentPageIndicatorImage retain];
 	[self _updateMeasuredIndicatorSizes];
 	[self setNeedsDisplay];
 }
@@ -351,8 +349,8 @@
 	if ([pageIndicatorImage isEqual:_pageIndicatorImage]) {
 		return;
 	}
-	
-	_pageIndicatorImage = pageIndicatorImage;
+	[_pageIndicatorImage release];
+	_pageIndicatorImage = [pageIndicatorImage retain];
 	[self _updateMeasuredIndicatorSizes];
 	[self setNeedsDisplay];
 }

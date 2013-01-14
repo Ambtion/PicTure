@@ -25,7 +25,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     [self addTableView];
     [self.pullingController realLoadingMore:nil];
 }
@@ -57,7 +56,6 @@
         [self.pullingController.tableView setContentOffset:CGPointZero];
     }
     [self.manager refreshData:nil];
-//    [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
 }
 
 #pragma mark -
@@ -84,9 +82,9 @@
 
         if ([[UIScreen mainScreen] bounds].size.height > 480) {
             NSLog(@"%s",__FUNCTION__);
-            view.image = [UIImage imageNamed:@"广场导引ios6.png"];
+            view.image = [UIImage imageNamed:@"exporeGuideIos6_2.png"];
         }else{
-            view.image = [UIImage imageNamed:@"广场导引.png"];
+            view.image = [UIImage imageNamed:@"exporeGuide.png"];
         }
         [view show];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"GuideViewShowed"];

@@ -178,7 +178,7 @@
 }
 -(void)updataLabel
 {
-    label.text = [NSString stringWithFormat:@"已经选择图片%d张,一次可以上传30张图片",assetList.count];
+    label.text = [NSString stringWithFormat:@"已经选择图片%d张,一次可以上传10张图片",assetList.count];
     if (assetList.count == 0 && bgimageView.superview == nil ) {
         [scrollView addSubview:bgimageView];
     }

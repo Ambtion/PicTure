@@ -18,7 +18,9 @@
 #import "SCPFeedBackController.h"
 #import "ImageQualitySwitch.h"
 #import "JSON.h"
-#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+//#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+
+#define BASICURL_V1 @"http://dev.pp.sohu.com/api/v1"
 
 static NSString* SettingMenu[7] = {@"个人资料设置",@"上传图片质量",@"清除缓存",@"意见反馈",@"检查更新",@"关于",@"登出账号"};
 static NSString* SettingCover[7] = {@"settings_user.png",@"settings_push.png",@"settings_clear.png",
@@ -47,7 +49,6 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -92,7 +93,6 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         }
         return cell;
     }
-    
     MySettingCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CELL"];
     if (cell == nil) {
         cell = [[[MySettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"] autorelease];
@@ -168,7 +168,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         UIApplication *application = [UIApplication sharedApplication];
         [application openURL:[NSURL URLWithString:[dic objectForKey:@"updateURL"]]];
     }else{
-        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"通知" message:@"已经是最新版本" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        SCPAlert_CustomeView * tip = [[SCPAlert_CustomeView alloc] initWithTitle:@"当前已是最新版本"];
         [tip show];
         [tip release];
     }
@@ -182,8 +182,10 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     
     if (loginView == alertView && buttonIndex == 1) {
         [SCPLoginPridictive logout];
+        [self removeCacheAlluserInfo:YES];
         SCPMenuNavigationController * mnv = (SCPMenuNavigationController *)_controller;
         [mnv popToRootViewControllerAnimated:NO];
+        
         SCPMainTabController * mainTab = [[mnv childViewControllers] lastObject];
         mainTab.selectedIndex = 0;
         [_controller dismissModalViewControllerAnimated:YES];
@@ -193,10 +195,10 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
         NSError * error = nil;
         [manager removeItemAtPath:str error:&error];
+        [self removeCacheAlluserInfo:NO];
     }
-    [self removeCache];
 }
-- (void)removeCache
+- (void)removeCacheAlluserInfo:(BOOL)isRemove
 {
     
     NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
@@ -234,9 +236,14 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         [defaults setObject:GuideViewShowed forKey:@"GuideViewShowed"];
     if (FunctionShowed)
         [defaults setObject:FunctionShowed forKey:@"FunctionShowed"];
-    if (JPEG)
-        [defaults setObject:JPEG forKey:@"JPEG"];
-    [defaults synchronize];
+    if (isRemove) {
+        
+    }else{
+        if (JPEG)
+            [defaults setObject:JPEG forKey:@"JPEG"];
+
+    }
+       [defaults synchronize];
 }
 
 @end

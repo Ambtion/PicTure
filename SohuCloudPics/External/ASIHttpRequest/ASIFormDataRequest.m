@@ -158,13 +158,11 @@
 	if (!contentType) {
 		contentType = @"application/octet-stream";
 	}
-
 	NSMutableDictionary *fileInfo = [NSMutableDictionary dictionaryWithCapacity:4];
 	[fileInfo setValue:key forKey:@"key"];
 	[fileInfo setValue:fileName forKey:@"fileName"];
 	[fileInfo setValue:contentType forKey:@"contentType"];
 	[fileInfo setValue:data forKey:@"data"];
-
 	[[self fileData] addObject:fileInfo];
 }
 

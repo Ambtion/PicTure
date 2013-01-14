@@ -9,7 +9,8 @@
 
 #import <Foundation/Foundation.h>
 #import "ASIHTTPRequest.h"
-#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+//#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+#define BASICURL_LOGIN @"http://dev.pp.sohu.com"
 
 @interface AccountSystemRequset : NSObject
 

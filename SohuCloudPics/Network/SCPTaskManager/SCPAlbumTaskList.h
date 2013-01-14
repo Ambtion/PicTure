@@ -11,7 +11,6 @@
 #import "SCPTaskUnit.h"
 #import "ASINetworkQueue.h"
 #import "ASIFormDataRequest.h"
-#import "SCPURLLibaray.h"
 //just for url define
 #import "SCPRequestManager.h"
 

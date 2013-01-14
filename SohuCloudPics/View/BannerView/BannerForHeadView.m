@@ -61,7 +61,7 @@
     [self addSubview:_labelName];
     
     _leftLabel = [[UILabel alloc] init] ;
-    _leftLabel.frame = CGRectMake(5, 38 + 44, 160, 18);
+    _leftLabel.frame = CGRectMake(5, 38 + 44, 100, 18);
     _leftLabel.font = [UIFont systemFontOfSize:12];
     _leftLabel.textAlignment = UITextAlignmentLeft;
     _leftLabel.backgroundColor = [UIColor clearColor];
@@ -70,7 +70,7 @@
     [self addSubview:_leftLabel];
     
     _rightLabel = [[UILabel alloc] init] ;
-    _rightLabel.frame = CGRectMake(160, 38 + 44, 155, 18);
+    _rightLabel.frame = CGRectMake(215, 38 + 44, 100, 18);
     _rightLabel.font = [UIFont systemFontOfSize:12];
     _rightLabel.textAlignment = UITextAlignmentRight;
     _rightLabel.backgroundColor = [UIColor clearColor];

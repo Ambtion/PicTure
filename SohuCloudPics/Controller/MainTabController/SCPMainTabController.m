@@ -31,19 +31,17 @@
         [self.view addGestureRecognizer:slideRecognizerL2R];
         self.delegate = self;
         
-        // Explorer
+        //注意使用addChildViewController 会引起Two-stage rotation animation is deprecated. This application should use the smoother single-stage animation.
+        // Explorer 
         SCPExplorerController *explorer = [[SCPExplorerController alloc] initWithNibName:nil bundle:nil];
-        [self addChildViewController:explorer];
-        [explorer release];
-        
+//        [self addChildViewController:explorer];
         // MainFeed
         SCPMainFeedController * mainFeed = [[SCPMainFeedController alloc] initWithNibName:nil bundle:nil];
-        [self addChildViewController:mainFeed];
+//        [self addChildViewController:mainFeed];
+        self.viewControllers = [NSArray arrayWithObjects:explorer,mainFeed,nil];
+        [explorer release];
         [mainFeed release];
-        
-//        //test
-//        SCPTestController * test = [[[SCPTestController alloc] initWithNibName:nil bundle:nil] autorelease];
-//        [self addChildViewController:test];
+    
     }
     return self;
 }
@@ -93,11 +91,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark -
@@ -159,7 +152,6 @@
     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.view cache:YES];
     [self setSelectedIndex:index];
     [UIView commitAnimations];
-    
     if (index == 0) {
         [menu restIcon:3];
     }
@@ -167,9 +159,5 @@
         [menu restIcon:2];
     }
     [menu hideMenuWithRibbon:NO];
-}
-- (BOOL)shouldAutorotate
-{
-    return [self.selectedViewController shouldAutorotate];
 }
 @end

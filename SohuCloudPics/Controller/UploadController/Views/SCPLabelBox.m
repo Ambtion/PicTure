@@ -244,7 +244,7 @@
 
 - (void)removeLabelAtIndex:(NSInteger)index
 {
-    NSMutableArray *subviews = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *subviews = [NSMutableArray arrayWithCapacity:0];
     for (UIView *view in self.subviews) {
         if ([view class] == [SCPLabelView class]) {
             [subviews addObject:view];
@@ -255,7 +255,7 @@
     SCPLabelView *labelView = [subviews objectAtIndex:index];
     
     if (labelView.labelObject != obj) {
-        @throw [[[NSException alloc] initWithName:@"BAD_STATUS" reason:@"NO SUCH LABEL FOUND!!" userInfo:nil] autorelease  ];
+        @throw [[[NSException alloc] initWithName:@"BAD_STATUS" reason:@"NO SUCH LABEL FOUND!!" userInfo:nil] autorelease];
     }
     
     [_labelObjects removeObjectAtIndex:index];
@@ -315,7 +315,6 @@
         _addLabelButton.frame = CGRectMake(_insertPoint.x, _insertPoint.y, 44, 27);
     }
     [UIView commitAnimations];
-    
     free(destFrames);
 }
 

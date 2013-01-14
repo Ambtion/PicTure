@@ -15,12 +15,12 @@
 //外网
 //#define BASICURL_V1 @"http://61.135.181.37:8888/api/v1"
 //内网
-#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
+//#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
 //内网延时
 //#define BASICURL_V1 @"http://10.10.68.104:8889/api/v1"
+#define BASICURL_V1 @"http://dev.pp.sohu.com/api/v1"
 
 @class SCPRequestManager;
-
 @protocol SCPRequestManagerDelegate <NSObject>
 @optional
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info;

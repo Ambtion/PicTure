@@ -63,7 +63,6 @@
         nameDeLabel.text = album.name;
         [_alertboxImageView addSubview:nameDeLabel];
         
-        
         UILabel * photoNum = [[[UILabel alloc] initWithFrame:CGRectMake(20, 100, _alertboxImageView.frame.size.width - 60, 15)] autorelease];
         photoNum.font = font;
         photoNum.backgroundColor = [UIColor clearColor];
@@ -96,10 +95,11 @@
         if (album.permission){
             permissionDe.text = @"公开相册";
         }else{
-            permission.text = @"私有相册";
+            permissionDe.text = @"私有相册";
         }
         
         [_alertboxImageView addSubview:permissionDe];
+        
         
         UILabel * viewCount = [[[UILabel alloc] initWithFrame:CGRectMake(20, 200, _alertboxImageView.frame.size.width - 60, 15)] autorelease];
         viewCount.font = font;
@@ -108,6 +108,7 @@
         viewCount.textAlignment = UITextAlignmentLeft;
         viewCount.text = @"浏览次数";
         [_alertboxImageView addSubview:viewCount];
+        
         
         UILabel * viewCountDe = [[[UILabel alloc] initWithFrame:CGRectMake(20, 220, _alertboxImageView.frame.size.width - 60, 15)] autorelease];
         viewCountDe.font = font2;
@@ -138,10 +139,10 @@
 
 - (void)okClicked:(UIButton*)button
 {
-    [self removeFromSuperview];
     if ([_delegate respondsToSelector:@selector(alertView:alertViewOKClicked:)]) {
         [_delegate performSelector:@selector(alertView:alertViewOKClicked:) withObject:self withObject:button];
     }
+    [self removeFromSuperview];
 }
 
 @end
