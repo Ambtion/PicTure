@@ -62,7 +62,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 
 - (void)customeNavigationBar
 {
-    self.view.backgroundColor = [UIColor clearColor];
+    [self.navigationBar setBackgroundColor:[UIColor clearColor]];
     [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"ground.png"] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setTranslucent:YES];
 }
