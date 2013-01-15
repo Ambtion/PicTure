@@ -48,12 +48,12 @@
             [_dataSource addObject:dataSouce];
             [dataSouce release];
         }
-        NoticeDataSource * dataSouces =  [[NoticeDataSource alloc] init];
-        dataSouces.name = @"系统管理员";
-        dataSouces.content = @"最新版本敬请期待";
-        dataSouces.image = [UIImage imageNamed:@"systerm.png"];
-        [_dataSource addObject:dataSouces];
-        [dataSouces release];
+//        NoticeDataSource * dataSouces =  [[NoticeDataSource alloc] init];
+//        dataSouces.name = @"系统管理员";
+//        dataSouces.content = @"最新版本敬请期待";
+//        dataSouces.image = [UIImage imageNamed:@"systerm.png"];
+//        [_dataSource addObject:dataSouces];
+//        [dataSouces release];
         [self.controller.pullingController refreshDoneLoadingTableViewData];
         [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
     } failure:^(NSString *error) {
@@ -138,7 +138,6 @@
         return;
     }
     [_resqust destoryNotificationAndsuccess:^(NSString *response) {
-        NSLog(@"%s",__FUNCTION__);
         UINavigationController *nav = _controller.navigationController;
         SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
         [nav pushViewController:ctrl animated:YES];
@@ -150,7 +149,9 @@
 #pragma mark - dataSouce
 - (NSString *)bannerDataSouceLeftLabel
 {
-    return @"我有新的提醒";
+    if (_dataSource && _dataSource.count)
+        return [NSString stringWithFormat:@"有%d条提醒",_dataSource.count];
+    return @"暂无提醒";
 }
 - (NSString *)bannerDataSouceRightLabel
 {

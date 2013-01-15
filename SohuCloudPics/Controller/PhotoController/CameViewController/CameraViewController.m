@@ -200,8 +200,8 @@
     transiton.fillMode = kCAFillModeForwards;
     transiton.duration = 0.5;
     transiton.speed = 1.0;
-    transiton.type = @"cameraIrisHollowOpen";
-    //    transiton.type = kCATransitionFade;
+//    transiton.type = @"cameraIrisHollowOpen";
+    transiton.type = kCATransitionFade;
     transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [_tampview.layer addAnimation:transiton forKey:@"Open"];
     _tampview.alpha = 0;
@@ -216,8 +216,8 @@
     transiton.duration = 0.5;
     transiton.speed = 1.0;
     transiton.delegate = self;
-    transiton.type = @"cameraIrisHollowClose";
-    //    transiton.type = kCATransitionFade;
+//    transiton.type = @"cameraIrisHollowClose";
+    transiton.type = kCATransitionFade;
     transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [_tampview.layer addAnimation:transiton forKey:@"close"];
     _tampview.alpha = 1;

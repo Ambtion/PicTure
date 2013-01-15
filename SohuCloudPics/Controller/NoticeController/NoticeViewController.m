@@ -40,7 +40,6 @@
     self.manager = [[[NoticeManager alloc] initWithViewController:self] autorelease];
     self.manager.controller = self;
     //customer for  scrollview
-    
     self.pullingController.delegate = self.manager;
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;

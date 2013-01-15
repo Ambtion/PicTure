@@ -7,7 +7,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>搜狐云图</string>
 	<key>CFBundleExecutable</key>
-	<string>搜狐云图</string>
+	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
