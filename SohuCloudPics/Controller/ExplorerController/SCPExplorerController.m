@@ -77,11 +77,8 @@
 {
     NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
     if (!num || ![num boolValue]) {
-        
         SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
-
         if ([[UIScreen mainScreen] bounds].size.height > 480) {
-            NSLog(@"%s",__FUNCTION__);
             view.image = [UIImage imageNamed:@"exporeGuideIos6_2.png"];
         }else{
             view.image = [UIImage imageNamed:@"exporeGuide.png"];

@@ -52,6 +52,7 @@
     [self.view addGestureRecognizer:naviRecognizerUp];
     [self.view addGestureRecognizer:slideRecognizerR2L];
     needHideNavigationBar = FALSE;
+    
 }
 - (void)viewWillDisappear:(BOOL)animated
 {

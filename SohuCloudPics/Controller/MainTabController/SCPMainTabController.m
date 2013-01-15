@@ -25,7 +25,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
         slideRecognizerL2R = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(switchTab)];
         slideRecognizerL2R.direction = UISwipeGestureRecognizerDirectionRight;
         [self.view addGestureRecognizer:slideRecognizerL2R];
@@ -34,14 +33,11 @@
         //注意使用addChildViewController 会引起Two-stage rotation animation is deprecated. This application should use the smoother single-stage animation.
         // Explorer 
         SCPExplorerController *explorer = [[SCPExplorerController alloc] initWithNibName:nil bundle:nil];
-//        [self addChildViewController:explorer];
         // MainFeed
         SCPMainFeedController * mainFeed = [[SCPMainFeedController alloc] initWithNibName:nil bundle:nil];
-//        [self addChildViewController:mainFeed];
         self.viewControllers = [NSArray arrayWithObjects:explorer,mainFeed,nil];
         [explorer release];
         [mainFeed release];
-    
     }
     return self;
 }
@@ -49,14 +45,11 @@
 {
     if ( [self.view.subviews count] < 2 )
         return;
-    
     UIView *contentView;
-    
     if ( [[self.view.subviews objectAtIndex:0] isKindOfClass:[UITabBar class]] )
         contentView = [self.view.subviews objectAtIndex:1];
     else
         contentView = [self.view.subviews objectAtIndex:0];
-    
     if ( hide )
     {
         contentView.frame = self.view.bounds;
@@ -82,17 +75,6 @@
     [super viewDidLoad];
     [self makeTabBarHidden:YES];
 }
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
 #pragma mark -
 #pragma mark TabDelegate
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
@@ -145,6 +127,7 @@
 }
 - (void)switchToindex:(NSInteger)index
 {
+    
     SCPMenuManager *menu = ((SCPMenuNavigationController *) self.navigationController).menuManager;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];

@@ -52,7 +52,7 @@
 }
 - (void)showCamera:(id)gesture
 {
-    //重载函数,是2级页面失去划出相机的功能;
+    //重载函数,使2级页面失去划出相机的功能;
 //    NSLog(@"重载函数,是2级页面失去划出相机的功能");
 }
 - (void)onBackSwipe:(id)sender

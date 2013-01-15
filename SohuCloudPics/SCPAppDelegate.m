@@ -57,6 +57,8 @@ void customedExceptionHandler(NSException *exception)
     [self pragramerSetting];
     SCPMainTabController *mainTab = [[SCPMainTabController alloc] initWithNibName:nil bundle:NULL];
     SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
+    [mainTab switchToindex:1];
+    [mainTab switchToindex:0];
     _window.rootViewController = nav;
     [_window makeKeyAndVisible];
     [self showfunctionGuide];

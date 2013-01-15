@@ -57,7 +57,6 @@
 		61718A6615EDFCC00089DB70 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 61718A6515EDFCC00089DB70 /* libz.dylib */; };
 		617BCD8F15FDB4C1008CCFF6 /* UIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 617BCD8E15FDB4C1008CCFF6 /* UIUtils.m */; };
 		617F2AE716016E50005CBF49 /* 150.png in Resources */ = {isa = PBXBuildFile; fileRef = 617F2AE616016E50005CBF49 /* 150.png */; };
-		617F2AF416016EA0005CBF49 /* navigation_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 617F2AEE16016EA0005CBF49 /* navigation_bar.png */; };
 		617FDBD215E4CC8A00A7FCBB /* SCPFirstIntroController.m in Sources */ = {isa = PBXBuildFile; fileRef = 617FDBD115E4CC8A00A7FCBB /* SCPFirstIntroController.m */; };
 		618AA65D15F8355A00CA9D9A /* SCPMenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 618AA65C15F8355A00CA9D9A /* SCPMenuManager.m */; };
 		619079BD15EB4B9E00324A6B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 619079BC15EB4B9E00324A6B /* ImageIO.framework */; };
@@ -177,6 +176,7 @@
 		C51A82B9169D73F2008CD8EA /* prog_wait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C51A82B7169D73F2008CD8EA /* prog_wait@2x.png */; };
 		C51A82BB169D835E008CD8EA /* settings_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = C51A82BA169D835E008CD8EA /* settings_clear.png */; };
 		C51E2A7D168AAC6700DC0ED4 /* systerm.png in Resources */ = {isa = PBXBuildFile; fileRef = C51E2A7C168AAC6700DC0ED4 /* systerm.png */; };
+		C526524416A560B600AC1662 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = C526524316A560B600AC1662 /* ground.png */; };
 		C52F3F3E168C853F009858C0 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F2D168C853F009858C0 /* SDImageCache.m */; };
 		C52F3F3F168C853F009858C0 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F31168C853F009858C0 /* SDWebImageDecoder.m */; };
 		C52F3F40168C853F009858C0 /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F33168C853F009858C0 /* SDWebImageDownloader.m */; };
@@ -575,7 +575,6 @@
 		617BCD8D15FDB4C1008CCFF6 /* UIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIUtils.h; path = Utils/UIUtils.h; sourceTree = "<group>"; };
 		617BCD8E15FDB4C1008CCFF6 /* UIUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIUtils.m; path = Utils/UIUtils.m; sourceTree = "<group>"; };
 		617F2AE616016E50005CBF49 /* 150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 150.png; sourceTree = "<group>"; };
-		617F2AEE16016EA0005CBF49 /* navigation_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar.png; sourceTree = "<group>"; };
 		617FDBD015E4CC8A00A7FCBB /* SCPFirstIntroController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPFirstIntroController.h; path = Controller/FirstIntroController/SCPFirstIntroController.h; sourceTree = "<group>"; };
 		617FDBD115E4CC8A00A7FCBB /* SCPFirstIntroController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPFirstIntroController.m; path = Controller/FirstIntroController/SCPFirstIntroController.m; sourceTree = "<group>"; };
 		618AA65B15F8355A00CA9D9A /* SCPMenuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPMenuManager.h; path = ViewManager/MenuManager/SCPMenuManager.h; sourceTree = "<group>"; };
@@ -746,6 +745,7 @@
 		C51A82B7169D73F2008CD8EA /* prog_wait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "prog_wait@2x.png"; sourceTree = "<group>"; };
 		C51A82BA169D835E008CD8EA /* settings_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_clear.png; sourceTree = "<group>"; };
 		C51E2A7C168AAC6700DC0ED4 /* systerm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = systerm.png; sourceTree = "<group>"; };
+		C526524316A560B600AC1662 /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
 		C52F3F2C168C853F009858C0 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		C52F3F2D168C853F009858C0 /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
 		C52F3F2E168C853F009858C0 /* SDImageCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCacheDelegate.h; sourceTree = "<group>"; };
@@ -1499,6 +1499,7 @@
 		61B7C2DB15FEE44600B0CD88 /* menu */ = {
 			isa = PBXGroup;
 			children = (
+				C526524316A560B600AC1662 /* ground.png */,
 				C586AD35165648C40065ACE9 /* bookmark.png */,
 				C5958B2416362C7800BDFEC8 /* menu_alert_press.png */,
 				C5958B2516362C7800BDFEC8 /* menu_alert.png */,
@@ -1512,7 +1513,6 @@
 				B7D3ACC21622F18E00026BA1 /* menu_me.png */,
 				B7D3ACC31622F18E00026BA1 /* menu_upload_press.png */,
 				B7D3ACC41622F18E00026BA1 /* menu_upload.png */,
-				617F2AEE16016EA0005CBF49 /* navigation_bar.png */,
 			);
 			name = menu;
 			path = Resource/image/menu;
@@ -2719,7 +2719,6 @@
 				B7CA56141600464F0015C1BA /* check_box_select.png in Resources */,
 				B7CA56151600464F0015C1BA /* check_box_select@2x.png in Resources */,
 				617F2AE716016E50005CBF49 /* 150.png in Resources */,
-				617F2AF416016EA0005CBF49 /* navigation_bar.png in Resources */,
 				B7F53E3E1606BAA600733CC3 /* comment_post_bar.png in Resources */,
 				B7F53E3F1606BAA600733CC3 /* send_btn.png in Resources */,
 				B7F53E401606BAA600733CC3 /* send_btn_h.png in Resources */,
@@ -3013,6 +3012,7 @@
 				C58E341F16A54D9D00C11E59 /* icon_57.png in Resources */,
 				C58E342216A54E1C00C11E59 /* Default.png in Resources */,
 				C58E342416A54EE100C11E59 /* title_uploads_photos.png in Resources */,
+				C526524416A560B600AC1662 /* ground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3234,7 +3234,7 @@
 				INFOPLIST_FILE = "SohuCloudPics/SohuCloudPics-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3249,7 +3249,7 @@
 				INFOPLIST_FILE = "SohuCloudPics/SohuCloudPics-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

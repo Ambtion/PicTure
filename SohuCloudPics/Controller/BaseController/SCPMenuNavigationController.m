@@ -58,13 +58,12 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [self customeNavigationBar];
     [self initMenu];
     self.view.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
-    
 }
 
 - (void)customeNavigationBar
 {
     self.view.backgroundColor = [UIColor clearColor];
-    [self.navigationBar setBackgroundImage:[[UIImage imageNamed:@"navigation_bar.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"ground.png"] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setTranslucent:YES];
 }
 

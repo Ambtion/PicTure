@@ -85,7 +85,6 @@
 {
     if (_item.superview)
         [_item removeFromSuperview];
-//    [super viewWillDisappear:animated]; //规定彩带行为
 }
 - (void)viewWillAppear:(BOOL)animated
 {
