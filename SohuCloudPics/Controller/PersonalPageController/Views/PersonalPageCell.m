@@ -175,22 +175,24 @@
 }
 - (void)updataData
 {
-    
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"] success:^(UIImage *image) {
         CGSize size = [self getRectofProtrait:image];
         _portraitImageView.frame = CGRectMake(0, 0, size.width, size.height);
         _portraitImageView.center = CGPointMake(85.f/ 2, 85.f/2);
-        if (!image.size.width || image.size.height) _portraitImageView.image = [UIImage imageNamed:@"user_bg_photo_defout.png"];
+        if (!image.size.width || !image.size.height){
+            _portraitImageView.image = [UIImage imageNamed:@"user_bg_photo_defout.png"];
+            _portraitImageView.frame = _portraitImageView.superview.bounds;
+        }
     } failure:^(NSError *error) {
         _portraitImageView.frame = _portraitImageView.superview.bounds;
     }];
     if (!_dataSource.name || ![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
-        _nameLabel.text = @"佚名";
+        _nameLabel.text = @"用户未起名";
     }else{
         _nameLabel.text = [_dataSource name];
     }
     if (!_dataSource.desc ||[_dataSource.desc isKindOfClass:[NSNull class]] || [_dataSource.desc isEqualToString:@""]) {
-        _descLabel.text = @"用户没有描述";
+        _descLabel.text = @"用户未添加描述";
     }else{
         _descLabel.text = self.datasource.desc;
     }

@@ -434,15 +434,14 @@
 }
 -(void)renderDefaultImage
 {
-    
     if (self.originalImage) {
-        [self waitForMomentsWithTitle:@"保存到相册..."];
+        [self waitForMomentsWithTitle:@"保存到本地"];
         dispatch_async(dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self modifImage];
         });
         return;
     }
-    [self waitForMomentsWithTitle:@"保存到相册..."];
+    [self waitForMomentsWithTitle:@"保存到本地"];
     [_library assetForURL:self.assetURL resultBlock:^(ALAsset *asset) {
         self.originalImage = [UIImage imageWithCGImage:[asset defaultRepresentation].fullResolutionImage];
         dispatch_async(dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -455,7 +454,7 @@
 }
 - (void)modifImage
 {
-    //    dispatch_async(dispatch_get_main_queue(), ^{
+    
     if (_filternum != -1)
         self.originalImage = [ImageUtil imageWithImage:self.originalImage withMatrixNum:_filternum];
     if (_isBlured)
@@ -468,7 +467,6 @@
     [self fixImageView];
     [self writeToAlbum];
     [self initdataContainer];
-    //    });
 }
 
 -(void)fixImageView
@@ -490,7 +488,6 @@
             NSLog(@"error%@",error);
             return ;
         }
-    
         if (![SCPLoginPridictive isLogin]) {
             [controller dismissModalViewControllerAnimated:YES];
             return ;
@@ -516,10 +513,8 @@
                 
             }];
         });
-        
     }];
 }
-
 #pragma mark-
 -(void)waitForMomentsWithTitle:(NSString*)str
 {
@@ -533,6 +528,7 @@
         [_alterView dismissWithClickedButtonIndex:0 animated:YES];
         [_alterView release],_alterView = nil;
     }
+//    SCPAlert_CustomeView * cus = [[SCPAlert_CustomeView alloc] initWithTitle:@"图片"]
 }
 
 

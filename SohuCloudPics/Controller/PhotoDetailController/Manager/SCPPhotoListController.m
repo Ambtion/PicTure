@@ -103,7 +103,7 @@
 {
     NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
     NSArray * array = [[url absoluteString] componentsSeparatedByString:@"/"];
-    str = [str stringByAppendingFormat:@"%@", [array lastObject]];
+    str = [str stringByAppendingFormat:@"/%@", [array lastObject]];
     return str;
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -117,13 +117,12 @@
 {
     [self.superview bringSubviewToFront:self.webView];
 }
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    
-}
+
 - (void)resetGigView
 {
+    
     [self.requset clearDelegatesAndCancel];
+    [self.requset cancel];
     self.requset = nil;
     [self.webView stopLoading];
     [self.webView removeFromSuperview];
@@ -131,6 +130,8 @@
 }
 - (void)dealloc
 {
+    NSLog(@"%s",__FUNCTION__);
+    [self resetGigView];
     self.info = nil;
     self.actV = nil;
     self.webView = nil;
@@ -670,7 +671,6 @@
     self.fontImageView.info = [imageArray objectAtIndex:0];
     self.currentImageView.info = [imageArray objectAtIndex:1];
     self.rearImageView.info = [imageArray objectAtIndex:2];
-    
     self.info = self.fontImageView.info;
     [self resetImageFrame:self.fontImageView];
     [self resetImageFrame:self.currentImageView];
@@ -681,7 +681,6 @@
 }
 - (void)refreshScrollviewOnMaxBounds
 {
-    
     self.rearImageView.info = [imageArray objectAtIndex:imageArray.count - 1];
     self.currentImageView.info = [imageArray objectAtIndex:imageArray.count - 2];
     self.fontImageView.info = [imageArray objectAtIndex:imageArray.count - 3];
@@ -692,7 +691,8 @@
     
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2,0)];
-//    curPage--;
+    NSLog(@"%s %@",__FUNCTION__,self.info);
+
 }
 - (void)refreshScrollviewWhenPhotonumLessThree
 {
@@ -782,18 +782,10 @@
     }
     if(x >= (self.scrollView.frame.size.width * 2)) {
         
-//        if (curPage >= photoNum - 2) {
-//            curPage = photoNum - 1;
-//            [self initSubViews];
-//            return;
-//        }
-        
-        if (curPage >= imageArray.count - 2 && imageArray.count <= photoNum) {
-            [self getMoreImage];
-            return;
-        }
         curPage = [self validPageValue:curPage+1];
         [self refreshScrollView];
+        if (curPage >= imageArray.count - 1 && imageArray.count <= photoNum)  [self getMoreImage];
+
     }
     
     if(x <= 0) {

@@ -19,7 +19,6 @@
 #import "SCPAlert_DetailView.h"
 #import "FunctionguideScroll.h"
 
-
 void customedExceptionHandler(NSException *exception)
 {
 #ifdef DEBUG
@@ -56,7 +55,6 @@ void customedExceptionHandler(NSException *exception)
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     [self pragramerSetting];
-    
     SCPMainTabController *mainTab = [[SCPMainTabController alloc] initWithNibName:nil bundle:NULL];
     SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
     _window.rootViewController = nav;

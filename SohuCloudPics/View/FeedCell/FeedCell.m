@@ -111,11 +111,7 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     _nameLabel.numberOfLines = 1;
     _nameLabel.backgroundColor = [UIColor clearColor];
     [tailerView addSubview:_nameLabel];
-    
-    //    UIImageView * location = [[[UIImageView alloc] initWithFrame:CGRectMake(65, 31 + OFFSETY, 15, 15)] autorelease];
-    //    location.image = [UIImage imageNamed:@"location_icon.png"];
-    //    [tailerView addSubview:location];
-    
+
     _positionTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(85 - 20, 32.5 + OFFSETY, 150, 14)];
     _positionTimeLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:14];
     _positionTimeLabel.textColor = [UIColor colorWithRed:97.0/255 green:120.0/255 blue:137.0/255 alpha:1];
@@ -160,23 +156,14 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     if (widht <= 320 && height <= 320) {
         _photoImageView.frame = CGRectMake(0, 0, 320, 320);
         _photoImageView.center = CGPointMake(160, 160);
-//        [_photoImageView cancelCurrentImageLoad];
-//        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-//        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     }
     if (widht > 320 && height <= 320) {
         _photoImageView.frame = CGRectMake(0, 0, 320 , 320);
         _photoImageView.center = CGPointMake(160, 160);
-//        [_photoImageView cancelCurrentImageLoad];
-//        NSString * str = [NSString stringWithFormat:@"%@_c320",_dataSource.photoImage];
-//        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     }
     if (widht <= 320 && height > 320) {
         _photoImageView.frame = CGRectMake(0, 0, 320,320);
         _photoImageView.center = CGPointMake(160, 160);
-//        [_photoImageView cancelCurrentImageLoad];
-//        NSString * str = [NSString stringWithFormat:@"%@_c640",_dataSource.photoImage];
-//        [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     }
     if (widht > 320 && height > 320 ) {
         _photoImageView.frame = CGRectMake(0, 0, 320, 320);
@@ -198,7 +185,12 @@ static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
     }else{
         _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
     }
-    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
+    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] success:^(UIImage *image) {
+        if (!image || !image.size.width)
+            _portraitView.image = [UIImage imageNamed:@"portrait_default.png"];
+    } failure:^(NSError *error) {
+        _portraitView.image = [UIImage imageNamed:@"portrait_default.png"];
+    }];
 }
 - (FeedCellDataSource *)dataSource
 {

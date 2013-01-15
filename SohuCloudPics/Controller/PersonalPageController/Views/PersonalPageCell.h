@@ -15,7 +15,6 @@
 @property(nonatomic,assign)BOOL isInit;
 @property(nonatomic,retain)NSString * portrait;
 @property(nonatomic,retain)NSString* name;
-//@property(nonatomic,retain)NSString* position;
 @property(nonatomic,retain)NSString* desc;
 @property(nonatomic,assign)BOOL isFollowByMe;
 @property(nonatomic,assign)BOOL isMe;

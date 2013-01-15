@@ -207,7 +207,10 @@
         CGSize size = [self getRectofProtrait:image];
         _portraitImageView.frame = CGRectMake(0, 0, size.width, size.height);
         _portraitImageView.center = CGPointMake(85.f/ 2, 85.f/2);
-        if (!image.size.width || image.size.height) _portraitImageView.image = [UIImage imageNamed:@"user_bg_photo_defout.png"];
+        if (!image.size.width || !image.size.height){
+            _portraitImageView.image = [UIImage imageNamed:@"user_bg_photo_defout.png"];
+            _portraitImageView.frame = _portraitImageView.superview.bounds;
+        }
     } failure:^(NSError *error) {
         _portraitImageView.frame = _portraitImageView.superview.bounds;
     }];
@@ -217,7 +220,6 @@
     }else{
         _nameLabel.text = [_dataSource name];
     }
-    
     if (!_dataSource.desc ||[_dataSource.desc isKindOfClass:[NSNull class]] || [_dataSource.desc isEqualToString:@""]) {
         _descLabel.text = @"赶快装扮下吧";
     }else{

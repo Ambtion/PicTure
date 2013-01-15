@@ -20,7 +20,7 @@
 
 @class SCPPhotoDetailViewController;
 
-@interface PhotoDetailManager : NSObject <PullingRefreshDelegate, UITableViewDataSource,BannerDataSoure, FeedCellDelegate, CommentCellDelegate, SCPAlertLoginViewDelegate, SCPLoginViewDelegate,SCPRequestManagerDelegate,SCPPhotoListControllerDeletate>
+@interface PhotoDetailManager : NSObject <PullingRefreshDelegate, UITableViewDataSource,BannerDataSoure, FeedCellDelegate, CommentCellDelegate, SCPAlertLoginViewDelegate, SCPLoginViewDelegate,SCPRequestManagerDelegate,SCPPhotoListControllerDeletate,FeedDescriptionDelgate>
 {
     NSMutableArray * _dataSourceArray;
     NSDictionary * _infoFromSuper;

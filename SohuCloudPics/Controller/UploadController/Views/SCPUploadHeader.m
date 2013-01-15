@@ -13,7 +13,9 @@
 #import "UIUtils.h"
 #import "SCPLoginPridictive.h"
 #import "SCPAlert_CustomeView.h"
+
 #import "SCPNewFoldersCell.h"
+#define DESLABEL @"网络相册获取中"
 
 @interface AlbumsTableManager : NSObject <UITableViewDelegate, UITableViewDataSource>
 @property (assign, nonatomic) SCPUploadHeader *header;
@@ -45,6 +47,7 @@
     [_albumChooseLabel release];
     [_albumNameLabel release];
     [_albumChooseButton release];
+    [_activity release];
     [_labelBoxLabel release];
     [super dealloc];
 }
@@ -63,7 +66,7 @@
 - (void)addSubviews
 {
     
-    UIImageView * titleImage = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title_save_photos.png"]] autorelease];
+    UIImageView * titleImage = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title_uploads_photos.png"]] autorelease];
     titleImage.frame = CGRectMake(110, 43, 100, 24);
     [self.contentView addSubview:titleImage];
     
@@ -76,10 +79,8 @@
     _albumChooseButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     _albumChooseButton.frame = CGRectMake(10, 111 + 10, 200, 40);
     _albumChooseButton.tag = 0;
-    [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_normal.png"] forState:UIControlStateNormal | UIControlStateSelected];
-    [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_press.png"] forState:UIControlStateHighlighted | UIControlStateSelected];
+    [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_normal-2.png"] forState:UIControlStateNormal];
     [_albumChooseButton addTarget:self action:@selector(albumChooseButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    
     [self addSubview:_albumChooseButton];
     
     _albumNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, 40)];
@@ -87,7 +88,12 @@
     _albumNameLabel.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
     _albumNameLabel.font = [_albumChooseButton.titleLabel.font fontWithSize:15];
     _albumNameLabel.textAlignment = UITextAlignmentCenter;
+    _albumNameLabel.text = DESLABEL;
     [_albumChooseButton addSubview:_albumNameLabel];
+    _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _activity.frame = CGRectMake(155, 0, 40, 40);
+    _activity.hidesWhenStopped = YES;
+    [_albumChooseButton addSubview:_activity];
     
     _albumsTable = [[UITableView alloc] initWithFrame:CGRectMake(10, 163, 200, 120) style:UITableViewStylePlain];
     _albumsTable.layer.borderWidth = 1.0;
@@ -109,6 +115,7 @@
 }
 - (void)refreshData
 {
+    [_activity startAnimating];
     [_foldersArray removeAllObjects];
     [_requestmanager getFoldersWithID:[SCPLoginPridictive currentUserId] page:1];
 }
@@ -136,10 +143,21 @@
         }else{
             [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_normal.png"] forState:UIControlStateNormal];
             [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_press.png"] forState:UIControlStateHighlighted];
-           
             self.currentAlbum = 0;
         }
     }
+    [_activity stopAnimating];
+}
+- (void)requestFailed:(NSString *)error
+{
+    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"当前网络不给力，请稍后重试"] autorelease];
+    [cus show];
+    _albumNameLabel.text = @"网络相册获取失败";
+    [self setUserInteractionEnabled:NO];
+    [_activity stopAnimating];
+    if ([_delegate respondsToSelector:@selector(uploadHeader:selectAlbum:)])
+        [_delegate performSelector:@selector(uploadHeader:selectAlbum:) withObject:nil withObject:nil];
+
 }
 #pragma mark Create Folder
 - (void)renameAlertView:(SCPAlert_Rename *)view OKClicked:(UITextField *)textField

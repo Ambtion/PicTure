@@ -687,6 +687,7 @@
 }
 - (void)feedBackWithidea:(NSString *)idea success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
+    
     NSString * str =[NSString stringWithFormat:@"%@/feedback?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setStringEncoding:NSUTF8StringEncoding];
@@ -706,5 +707,27 @@
     }];
     [request startAsynchronous];
     
+}
+- (void)editphotot:(NSString * )photo_id Description:(NSString *)des success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+{
+    NSString * str =[NSString stringWithFormat:@"%@/photos/%@?access_token=%@",BASICURL_V1,photo_id,[SCPLoginPridictive currentToken]];
+    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setPostValue:des forKey:@"description"];
+    [request setRequestMethod:@"PUT"];
+    [request setCompletionBlock:^{
+        NSLog(@"%@",[request responseString]);
+        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+            success([request responseString]);
+        }else{
+            failure(@"当前网络不给力，请稍后重试");
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"%@",[request responseString]);
+        failure(@"当前网络不给力，请稍后重试");
+    }];
+    [request startAsynchronous];
+
 }
 @end

@@ -28,6 +28,7 @@
     AlbumsTableManager *_manager;
     SCPRequestManager * _requestmanager;
     NSMutableArray * _foldersArray;
+    UIActivityIndicatorView * _activity;
 }
 @property (assign, nonatomic) id<UploadHeadDeleagte> delegate;
 // data

@@ -7,15 +7,15 @@
 	<key>CFBundleDisplayName</key>
 	<string>搜狐云图</string>
 	<key>CFBundleExecutable</key>
-	<string>${EXECUTABLE_NAME}</string>
+	<string>搜狐云图</string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>114.png</string>
 				<string>Icon.png</string>
+				<string>icon_57.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>

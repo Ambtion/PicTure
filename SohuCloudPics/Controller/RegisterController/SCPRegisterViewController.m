@@ -217,18 +217,16 @@
         return;
     }
     [self allTextFieldsResignFirstResponder:nil];
+    [self waitForMomentsWithTitle:@"注册中"];
     NSString * username = [NSString stringWithFormat:@"%@@sohu.com",_usernameTextField.text];
     NSString * password = [NSString stringWithFormat:@"%@",_passwordTextField.text];
     [AccountSystemRequset resigiterWithuseName:username password:password nickName:nil sucessBlock:^(NSDictionary *response) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [AccountSystemRequset sohuLoginWithuseName:username password:password sucessBlock:^(NSDictionary * response) {
                 [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self backhome];
-                });
-                
+                [self backhome];
             } failtureSucess:^(NSString *error) {
-                
+                [self stopWait];
                 SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [tip  show];
                 [tip release];
@@ -236,18 +234,35 @@
         });
         
     } failtureSucess:^(NSString *error) {
+        [self stopWait];
         SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [tip  show];
         [tip release];
     }];
 }
+
+-(void)waitForMomentsWithTitle:(NSString*)str
+{
+    _alterView = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:str withView:self.view];
+    [_alterView show];
+}
+
+-(void)stopWait
+{
+    if(_alterView){
+        [_alterView dismissWithClickedButtonIndex:0 animated:YES];
+        [_alterView release],_alterView = nil;
+    }
+}
 - (void)backhome
 {
+    [self stopWait];
     SCPLoginViewController * vc = [[self.navigationController childViewControllers] objectAtIndex:0];
     if ([vc.delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
                         [vc.delegate  SCPLogin:vc doLogin:nil];
     
 }
+
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     UIScrollView * view = (UIScrollView *) self.view;

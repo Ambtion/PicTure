@@ -82,12 +82,20 @@
 }
 -(void)updataData
 {
-    [_imageCoverView setImageWithURL:[NSURL URLWithString:_dataSource.coverImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
+    
+    [_imageCoverView setImageWithURL:[NSURL URLWithString:_dataSource.coverImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]success:^(UIImage *image) {
+        if (!image || !image.size.width)
+            _imageCoverView.image = [UIImage imageNamed:@"portrait_default.png"];
+    } failure:^(NSError *error) {
+        _imageCoverView.image = [UIImage imageNamed:@"portrait_default.png"];
+    }];
+    
     if (_dataSource.title && ![_dataSource.title isKindOfClass:[NSNull class]] && ![[_dataSource title] isEqualToString:@""]) {
         _titleLabel.text = _dataSource.title;
     }else{
         _titleLabel.text = @"用户没起名";
     }
+    
     _descLabel.text = [NSString stringWithFormat:@"%d张图片, %d个相册",_dataSource.pictureCount,_dataSource.albumCount];
     if (!_dataSource.following) {
         [_follweButton setBackgroundImage:[UIImage imageNamed:@"add_feed.png"] forState:UIControlStateNormal];

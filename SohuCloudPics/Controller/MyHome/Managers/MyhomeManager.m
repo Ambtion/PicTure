@@ -86,6 +86,7 @@ static float OFFSET = 0.f;
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
+        
         _personalDataSource.isInit = NO;
         _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
         _personalDataSource.name = [userInfo objectForKey:@"user_nick"];
@@ -269,9 +270,7 @@ static float OFFSET = 0.f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     NSInteger row = indexPath.row;
-    
     if (row == 0) {
         MyPersonalCell* pageCell = [tableView dequeueReusableCellWithIdentifier:@"PAGECELL"];
         if (pageCell == nil) {

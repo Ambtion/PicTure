@@ -139,6 +139,7 @@
         [_cancelButton setImage:[UIImage imageNamed:@"header_cancel_normal.png"] forState:UIControlStateNormal];
         [_cancelButton setImage:[UIImage imageNamed:@"header_cancel_press.png"] forState:UIControlStateHighlighted];
         [_cancelButton addTarget:self action:@selector(onDeleteCancelClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
     }else{
         /* iMark button */
         _iMarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
@@ -168,16 +169,12 @@
 }
 - (void)refresh
 {
-	if (_photoList == nil) {
-		_photoList = [[NSMutableArray alloc] init];
-	}
+	if (_photoList == nil)  _photoList = [[NSMutableArray alloc] init];
     [_request getFolderinfoWihtUserID:_albumData.creatorId WithFolders:_albumData.albumId];
 }
 - (void)loadingNextPage
 {
-    if (isLoading) {
-        return;
-    }
+    if (isLoading) return;
     isLoading = YES;
     if (hasNextPage)
         [_request getPhotosWithUserID:_albumData.creatorId FolderID:_albumData.albumId page:curpage + 1];
@@ -275,7 +272,6 @@
 #pragma mark trash
 - (void)onTrashClicked:(id)sender
 {
-//    if (![self longinPridecate]) return;
     _state = PhotoGridStateDelete;
     [self.pullingController shutDataChangeFunction];
     CATransition *animation = [CATransition animation];
@@ -404,12 +400,12 @@
 {
     
     if (!_imagesToDel || !_imagesToDel.count) {
+        [self onDeleteCancelClicked:nil];
         return;
     }
     SCPAlert_DeletView * alterView = [[[SCPAlert_DeletView alloc] initWithMessage:DELETE delegate:self] autorelease];
     [alterView show];
     [self.pullingController openDataChangeFunction];
-    return;
 }
 
 - (void)onDeleteCancelClicked:(id)sender

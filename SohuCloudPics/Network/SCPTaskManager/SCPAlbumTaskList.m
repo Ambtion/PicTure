@@ -10,7 +10,7 @@
 #import "JSON.h"
 #import "SCPTaskNotification.h"
 #import "SCPLoginPridictive.h"
-#define BASICURL_V1 @"http://dev.pp.sohu.com/api/v1"
+#define BASICURL @"http://dev.pp.sohu.com"
 
 #define UPTIMEOUT 10.f
 
@@ -49,18 +49,19 @@
 {
     if (!self.currentTask) self.currentTask = [self.taskList objectAtIndex:0];
     self.currentTask.request = [self getUploadRequest:nil];
-    [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit * unit) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
-            if (unit.description && ![unit.description isEqualToString:@""])
-                [self.currentTask.request setPostValue:unit.description forKey:@"desc"];
-            if (!self.currentTask.request.isCancelled)
-                [self.currentTask.request startAsynchronous];
-        });
-    } failture:^(NSError *error, SCPTaskUnit *unit) {
-        NSLog(@"%s, %@",__FUNCTION__,error);
-        unit.taskState = UPLoadStatusFailedUpload;
-    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit * unit) {
+                [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
+                if (unit.description && ![unit.description isEqualToString:@""])
+                    [self.currentTask.request setPostValue:unit.description forKey:@"desc"];
+                if (!self.currentTask.request.isCancelled)
+                    [self.currentTask.request startAsynchronous];
+        } failture:^(NSError *error, SCPTaskUnit *unit) {
+            NSLog(@"%s, %@",__FUNCTION__,error);
+            unit.taskState = UPLoadStatusFailedUpload;
+        }];
+    });
     return;
 }
 
@@ -142,8 +143,8 @@
 }
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
-    NSString * str = [NSString stringWithFormat:@"%@/upload/api?folder_id=%@&access_token=%@",BASICURL_V1,self.albumId,[SCPLoginPridictive currentToken]];
-    NSLog(@"NNNN:: %@",str);
+    NSString * str = [NSString stringWithFormat:@"%@/upload/api?folder_id=%@&access_token=%@",BASICURL,self.albumId,[SCPLoginPridictive currentToken]];
+    NSLog(@"UploadRequestURL:: %@",str);
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
     [request setStringEncoding:NSUTF8StringEncoding];

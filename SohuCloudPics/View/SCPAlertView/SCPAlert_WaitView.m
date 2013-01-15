@@ -63,6 +63,7 @@
     if (self.superview)
         [self removeFromSuperview];
 }
+
 #else
 - (id) initWithImage:(UIImage *)backgroundImage text:(NSString *)text withView:(UIView *)superView
 {

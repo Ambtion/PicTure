@@ -12,12 +12,21 @@
 @interface FeedDescriptionSource : NSObject
 
 @property(nonatomic,retain)NSString * describtion;
+@property(nonatomic,assign)BOOL isMe;
 
+@end
+@class FeedDescription;
+@protocol FeedDescriptionDelgate <NSObject>
+- (void)feedDescription:(FeedDescription *)feed_des DesEditClick:(id)sender;
 @end
 @interface FeedDescription : UITableViewCell
 {
     FeedDescriptionSource * _dataSource;
-    UILabel* describLabel;
+    UILabel* _describLabel;
+    UIButton * _penButton;
+    UIButton * _editButton;
 }
 @property(retain,nonatomic)FeedDescriptionSource * dataScoure;
+@property(assign,nonatomic)id<FeedDescriptionDelgate> delegate;
+@property(retain,nonatomic)UIButton * penbButton;
 @end

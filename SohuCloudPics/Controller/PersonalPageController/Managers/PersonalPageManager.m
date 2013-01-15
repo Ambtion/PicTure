@@ -67,7 +67,6 @@ static float OFFSET = 0.f;
 {
     if (_isinit || !_user_ID) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",_user_ID] asy:YES success:^(NSDictionary *response) {
-        NSLog(@"%@",response);
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
         _personalDataSource.desc = [response objectForKey:@"user_desc"];

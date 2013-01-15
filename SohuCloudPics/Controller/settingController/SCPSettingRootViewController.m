@@ -195,6 +195,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
         NSError * error = nil;
         [manager removeItemAtPath:str error:&error];
+        if (error) NSLog(@"error::%@",error);
         [self removeCacheAlluserInfo:NO];
     }
 }
@@ -212,7 +213,6 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     NSNumber * GuideViewShowed = nil;
     NSNumber * FunctionShowed = nil;
     NSNumber * JPEG = nil;
-    NSLog(@"%@",cacheDic);
     //read
     if ([defaults objectForKey:@"__USER_ID__"])
         _use_id = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"__USER_ID__"]];
@@ -225,6 +225,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     if ([defaults objectForKey:@"JPEG"]) {
         JPEG = [[[defaults objectForKey:@"JPEG"] copy] autorelease];
     }
+    
     //remove
     for (NSString * str in [cacheDic allKeys])
         [defaults removeObjectForKey:str];
@@ -243,7 +244,8 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
             [defaults setObject:JPEG forKey:@"JPEG"];
 
     }
-       [defaults synchronize];
+    NSLog(@"%@",cacheDic);
+    [defaults synchronize];
 }
 
 @end

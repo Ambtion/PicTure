@@ -12,7 +12,8 @@
 #import "SCPMyHomeViewController.h"
 #import "SCPPersonalPageViewController.h"
 #import "SCPMenuNavigationController.h"
-#import "SCPAppDelegate.h"
+#import "SCPLoginPridictive.h"
+#import "SCPDescriptionEditController.h"
 
 #define N 20
 #define MAXIMAGEHEIGTH 320
@@ -59,7 +60,6 @@
 {
     CGFloat finalHeigth = 0.f;
     finalHeigth = O_height * (320.f / O_width);
-    //    NSLog(@"finalHeigth %f",finalHeigth);
     if (!finalHeigth) {
         finalHeigth = 320;
     }
@@ -70,9 +70,9 @@
 {
     
     if (_willRefresh){
+        
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
-        NSLog(@"%@",self.infoFromSuper);
         FeedCellDataSource *fAdapter = [[FeedCellDataSource alloc] init];
         fAdapter.allInfo = self.infoFromSuper;
         fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
@@ -89,7 +89,10 @@
         
         FeedDescriptionSource * data = [[FeedDescriptionSource alloc] init];
         data.describtion = [self.infoFromSuper objectForKey:@"photo_desc"];
-        //        data.bookMark = @"OK";
+        NSString * str = [NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]];
+        BOOL isMe = NO;
+        if ([str isEqualToString:[SCPLoginPridictive currentUserId]]) isMe = YES;
+        data.isMe = isMe;
         [_dataSourceArray addObject:data];
         [data release];
     }
@@ -218,10 +221,14 @@
         }
     }
     if (i == 1){
-        
-        FeedDescriptionSource * data = [_dataSourceArray objectAtIndex: 1];
+        FeedDescriptionSource * data = [_dataSourceArray objectAtIndex:1];
         NSString * str = data.describtion;
-        CGSize size = [str sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(270, 1000) lineBreakMode:UILineBreakModeWordWrap];
+        CGSize size = CGSizeZero;
+        if (data.isMe) {
+            size = [str sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(280, 1000) lineBreakMode:UILineBreakModeWordWrap];
+        }else{
+            size = [str sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:UILineBreakModeWordWrap];
+        }
         CGFloat heigth = MAX((size.height  + 10), 30);
         return heigth;//for desc
     }
@@ -230,7 +237,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     int row = indexPath.row;
     if (row == 0) {
         //./ -> View ->FeedCell(Myfavorite)
@@ -247,6 +253,7 @@
     FeedDescription* des = [tableView dequeueReusableCellWithIdentifier:@"FeedDescribtion"];
     if (des == nil){
         des = [[[FeedDescription alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FeedDescribtion"] autorelease];
+        des.delegate = self;
     }
     des.dataScoure = [_dataSourceArray objectAtIndex:row];
     return des;
@@ -267,7 +274,6 @@
         [self.controller.navigationController setNavigationBarHidden:YES animated:YES];
     
     self.listView = [[[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self] autorelease];
-    NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
     self.listView.delegate = self;
     
     CGRect rect = cell.frame;
@@ -278,7 +284,6 @@
         [cell.gifPlayButton removeFromSuperview];
     rect.origin.y -= Y;
     rect.size.height -= 70;
-    
     [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
 }
 - (void)whenViewRemveFromSuperview
@@ -286,6 +291,13 @@
     NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
     self.listView  = nil;
 }
+
+#pragma mark - FeedDesDelegate
+- (void)feedDescription:(FeedDescription *)feed_des DesEditClick:(id)sender
+{
+    [self.controller.navigationController pushViewController:[[SCPDescriptionEditController alloc]initphoto:_photo_ID withDes:[self.infoFromSuper objectForKey:@"photo_desc"]] animated:YES];
+}
+#pragma mark -
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     UINavigationController * nav = _controller.navigationController;

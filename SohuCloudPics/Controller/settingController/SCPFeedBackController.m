@@ -106,9 +106,9 @@
     
     [textView_bg addSubview:_textView];
     _placeHolder = [[UITextField alloc] initWithFrame:CGRectMake(10, 6, 250, 20)];
-    _placeHolder.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:15];
-    _placeHolder.textColor = [UIColor colorWithRed:137.f/255 green:137.f/255 blue:137.f/255 alpha:1];
-    _placeHolder.text = PLACEHOLDER;
+//    _placeHolder.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:15];
+//    _placeHolder.textColor = [UIColor colorWithRed:137.f/255 green:137.f/255 blue:137.f/255 alpha:1];
+    _placeHolder.placeholder = PLACEHOLDER;
     [_placeHolder setUserInteractionEnabled:NO];
     [_textView addSubview:_placeHolder];
 }

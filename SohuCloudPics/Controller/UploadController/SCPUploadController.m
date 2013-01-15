@@ -40,7 +40,7 @@
     [_preLabelObjs release];
     [_imageList release];
     [_cells release];
-    
+    [_selectButton release];
     self.curAlbumID = nil;
     [_albumList release];
     [_uploadHeader release];
@@ -78,11 +78,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     _uploadHeader = [[SCPUploadHeader alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _uploadHeader.selectionStyle = UITableViewCellEditingStyleNone;
     _uploadHeader.delegate = self;
-    
     _descCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _descCell.selectionStyle = UITableViewCellEditingStyleNone;
     _descCell.textLabel.font = [UIFont systemFontOfSize:15];
@@ -109,12 +107,13 @@
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(backTotop:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
-    UIButton* selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
-    [selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
-    [selectButton addTarget:self action:@selector(dismissModalView:) forControlEvents:UIControlEventTouchUpInside];
-    selectButton.frame = CGRectMake(320 - 40, 2, 35, 35);
-    [self.view addSubview:selectButton];
+    
+    _selectButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [_selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
+    [_selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
+    [_selectButton addTarget:self action:@selector(dismissModalView:) forControlEvents:UIControlEventTouchUpInside];
+    _selectButton.frame = CGRectMake(320 - 40, 2, 35, 35);
+    [self.view addSubview:_selectButton];
     
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -164,6 +163,7 @@ done:
         [alterView show];
         return;
     }
+    [self.view setUserInteractionEnabled:NO];
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < _imageList.count; i++) {
         SCPTaskUnit * unit = [[SCPTaskUnit alloc] init];
@@ -179,14 +179,11 @@ done:
         [array addObject:unit];
         [unit release];
     }
-    SCPAlbumTaskList * album = [[[SCPAlbumTaskList alloc] initWithTaskList:array album_id:self.curAlbumID] autorelease];
-    [[SCPUploadTaskManager currentManager] addTaskList:album];
-    
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片已在后台上传"] autorelease];
     [alertView show];
-    [self.view setUserInteractionEnabled:NO];
+    SCPAlbumTaskList * album = [[[SCPAlbumTaskList alloc] initWithTaskList:array album_id:self.curAlbumID] autorelease];
+    [[SCPUploadTaskManager currentManager] addTaskList:album];
     [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:1.5f];
-    
 }
 
 #pragma mark Back
@@ -198,6 +195,11 @@ done:
 #pragma mark SCPUploadDelegate
 - (void)uploadHeader:(SCPUploadHeader *)header selectAlbum:(NSString *)albumID
 {
+    if (!header && !albumID) {
+        [_selectButton setAlpha:0.3];
+        [_selectButton setUserInteractionEnabled:NO];
+        return;
+    }
     NSLog(@"%@",albumID);
     self.curAlbumID = albumID;
 }
