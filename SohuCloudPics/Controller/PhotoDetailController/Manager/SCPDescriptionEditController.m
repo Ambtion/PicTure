@@ -38,8 +38,8 @@
 - (id)initphoto:(NSString *)photo_id withDes:(NSString * )des
 {
     if (self = [super init]) {
-        self.tmpDes = [des copy];
-        self.photo_id = [photo_id copy];
+        self.tmpDes = [[des copy] autorelease];
+        self.photo_id = [[photo_id copy] autorelease];
     }
     return self;
 }

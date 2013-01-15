@@ -14,14 +14,14 @@
 @synthesize manager = _manager;
 
 @synthesize pullingController = _pullingController;
-@synthesize commentPostBar = _commentPostBar;
+//@synthesize commentPostBar = _commentPostBar;
 
 - (void)dealloc
 {
     [_manager release];
     [_pullingController release];
-    [_commentPostBar release];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [_commentPostBar release];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 
 }
@@ -61,9 +61,9 @@
 //    _commentPostBar.delegate = self;
 //    [self.view addSubview:_commentPostBar];
     self.view.backgroundColor = [UIColor clearColor];
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+//    [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+//    [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 #pragma mark -
 #pragma mark customer Navigationiteam
@@ -85,65 +85,65 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (void)displayCommentPostBar
-{
-    // check whether logged in
-    CGRect barFrame = _commentPostBar.frame;
-    if (barFrame.origin.y == self.view.bounds.size.height - barFrame.size.height)
-        return;
-    barFrame.origin.y = self.view.bounds.size.height - barFrame.size.height;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:NO];
-    _commentPostBar.frame = barFrame;
-    [UIView commitAnimations];
-}
+//- (void)displayCommentPostBar
+//{
+//    // check whether logged in
+//    CGRect barFrame = _commentPostBar.frame;
+//    if (barFrame.origin.y == self.view.bounds.size.height - barFrame.size.height)
+//        return;
+//    barFrame.origin.y = self.view.bounds.size.height - barFrame.size.height;
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:NO];
+//    _commentPostBar.frame = barFrame;
+//    [UIView commitAnimations];
+//}
+//
+//- (void)dismissCommentPostBar
+//{
+//    CGRect barFrame = _commentPostBar.frame;
+//    if (barFrame.origin.y == self.view.bounds.size.height)
+//        return;
+//    barFrame.origin.y = self.view.bounds.size.height;
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:NO];
+//    _commentPostBar.frame = barFrame;
+//    [UIView commitAnimations];
+//}
 
-- (void)dismissCommentPostBar
-{
-    CGRect barFrame = _commentPostBar.frame;
-    if (barFrame.origin.y == self.view.bounds.size.height)
-        return;
-    barFrame.origin.y = self.view.bounds.size.height;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:NO];
-    _commentPostBar.frame = barFrame;
-    [UIView commitAnimations];
-}
-
-- (void)commentPostBar:(CommentPostBar *)bar postComment:(NSString *)comment
-{
-    // do the posting
-    [self dismissCommentPostBar];
-    // TODO
-}
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    //    CGRect frame = self.view.frame;
-    //    frame.size.height -= keyboardSize.height;
-    CGRect frame = _commentPostBar.frame;
-    frame.origin.y -= keyboardSize.height;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
-    //    self.view.frame = frame;
-    _commentPostBar.frame = frame;
-    [UIView commitAnimations];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    CGRect frame = _commentPostBar.frame;
-    frame.origin.y = self.view.frame.size.height;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
-    _commentPostBar.frame = frame;
-    [UIView commitAnimations];
-}
+//- (void)commentPostBar:(CommentPostBar *)bar postComment:(NSString *)comment
+//{
+//    // do the posting
+//    [self dismissCommentPostBar];
+//    // TODO
+//}
+//
+//- (void)keyboardWillShow:(NSNotification *)notification
+//{
+//    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+//    //    CGRect frame = self.view.frame;
+//    //    frame.size.height -= keyboardSize.height;
+//    CGRect frame = _commentPostBar.frame;
+//    frame.origin.y -= keyboardSize.height;
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
+//    //    self.view.frame = frame;
+//    _commentPostBar.frame = frame;
+//    [UIView commitAnimations];
+//}
+//
+//- (void)keyboardWillHide:(NSNotification *)notification
+//{
+//    CGRect frame = _commentPostBar.frame;
+//    frame.origin.y = self.view.frame.size.height;
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
+//    _commentPostBar.frame = frame;
+//    [UIView commitAnimations];
+//}
 #pragma mark - controller Action
 
 @end

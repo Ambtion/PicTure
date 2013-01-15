@@ -28,7 +28,7 @@
 
 @synthesize uploadHeader = _uploadHeader;
 @synthesize uploadTableView = _uploadTableView;
-@synthesize labelBox = _labelBox;
+//@synthesize labelBox = _labelBox;
 @synthesize labelChooser = _labelChooser;
 @synthesize descCell = _descCell;
 
@@ -45,7 +45,7 @@
     [_albumList release];
     [_uploadHeader release];
     [_uploadTableView release];
-    [_labelBox release];
+//    [_commentPostBar release];
     [_labelChooser release];
     [_descCell release];
     [super dealloc];

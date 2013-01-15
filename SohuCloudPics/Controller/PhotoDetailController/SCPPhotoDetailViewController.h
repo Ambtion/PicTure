@@ -9,21 +9,20 @@
 #import <UIKit/UIKit.h>
 
 #import "PullingRefreshController.h"
-#import "CommentPostBar.h"
+//#import "CommentPostBar.h"
 #import "SCPSecondLayerController.h"
 #import "PhotoDetailManager.h"
 
 @class PhotoDetailManager;
-@interface SCPPhotoDetailViewController : SCPSecondLayerController <CommentPostBarDelegate>
+@interface SCPPhotoDetailViewController : SCPSecondLayerController
 
 @property (strong, nonatomic) PhotoDetailManager *manager;
 @property (strong, nonatomic) PullingRefreshController *pullingController;
-@property (strong, nonatomic) CommentPostBar *commentPostBar;
+//@property (strong, nonatomic) CommentPostBar *commentPostBar;
 
 - (id)initWithinfo:(NSDictionary *)dic;
 - (id)initWithuseId:(NSString*) useId photoId:(NSString*)photoId;
-
-- (void)displayCommentPostBar;
-- (void)dismissCommentPostBar;
+//- (void)displayCommentPostBar;
+//- (void)dismissCommentPostBar;
 
 @end

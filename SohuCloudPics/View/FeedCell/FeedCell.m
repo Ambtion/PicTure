@@ -38,7 +38,6 @@ enum {
     MyLike = 0,
     NotMyLick
 };
-static NSString * LikeCover[2] = {@"like_press.png",@"like.png"};
 
 @implementation FeedCell
 @synthesize delegate = _delegate;

@@ -15,7 +15,6 @@
 {
     BOOL _displayingLabels;
     SCPRequestManager * _requsetManager;
-    
     NSMutableArray *_preLabelObjs;
     NSArray *_imageList;
     NSArray *_cells;
@@ -34,7 +33,7 @@
 // view
 @property (strong, nonatomic) UITableView *uploadTableView;
 @property (strong, nonatomic) SCPUploadHeader *uploadHeader;    // row 0
-@property (strong, nonatomic) SCPLabelBox *labelBox;            // row 1
+//@property (strong, nonatomic) SCPLabelBox *labelBox;            // row 1
 @property (strong, nonatomic) UITableViewCell *labelChooser;    // row 2
 @property (strong, nonatomic) UITableViewCell *descCell;        // row 3
 
