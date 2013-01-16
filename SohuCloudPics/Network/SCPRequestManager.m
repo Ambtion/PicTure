@@ -40,6 +40,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
+				NSLog(@"Explore Request End...");
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]){
             success([[[request responseString] JSONValue] objectForKey:@"photos"]);
         }else {
@@ -49,6 +50,7 @@
     [request setFailedBlock:^{
         faiture(@"当前网络不给力，请稍后重试");
     }];
+	NSLog(@"Explore Request Start...");
     [request startAsynchronous];
 }
 

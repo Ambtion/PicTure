@@ -229,7 +229,7 @@ static NSInteger lastNum = -1;
 }
 - (void)getExploreFrom:(NSInteger)startIndex count:(NSInteger)count
 {
-    
+    NSLog(@"Explore Dealing Start...");
     [_requestManager getExploreFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
         if (startIndex == 0)
             [_strategyArray removeAllObjects];
@@ -260,6 +260,7 @@ static NSInteger lastNum = -1;
         }else{
             [self moreDataFinishLoad];
         }
+		NSLog(@"Explore Dealing End...");
     } failture:^(NSString *error) {
         SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
         [alertView show];
