@@ -20,6 +20,7 @@
 }
 - (void)dealloc
 {
+	[_Loginbutton release];
     [super dealloc];
 }
 -(void)addSubviews
@@ -35,8 +36,7 @@
     [self addSubview:image];
     [image release];
     
-    _Loginbutton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _Loginbutton.frame = CGRectMake(105, 398, 110, 35);
+    _Loginbutton = [[UIButton alloc] initWithFrame:CGRectMake(105, 398, 110, 35)];
     [_Loginbutton setBackgroundImage:[UIImage imageNamed:@"login_btn_normal.png"] forState:UIControlStateNormal];
     [_Loginbutton setBackgroundImage:[UIImage imageNamed:@"login_btn_press.png"] forState:UIControlStateHighlighted];
     [_Loginbutton setTitle:@"登录" forState:UIControlStateNormal];
