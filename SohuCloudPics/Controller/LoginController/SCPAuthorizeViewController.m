@@ -10,19 +10,13 @@
 #import "ASIFormDataRequest.h"
 #import "JSON.h"
 
-//#define BASICURL_V1 @"http://10.10.68.104:8888/api/v1"
-#define BASICURL_V1 @"http://dev.pp.sohu.com/api/v1"
-#define CLIENT_ID @"355d0ee5-d1dc-3cd3-bdc6-76d729f61655"
 
-//#define WEIBO_CLIENT_ID @"992243007"
-//#define QQ_CLIENT_ID @"100319476"
-//#define RENREN_CLIENT_ID @"ed8838c335d146319b6612a3026190ae"
 
 static NSString * url_string = nil;
 static NSString * title = nil;
-
 static NSString * provider = nil;
- 
+
+
 @implementation SCPAuthorizeViewController
 @synthesize delegate;
 
@@ -32,18 +26,18 @@ static NSString * provider = nil;
     if (self) {
         switch (loginMode) {
             case 0: //weibo
-                url_string = @"https://api.weibo.com/oauth2/authorize?display=mobile&response_type=code&redirect_uri=http://pp.sohu.com/users/auth/weibo/callback/aHR0cDovL3BwLnNvaHUuY29tLw!!&client_id=992243007";
-                title = @"微博登陆";
+                url_string = WEIBOOAUTHOR2URL;
+                title = @"微博登录";
                 provider = @"weibo";
                 break;
             case 1: //qq
-                url_string = @"https://graph.qq.com/oauth2.0/authorize?scope=get_user_info&response_type=code&redirect_uri=http://pp.sohu.com/users/auth/qq/callback/aHR0cDovL3BwLnNvaHUuY29tLz91c2VySWQ9NDEz&client_id=100319476";
-                title = @"QQ登陆";
+                url_string = QQOAUTHOR2URL;
+                title = @"QQ登录";
                 provider = @"qq";
                 break;
             case 2: //renren
-                url_string = @"https://graph.renren.com/oauth/authorize?response_type=code&redirect_uri=http://pp.sohu.com/users/auth/renren/callback&display=popup&client_id=ed8838c335d146319b6612a3026190ae";
-                title = @"人人登陆";
+                url_string = RENRENAUTHOR2URL;
+                title = @"人人登录";
                 provider = @"renren";
                 
                 break;
@@ -61,6 +55,7 @@ static NSString * provider = nil;
     self.navigationItem.leftBarButtonItem = cancelLogin;
     self.title = title;
     [self OAuth2authorize];
+    
 }
 - (void)OAuth2authorize
 {
@@ -70,6 +65,7 @@ static NSString * provider = nil;
     webView.scrollView.bounces = NO;
     webView.delegate = self;
     [self.view addSubview:webView];
+    
 }
 - (void)cancelLogin:(id)sender
 {

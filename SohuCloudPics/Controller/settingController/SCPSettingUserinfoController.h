@@ -11,6 +11,7 @@
 #import "SCPSecondLayerController.h"
 
 @interface SCPSettingUserinfoController : SCPSecondLayerController<UITextFieldDelegate,UITextViewDelegate>
+
 {
     SCPRequestManager * _request;
     UIImageView * _portraitView;
@@ -19,6 +20,6 @@
     UIImageView * _imageview;
     UITextField * _placeHolder;
     UIView * textView_bg;
-
 }
+
 @end

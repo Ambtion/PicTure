@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SCPAlert_WaitView.h"
 
+#import "URLLibaray.h"
+
 typedef enum{
     LoginModelSina = 0,
     LoginModelQQ,

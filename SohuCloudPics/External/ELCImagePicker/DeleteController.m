@@ -61,10 +61,8 @@
 {
     [super viewDidLoad];
     [self makeTabBarHidden:YES];
-    
     assetList = [[NSMutableArray alloc] initWithCapacity:0];
     viewList = [[NSMutableArray alloc] initWithCapacity:0];
-    
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 121, 320, 121)];
     scrollView.backgroundColor = [UIColor clearColor];
     scrollView.showsHorizontalScrollIndicator = NO;
@@ -75,13 +73,13 @@
     [self.view addSubview:imageView];
     [self.view addSubview:scrollView];
     [scrollView release];
-
+    
     label = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.bounds.size.height - 121, 300, 25)];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.textAlignment = UITextAlignmentLeft;
     label.font = [UIFont fontWithName:@"STHeitiSC-Medium" size:12];
-    label.text = @"一次可以上传30张图片";
+    label.text = @"一次可以上传10张图片";
     [self.view addSubview:label];
     
     bgimageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"upload_defoult_bg.png"]];

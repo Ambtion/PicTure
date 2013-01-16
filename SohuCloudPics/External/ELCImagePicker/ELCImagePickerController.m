@@ -13,7 +13,7 @@
 #import "ELCAlbumPickerController.h"
 
 #import "SCPUploadController.h"
-
+#import "SCPAlertView_LoginTip.h"
 @implementation ELCImagePickerController
 @synthesize backTo;
 @synthesize delegate;
@@ -39,7 +39,7 @@
     
     NSString * assetsFinish;
     if (_assets.count == 0 || !_assets) {
-        UIAlertView * alter = [[[UIAlertView alloc] initWithTitle:@"请选择图片" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
+        SCPAlertView_LoginTip * alter = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"请选择图片" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
         [alter show];
         return;
     }

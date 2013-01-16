@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SCPTaskUnit.h"
 #import "ASINetworkQueue.h"
 #import "ASIFormDataRequest.h"
-//just for url define
 #import "SCPRequestManager.h"
+#import "SCPTaskUnit.h"
+
+#import "URLLibaray.h"
 
 @class SCPAlbumTaskList;
 @protocol SCPAlbumTaskListDelegate <NSObject>

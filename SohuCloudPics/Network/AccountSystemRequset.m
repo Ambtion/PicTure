@@ -17,8 +17,8 @@
 + (void)sohuLoginWithuseName:(NSString *)useName password:(NSString *)password sucessBlock:(void (^)(NSDictionary  * response))success failtureSucess:(void (^)(NSString * error))faiture
 {
     
-    NSString * url_s = [NSString stringWithFormat:@"%@/oauth2/access_token",BASICURL_LOGIN];
-    NSLog(@"%@",url_s);
+    NSString * url_s = [NSString stringWithFormat:@"%@/oauth2/access_token",BASICURL];
+    
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url_s]];
     [request setPostValue:useName forKey:@"username"];
     [request setPostValue:password forKey:@"password"];
@@ -26,10 +26,9 @@
     [request setPostValue:CLIENT_ID forKey:@"client_id"];
     [request addRequestHeader:@"accept" value:@"application/json"];
     [request setCompletionBlock:^{
-        NSLog(@"%s,%d %@",__FUNCTION__,[request responseStatusCode],[request responseString]);
+        
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
-            NSString * str = [NSString stringWithFormat:@"%@/api/v1/user?access_token=%@",BASICURL_LOGIN,[[[request responseString] JSONValue] objectForKey:@"access_token"]];
-            NSLog(@"%@",str);
+            NSString * str = [NSString stringWithFormat:@"%@/api/v1/user?access_token=%@",BASICURL,[[[request responseString] JSONValue] objectForKey:@"access_token"]];
             NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[[request responseString] JSONValue]];
             ASIHTTPRequest * user_id = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
             [user_id startSynchronous];
@@ -53,13 +52,12 @@
 }
 + (void)resigiterWithuseName:(NSString *)useName password:(NSString *)password nickName:(NSString *)nick sucessBlock:(void (^)(NSDictionary  * response))success failtureSucess:(void (^)(NSString * error))faiture
 {
-    NSString * str = [NSString stringWithFormat:@"%@/api/v1/register",BASICURL_LOGIN];
+    NSString * str = [NSString stringWithFormat:@"%@/api/v1/register",BASICURL];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:useName forKey:@"passport"];
     [request setPostValue:password forKey:@"password"];
     [request setTimeOutSeconds:5.f];
     [request setCompletionBlock:^{
-        NSLog(@"%@",[request responseString]);
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] <= 300 ) {
             success(nil);
         }else if([request responseStatusCode] == 403){

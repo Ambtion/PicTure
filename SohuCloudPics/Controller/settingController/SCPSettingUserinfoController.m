@@ -15,10 +15,6 @@
 #define NAME_COUNT_LIMIT 12
 #define PLACEHOLDER @"请描述一下"
 
-@interface SCPSettingUserinfoController ()
-
-@end
-
 @implementation SCPSettingUserinfoController
 - (void)dealloc
 {

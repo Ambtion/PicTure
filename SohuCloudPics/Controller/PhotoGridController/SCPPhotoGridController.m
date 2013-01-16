@@ -428,8 +428,8 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_backButton];
     self.navigationItem.leftBarButtonItem = item;
     [item release];
+    
 }
-
 #pragma mark -
 #pragma tableView delegate datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -521,7 +521,6 @@
 			}
             break;
 		}
-            
         case PhotoGridStateDelete:
         {
             if (tag.intValue < _uploadTaskList.taskList.count) {

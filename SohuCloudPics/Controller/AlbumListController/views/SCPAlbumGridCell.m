@@ -82,7 +82,6 @@
             [coverImageView addGestureRecognizer:gesture];
             [gesture release];
             gesture = nil;
-            
             [frameImageView addSubview:coverImageView];
             [_coverImageViewList addObject:coverImageView];
             [coverImageView release];
@@ -90,7 +89,12 @@
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 5, 100, frameSize - 10, 20)];
             [UIUtils updateNormalLabel:nameLabel title:nil];
             [nameLabel setTextAlignment:UITextAlignmentCenter];
+            [nameLabel setUserInteractionEnabled:YES];
+            UITapGestureRecognizer * nameTap = [[[UITapGestureRecognizer   alloc] initWithTarget:self action:@selector(onImageViewTapped:)] autorelease];
+            [nameLabel addGestureRecognizer:nameTap];
+            
             [_nameLabelList addObject:nameLabel];
+            
             [self.contentView addSubview:nameLabel];
             [nameLabel release];
             /* count label view */

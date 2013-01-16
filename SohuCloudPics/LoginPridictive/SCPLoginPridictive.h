@@ -7,13 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "SCPStoreLibaray.h"
 
 @interface SCPLoginPridictive : NSObject
 
 + (BOOL)isLogin;
 
-+ (void)loginUserId:(NSString *)uid withToken:(NSString *)token;
++ (void)loginUserId:(NSString *)uid withToken:(NSString *)token RefreshToken:(NSString *)refreshToken;
 
 + (void)logout;
 

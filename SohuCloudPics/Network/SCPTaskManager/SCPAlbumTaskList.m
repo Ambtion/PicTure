@@ -10,15 +10,16 @@
 #import "JSON.h"
 #import "SCPTaskNotification.h"
 #import "SCPLoginPridictive.h"
-#define BASICURL @"http://dev.pp.sohu.com"
 
 #define UPTIMEOUT 10.f
+
 
 @implementation SCPAlbumTaskList
 @synthesize taskList = _taskList;
 @synthesize albumId = _albumId;
 @synthesize isUpLoading = _isUpLoading;
 @synthesize delegate = _delegate;
+
 
 @synthesize currentTask = _currentTask;
 - (void)dealloc
@@ -30,6 +31,7 @@
     self.currentTask = nil;
     [super dealloc];
 }
+
 -(id)initWithTaskList:(NSMutableArray *)taskList album_id:(NSString *)albumID
 {
     self = [super init];
@@ -40,6 +42,7 @@
     }
     return self;
 }
+
 - (void)goNextTask
 {
     NSLog(@"%s",__FUNCTION__);

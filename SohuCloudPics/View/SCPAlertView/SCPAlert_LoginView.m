@@ -64,7 +64,7 @@
         _okButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _okButton.frame = CGRectMake(128, 209 - 89, 90, 35);
         _okButton.titleLabel.font = [_okButton.titleLabel.font fontWithSize:16];
-        [_okButton setTitle:@"登陆" forState:UIControlStateNormal];
+        [_okButton setTitle:@"登录" forState:UIControlStateNormal];
         [_okButton setTitleColor:[UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1] forState:UIControlStateNormal];
         [_okButton setBackgroundImage:[UIImage imageNamed:@"pop_btn_normal.png"] forState:UIControlStateNormal];
         [_okButton setBackgroundImage:[UIImage imageNamed:@"pop_btn_press.png"] forState:UIControlStateHighlighted];

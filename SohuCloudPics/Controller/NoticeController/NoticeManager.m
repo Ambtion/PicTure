@@ -130,13 +130,6 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    if (indexPath.row == 1 || _dataSource.count == 1) {
-        return;
-    }
-    if (![self isLogin]) {
-        return;
-    }
     [_resqust destoryNotificationAndsuccess:^(NSString *response) {
         UINavigationController *nav = _controller.navigationController;
         SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];

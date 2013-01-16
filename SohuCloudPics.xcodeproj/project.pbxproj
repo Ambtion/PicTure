@@ -157,6 +157,8 @@
 		C51A82B8169D73F2008CD8EA /* prog_done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C51A82B6169D73F2008CD8EA /* prog_done@2x.png */; };
 		C51A82B9169D73F2008CD8EA /* prog_wait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C51A82B7169D73F2008CD8EA /* prog_wait@2x.png */; };
 		C51A82BB169D835E008CD8EA /* settings_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = C51A82BA169D835E008CD8EA /* settings_clear.png */; };
+		C51BB06C16A6DD77004BAD32 /* alubm_switch_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = C51BB06B16A6DD77004BAD32 /* alubm_switch_btn.png */; };
+		C5246CF916A6D58E004E32DF /* SCPCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5246CF816A6D58E004E32DF /* SCPCacheManager.m */; };
 		C526524416A560B600AC1662 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = C526524316A560B600AC1662 /* ground.png */; };
 		C52F3F3E168C853F009858C0 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F2D168C853F009858C0 /* SDImageCache.m */; };
 		C52F3F3F168C853F009858C0 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F31168C853F009858C0 /* SDWebImageDecoder.m */; };
@@ -695,6 +697,11 @@
 		C51A82B6169D73F2008CD8EA /* prog_done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "prog_done@2x.png"; sourceTree = "<group>"; };
 		C51A82B7169D73F2008CD8EA /* prog_wait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "prog_wait@2x.png"; sourceTree = "<group>"; };
 		C51A82BA169D835E008CD8EA /* settings_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_clear.png; sourceTree = "<group>"; };
+		C51BB06B16A6DD77004BAD32 /* alubm_switch_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alubm_switch_btn.png; sourceTree = "<group>"; };
+		C5246CED16A6CBFE004E32DF /* URLLibaray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLLibaray.h; sourceTree = "<group>"; };
+		C5246CF416A6D1C5004E32DF /* SCPStoreLibaray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPStoreLibaray.h; sourceTree = "<group>"; };
+		C5246CF716A6D58E004E32DF /* SCPCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPCacheManager.h; sourceTree = "<group>"; };
+		C5246CF816A6D58E004E32DF /* SCPCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPCacheManager.m; sourceTree = "<group>"; };
 		C526524316A560B600AC1662 /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
 		C52F3F2C168C853F009858C0 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		C52F3F2D168C853F009858C0 /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
@@ -1987,6 +1994,7 @@
 			isa = PBXGroup;
 			children = (
 				C55EA76F16A56A2200216691 /* personal_album_btn.png */,
+				C51BB06B16A6DD77004BAD32 /* alubm_switch_btn.png */,
 				C55EA77016A56A2200216691 /* personal_setting.png */,
 				C55EA77116A56A2200216691 /* personal_slogn.png */,
 			);
@@ -2323,6 +2331,7 @@
 		C588DE36168559DF008744D1 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				C5246CED16A6CBFE004E32DF /* URLLibaray.h */,
 				C588DE4616855A32008744D1 /* AccountSystem */,
 				C588DE37168559DF008744D1 /* SCPRequestManager.h */,
 				C588DE38168559DF008744D1 /* SCPRequestManager.m */,
@@ -2371,6 +2380,9 @@
 		C58D86591612CB78006FE9EF /* LoginPridictive */ = {
 			isa = PBXGroup;
 			children = (
+				C5246CF416A6D1C5004E32DF /* SCPStoreLibaray.h */,
+				C5246CF716A6D58E004E32DF /* SCPCacheManager.h */,
+				C5246CF816A6D58E004E32DF /* SCPCacheManager.m */,
 				C58D865A1612CB9F006FE9EF /* SCPLoginPridictive.h */,
 				C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */,
 			);
@@ -2864,6 +2876,7 @@
 				C568E58E16A56C0B00611ECB /* switch_btn.png in Resources */,
 				C568E58F16A56C0B00611ECB /* systerm.png in Resources */,
 				C568E59016A56C0B00611ECB /* title_feedback.png in Resources */,
+				C51BB06C16A6DD77004BAD32 /* alubm_switch_btn.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3018,6 +3031,7 @@
 				C587AD3A169E705B00F2C16F /* SCPAlert_AlbumProperty.m in Sources */,
 				C5AADC2B16A2565700166B86 /* SCPReadDealController.m in Sources */,
 				C58873FE16A5290800C21AC4 /* SCPDescriptionEditController.m in Sources */,
+				C5246CF916A6D58E004E32DF /* SCPCacheManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

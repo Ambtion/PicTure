@@ -176,7 +176,6 @@
     _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
-    
 }
 
 #pragma mark More Action

@@ -57,9 +57,7 @@
         
         /* photo image view */
         _photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 75, 75)];
-//        [_photoImageView setBackgroundColor:[UIColor redColor]];
         _photoImageView.userInteractionEnabled = YES;
-        
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
         [_photoImageView addGestureRecognizer:gesture];
         [gesture release];
@@ -106,6 +104,9 @@
         _nameLabel.textColor = [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0];
 		_nameLabel.font = [UIFont boldSystemFontOfSize:14];
         _nameLabel.numberOfLines = 2;
+        UITapGestureRecognizer * nameTap =[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)] autorelease];
+        [_nameLabel setUserInteractionEnabled:YES];
+        [_nameLabel addGestureRecognizer:nameTap];
         [self.contentView addSubview:_nameLabel];
         
         /* view count label */

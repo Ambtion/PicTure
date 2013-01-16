@@ -14,14 +14,11 @@
 @synthesize manager = _manager;
 
 @synthesize pullingController = _pullingController;
-//@synthesize commentPostBar = _commentPostBar;
 
 - (void)dealloc
 {
     [_manager release];
     [_pullingController release];
-//    [_commentPostBar release];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 
 }
@@ -46,7 +43,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_photos.png"] frame:self.view.bounds] autorelease];
     //customer for  scrollview
     
@@ -55,8 +51,8 @@
     self.pullingController.headView.datasouce = self.manager;
     [self.pullingController.footView setHidden:YES];
     [self.view addSubview:self.pullingController.view];
-//    [self.manager dataSourcewithRefresh:YES];
     
+//    [self.manager dataSourcewithRefresh:YES];
 //    _commentPostBar = [[CommentPostBar alloc] initWithFrame:CGRectMake(0, self.view.bounds.origin.y + self.view.bounds.size.height, 320, 45)];
 //    _commentPostBar.delegate = self;
 //    [self.view addSubview:_commentPostBar];

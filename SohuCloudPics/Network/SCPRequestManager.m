@@ -12,7 +12,8 @@
 #import "JSON.h"
 
 
-#define TIMEOUT 10.f
+#define TIMEOUT 10.f 
+#define STRINGENCODING NSUTF8StringEncoding
 @implementation SCPRequestManager
 @synthesize delegate = _delegate;
 
@@ -37,32 +38,50 @@
     
     NSString * str_url = [NSString stringWithFormat:@"%@/plaza?start=%d&count=%d",BASICURL_V1,startIndex,maxresult];
     NSLog(@"%@",str_url);
-    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
-    [request setTimeOutSeconds:TIMEOUT];
-    [request setCompletionBlock:^{
-				NSLog(@"Explore Request End...");
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]){
-            success([[[request responseString] JSONValue] objectForKey:@"photos"]);
-        }else {
-            faiture(@"当前网络不给力，请稍后重试");
-        }
-    }];
-    [request setFailedBlock:^{
-        faiture(@"当前网络不给力，请稍后重试");
-    }];
-	NSLog(@"Explore Request Start...");
-    [request startAsynchronous];
+//    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
+//    [request setTimeOutSeconds:TIMEOUT];
+//    [request setCompletionBlock:^{
+//				NSLog(@"Explore Request End...");
+//        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]){
+//            success([[[request responseString] JSONValue] objectForKey:@"photos"]);
+//        }else {
+//            faiture(@"当前网络不给力，请稍后重试");
+//        }
+//    }];
+//    [request setFailedBlock:^{
+//        faiture(@"当前网络不给力，请稍后重试");
+//    }];
+//	NSLog(@"Explore Request Start...");
+//    [request startAsynchronous];
+    
+    ASIHTTPRequest * requset = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
+    [requset setTimeOutSeconds:TIMEOUT];
+    [requset setDelegate:self];
+    [requset startAsynchronous];
+}
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300){
+        if ([_delegate respondsToSelector:@selector(requestFinished:output:)])
+            [_delegate requestFinished:nil output:[[request responseString] JSONValue]];
+    }else{
+        [self requestFailed:nil];
+    }
 }
 
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    if ([_delegate respondsToSelector:@selector(SCPRequestManagerequestFailed:)]) {
+        [_delegate SCPRequestManagerequestFailed:@"当前网络不给力，请稍后重试"];
+    }
+}
 #pragma mark - PhotoDetail
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID
 {
     NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@",BASICURL_V1,photo_ID,user_id];
-    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -91,7 +110,6 @@
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
-    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -120,10 +138,8 @@
     NSString  * str = nil;
     if ([SCPLoginPridictive currentToken]) {
         str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
-        NSLog(@"Login:%@", str);
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
-        NSLog(@"%@",str);
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
@@ -133,7 +149,6 @@
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
-            NSLog(@"tempdic %@",[tempDic objectForKey:@"userInfo"]);
             [self getUserInfoFeedWithUserID:user_ID page:1];
         }else{
             if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
@@ -142,7 +157,6 @@
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"%@ ------- %d",[request error], [request responseStatusCode]);
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
         }
@@ -223,7 +237,6 @@
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             
             NSString * str = [request responseString];
-//            NSLog(@"%@",str);
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"folderinfo"];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
@@ -253,7 +266,6 @@
     }else{
         str = [NSString stringWithFormat:@"%@/folders/%@?owner_id=%@",BASICURL_V1,folder_id,user_id];
     }
-    NSLog(@"Login:%@", str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -287,7 +299,6 @@
     }else{
         str = [NSString stringWithFormat:@"%@/folders/%@/photos?owner_id=%@&page=%d",BASICURL_V1,folder_id,user_id,page];
     }
-    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -313,6 +324,7 @@
     }];
     [request startAsynchronous];
 }
+
 #pragma mark FeedMine
 - (void)getFeedMineInfo
 {
@@ -375,7 +387,6 @@
 - (void)getFollowingInfoWithUserID:(NSString * ) use_id
 {
     NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,use_id,[SCPLoginPridictive currentToken]];
-    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -497,7 +508,6 @@
     NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setCompletionBlock:^{
-//        NSLog(@"%@",[request responseString]);
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -525,7 +535,7 @@
     NSLog(@"%@",str );
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
 	[request setCompletionBlock:^{
-//        NSLog(@"%@",[request responseString]);
+        
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
@@ -625,7 +635,7 @@
     
     NSString *url = [NSString stringWithFormat:@"%@/folders",BASICURL_V1];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setStringEncoding:STRINGENCODING];
     [request setPostValue:newName forKey:@"name"];
     [request setPostValue:[NSNumber numberWithBool:NO] forKey:@"is_public"];
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
@@ -634,7 +644,8 @@
             success([request responseString]);
         }else{
             failure(@"当前网络不给力，请稍后重试");
-        }    }];
+        }
+    }];
     [request setFailedBlock:^{
         failure(@"当前网络不给力，请稍后重试");
     }];
@@ -645,12 +656,11 @@
 {
     NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setStringEncoding:STRINGENCODING];
     [request setPostValue:newName forKey:@"name"];
     [request setPostValue:[NSNumber numberWithBool:ispublic] forKey:@"is_public"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
-        NSLog(@"RENAME:%@",[request responseString]);
         if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
             success([request responseString]);
         }else{
@@ -658,7 +668,6 @@
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"RENAME:%@",[request responseString]);
         failure(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
@@ -668,7 +677,7 @@
 {
     NSString *url = [NSString stringWithFormat: @"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setStringEncoding:STRINGENCODING];
     [request setPostValue:newName forKey:@"name"];
     [request setPostValue:description forKey:@"description"];
     [request setRequestMethod:@"PUT"];
@@ -692,7 +701,7 @@
     
     NSString * str =[NSString stringWithFormat:@"%@/feedback?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setStringEncoding:STRINGENCODING];
     [request setPostValue:idea forKey:@"content"];
     [request setData:nil forKey:@"mm"];
     [request setCompletionBlock:^{
@@ -714,7 +723,7 @@
 {
     NSString * str =[NSString stringWithFormat:@"%@/photos/%@?access_token=%@",BASICURL_V1,photo_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setStringEncoding:NSUTF8StringEncoding];
+    [request setStringEncoding:STRINGENCODING];
     [request setPostValue:des forKey:@"description"];
     [request setRequestMethod:@"PUT"];
     [request setCompletionBlock:^{

@@ -69,7 +69,7 @@
     _backgroundControl = [[UIControl alloc] initWithFrame:frame];
     [_backgroundControl addTarget:self action:@selector(allTextFieldsResignFirstResponder) forControlEvents:UIControlEventTouchDown];
     
-    //登陆用户名
+    //登录用户名
     _usernameTextField = [[EmailTextField alloc] initWithFrame:CGRectMake(79, 131, 200, 22) dropDownListFrame:CGRectMake(69, 160, 214, 200) domainsArray:EMAIL_ARRAY];
     _usernameTextField.font = [UIFont systemFontOfSize:15];
     _usernameTextField.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
@@ -101,7 +101,7 @@
     [_registerButton addTarget:self action:@selector(registerButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel * externalLabel = [[[UILabel alloc] initWithFrame:CGRectMake(35, 290, 150, 15)] autorelease];
-    externalLabel.text = @"其他账号登陆";
+    externalLabel.text = @"其他账号登录";
     externalLabel.textAlignment = UITextAlignmentLeft;
     externalLabel.backgroundColor = [UIColor clearColor];
     externalLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1];
@@ -120,7 +120,7 @@
     [forgetPassWord addTarget:self action:@selector(forgetPassWord:) forControlEvents:UIControlEventTouchUpInside];
     [forget addSubview:forgetPassWord];
     
-    //登陆按钮
+    //登录按钮
     _loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _loginButton.frame = CGRectMake(175, 239, 110, 35);
     [_loginButton setBackgroundImage:[UIImage imageNamed:@"login_btn_normal"] forState:UIControlStateNormal];
@@ -138,7 +138,7 @@
     [self.view addSubview:_registerButton];
     [self.view addSubview:_loginButton];
     [self.view addSubview:forget];
-
+    
     //返回按钮
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(5, 2, 35, 35);
@@ -147,7 +147,7 @@
     [backButton addTarget:self action:@selector(cancelLogin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
     
-    //第三方登陆
+    //第三方登录
     UIButton * qqbutton = [UIButton buttonWithType:UIButtonTypeCustom];
     qqbutton.frame = CGRectMake(35, 319, 42, 42);
     [qqbutton setImage:[UIImage imageNamed:@"qqLogin.png"] forState:UIControlStateNormal];
@@ -172,7 +172,7 @@
     rect.origin.y = screenRect.size.height - 20;
     sohu2003.frame = rect;
     [self.view addSubview:sohu2003];
-        
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -216,16 +216,17 @@
     [_passwordTextField resignFirstResponder];
     [_usernameTextField resignFirstResponder];
     
-    SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登陆中..." withView: self.view] autorelease];
+    SCPAlert_WaitView  * waitView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"登录中..." withView: self.view] autorelease];
     [waitView show];
+    
     NSString * useName = [NSString stringWithFormat:@"%@",[_usernameTextField.text lowercaseString]];
     NSString * passWord = [NSString stringWithFormat:@"%@",_passwordTextField.text];
     [AccountSystemRequset sohuLoginWithuseName:useName password:passWord sucessBlock:^(NSDictionary *response) {
-        [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];
+        [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]RefreshToken:[NSString stringWithFormat:@"%@",[response objectForKey:@"refresh_token"]]];
         if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
             [_delegate SCPLogin:self doLogin:button];
         [waitView dismissWithClickedButtonIndex:0 animated:YES];
-
+        
     } failtureSucess:^(NSString *error) {
         SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterView show];

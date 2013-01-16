@@ -8,11 +8,6 @@
 
 #import "SCPLoginPridictive.h"
 
-
-#define USER_ID         @"__USER_ID__"
-#define USER_TOKEN      @"__USER_TOKEN__"
-
-
 @implementation SCPLoginPridictive (private)
 
 + (void)storeData:(NSString *)data forKey:(NSString *)key
@@ -44,10 +39,11 @@
     return [self dataForKey:USER_TOKEN] != nil;
 }
 
-+ (void)loginUserId:(NSString *)uid withToken:(NSString *)token
++ (void)loginUserId:(NSString *)uid withToken:(NSString *)token RefreshToken:(NSString *)refreshToken
 {
     [self storeData:uid forKey:USER_ID];
     [self storeData:token forKey:USER_TOKEN];
+    [self storeData:refreshToken forKey:REFRESH_TOKEN];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginStateChange" object:nil userInfo:[NSDictionary dictionaryWithObject:@"Login" forKey:@"LogState"]];
 }
 
@@ -55,6 +51,7 @@
 {
     [self removeDataForKey:USER_ID];
     [self removeDataForKey:USER_TOKEN];
+    [self removeDataForKey:REFRESH_TOKEN];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginStateChange" object:nil userInfo:[NSDictionary dictionaryWithObject:@"Logout" forKey:@"LogState"]];
 }
 

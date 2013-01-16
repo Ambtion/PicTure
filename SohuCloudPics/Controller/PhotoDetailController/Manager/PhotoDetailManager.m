@@ -25,6 +25,7 @@
 @synthesize listView =  _listView;
 - (void)dealloc
 {
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_requestManger setDelegate:nil];
     [_requestManger release];
@@ -36,6 +37,7 @@
     [super dealloc];
     
 }
+
 - (id)initWithController:(SCPPhotoDetailViewController *)ctrl useId:(NSString*) useId photoId:(NSString*)photoId
 {
     if (self = [super init]) {
@@ -55,6 +57,7 @@
 {
     return [self initWithController:ctrl useId:[NSString stringWithFormat:@"%@",[info objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[info objectForKey:@"photo_id"]]];
 }
+
 #pragma mark  Request Finished
 - (CGFloat)getHeightofImage:(CGFloat)O_height :(CGFloat) O_width
 {

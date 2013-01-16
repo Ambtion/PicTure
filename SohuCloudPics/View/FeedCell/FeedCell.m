@@ -87,8 +87,8 @@ enum {
     [_photoImageView addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoImageViewClicked)] autorelease]];
     [view addSubview:_photoImageView];
     [self.contentView addSubview:view];
+    
 }
-
 - (void)addtailer
 {
     
@@ -101,7 +101,8 @@ enum {
     _portraitView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5 , 50, 50)];
     _portraitView.userInteractionEnabled = YES;
     _portraitView.backgroundColor = [UIColor clearColor];
-    [_portraitView addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(portraitViewClicked:)] autorelease]];
+    UIGestureRecognizer * tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(portraitViewClicked:)] autorelease];
+    [_portraitView addGestureRecognizer:tap];
     [tailerView addSubview:_portraitView];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 5 + OFFSETY, 230, 20)];
@@ -109,6 +110,9 @@ enum {
     _nameLabel.textColor = [UIColor colorWithRed:98.0/255 green:98.0/255 blue:98.0/255 alpha:1];
     _nameLabel.numberOfLines = 1;
     _nameLabel.backgroundColor = [UIColor clearColor];
+    [_nameLabel setUserInteractionEnabled:YES];
+     UIGestureRecognizer * nameTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(portraitViewClicked:)] autorelease];
+    [_nameLabel addGestureRecognizer:nameTap];
     [tailerView addSubview:_nameLabel];
 
     _positionTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(85 - 20, 32.5 + OFFSETY, 150, 14)];
@@ -209,6 +213,7 @@ enum {
 
 - (void)photoImageViewClicked
 {
+    
     if ([_delegate respondsToSelector:@selector(feedCell:clickedAtPhoto:)]) {
         [self.delegate feedCell:self clickedAtPhoto:nil];
     }
