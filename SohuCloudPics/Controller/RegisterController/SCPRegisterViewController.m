@@ -223,7 +223,7 @@
     [AccountSystemRequset resigiterWithuseName:username password:password nickName:nil sucessBlock:^(NSDictionary *response) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [AccountSystemRequset sohuLoginWithuseName:username password:password sucessBlock:^(NSDictionary * response) {
-                [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]];
+                [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]RefreshToken:[NSString stringWithFormat:@"%@",[response objectForKey:@"refresh_token"]]];
                 [self backhome];
             } failtureSucess:^(NSString *error) {
                 [self stopWait];

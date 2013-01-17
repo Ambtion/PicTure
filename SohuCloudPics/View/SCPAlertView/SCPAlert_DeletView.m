@@ -67,7 +67,6 @@
         [_okButton setBackgroundImage:[UIImage imageNamed:@"pop_btn_press.png"] forState:UIControlStateHighlighted];
         [_okButton addTarget:self action:@selector(okClicked) forControlEvents:UIControlEventTouchUpInside];
         [_alertboxImageView addSubview:_okButton];
-        
         _delegate = delegate;
         
     }
@@ -86,10 +85,10 @@
 
 - (void)okClicked
 {
-    [self removeFromSuperview];
     if ([_delegate respondsToSelector:@selector(alertViewOKClicked:)]) {
         [_delegate performSelector:@selector(alertViewOKClicked:) withObject:self];
     }
+    [self removeFromSuperview];
 }
 
 @end

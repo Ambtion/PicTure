@@ -68,6 +68,7 @@
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
 	_pullingController = [[PullingRefreshController alloc] initWithLabelName:_albumData.name frame:self.view.bounds];
 	_pullingController.tableView.tableFooterView = nil;
@@ -192,7 +193,6 @@
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolistinfo = [info objectForKey:@"photoList"];
-    NSLog(@"%@",folderinfo);
     if (folderinfo) {
         self.albumData.photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
         self.albumData.viewCount = [[folderinfo objectForKey:@"view_count"] intValue];
@@ -204,7 +204,6 @@
     }
     
     [self updateUploadPhotoList];
-    
     hasNextPage = [[photolistinfo objectForKey:@"has_next"] boolValue];
     curpage = [[photolistinfo objectForKey:@"page"] intValue];
 	NSArray * photoList = [photolistinfo objectForKey:@"photos"];
@@ -216,18 +215,19 @@
         [_photoList addObject:photo];
 		[photo release];
 	}
-    
 	[_pullingController reloadDataSourceWithAniamtion:NO];
 	[_pullingController refreshDoneLoadingTableViewData];
     
 }
+
 - (void)updateUploadPhotoList
 {
     self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:self.albumData.albumId];
     taskTotal = self.uploadTaskList.taskList.count;
+    if (!self.uploadTaskList)      return;
+    [self.thumbnailArray removeAllObjects];
     for (SCPTaskUnit * unit in self.uploadTaskList.taskList)
         [self.thumbnailArray addObject:unit.thumbnail];
-    if (!self.uploadTaskList)      return;
     for (int i = 0; i < self.uploadTaskList.taskList.count; i++) {
         SCPPhoto * photo = [[SCPPhoto alloc] init];
         photo.photoID = nil;
@@ -292,17 +292,17 @@
 
 - (void)oniMarkClicked:(id)sender
 {
-    NSLog(@"oniMarkClicked");
-    //    if (![self longinPridecate]) return;
     SCPAlert_DetailView * scp = [[[SCPAlert_DetailView alloc] initWithMessage:self.albumData delegate:self] autorelease];
     [scp show];
 }
 - (void)alertViewOKClicked:(SCPAlert_LoginView *)view
 {
+    
     [self setPhotoGridStateNormal];
 }
 - (void)setPhotoGridStateNormal
 {
+    
     _state = PhotoGridStateNormal;
     [_tasksToDel removeAllObjects];
     
@@ -371,7 +371,8 @@
                 UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_backButton];
                 self.navigationItem.leftBarButtonItem = item;
                 [item release];
-                [self.pullingController reloadDataSourceWithAniamtion:NO];
+//                [self.pullingController reloadDataSourceWithAniamtion:NO];
+                [self refresh];
             });
         } failure:^(NSString *error) {
             [self requestFailed:error];

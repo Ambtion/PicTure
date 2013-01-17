@@ -10,6 +10,7 @@
 #import "JSON.h"
 #import "SCPTaskNotification.h"
 #import "SCPLoginPridictive.h"
+#import "SCPAlert_CustomeView.h"
 
 #define UPTIMEOUT 10.f
 
@@ -63,6 +64,10 @@
         } failture:^(NSError *error, SCPTaskUnit *unit) {
             NSLog(@"%s, %@",__FUNCTION__,error);
             unit.taskState = UPLoadStatusFailedUpload;
+            [self goNextTask];
+            SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
+            [cus show];
+            
         }];
     });
     return;
@@ -129,6 +134,8 @@
     NSLog(@"%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
+    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
+    [cus show];
     
     if (self.taskList.count)
         [self.taskList removeObjectAtIndex:0];

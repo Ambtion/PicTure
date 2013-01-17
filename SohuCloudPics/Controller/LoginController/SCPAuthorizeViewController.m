@@ -87,6 +87,7 @@ static NSString * provider = nil;
             NSString * str = [NSString stringWithFormat:@"%@/user?access_token=%@",BASICURL_V1,[[[request responseString] JSONValue] objectForKey:@"access_token"]];
             ASIHTTPRequest * user_id = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
             [user_id startSynchronous];
+            
             if ([user_id responseStatusCode]>= 200 && [user_id responseStatusCode] <= 300 && [user_id responseString]) {
                 [dic setObject:[[[user_id responseString] JSONValue] objectForKey:@"user_id"] forKey:@"user_id"];
                 if ([delegate respondsToSelector:@selector(loginSucessInfo:)])

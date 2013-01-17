@@ -262,7 +262,7 @@
 #pragma mark third_part_Login_deletate
 - (void)loginSucessInfo:(NSDictionary *)dic
 {
-    [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]] withToken:[dic objectForKey:@"access_token"]];
+    [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]] withToken:[dic objectForKey:@"access_token"] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
     if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
         [_delegate SCPLogin:self doLogin:nil];
 }
