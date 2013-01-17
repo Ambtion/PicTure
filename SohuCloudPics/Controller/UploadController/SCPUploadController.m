@@ -54,9 +54,10 @@
     if (self) {
         controller = decontrller;
         _requsetManager = [[SCPRequestManager alloc] init];
-        _imageList = [imageList copy];
+        _imageList = [[NSArray arrayWithArray:imageList] retain];
         int count = _imageList.count;
-        NSMutableArray *mCells = [[NSMutableArray alloc] initWithCapacity:count];
+        
+        NSMutableArray * mCells = [NSMutableArray arrayWithArray:0];
         for (int i = 0; i < count; ++i) {
             SCPUploadCell *cell = [[SCPUploadCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.uploadController = self;
@@ -65,13 +66,14 @@
             [mCells addObject:cell];
             [cell release];
         }
-        _cells = mCells;
+        _cells = [[NSArray arrayWithArray:mCells] retain];
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     _uploadHeader = [[SCPUploadHeader alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _uploadHeader.selectionStyle = UITableViewCellEditingStyleNone;
@@ -119,6 +121,7 @@
     if (!self.navigationController.navigationBar.hidden) {
         [self.navigationController.navigationBar setHidden:YES];
     }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
