@@ -21,6 +21,7 @@
 
 void customedExceptionHandler(NSException *exception)
 {
+    
 #ifdef DEBUG
     NSLog(@"CRASH name: %@\n", [exception name]);
     NSLog(@"CRASH reason: %@\n", [exception reason]);
@@ -40,6 +41,7 @@ void customedExceptionHandler(NSException *exception)
 
 - (void)dealloc
 {
+    
     [_window release];
     [_fgc release];
     [super dealloc];

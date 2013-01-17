@@ -43,8 +43,11 @@
 }
 - (void)saveButton:(UIButton *)button
 {
-    if ([_description.text isEqualToString:@"个性签名,随便写点什么吧"]) {
-        
+    if ([self stringContainsEmoji:_nameFiled.text] || [self stringContainsEmoji:_description.text]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"您输入的内容包含非法字符,请重新输入" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [tip show];
+        [tip release];
+        return;
     }
     [_request renameUserinfWithnewName:_nameFiled.text Withdescription:_description.text success:^(NSString *response) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -54,7 +57,45 @@
         [alterview release];
     }];
 }
-
+- (BOOL)stringContainsEmoji:(NSString *)string {
+    __block BOOL returnValue = NO;
+    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
+     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+         
+         const unichar hs = [substring characterAtIndex:0];
+         // surrogate pair
+         if (0xd800 <= hs && hs <= 0xdbff) {
+             if (substring.length > 1) {
+                 const unichar ls = [substring characterAtIndex:1];
+                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                 if (0x1d000 <= uc && uc <= 0x1f77f) {
+                     returnValue = YES;
+                 }
+             }
+         } else if (substring.length > 1) {
+             const unichar ls = [substring characterAtIndex:1];
+             if (ls == 0x20e3) {
+                 returnValue = YES;
+             }
+             
+         } else {
+             // non surrogate
+             if (0x2100 <= hs && hs <= 0x27ff) {
+                 returnValue = YES;
+             } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                 returnValue = YES;
+             } else if (0x2934 <= hs && hs <= 0x2935) {
+                 returnValue = YES;
+             } else if (0x3297 <= hs && hs <= 0x3299) {
+                 returnValue = YES;
+             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
+                 returnValue = YES;
+             }
+         }
+     }];
+    
+    return returnValue;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -88,10 +129,10 @@
     [backButton addTarget:self action:@selector(settingnavigationBack:) forControlEvents:UIControlEventTouchUpInside];
     backButton.frame = CGRectMake(5, 2, 35, 35);
     [self.view addSubview:backButton];
-    
     UITapGestureRecognizer * tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGuesture:)] autorelease];
     tap.delegate = self;
     [self.view addGestureRecognizer:tap];
+    
     
     UIButton* okButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [okButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
@@ -140,6 +181,7 @@
     [_description addSubview:_placeHolder];
 
 }
+
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     NSDictionary * dic = [notification userInfo];

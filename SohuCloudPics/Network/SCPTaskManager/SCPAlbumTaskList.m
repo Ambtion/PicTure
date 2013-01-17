@@ -125,8 +125,7 @@
         [self requestFailed:request];
         return;
     }
-    NSDictionary * dic = [[request responseString] JSONValue];
-    NSLog(@"%s,%d, %@",__FUNCTION__,[request responseStatusCode], dic);
+    NSLog(@"requestFinished:MMMM:%s,%d, %@",__FUNCTION__,[request responseStatusCode], [request responseString]);
     [request cancel];
     [request clearDelegatesAndCancel];
     if (self.taskList.count)
@@ -147,7 +146,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSLog(@"%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+    NSLog(@"requestFailed :NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
     SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
