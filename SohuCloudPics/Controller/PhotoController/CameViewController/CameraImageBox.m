@@ -154,8 +154,8 @@
 {
     //get UIImage
     if ([imagecaptureOutput isCapturingStillImage] || !imageCaptureconnection.isEnabled) {
-        UIAlertView * alt = [[[UIAlertView alloc] initWithTitle:@"imageConnection" message:@"DisEnable" delegate:session cancelButtonTitle:@"cancel" otherButtonTitles: nil] autorelease];
-        [alt show];
+//        UIAlertView * alt = [[[UIAlertView alloc] initWithTitle:@"imageConnection" message:@"DisEnable" delegate:session cancelButtonTitle:@"cancel" otherButtonTitles: nil] autorelease];
+//        [alt show];
         return;
     }else {
         NSLog(@"Image::%@",imageCaptureconnection);
@@ -276,8 +276,8 @@
 {
     NSURL * outUrl = [[[NSURL alloc] initFileURLWithPath:path] autorelease];
     if ([movieFileOutPut isRecording] || !movieConnection.isEnabled) {
-        UIAlertView * alt = [[[UIAlertView alloc] initWithTitle:@"movieConnection" message:@"DisEnable" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil] autorelease];
-        [alt show];
+//        UIAlertView * alt = [[[UIAlertView alloc] initWithTitle:@"movieConnection" message:@"DisEnable" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil] autorelease];
+//        [alt show];
         return;
     }else {
 		//Start recording

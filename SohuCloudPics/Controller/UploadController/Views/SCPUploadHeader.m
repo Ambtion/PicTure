@@ -168,7 +168,7 @@
     [_requestmanager createAlbumWithName:textField.text success:^(NSString *response) {
         [self refreshData];
     } failure:^(NSString *error) {
-        UIAlertView * alterview = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        SCPAlert_CustomeView * alterview = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
         [alterview show];
         [alterview release];
     }];
@@ -182,6 +182,7 @@
         [aln show];
         return;
     }
+    
     _albumChooseButton.tag = !_albumChooseButton.tag;
     if (_albumChooseButton.tag) {
         // very very bad design, must be fixed later!!!

@@ -66,7 +66,6 @@
             UIImageView *frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 5, 0, 95, 95)];
             [frameImageView setImage:background];
             [frameImageView setUserInteractionEnabled:YES];
-            
             [_frameImageViewList addObject:frameImageView];
             [self.contentView addSubview:frameImageView];
             [frameImageView release];

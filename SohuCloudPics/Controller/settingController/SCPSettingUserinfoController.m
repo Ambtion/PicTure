@@ -9,6 +9,7 @@
 #import "SCPSettingUserinfoController.h"
 #import "UIImageView+WebCache.h"
 #import "SCPLoginPridictive.h"
+#import "SCPAlertView_LoginTip.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define DESC_COUNT_LIMIT 400
@@ -48,7 +49,7 @@
     [_request renameUserinfWithnewName:_nameFiled.text Withdescription:_description.text success:^(NSString *response) {
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
-        UIAlertView * alterview = [[UIAlertView alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        SCPAlertView_LoginTip * alterview = [[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alterview show];
         [alterview release];
     }];

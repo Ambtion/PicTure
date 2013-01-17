@@ -430,11 +430,9 @@
     
     SCPAlert_WaitView *  _alterView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"制作中" withView: self.view] autorelease];
     [_alterView show];
-    
     [self.view setUserInteractionEnabled:NO];
     [self makeRation];
     [self makeResize];
-    
     _imageview.image = [_imageview.animationImages objectAtIndex:0];
     
     //make gif

@@ -10,6 +10,7 @@
 #import "ELCAsset.h"
 #import "ELCAlbumPickerController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCPAlertView_LoginTip.h"
 
 @implementation ELCAssetTablePicker
 
@@ -21,7 +22,6 @@
         
 	[self.tableView setSeparatorColor:[UIColor clearColor]];
 	[self.tableView setAllowsSelection:NO];
-    
     [self.navigationItem setTitle:@"图片"];
 
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
@@ -33,9 +33,8 @@
 //	[self.navigationItem setTitle:@"Loading..."];
 
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
-    
     // Show partial while full list loads
-	[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5];    
+//	[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5];    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -49,13 +48,11 @@
 -(void)preparePhotos {
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    
 	NSLog(@"%@",self.parentViewController.parentViewController);
     NSLog(@"enumerating photos");
     [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) 
      {         
-         if(result == nil) 
-         {
+         if(result == nil){
              return;
          }
          ELCAsset *elcAsset = nil;
@@ -71,11 +68,13 @@
          [elcAsset setParent:self];
          elcAsset.toggleDelegate = self.delController;
          [self.elcAssets addObject:elcAsset];
-     }];    
-    NSLog(@"done enumerating photos");
-	
-	[self.tableView reloadData];
-    
+         if (index == [self.assetGroup numberOfAssets] - 1) {
+             NSLog(@"done enumerating photos");
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self.tableView reloadData];
+             });
+         }
+     }];
     [pool release];
 
 }

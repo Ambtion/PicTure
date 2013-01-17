@@ -44,13 +44,24 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 - (void)addTaskList:(SCPAlbumTaskList *)taskList
 {
     taskList.delegate = self;
-    [_taskList addObject:taskList];
+    SCPAlbumTaskList * oldTask = nil;
+    for (SCPAlbumTaskList * task in _taskList) {
+        if ([task.albumId isEqualToString:taskList.albumId]) {
+            oldTask = task;
+            break;
+        }
+    }
+    if (oldTask) {
+        [oldTask.taskList addObjectsFromArray:[taskList taskList]];
+    }else{
+        [_taskList addObject:taskList];
+    }
     [self updataAlbumInfoWith:taskList];
-    [self go];
+    [self go];g
 }
-
 - (void)go
 {
+    
     SCPAlbumTaskList * task = [_taskList objectAtIndex:0];
     if (self.curTask == task) {
         NSLog(@"There is Task going");
@@ -77,7 +88,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 }
 - (NSInteger)getTotalNumWith:(SCPAlbumTaskList *)taskList
 {
-
+    
     NSMutableDictionary * albumInfo = [_taskDic objectForKey:taskList.albumId];
     NSLog(@"%s",__FUNCTION__);
     if (!albumInfo || ![albumInfo objectForKey:@"Total"]) {
@@ -201,7 +212,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
     }else{
         NSLog(@"All operation Over");
     }
-
+    
 }
 - (void)albumTask:(SCPAlbumTaskList *)albumTaskList requsetFinish:(ASIHTTPRequest *)requset
 {
@@ -211,7 +222,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
     if (requset && [requset responseString] && [[requset responseString] JSONValue])
         [dic setObject:[[requset responseString] JSONValue] forKey:@"RequsetInfo"];
     [[NSNotificationCenter defaultCenter] postNotificationName:ALBUMTASKCHANGE object:nil userInfo:dic];
-
+    
 }
 - (void)albumTask:(SCPAlbumTaskList *)albumTaskList requsetFailed:(ASIHTTPRequest *)requset
 {

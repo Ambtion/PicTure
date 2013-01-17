@@ -20,6 +20,11 @@ static NSString * provider = nil;
 @implementation SCPAuthorizeViewController
 @synthesize delegate;
 
+- (void)dealloc
+{
+    [self stopWait];
+    [super dealloc];
+}
 - (id)initWithMode:(LoginModel)loginMode controller:(id)Acontroller
 {
     self = [super init];
@@ -158,4 +163,5 @@ static NSString * provider = nil;
         [_alterView release],_alterView = nil;
     }
 }
+
 @end

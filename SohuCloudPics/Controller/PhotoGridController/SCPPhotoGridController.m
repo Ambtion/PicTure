@@ -15,7 +15,7 @@
 #import "SCPPhoto.h"
 #import "SCPPhotoDetailViewController.h"
 #import "SCPUploadTaskManager.h"
-
+#import "SCPAlertView_LoginTip.h"
 
 @implementation SCPPhotoGridController
 
@@ -222,9 +222,10 @@
 
 - (void)updateUploadPhotoList
 {
+    taskTotal = 0;
     self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:self.albumData.albumId];
+    if (!self.uploadTaskList) return;
     taskTotal = self.uploadTaskList.taskList.count;
-    if (!self.uploadTaskList)      return;
     [self.thumbnailArray removeAllObjects];
     for (SCPTaskUnit * unit in self.uploadTaskList.taskList)
         [self.thumbnailArray addObject:unit.thumbnail];
@@ -242,8 +243,6 @@
 - (BOOL)longinPridecate
 {
     if (![SCPLoginPridictive isLogin] || ![self.albumData.creatorId isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
-        //        UIAlertView * alte = [[[UIAlertView alloc] initWithTitle:@"你无权对该相册进行操作" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] autorelease];
-        //        [alte show];
         return NO;
     }
     return YES;
@@ -252,7 +251,6 @@
 #pragma mark Rename album
 - (void)onPenClicked:(id)sender
 {
-//    if (![self longinPridecate]) return;
     SCPAlert_AlbumProperty * rename = [[[SCPAlert_AlbumProperty alloc] initWithDelegate:self name:self.albumData.name isPublic:self.albumData.permission] autorelease];
     [rename show];
 }
@@ -509,7 +507,7 @@
         case PhotoGridStateNormal:
 		{
 			if (tag.intValue < _uploadTaskList.taskList.count) {
-				UIAlertView * alterView = [[[UIAlertView alloc] initWithTitle:@"图片正在上传中,是否删除任务" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil] autorelease];
+				SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"图片正在上传中,是否删除任务" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil] autorelease];
                 alterView.tag = tag.intValue;
                 [alterView show];
                 

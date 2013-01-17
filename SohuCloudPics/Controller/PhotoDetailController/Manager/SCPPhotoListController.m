@@ -413,11 +413,6 @@
 }
 
 #pragma mark TapGesture
-- (void)setZooming:(UIScrollView *)scrollview
-{
-    if (scrollview.zoomScale != scrollview.minimumZoomScale)
-        [scrollview  setZoomScale:scrollview.minimumZoomScale animated:YES];
-}
 
 - (void)handlesignalGesture:(UITapGestureRecognizer *)gesture
 {
@@ -622,6 +617,7 @@
         self.curscrollView.contentSize = imageView.frame.size;
         [self.curscrollView setContentOffset:CGPointMake(0, 0)];
     }
+    
     if ([imageView isEqual:self.fontImageView]) {
         self.fontScrollview.contentSize = imageView.frame.size;
         [self.fontScrollview setContentOffset:CGPointMake(0, 0)];
@@ -764,7 +760,6 @@
         curPage = self.scrollView.contentOffset.x / self.view.frame.size.width;
         return;
     }
-    
     int x = self.scrollView.contentOffset.x;
     if (x == self.scrollView.frame.size.width) {
         if (curPage == 0) {
@@ -780,14 +775,13 @@
             return;
         }
     }
-    if(x >= (self.scrollView.frame.size.width * 2)) {
+    if(x == (self.scrollView.frame.size.width * 2)) {
         
         curPage = [self validPageValue:curPage+1];
         [self refreshScrollView];
         if (curPage >= imageArray.count - 1 && imageArray.count <= photoNum)  [self getMoreImage];
-
+        return;
     }
-    
     if(x <= 0) {
         curPage = [self validPageValue:curPage-1];
         [self refreshScrollView];

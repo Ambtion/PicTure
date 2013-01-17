@@ -114,16 +114,6 @@
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
 #pragma mark - action
-- (BOOL)isLogin
-{
-    if (![SCPLoginPridictive isLogin]) {
-        UIAlertView * ale = [[UIAlertView alloc] initWithTitle:@"" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        [ale show];
-        [ale release];
-        
-    }
-    return [SCPLoginPridictive isLogin];
-}
 -(void)NoticeViewCell:(NoticeViewCell *)cell portraitClick:(id)sender
 {
     

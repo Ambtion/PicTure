@@ -26,6 +26,10 @@ static float OFFSET = 0.f;
 
 - (void)dealloc
 {
+    if (wait) {
+        [wait dismissWithClickedButtonIndex:0 animated:YES];
+        [wait release],wait = nil;
+    }
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_requestManager setDelegate:nil];
     [_requestManager release];
@@ -289,6 +293,7 @@ static float OFFSET = 0.f;
         return pageCell;
     }
     else {
+        
         FeedCell * feedCell = [tableView dequeueReusableCellWithIdentifier:@"FEEDCELL"];
         if (feedCell == nil) {
             feedCell = [[[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FEEDCELL"] autorelease];

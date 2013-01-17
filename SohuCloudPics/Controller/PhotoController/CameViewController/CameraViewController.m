@@ -38,8 +38,8 @@
     [super viewDidLoad];
     
     [self initDataContainers];
-    //    self.view.frame = CGRectMake(0, 0, 320, 480);
     self.view.backgroundColor = [UIColor blackColor];
+    
     //addpreview
     [self addPreviews];
     //reload gesture
@@ -52,6 +52,7 @@
     [self initializeCamera];
     //add FunctionButton
     [self addFuctionsubviews];
+    
     //_focusView
     _focusView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     _focusView.backgroundColor = [UIColor clearColor];
@@ -59,8 +60,8 @@
     //preview picture
     if (_tampview == nil){
         _tampview = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        _tampview.backgroundColor = [UIColor colorWithRed:45/255.f green:45/255.f blue:45/255.f alpha:1];
         _tampview.image = [UIImage imageNamed:@"short_bg.png"];
-        _tampview.backgroundColor = [UIColor blackColor];
         _tampview.userInteractionEnabled = NO;
     }
     
@@ -92,6 +93,7 @@
     [((SCPMenuNavigationController *)self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *)self.navigationController).ribbonView setHidden:YES];
     self.navigationItem.hidesBackButton = YES;
+    
     //为了防止viwedidiAppear中出现的未知错误;
     //    [self performSelector:@selector(openCamera) withObject:nil afterDelay:0.5];
 }
@@ -126,7 +128,6 @@
     //    [CameraImageHelper initialize];
     //    [CameraImageHelper embedPreviewInView:self.preview];
     [self photoSwitch:nil setPhotoTypeOfImage:outPutImage];
-    
     NSLog(@"initializeCamera end");
     
 }
@@ -147,8 +148,8 @@
     //add Flash on preview
     _flashButton = [[FlashButton alloc] initWithOrinal:CGPointMake(10, 12)];
     [_flashButton addtarget:self action:@selector(flashswitch:)];
-    
     [self.preview addSubview:_flashButton.view];
+    
     //add secenSwitch preview
     _secenSwitch = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     _secenSwitch.frame = CGRectMake(240, 10, 70, 40);

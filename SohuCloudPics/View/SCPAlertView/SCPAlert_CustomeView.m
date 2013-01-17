@@ -13,6 +13,7 @@
 {
     if (self = [super init]) {
         
+        self.tag = TIPVIEWTAG;
         CGRect rect = [[UIScreen mainScreen] bounds];
         _alertboxImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 240, 60)];
         _alertboxImageView.image = [UIImage imageNamed:@"popup_alert.png"];
@@ -26,6 +27,7 @@
         _title.textColor = [UIColor whiteColor];
         _title.text = title;
         [_alertboxImageView addSubview:_title];
+        
     }
     return self;
 }
@@ -33,12 +35,14 @@
 - (void)show
 {
     UIWindow * win = [[UIApplication sharedApplication].delegate window];
+    NSLog(@"%@",[win subviews]);
     for (UIView * view in [win subviews]) {
-        if ([view isKindOfClass:[SCPAlert_CustomeView class]]) {
+        if ([view isKindOfClass:[SCPAlert_CustomeView class]] ) {
             return;
         }
     }
-    [[[UIApplication sharedApplication].delegate window] addSubview:self];
+    [win addSubview:self];
+    [SCPGuideViewExchange exchageViewForwindow];
     [self performSelector:@selector(dismiss)withObject:nil afterDelay:1.5f];
 }
 - (void)dismiss

@@ -29,6 +29,7 @@
 @synthesize groupName = _groupName;
 - (void)dealloc
 {
+    [self stopWait];
     self.filterImage = nil;
     [_originalImage release];
     [_originalThumbImage release];

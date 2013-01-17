@@ -15,7 +15,7 @@
 
 @class SCPExplorerController;
 
-@interface ExploreTableManager : NSObject <UITableViewDataSource, PullingRefreshDelegate, BannerDataSoure,ExploreCellDelegate,UIAlertViewDelegate,SCPRequestManagerDelegate>
+@interface ExploreTableManager : NSObject <UITableViewDataSource, PullingRefreshDelegate, BannerDataSoure,ExploreCellDelegate,SCPRequestManagerDelegate>
 {
     SCPRequestManager * _requestManager;
     NSMutableArray *_strategyArray;

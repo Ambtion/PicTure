@@ -77,7 +77,6 @@
         [_progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
 
         [self.contentView addSubview:_progressView];
-        
         /* deleteView, not display first */
         _deleteView = [[UIImageView alloc] initWithFrame:CGRectMake(5, -2, 29, 29)];
         _deleteView.image = [UIImage imageNamed:@"album_delete.png"];

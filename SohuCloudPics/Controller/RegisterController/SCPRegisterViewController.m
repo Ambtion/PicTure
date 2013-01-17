@@ -29,6 +29,7 @@
 
 - (void)dealloc
 {
+    [self stopWait];
     [_backgroundImageView release];
     [_backgroundControl release];
     [_usernameTextField release];

@@ -32,12 +32,12 @@
     [tempDic release];
     [super dealloc];
 }
+
 #pragma mark - Explore
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture
 {
     
     NSString * str_url = [NSString stringWithFormat:@"%@/plaza?start=%d&count=%d",BASICURL_V1,startIndex,maxresult];
-    NSLog(@"%@",str_url);
 //    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
 //    [request setTimeOutSeconds:TIMEOUT];
 //    [request setCompletionBlock:^{

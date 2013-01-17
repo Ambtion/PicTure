@@ -8,6 +8,7 @@
 
 #import "FunctionguideScroll.h"
 #import "SCPAppDelegate.h"
+#import "SCPGuideViewExchange.h"
 
 static NSString * staticImage[4] = {@"welcome-guid-1.png",@"cloud-2.png",@"camera-3.png",@"share_happy-4.png"};
 static NSString * staticImage6[4] = {@"welcome-guid-ios61.png",@"cloudios62.png",@"cameraios63.png",@"share_happyios64.png"};
@@ -36,6 +37,8 @@ static NSString * staticImage6[4] = {@"welcome-guid-ios61.png",@"cloudios62.png"
     
     [super viewDidLoad];
     self.view.frame = [[UIScreen mainScreen] bounds];
+    self.view.tag = FUNCTINVIEWTAG;
+    
     _scrollview  = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     _scrollview.pagingEnabled = YES;
     
@@ -87,7 +90,6 @@ static NSString * staticImage6[4] = {@"welcome-guid-ios61.png",@"cloudios62.png"
     [_scrollview setContentSize:CGSizeMake(offset * PAGENUM, height)];
     imageView = (UIImageView *)[_scrollview viewWithTag:PAGENUM - 1];
     [imageView setUserInteractionEnabled:YES];
-    
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = [UIColor clearColor];
     [button setBackgroundImage:[UIImage imageNamed:@"login_btn_normal.png"] forState:UIControlStateNormal];
@@ -114,10 +116,4 @@ static NSString * staticImage6[4] = {@"welcome-guid-ios61.png",@"cloudios62.png"
     }
 
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 @end

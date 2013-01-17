@@ -213,7 +213,6 @@
     _followingButton.numlabel.text = [NSString stringWithFormat:@"%d", self.datasource.followingAmount];
     _followedButton.numlabel.text  = [NSString stringWithFormat:@"%d", self.datasource.followedAmount];
     
-    
     if (self.datasource.isInit) {
         _portraitImageView.image = nil;
         _nameLabel.text = nil;

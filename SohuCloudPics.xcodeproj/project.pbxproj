@@ -375,6 +375,7 @@
 		C5958B2616362C7800BDFEC8 /* menu_alert_press.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958B2416362C7800BDFEC8 /* menu_alert_press.png */; };
 		C5958B2716362C7800BDFEC8 /* menu_alert.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958B2516362C7800BDFEC8 /* menu_alert.png */; };
 		C595934516A793980020B800 /* portrait_default.png in Resources */ = {isa = PBXBuildFile; fileRef = C595934416A793980020B800 /* portrait_default.png */; };
+		C595934A16A79D320020B800 /* SCPGuideViewExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = C595934916A79D320020B800 /* SCPGuideViewExchange.m */; };
 		C596DEF416880AA700E04C93 /* user_add_follower_press.png in Resources */ = {isa = PBXBuildFile; fileRef = C596DEF016880AA700E04C93 /* user_add_follower_press.png */; };
 		C596DEF516880AA700E04C93 /* user_add_following_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C596DEF116880AA700E04C93 /* user_add_following_normal.png */; };
 		C596DEF616880AA700E04C93 /* user_cancel_follow_normal-2.png in Resources */ = {isa = PBXBuildFile; fileRef = C596DEF216880AA700E04C93 /* user_cancel_follow_normal-2.png */; };
@@ -987,6 +988,8 @@
 		C5958B2416362C7800BDFEC8 /* menu_alert_press.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_alert_press.png; sourceTree = "<group>"; };
 		C5958B2516362C7800BDFEC8 /* menu_alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_alert.png; sourceTree = "<group>"; };
 		C595934416A793980020B800 /* portrait_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portrait_default.png; sourceTree = "<group>"; };
+		C595934616A79C2C0020B800 /* SCPGuideViewExchange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPGuideViewExchange.h; sourceTree = "<group>"; };
+		C595934916A79D320020B800 /* SCPGuideViewExchange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPGuideViewExchange.m; sourceTree = "<group>"; };
 		C596DEF016880AA700E04C93 /* user_add_follower_press.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_add_follower_press.png; sourceTree = "<group>"; };
 		C596DEF116880AA700E04C93 /* user_add_following_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_add_following_normal.png; sourceTree = "<group>"; };
 		C596DEF216880AA700E04C93 /* user_cancel_follow_normal-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_cancel_follow_normal-2.png"; sourceTree = "<group>"; };
@@ -1282,7 +1285,7 @@
 				61124E1315DE0BF6002C844F /* SCPAppDelegate.h */,
 				61124E1415DE0BF6002C844F /* SCPAppDelegate.m */,
 				C588DE36168559DF008744D1 /* Network */,
-				C53BB10A1654D8C00043B7E7 /* FunctionGuide */,
+				C53BB10A1654D8C00043B7E7 /* Guide */,
 				C58D86591612CB78006FE9EF /* LoginPridictive */,
 				61124E1B15DE0BFF002C844F /* Controller */,
 				61907A5A15EB8CFB00324A6B /* Resourse */,
@@ -1389,7 +1392,6 @@
 		617FCF2C15F73AEA003968FE /* View */ = {
 			isa = PBXGroup;
 			children = (
-				C594B8371659C70F00DC85AF /* GuideView */,
 				B7EF8832163A85BC0071C26A /* SCPHGestureRecognizer */,
 				C53BB11C1654D9F10043B7E7 /* RefreshButton */,
 				C58DA655162EADD1001E881D /* BannerView */,
@@ -1950,14 +1952,18 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
-		C53BB10A1654D8C00043B7E7 /* FunctionGuide */ = {
+		C53BB10A1654D8C00043B7E7 /* Guide */ = {
 			isa = PBXGroup;
 			children = (
+				C595934616A79C2C0020B800 /* SCPGuideViewExchange.h */,
+				C595934916A79D320020B800 /* SCPGuideViewExchange.m */,
 				C53BB10C1654D8E40043B7E7 /* FunctionguideScroll.h */,
 				C53BB10D1654D8E40043B7E7 /* FunctionguideScroll.m */,
 				C53BB13A1654EE410043B7E7 /* SMPageControl.h */,
 				C53BB13B1654EE410043B7E7 /* SMPageControl.m */,
+				C594B8371659C70F00DC85AF /* GuideView */,
 			);
+			name = Guide;
 			path = FunctionGuide;
 			sourceTree = "<group>";
 		};
@@ -2477,7 +2483,7 @@
 				C594B8391659C72600DC85AF /* SCPGuideView.m */,
 			);
 			name = GuideView;
-			path = View/GuideView;
+			path = ../View/GuideView;
 			sourceTree = "<group>";
 		};
 		C59793621634FBCB003C2206 /* pullingController */ = {
@@ -3032,6 +3038,7 @@
 				C5AADC2B16A2565700166B86 /* SCPReadDealController.m in Sources */,
 				C58873FE16A5290800C21AC4 /* SCPDescriptionEditController.m in Sources */,
 				C5246CF916A6D58E004E32DF /* SCPCacheManager.m in Sources */,
+				C595934A16A79D320020B800 /* SCPGuideViewExchange.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,7 +29,6 @@
     if (self) {
         self.frame = CGRectMake(0, 0, 320, 80);
         
-//        self.imageIdList = [NSMutableArray arrayWithCapacity:0];
         self.imageViewList = [NSMutableArray arrayWithCapacity:0];
         self.progViewList = [NSMutableArray arrayWithCapacity:0];
         self.deleteViewList = [NSMutableArray arrayWithCapacity:0];

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCPGuideViewExchange.h"
 
 @interface SCPAlert_CustomeView : UIView
 

@@ -59,20 +59,23 @@ void customedExceptionHandler(NSException *exception)
     SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
     _window.rootViewController = nav;
     [_window makeKeyAndVisible];
-    [self showfunctionGuide];
     [mainTab release];
     [nav release];
+    [self showfunctionGuide];
     return YES;
 }
 
 - (void)showfunctionGuide
 {
+    
     NSNumber * num  = [[NSUserDefaults standardUserDefaults] objectForKey:@"FunctionShowed"];
     if (!num ||![num boolValue]) {
         _fgc = [[FunctionguideScroll alloc] init];
         [_window addSubview:_fgc.view];
+        [SCPGuideViewExchange exchageViewForwindow];
     }
 }
+
 - (void)removeFromWindows
 {
     CATransition * animation = [CATransition animation];

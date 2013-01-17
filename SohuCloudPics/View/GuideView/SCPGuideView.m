@@ -6,8 +6,8 @@
 //
 //
 #import "SCPAppDelegate.h"
-
 #import "SCPGuideView.h"
+#import "SCPGuideViewExchange.h"
 
 @implementation SCPGuideView
 
@@ -23,6 +23,7 @@
 {
     self = [super initWithImage:image];
     if (self) {
+        self.tag  = GUIDEVIEWTAG;
         [self addCustomGestureRecognizer];
     }
     return self;    
@@ -47,7 +48,7 @@
     SCPAppDelegate * delegte = (SCPAppDelegate *)[[UIApplication sharedApplication] delegate];
     [UIView transitionWithView:delegte.window duration:0.5 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionTransitionCrossDissolve animations:^{
         [delegte.window addSubview:self];
-        [delegte.window exchangeSubviewAtIndex:1 withSubviewAtIndex:2];
+        [SCPGuideViewExchange exchageViewForwindow];
     } completion:^(BOOL finished) {
         
     }];

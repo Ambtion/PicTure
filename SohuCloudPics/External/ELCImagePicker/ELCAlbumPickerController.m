@@ -125,7 +125,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     // Return the number of rows in the section.
     return [assetGroups count];
 }

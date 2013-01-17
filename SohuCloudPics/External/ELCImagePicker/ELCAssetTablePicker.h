@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "DeleteController.h"
-@interface ELCAssetTablePicker : UITableViewController
+@interface ELCAssetTablePicker : UITableViewController<UIAlertViewDelegate>
 {
 	ALAssetsGroup *assetGroup;
 	

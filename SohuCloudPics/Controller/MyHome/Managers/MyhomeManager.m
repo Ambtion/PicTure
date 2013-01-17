@@ -28,6 +28,10 @@ static float OFFSET = 0.f;
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    if (wait) {
+        [wait dismissWithClickedButtonIndex:0 animated:YES];
+        [wait release],wait = nil;
+    }
     [_requestManager setDelegate:nil];
     [_requestManager release];
     [_dataArray release];
