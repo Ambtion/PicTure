@@ -74,7 +74,6 @@
     [_saveButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
     [_saveButton addTarget:self action:@selector(saveButton:) forControlEvents:UIControlEventTouchUpInside];
     _saveButton.frame = CGRectMake(0, 0, 35, 35);
-//    [_saveButton setUserInteractionEnabled:NO];
     UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithCustomView:_saveButton];
     self.navigationItem.rightBarButtonItem = item;
 }

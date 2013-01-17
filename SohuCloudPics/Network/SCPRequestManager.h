@@ -20,6 +20,7 @@
 - (void)SCPRequestManagerequestFailed:(NSString *)error;
 @end
 
+
 @interface SCPRequestManager : NSObject<ASIHTTPRequestDelegate>
 {
     NSMutableDictionary * tempDic;

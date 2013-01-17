@@ -15,6 +15,7 @@
     NSString * str = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/ImageCache"];
     NSError * error = nil;
     [manager removeItemAtPath:str error:&error];
+    [manager createDirectoryAtPath:str withIntermediateDirectories:YES attributes:nil error:NULL];
     if (error) NSLog(@"error::%@",error);
 }
 + (void)removeCacheAlluserInfo:(BOOL)isRemove

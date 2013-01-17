@@ -15,12 +15,13 @@
 #define UPTIMEOUT 10.f
 
 
+#define UPLOADIMAGESIZE 1024 * 1024 * 15  // 图片最大15MB 
+
 @implementation SCPAlbumTaskList
 @synthesize taskList = _taskList;
 @synthesize albumId = _albumId;
 @synthesize isUpLoading = _isUpLoading;
 @synthesize delegate = _delegate;
-
 
 @synthesize currentTask = _currentTask;
 - (void)dealloc
@@ -51,16 +52,26 @@
 }
 - (void)addTaskUnitToQuene
 {
+    
     if (!self.currentTask) self.currentTask = [self.taskList objectAtIndex:0];
     self.currentTask.request = [self getUploadRequest:nil];
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit * unit) {
-                [self.currentTask.request setData:imageData withFileName:@"fromIOS.png" andContentType:@"image/*" forKey:@"file"];
-                if (unit.description && ![unit.description isEqualToString:@""])
-                    [self.currentTask.request setPostValue:unit.description forKey:@"desc"];
-                if (!self.currentTask.request.isCancelled)
-                    [self.currentTask.request startAsynchronous];
+            
+            if ([imageData length] > UPLOADIMAGESIZE) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    SCPAlert_CustomeView * cus = [[SCPAlert_CustomeView  alloc] initWithTitle:@"图片太大,无法上传"];
+                    [cus show];
+                    [cus release];
+                });
+                [self.currentTask.request setData:nil withFileName:@"fromIOS" andContentType:@"image/*" forKey:@"files"];
+            }else{
+                [self.currentTask.request setData:imageData withFileName:@"fromIOS" andContentType:@"image/*" forKey:@"file"];
+            }
+            if (unit.description && ![unit.description isEqualToString:@""])
+                [self.currentTask.request setPostValue:unit.description forKey:@"desc"];
+            if (!self.currentTask.request.isCancelled)
+                [self.currentTask.request startAsynchronous];
         } failture:^(NSError *error, SCPTaskUnit *unit) {
             NSLog(@"%s, %@",__FUNCTION__,error);
             unit.taskState = UPLoadStatusFailedUpload;
@@ -110,6 +121,10 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    if ([request responseStatusCode] != 200) {
+        [self requestFailed:request];
+        return;
+    }
     NSDictionary * dic = [[request responseString] JSONValue];
     NSLog(@"%s,%d, %@",__FUNCTION__,[request responseStatusCode], dic);
     [request cancel];
@@ -129,6 +144,7 @@
         }
     }
 }
+
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     NSLog(@"%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
@@ -150,6 +166,7 @@
             [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
         }
     }
+    
 }
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {

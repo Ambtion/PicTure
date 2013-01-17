@@ -10,6 +10,7 @@
 #import "ASIFormDataRequest.h"
 #import "JSON.h"
 #import "SCPLoginPridictive.h"
+#import "SCPAlert_CustomeView.h"
 
 #define CLIENT_ID @"355d0ee5-d1dc-3cd3-bdc6-76d729f61655"
 
@@ -83,6 +84,7 @@
                     faiture(@"当前网络不给力，请稍后重试");
                     break;
             }
+            
         }else{
             faiture(@"当前网络不给力，请稍后重试");
         }
@@ -91,10 +93,5 @@
         faiture(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];
-}
-+ (void)refreshToken
-{
-    if (![SCPLoginPridictive isLogin]) return;
-    
 }
 @end

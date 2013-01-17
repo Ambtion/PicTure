@@ -134,7 +134,7 @@ static NSInteger lastNum = -1;
     if (self) {
         _strategyArray = [[NSMutableArray alloc] init];
         _requestManager = [[SCPRequestManager alloc] init];
-        _requestManager.delegate = self;
+        //        _requestManager.delegate = self;
         _isLoading = NO;
         _willRefresh = YES;
         _isinit = YES;
@@ -167,36 +167,15 @@ static NSInteger lastNum = -1;
 
 - (NSArray *)getImageViewFrameWithInfoArray:(NSArray *)infoArray : (NSArray *) viewFrame
 {
-//    //图片不需要截就可以实现
-//    NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
-//    for (int i = 0; i < viewFrame.count; i++) {
-//        CGRect superRect = [[viewFrame objectAtIndex:i] CGRectValue];
-//        
-//        NSDictionary * dic = [infoArray objectAtIndex:i];
-//        CGFloat heigth = [[dic objectForKey:@"height"] floatValue];
-//        CGFloat wigth = [[dic objectForKey:@"width"] floatValue];
-//        if (!dic ||!heigth || !wigth) {
-//            [array addObject:[NSValue valueWithCGRect:CGRectMake(0, 0, superRect.size.width, superRect.size.height)]];
-//            break;
-//        }
-//        CGFloat scale = MIN(heigth/superRect.size.height, wigth/superRect.size.width);
-//        CGRect frame = CGRectMake(0, 0, wigth/scale, heigth/scale);
-//        frame.origin.x = (superRect.size.width - frame.size.width)/2.f;
-//        frame.origin.y = (superRect.size.height - frame.size.height)/2.f;
-//        [array addObject:[NSValue valueWithCGRect:frame]];
-//    }
     //需要c_*配合显示
-    
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < viewFrame.count; i++) {
         
         CGRect superRect = [[viewFrame objectAtIndex:i] CGRectValue];
         
         NSDictionary * dic = [infoArray objectAtIndex:i];
-//        CGFloat heigth = [[dic objectForKey:@"height"] floatValue];
-//        CGFloat wigth = [[dic objectForKey:@"width"] floatValue];
-       CGFloat heigth = 205;
-       CGFloat wigth = 205;
+        CGFloat heigth = 205;
+        CGFloat wigth = 205;
         
         if (!dic ||!heigth || !wigth) {
             [array addObject:[NSValue valueWithCGRect:CGRectMake(0, 0, superRect.size.width, superRect.size.height)]];
@@ -207,49 +186,49 @@ static NSInteger lastNum = -1;
         frame.origin.x = (superRect.size.width - frame.size.width)/2.f;
         frame.origin.y = (superRect.size.height - frame.size.height)/2.f;
         [array addObject:[NSValue valueWithCGRect:frame]];
-
+        
     }
     return array;
 }
-- (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
-{
-    NSArray * infoArray = [info objectForKey:@"photos"];
-    if (_willRefresh)
-        [_strategyArray removeAllObjects];
-    for (int i = 0; i < infoArray.count / 4 ; i++) {
-        ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
-        NSInteger num_strategy = [self randomNum];
-        NSMutableArray * frames = [[NSMutableArray alloc] init];
-        dataSouce.heigth = strategys[num_strategy](frames,nil);
-        dataSouce.viewRectFrame = frames;
-        dataSouce.infoArray = [self urlArray:frames info:infoArray];
-        dataSouce.imageFrame =[self getImageViewFrameWithInfoArray:dataSouce.infoArray :frames];
-        dataSouce.identify = [NSString stringWithFormat:@"startegy%d", num_strategy];
-        [_strategyArray addObject:dataSouce];
-        [frames release];
-        [dataSouce release];
-    }
-    _lastCount = [self offsetOfDataSouce];
-    if (_isinit) {
-        _isinit = NO;
-        _isLoading = NO;
-        [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-        [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-        return ;
-    }
-    if (_willRefresh) {
-        [self refreshDataFinishLoad];
-    }else{
-        [self moreDataFinishLoad];
-    }
-}
-- (void)SCPRequestManagerequestFailed:(NSString *)error
-{
-    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
-    [alertView show];
-    [self restNetWorkState];
-}
+//- (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
+//{
+//    NSArray * infoArray = [info objectForKey:@"photos"];
+//    if (_willRefresh)
+//        [_strategyArray removeAllObjects];
+//    for (int i = 0; i < infoArray.count / 4 ; i++) {
+//        ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
+//        NSInteger num_strategy = [self randomNum];
+//        NSMutableArray * frames = [[NSMutableArray alloc] init];
+//        dataSouce.heigth = strategys[num_strategy](frames,nil);
+//        dataSouce.viewRectFrame = frames;
+//        dataSouce.infoArray = [self urlArray:frames info:infoArray];
+//        dataSouce.imageFrame =[self getImageViewFrameWithInfoArray:dataSouce.infoArray :frames];
+//        dataSouce.identify = [NSString stringWithFormat:@"startegy%d", num_strategy];
+//        [_strategyArray addObject:dataSouce];
+//        [frames release];
+//        [dataSouce release];
+//    }
+//    _lastCount = [self offsetOfDataSouce];
+//    if (_isinit) {
+//        _isinit = NO;
+//        _isLoading = NO;
+//        [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+//        [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+//        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+//        return ;
+//    }
+//    if (_willRefresh) {
+//        [self refreshDataFinishLoad];
+//    }else{
+//        [self moreDataFinishLoad];
+//    }
+//}
+//- (void)SCPRequestManagerequestFailed:(NSString *)error
+//{
+//    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+//    [alertView show];
+//    [self restNetWorkState];
+//}
 #pragma mark -
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
@@ -270,7 +249,6 @@ static NSInteger lastNum = -1;
 
 - (void)getExploreFrom:(NSInteger)startIndex count:(NSInteger)count
 {
-    NSLog(@"Explore Dealing Start...");
     [_requestManager getExploreFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
         if (startIndex == 0)
             [_strategyArray removeAllObjects];
@@ -306,9 +284,6 @@ static NSInteger lastNum = -1;
         [alertView show];
         [self restNetWorkState];
     }];
-//    [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-//    [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-    NSLog(@"Explore Dealing End...");
 }
 - (void)restNetWorkState
 {
@@ -368,7 +343,7 @@ static NSInteger lastNum = -1;
 }
 - (NSString*)bannerDataSouceRightLabel
 {
-//    return [self.controller getTimeString];
+    //    return [self.controller getTimeString];
     return nil;
 }
 

@@ -10,10 +10,13 @@
 #import "ASIFormDataRequest.h"
 #import "SCPLoginPridictive.h"
 #import "JSON.h"
+#import "SCPAlert_CustomeView.h"
 
 
-#define TIMEOUT 10.f 
+#define TIMEOUT 10.f
 #define STRINGENCODING NSUTF8StringEncoding
+#define REQUSETFAILERROR @"当前网络不给力,请稍后重试"
+#define OAUTHFAILED 401
 @implementation SCPRequestManager
 @synthesize delegate = _delegate;
 
@@ -32,71 +35,113 @@
     [tempDic release];
     [super dealloc];
 }
+- (void)refreshToken:(NSInteger)requsetStatusCode
+{
+    if (requsetStatusCode != OAUTHFAILED) return;
+    NSString * str = [NSString stringWithFormat:@"%@/oauth2/access_token?grant_type=refresh_token",BASICURL];
+    __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setPostValue:CLIENT_ID forKey:@"client_id"];
+    [request setPostValue:CLIENT_SECRET forKey:@"client_secret"];
+    NSLog(@"ACCESS_TOKEN:%@",[SCPLoginPridictive currentToken]);
+    [request setPostValue:[SCPLoginPridictive refreshToken] forKey:@"refresh_token"];
+    [request setCompletionBlock:^{
+        if ([request responseStatusCode] == 200) {
+            NSDictionary * dic = [[request responseString] JSONValue];
+            [SCPLoginPridictive refreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"access_token"]] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
+        }else{
+            SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登陆"] autorelease];
+            [cus show];
+        }
+    }];
+    [request setFailedBlock:^{
+        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登陆"] autorelease];
+        [cus show];
+    }];
+    [request startAsynchronous];
+}
+- (BOOL)handlerequsetStatucode:(NSInteger)requsetCode
+{
+    NSLog(@"%s",__FUNCTION__);
+
+    if (requsetCode >= 200 && requsetCode <= 300) return YES;
+    
+    if (requsetCode == 401) [self refreshToken:401];
+    
+    if ([_delegate respondsToSelector:@selector(requestFailed:)])
+        [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
+    
+    return NO;
+}
+- (BOOL)handlerequsetStatucode:(NSInteger)requsetCode withblock:(void (^) (NSString * error))failure
+{
+    NSLog(@"%s",__FUNCTION__);
+    if (requsetCode >= 200 && requsetCode <= 300) return YES;
+    if (requsetCode == 401) [self refreshToken:401];
+    failure(REQUSETFAILERROR);
+    return NO;
+}
+
 
 #pragma mark - Explore
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture
 {
-    
+//    NSString * str_url = [NSString stringWithFormat:@"%@/plaza?start=%d&count=%d",BASICURL_V1,startIndex,maxresult];
+//    ASIHTTPRequest * requset = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
+//    [requset setTimeOutSeconds:TIMEOUT];
+//    [requset setDelegate:self];
+//    [requset startAsynchronous];
     NSString * str_url = [NSString stringWithFormat:@"%@/plaza?start=%d&count=%d",BASICURL_V1,startIndex,maxresult];
-//    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
-//    [request setTimeOutSeconds:TIMEOUT];
-//    [request setCompletionBlock:^{
-//				NSLog(@"Explore Request End...");
-//        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]){
-//            success([[[request responseString] JSONValue] objectForKey:@"photos"]);
-//        }else {
-//            faiture(@"当前网络不给力，请稍后重试");
-//        }
-//    }];
-//    [request setFailedBlock:^{
-//        faiture(@"当前网络不给力，请稍后重试");
-//    }];
-//	NSLog(@"Explore Request Start...");
-//    [request startAsynchronous];
-    
-    ASIHTTPRequest * requset = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
-    [requset setTimeOutSeconds:TIMEOUT];
-    [requset setDelegate:self];
-    [requset startAsynchronous];
+    NSLog(@"%@",str_url);
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
+    [request setTimeOutSeconds:TIMEOUT];
+    [request setCompletionBlock:^{
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:faiture]){
+            success([[[request responseString] JSONValue] objectForKey:@"photos"]);
+        }
+    }];
+    [request setFailedBlock:^{
+        faiture(REQUSETFAILERROR);
+    }];
+    [request startAsynchronous];
 }
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300){
         if ([_delegate respondsToSelector:@selector(requestFinished:output:)])
             [_delegate requestFinished:nil output:[[request responseString] JSONValue]];
-    }else{
+    }else {
         [self requestFailed:nil];
     }
 }
-
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     if ([_delegate respondsToSelector:@selector(SCPRequestManagerequestFailed:)]) {
-        [_delegate SCPRequestManagerequestFailed:@"当前网络不给力，请稍后重试"];
+        [_delegate SCPRequestManagerequestFailed:REQUSETFAILERROR];
     }
 }
+
 #pragma mark - PhotoDetail
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID
 {
     NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@",BASICURL_V1,photo_ID,user_id];
+    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:dic];
             }
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
+    
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -113,17 +158,16 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        
+        NSInteger  code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             success(dic);
-            
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     if (isAsy) {
         [request startAsynchronous];
@@ -132,33 +176,32 @@
     }
     
 }
+
 - (void)getUserInfoWithID:(NSString *)user_ID
 {
-    
     NSString  * str = nil;
     if ([SCPLoginPridictive currentToken]) {
         str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
+    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
+    
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
             [self getUserInfoFeedWithUserID:user_ID page:1];
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -170,7 +213,8 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"feedList"];
@@ -178,15 +222,11 @@
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
                 [tempDic removeAllObjects];
             }
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -200,25 +240,23 @@
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,uses_id];
     }
-    NSLog(@"%s, %@",__FUNCTION__, str);
+    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
             [self getFoldersWithID:uses_id page:1];
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -234,8 +272,8 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
-            
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"folderinfo"];
@@ -243,15 +281,11 @@
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
                 [tempDic removeAllObjects];
             }
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -269,23 +303,19 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"folderInfo"];
             [self getPhotosWithUserID:user_id FolderID:folder_id page:1];
-            
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -299,10 +329,12 @@
     }else{
         str = [NSString stringWithFormat:@"%@/folders/%@/photos?owner_id=%@&page=%d",BASICURL_V1,folder_id,user_id,page];
     }
+    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
@@ -311,15 +343,11 @@
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
                 [tempDic removeAllObjects];
             }
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -329,27 +357,21 @@
 - (void)getFeedMineInfo
 {
     NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentUserId],[SCPLoginPridictive currentToken]];
-    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
             [self getFeedMineWithPage:1];
-            
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -361,7 +383,8 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"feedList"];
@@ -369,15 +392,11 @@
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
                 [tempDic removeAllObjects];
             }
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -390,25 +409,21 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
             [self getfollowingsWihtUseId:use_id page:1];
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
-    
 }
 - (void)getfollowingsWihtUseId:(NSString *)user_id page:(NSInteger)pagenum
 {
@@ -421,7 +436,8 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"Followings"];
@@ -429,15 +445,11 @@
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
                 [tempDic removeAllObjects];
             }
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -450,21 +462,18 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
             [self getfollowedsWihtUseId:user_id page:1];
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -480,7 +489,8 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             [tempDic setObject:dic forKey:@"Followers"];
@@ -488,15 +498,11 @@
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
                 [tempDic removeAllObjects];
             }
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -508,21 +514,18 @@
     NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setCompletionBlock:^{
-        if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:dic]];
             }
-        }else{
-            if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
-            }
         }
     }];
     [request setFailedBlock:^{
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"当前网络不给力，请稍后重试"];
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
@@ -532,21 +535,16 @@
     
     NSString * str = [NSString stringWithFormat:@"%@/notifications/deletes?&access_token=%@",BASICURL_V1,
                       [SCPLoginPridictive currentToken]];
-    NSLog(@"%@",str );
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
 	[request setCompletionBlock:^{
-        
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"%@",[request error]);
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
-    
     [request startAsynchronous];
 }
 #pragma mark - Action Follow
@@ -557,15 +555,14 @@
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request error]);
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     
     [request startAsynchronous];
@@ -576,14 +573,13 @@
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
 }
@@ -595,14 +591,13 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.requestMethod = @"DELETE";
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
 }
@@ -617,15 +612,14 @@
         [request setPostValue:ob withoutRemoveforKey:@"photo_id"];
     [request setPostValue:folder_id forKey:@"folder_id"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         [request setFailedBlock:^{
-            failure(@"当前网络不给力，请稍后重试");
+            failure(REQUSETFAILERROR);
         }];
     }];
     [request startAsynchronous];
@@ -640,14 +634,13 @@
     [request setPostValue:[NSNumber numberWithBool:NO] forKey:@"is_public"];
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
 }
@@ -661,14 +654,13 @@
     [request setPostValue:[NSNumber numberWithBool:ispublic] forKey:@"is_public"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
 }
@@ -681,18 +673,15 @@
     [request setPostValue:newName forKey:@"name"];
     [request setPostValue:description forKey:@"description"];
     [request setRequestMethod:@"PUT"];
-    
 	[request setCompletionBlock:^{
-        NSLog(@"%@",[request responseString]);
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request responseString]);
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
 }
@@ -705,16 +694,14 @@
     [request setPostValue:idea forKey:@"content"];
     [request setData:nil forKey:@"mm"];
     [request setCompletionBlock:^{
-        NSLog(@"%@",[request responseString]);
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request responseString]);
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
     
@@ -727,18 +714,15 @@
     [request setPostValue:des forKey:@"description"];
     [request setRequestMethod:@"PUT"];
     [request setCompletionBlock:^{
-        NSLog(@"%@",[request responseString]);
-        if ([request responseStatusCode] >= 200 && [request responseStatusCode] < 300) {
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
-        }else{
-            failure(@"当前网络不给力，请稍后重试");
         }
     }];
     [request setFailedBlock:^{
         NSLog(@"%@",[request responseString]);
-        failure(@"当前网络不给力，请稍后重试");
+        failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
-
 }
 @end

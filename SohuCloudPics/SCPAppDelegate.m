@@ -9,7 +9,6 @@
 #import "SCPAppDelegate.h"
 
 #import <QuartzCore/QuartzCore.h>
-
 #import "SCPMainTabController.h"
 #import "SCPFirstIntroController.h"
 #import "SCPNavigationController.h"
@@ -18,6 +17,7 @@
 #import "SCPExplorerController.h"
 #import "SCPAlert_DetailView.h"
 #import "FunctionguideScroll.h"
+#import "AccountSystemRequset.h"
 
 void customedExceptionHandler(NSException *exception)
 {
@@ -44,6 +44,7 @@ void customedExceptionHandler(NSException *exception)
     [_fgc release];
     [super dealloc];
 }
+
 - (void)pragramerSetting
 {
     NSSetUncaughtExceptionHandler(customedExceptionHandler);
@@ -67,7 +68,6 @@ void customedExceptionHandler(NSException *exception)
 
 - (void)showfunctionGuide
 {
-    
     NSNumber * num  = [[NSUserDefaults standardUserDefaults] objectForKey:@"FunctionShowed"];
     if (!num ||![num boolValue]) {
         _fgc = [[FunctionguideScroll alloc] init];

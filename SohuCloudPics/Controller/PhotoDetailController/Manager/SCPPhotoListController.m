@@ -78,7 +78,6 @@
         [self.requset startAsynchronous];
         NSLog(@"read Form NetWork");
     }
-    
 }
 #pragma mark -RequseDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request

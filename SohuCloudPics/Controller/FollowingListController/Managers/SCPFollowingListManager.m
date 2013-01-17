@@ -108,7 +108,9 @@
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataSource.count){
+        
         [_requestManger getFollowingInfoWithUserID:_user_ID];
+        
     }else{
         if (!hasNext && !_isinit){
             _isLoading = NO;

@@ -15,7 +15,6 @@
 @synthesize description = _description;
 @synthesize taskState = _taskState;
 @synthesize thumbnail = _thumbnail;
-//@synthesize keyValue = _keyValue;
 @synthesize request = _request;
 @synthesize data = _data;
 
@@ -45,6 +44,7 @@
 
 - (void)getImageSucess:(void (^)(NSData * imageData,SCPTaskUnit * unit))resultBlock failture:(void(^)(NSError * error,SCPTaskUnit * unit))myfailtureBlock;
 {
+    
     if (self.data) {
         resultBlock(self.data,self);
         return;
@@ -57,7 +57,8 @@
         NSData * data = nil;
         if (!num || ![num boolValue]) {
             //PNG
-            data = UIImagePNGRepresentation(image);
+//            data = UIImagePNGRepresentation(image);
+            data = UIImageJPEGRepresentation(image, 1.f);
         }else{
             //JPEG
            data = UIImageJPEGRepresentation(image, 0.7f);

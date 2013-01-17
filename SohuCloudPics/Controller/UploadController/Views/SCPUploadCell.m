@@ -24,6 +24,7 @@
 
 - (void)dealloc
 {
+    
     [_portraitImageView release];
     [_descBackgroundImageView release];
     [_descTextView release];
@@ -37,15 +38,12 @@
     if (_desc_back_img == nil) {
         _desc_back_img = [[UIImage imageNamed:@"share_pic_comments.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:30];
     }
+    
     if (self) {
         self.frame = CGRectMake(0, 0, 320, 0);
         
         _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 17, 50, 50)];
         _portraitImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
-//        _portraitImageView.layer.borderWidth = 2.0;
-//        _portraitImageView.layer.shadowOffset = CGSizeMake(1.0, 1.0);
-//        _portraitImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
-//        _portraitImageView.layer.shadowOpacity = 0.6;
         _portraitImageView.layer.masksToBounds = NO;
         _portraitImageView.layer.shouldRasterize = YES;
         [self addSubview:_portraitImageView];
@@ -92,17 +90,16 @@
 }
 - (void)textViewDidChange:(UITextView *)textView
 {
+    
     [_descCountLabel setText:[NSString stringWithFormat:@"%d/%d", textView.text.length, DESC_COUNT_LIMIT]];
     CGSize maxinumSize = CGSizeMake(textView.frame.size.width - 13, MAXFLOAT);
     UIFont *font = textView.font;
     CGSize myStringSize = [textView.text sizeWithFont:font constrainedToSize:maxinumSize lineBreakMode:UILineBreakModeClip];
-
     CGRect descFrame = _descTextView.frame;
     descFrame.size.height = myStringSize.height + 19;
     if (descFrame.size.height < 38) {
         descFrame.size.height = 38;
     }
-
     CGRect backFrame = _descBackgroundImageView.frame;
     backFrame.size.height = descFrame.size.height + 20;
     

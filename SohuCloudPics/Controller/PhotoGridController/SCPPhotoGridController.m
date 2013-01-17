@@ -17,6 +17,7 @@
 #import "SCPUploadTaskManager.h"
 #import "SCPAlertView_LoginTip.h"
 
+
 @implementation SCPPhotoGridController
 
 @synthesize albumData = _albumData;
@@ -80,9 +81,7 @@
     view.backgroundColor = [UIColor clearColor];
     _pullingController.tableView.tableFooterView = view;
     [self.view addSubview:_pullingController.view];
-    [self initNavigationItem];
-    [self refresh];
-    
+    [self initNavigationItem];    
 }
 
 - (void)initNavigationItem
@@ -222,6 +221,7 @@
 
 - (void)updateUploadPhotoList
 {
+    
     taskTotal = 0;
     self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:self.albumData.albumId];
     if (!self.uploadTaskList) return;
@@ -510,7 +510,6 @@
 				SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"图片正在上传中,是否删除任务" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil] autorelease];
                 alterView.tag = tag.intValue;
                 [alterView show];
-                
 			} else if (tag.intValue < _photoList.count) {
 				SCPPhoto *photo = [self.photoList objectAtIndex:tag.intValue];
 				NSString * photoId = photo.photoID;
@@ -594,6 +593,7 @@
     [super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
+    [self refresh];
     [self addObserVerOnCenter];
 }
 - (void)viewWillDisappear:(BOOL)animated
@@ -611,8 +611,8 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(albumChange:) name:ALBUMTASKCHANGE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(albumTaskOver:) name:ALBUMUPLOADOVER object:nil];
+    
 }
-
 - (void)removeObserverOnCenter
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALBUMTASKCHANGE object:nil];
@@ -624,10 +624,12 @@
 }
 - (void)albumChange:(NSNotification *)notification
 {
-    
-    if (!taskTotal )  return;
+    if (!taskTotal)  return;
+    if (![notification userInfo]) {
+        [self refresh];
+        return;
+    }
     NSDictionary * requsetInfo = [[[notification userInfo] objectForKey:@"RequsetInfo"] objectForKey:@"data"];
-    NSLog(@"%s, %@",__FUNCTION__ , requsetInfo);
     if (requsetInfo) self.albumData.photoNum++;
     SCPPhoto * photo = [_photoList objectAtIndex:self.uploadTaskList.taskList.count];
     if (requsetInfo && ![requsetInfo isKindOfClass:[NSNull class]]) {

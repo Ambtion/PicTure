@@ -57,7 +57,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
         [_taskList addObject:taskList];
     }
     [self updataAlbumInfoWith:taskList];
-    [self go];g
+    [self go];
 }
 - (void)go
 {
@@ -205,7 +205,6 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
     [_taskList removeObjectAtIndex:0];
     [self removeAlbunInfo:self.curTask.albumId];
     self.curTask = nil;
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:ALBUMUPLOADOVER object:nil userInfo:[_taskDic objectForKey:self.curTask.albumId]];
     if (_taskList.count) {
         [self gotoNext];
@@ -227,6 +226,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 - (void)albumTask:(SCPAlbumTaskList *)albumTaskList requsetFailed:(ASIHTTPRequest *)requset
 {
     NSLog(@"fail one Requset");
+    [[NSNotificationCenter defaultCenter] postNotificationName:ALBUMTASKCHANGE object:nil userInfo:nil];
 }
 
 @end

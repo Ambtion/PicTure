@@ -13,27 +13,23 @@
 #import "SCPAlert_CustomeView.h"
 #import "SCPAlertView_LoginTip.h"
 
-//#import "SCPTaskManager.h"
-
-
 #import "SCPUploadTaskManager.h"
 
 @implementation SCPUploadController
 
 @synthesize keyboardHeight = _keyboardHeight;
 
-//@synthesize labelList = _labelList;
 @synthesize curAlbumID = _curAlbumID;
 @synthesize albumList = _albumList;
 
 @synthesize uploadHeader = _uploadHeader;
 @synthesize uploadTableView = _uploadTableView;
-//@synthesize labelBox = _labelBox;
 @synthesize labelChooser = _labelChooser;
 @synthesize descCell = _descCell;
 
 - (void)dealloc
 {
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_requsetManager setDelegate:nil];
     [_requsetManager release];
@@ -45,7 +41,6 @@
     [_albumList release];
     [_uploadHeader release];
     [_uploadTableView release];
-//    [_commentPostBar release];
     [_labelChooser release];
     [_descCell release];
     [super dealloc];
@@ -59,7 +54,7 @@
     if (self) {
         controller = decontrller;
         _requsetManager = [[SCPRequestManager alloc] init];
-        _imageList = [imageList retain];
+        _imageList = [imageList copy];
         int count = _imageList.count;
         NSMutableArray *mCells = [[NSMutableArray alloc] initWithCapacity:count];
         for (int i = 0; i < count; ++i) {

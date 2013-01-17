@@ -15,11 +15,15 @@
 
 + (void)loginUserId:(NSString *)uid withToken:(NSString *)token RefreshToken:(NSString *)refreshToken;
 
++ (void)refreshToken:(NSString *)token RefreshToken:(NSString *)refreshToken;
+
 + (void)logout;
 
 + (NSString *)currentUserId;
 
 + (NSString *)currentToken;
+
++ (NSString *)refreshToken;
 
 //+ (void)storeData:(NSString *)data forKey:(NSString *)username;
 //

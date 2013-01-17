@@ -46,7 +46,11 @@
     [self storeData:refreshToken forKey:REFRESH_TOKEN];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginStateChange" object:nil userInfo:[NSDictionary dictionaryWithObject:@"Login" forKey:@"LogState"]];
 }
-
++ (void)refreshToken:(NSString *)token RefreshToken:(NSString *)refreshToken
+{
+    [self storeData:token forKey:USER_TOKEN];
+    [self storeData:refreshToken forKey:REFRESH_TOKEN];
+}
 + (void)logout
 {
     [self removeDataForKey:USER_ID];
@@ -64,5 +68,8 @@
 {
     return [self dataForKey:USER_TOKEN];
 }
-
++ (NSString *)refreshToken
+{
+    return [self dataForKey:REFRESH_TOKEN];
+}
 @end
