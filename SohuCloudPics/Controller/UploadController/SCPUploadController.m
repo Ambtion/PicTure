@@ -170,7 +170,6 @@ done:
             return;
         }
     }
-    
     [self.view setUserInteractionEnabled:NO];
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < _imageList.count; i++) {
