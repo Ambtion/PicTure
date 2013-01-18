@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A6C1FDC16A9892600FE77DE /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A6C1FDA16A9892600FE77DE /* libMobClickLibrary.a */; };
 		4AB7B884166CE988002A2E91 /* NSObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB7B873166CE988002A2E91 /* NSObject+JSON.m */; };
 		4AB7B885166CE988002A2E91 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB7B875166CE988002A2E91 /* SBJsonParser.m */; };
 		4AB7B886166CE988002A2E91 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB7B877166CE988002A2E91 /* SBJsonStreamParser.m */; };
@@ -456,6 +457,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A6C1FDA16A9892600FE77DE /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
+		4A6C1FDB16A9892600FE77DE /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		4AB7B871166CE988002A2E91 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		4AB7B872166CE988002A2E91 /* NSObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+JSON.h"; sourceTree = "<group>"; };
 		4AB7B873166CE988002A2E91 /* NSObject+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+JSON.m"; sourceTree = "<group>"; };
@@ -1111,12 +1114,22 @@
 				61124E0515DE0BF6002C844F /* UIKit.framework in Frameworks */,
 				61124E0715DE0BF6002C844F /* Foundation.framework in Frameworks */,
 				61124E0915DE0BF6002C844F /* CoreGraphics.framework in Frameworks */,
+				4A6C1FDC16A9892600FE77DE /* libMobClickLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A6C1FD916A988AC00FE77DE /* Umeng */ = {
+			isa = PBXGroup;
+			children = (
+				4A6C1FDA16A9892600FE77DE /* libMobClickLibrary.a */,
+				4A6C1FDB16A9892600FE77DE /* MobClick.h */,
+			);
+			path = Umeng;
+			sourceTree = "<group>";
+		};
 		4AB7B870166CE988002A2E91 /* SBJson */ = {
 			isa = PBXGroup;
 			children = (
@@ -1175,6 +1188,7 @@
 		4ABF606F166CE2AD001B0FCB /* External */ = {
 			isa = PBXGroup;
 			children = (
+				4A6C1FD916A988AC00FE77DE /* Umeng */,
 				C52F3F2B168C853F009858C0 /* SDWebImage */,
 				4AB7B88E166CEAB8002A2E91 /* ELCImagePicker */,
 				4AB7B870166CE988002A2E91 /* SBJson */,
@@ -3101,6 +3115,11 @@
 				GCC_PREFIX_HEADER = "SohuCloudPics/SohuCloudPics-Prefix.pch";
 				INFOPLIST_FILE = "SohuCloudPics/SohuCloudPics-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/SohuCloudPics/External/Umeng\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -3116,6 +3135,11 @@
 				GCC_PREFIX_HEADER = "SohuCloudPics/SohuCloudPics-Prefix.pch";
 				INFOPLIST_FILE = "SohuCloudPics/SohuCloudPics-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/SohuCloudPics/External/Umeng\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

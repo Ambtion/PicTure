@@ -19,6 +19,8 @@
 #import "FunctionguideScroll.h"
 #import "AccountSystemRequset.h"
 
+#import "MobClick.h"
+
 void customedExceptionHandler(NSException *exception)
 {
     
@@ -41,7 +43,6 @@ void customedExceptionHandler(NSException *exception)
 
 - (void)dealloc
 {
-    
     [_window release];
     [_fgc release];
     [super dealloc];
@@ -54,17 +55,23 @@ void customedExceptionHandler(NSException *exception)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	/* The following statements are used for umeng statistic */
+	[MobClick startWithAppkey:@"50f9208b52701543dc000009"];
+	
     [UIApplication sharedApplication].statusBarHidden = YES;
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     [self pragramerSetting];
+	
     SCPMainTabController *mainTab = [[SCPMainTabController alloc] initWithNibName:nil bundle:NULL];
     SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
     _window.rootViewController = nav;
     [_window makeKeyAndVisible];
     [mainTab release];
     [nav release];
+	
     [self showfunctionGuide];
+	
     return YES;
 }
 
