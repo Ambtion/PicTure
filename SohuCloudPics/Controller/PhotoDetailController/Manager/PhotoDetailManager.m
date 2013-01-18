@@ -71,7 +71,7 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    
+    NSLog(@"info :: %@",info);
     if (_willRefresh){
         
         [_dataSourceArray removeAllObjects];

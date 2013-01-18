@@ -49,12 +49,12 @@
             NSDictionary * dic = [[request responseString] JSONValue];
             [SCPLoginPridictive refreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"access_token"]] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
         }else{
-            SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登陆"] autorelease];
+            SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登录"] autorelease];
             [cus show];
         }
     }];
     [request setFailedBlock:^{
-        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登陆"] autorelease];
+        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登录"] autorelease];
         [cus show];
     }];
     [request startAsynchronous];

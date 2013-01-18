@@ -15,8 +15,8 @@
     [_backgroundImageView release];
     [_alertboxImageView release];
     [_descLabel release];
-    
     [super dealloc];
+    
 }
 
 - (id)initWithMessage:(SCPAlbum *)album delegate:(id<SCPAlert_DetailViewDelegate>)delegate
@@ -44,6 +44,7 @@
         titlelabel.text = @"信息";
         [_alertboxImageView addSubview:titlelabel];
         
+        
         UIFont * font = [UIFont systemFontOfSize:15];
         UIFont * font2 = [UIFont systemFontOfSize:15];
         
@@ -54,7 +55,7 @@
         nameLabel.textAlignment = UITextAlignmentLeft;
         nameLabel.text = @"相册名称";
         [_alertboxImageView addSubview:nameLabel];
-        UILabel * nameDeLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 70, _alertboxImageView.frame.size.width - 60, 15)] autorelease];
+        UILabel * nameDeLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 70, _alertboxImageView.frame.size.width - 60, 17)] autorelease];
         nameDeLabel.numberOfLines = 2;
         nameDeLabel.backgroundColor = [UIColor clearColor];
         nameDeLabel.font = font2;

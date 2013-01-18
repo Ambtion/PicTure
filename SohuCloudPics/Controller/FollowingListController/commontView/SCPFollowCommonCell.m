@@ -62,6 +62,9 @@
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
     _titleLabel.textColor = [UIColor colorWithRed:97.f/255 green:120.f/255 blue:137.f/255 alpha:2];
+    UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(follweImageCick:)] autorelease];
+    [_titleLabel setUserInteractionEnabled:YES];
+    [_titleLabel addGestureRecognizer:gesture];
     [self.contentView addSubview:_titleLabel];
     
     _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 35, 150, 12)];

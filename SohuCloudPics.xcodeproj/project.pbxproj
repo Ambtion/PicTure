@@ -346,7 +346,6 @@
 		C58D865C1612CB9F006FE9EF /* SCPLoginPridictive.m in Sources */ = {isa = PBXBuildFile; fileRef = C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */; };
 		C58D86631612F45A006FE9EF /* MainFeedBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = C58D86621612F45A006FE9EF /* MainFeedBanner.m */; };
 		C58DA659162EADDB001E881D /* BannerForHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58DA658162EADDB001E881D /* BannerForHeadView.m */; };
-		C58E341F16A54D9D00C11E59 /* icon_57.png in Resources */ = {isa = PBXBuildFile; fileRef = C58E341E16A54D9D00C11E59 /* icon_57.png */; };
 		C58E342216A54E1C00C11E59 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C58E342116A54E1C00C11E59 /* Default.png */; };
 		C58E342416A54EE100C11E59 /* title_uploads_photos.png in Resources */ = {isa = PBXBuildFile; fileRef = C58E342316A54EE100C11E59 /* title_uploads_photos.png */; };
 		C58EFC0F162691B100975363 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C58EFC0E162691B100975363 /* MediaPlayer.framework */; };
@@ -2863,7 +2862,6 @@
 				C588740916A52CC500C21AC4 /* description_icon_press.png in Resources */,
 				C588740A16A52CC500C21AC4 /* description_icon.png in Resources */,
 				C588740E16A530F700C21AC4 /* title_description.png in Resources */,
-				C58E341F16A54D9D00C11E59 /* icon_57.png in Resources */,
 				C58E342216A54E1C00C11E59 /* Default.png in Resources */,
 				C58E342416A54EE100C11E59 /* title_uploads_photos.png in Resources */,
 				C526524416A560B600AC1662 /* ground.png in Resources */,

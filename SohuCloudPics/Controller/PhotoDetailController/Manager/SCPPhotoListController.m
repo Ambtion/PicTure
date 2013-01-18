@@ -231,25 +231,44 @@
         return CGAffineTransformRotate(CGAffineTransformIdentity, M_PI_2);
     return CGAffineTransformIdentity;
 }
+- (CGSize)getIdentifyImageSizeWithImageView:(InfoImageView *)imageView
+{
+    CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
+    CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
+    CGRect frameRect = [[UIScreen mainScreen] bounds];
+    CGRect rect = CGRectZero;
+    if (w > frameRect.size.width || h > frameRect.size.height) {
+        CGFloat scale = MIN(frameRect.size.width / w, frameRect.size.height / h);
+        rect = CGRectMake(0, 0, w * scale, h * scale);
+    }else{
+        rect = CGRectMake(0, 0, w, h);
+    }
+    return rect.size;
+}
 - (void)listOrientationChanged:(NSNotification *)notification
 {
     if ([[self.currentImageView.info objectForKey:@"multi_frames"]boolValue]) return;
     [self.view setUserInteractionEnabled:NO];
     animation = YES;
     CGFloat scale = 1.0;
+    
     CGAffineTransform transform = CGAffineTransformIdentity;
+    
     if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
         transform = CGAffineTransformInvert(self.view.transform);
-        if ([self getCurrentImageView].image.size.height > self.view.frame.size.height ||
-            [self getCurrentImageView].image.size.width > self.view.frame.size.width) {
-            scale = MIN( 320.f / [self getCurrentImageView].frame.size.width, 480.f / [self getCurrentImageView].frame.size.height);
+        CGSize identifySzie = [self getIdentifyImageSizeWithImageView:(InfoImageView *)[self getCurrentImageView]];
+        
+        if ([self getCurrentImageView].image.size.height > identifySzie.height ||
+            [self getCurrentImageView].image.size.width > identifySzie.width) {
+            scale = MIN( identifySzie.width / [self getCurrentImageView].frame.size.width, identifySzie.height / [self getCurrentImageView].frame.size.height);
         }else{
             scale = 1.0f;
         }
     }else{
+        
         if ([self getCurrentImageView].image.size.height > self.view.frame.size.height ||
             [self getCurrentImageView].image.size.width > self.view.frame.size.width) {
-            scale = MIN( 480.f / [self getCurrentImageView].frame.size.width, 320.f / [self getCurrentImageView].frame.size.height);
+            scale = MIN( [[UIScreen mainScreen] bounds].size.height / [self getCurrentImageView].frame.size.width, 320.f / [self getCurrentImageView].frame.size.height);
         }else{
             scale = 1.0f;
         }
@@ -465,7 +484,7 @@
     if (self.scrollView.contentOffset.x == 0)
         view = self.fontImageView;
     if (self.scrollView.contentOffset.x == self.scrollView.frame.size.width)
-        view =  self.currentImageView;
+        view = self.currentImageView;
     if (self.scrollView.contentOffset.x == self.scrollView.frame.size.width * 2)
         view = self.rearImageView;
     return view;
@@ -565,6 +584,7 @@
         imageView.center  = CGPointMake(frameRect.size.width  / 2.f, frameRect.size.height / 2.f);
     }
 }
+
 - (void)resetImageScale:(InfoImageView *)imageView
 {
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
@@ -636,6 +656,7 @@
     }else{
         str = [NSString stringWithFormat:@"%@_w640",[[imageView info] objectForKey:@"photo_url"]];
     }
+    
     [imageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options: 0   success:^(UIImage *image) {
         [imageView.actV stopAnimating];
         [self resetImageScale:imageView];
@@ -686,7 +707,6 @@
     
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2,0)];
-    NSLog(@"%s %@",__FUNCTION__,self.info);
 
 }
 - (void)refreshScrollviewWhenPhotonumLessThree
