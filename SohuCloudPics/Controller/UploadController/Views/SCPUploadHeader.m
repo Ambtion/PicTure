@@ -178,11 +178,12 @@
 - (void)albumChooseButtonClicked
 {
     if (!_foldersArray.count) {
+        if ([self.delegate respondsToSelector:@selector(uploadHeadershowCreateAlertView:)])
+            [self performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:self];
         SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:self name:@"专辑名"] autorelease];
         [aln show];
         return;
     }
-    
     _albumChooseButton.tag = !_albumChooseButton.tag;
     if (_albumChooseButton.tag) {
         // very very bad design, must be fixed later!!!
@@ -195,7 +196,6 @@
         [_albumsTable removeFromSuperview];
     }
 }
-
 - (void)dismissAlbumChooseTable
 {
     _albumChooseButton.selected = NO;
@@ -253,6 +253,8 @@
 {
     int row = indexPath.row;
     if (row == 0) {
+        if ([_header.delegate respondsToSelector:@selector(uploadHeadershowCreateAlertView:)])
+            [_header.delegate performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:_header];
         SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:_header name:@"相册名"] autorelease];
         [aln show];
     } else {

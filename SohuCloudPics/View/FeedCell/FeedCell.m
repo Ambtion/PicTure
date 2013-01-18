@@ -80,7 +80,6 @@ enum {
     UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)] autorelease];
     view.backgroundColor = [UIColor colorWithRed:250.f/255 green:250.f/255 blue:250.f/255 alpha:1];
     view.clipsToBounds = YES;
-    
     _photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
     _photoImageView.backgroundColor = [UIColor clearColor];
     _photoImageView.userInteractionEnabled = YES;
@@ -105,7 +104,7 @@ enum {
     [_portraitView addGestureRecognizer:tap];
     [tailerView addSubview:_portraitView];
     
-    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 5 + OFFSETY, 230, 20)];
+    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 4 + OFFSETY, 230, 22)];
     _nameLabel.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:20];
     _nameLabel.textColor = [UIColor colorWithRed:98.0/255 green:98.0/255 blue:98.0/255 alpha:1];
     _nameLabel.numberOfLines = 1;

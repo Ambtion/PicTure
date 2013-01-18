@@ -29,7 +29,7 @@
 
 - (void)dealloc
 {
-    
+    NSLog(@"%s",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_requsetManager setDelegate:nil];
     [_requsetManager release];
@@ -156,6 +156,7 @@ done:
 #pragma mark  UPData OK
 - (void)dismissModalView:(UIButton*)button
 {
+    
     if (!self.curAlbumID) {
         SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"请选择专辑" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
         [alterView show];
@@ -163,14 +164,15 @@ done:
     }
     
     for(SCPUploadCell * cell in _cells) {
-        if ([self stringContainsEmoji:cell.description]) {
-            SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"您输入的内容包含非法字符,请重新输入" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        if ([self stringContainsEmoji:cell.descTextView.text]) {
+            SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"图片描述包含非法字符,请重新输入" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
             [tip show];
             [tip release];
             return;
         }
     }
     [self.view setUserInteractionEnabled:NO];
+    
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < _imageList.count; i++) {
         SCPTaskUnit * unit = [[SCPTaskUnit alloc] init];
@@ -231,6 +233,7 @@ done:
     
     return returnValue;
 }
+
 #pragma mark Back
 - (void)backTotop:(UIButton*)button
 {
@@ -247,6 +250,11 @@ done:
     }
     NSLog(@"%@",albumID);
     self.curAlbumID = albumID;
+}
+- (void)uploadHeadershowCreateAlertView:(SCPUploadHeader *)header
+{
+    NSLog(@"%s",__FUNCTION__);
+    [_cells makeObjectsPerformSelector:@selector(descTextViewresignFirstResponder)];
 }
 #pragma mark -
 #pragma mark keyboard delegate

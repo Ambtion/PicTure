@@ -21,6 +21,7 @@
 @end
 @protocol UploadHeadDeleagte <NSObject>
 - (void)uploadHeader:(SCPUploadHeader *)header selectAlbum:(NSString *)albumID;
+- (void)uploadHeadershowCreateAlertView:(SCPUploadHeader *)header;
 @end
 @interface SCPUploadHeader : UITableViewCell< SCPAlertRenameViewDelegate,SCPRequestManagerDelegate>
 {
@@ -30,6 +31,7 @@
     NSMutableArray * _foldersArray;
     UIActivityIndicatorView * _activity;
 }
+
 @property (assign, nonatomic) id<UploadHeadDeleagte> delegate;
 // data
 @property (strong, nonatomic) NSMutableArray *foldersArray;

@@ -57,6 +57,7 @@
         [alterview release];
     }];
 }
+
 - (BOOL)stringContainsEmoji:(NSString *)string {
     __block BOOL returnValue = NO;
     [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:

@@ -8,6 +8,7 @@
 
 #import "SCPAlert_Rename.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCPAlertView_LoginTip.h"
 
 @implementation SCPAlert_Rename
 
@@ -18,14 +19,15 @@
     [_renameField release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
+    
 }
-
 - (id)initWithDelegate:(id<SCPAlertRenameViewDelegate>)delegate name:(NSString *)name
 {
     
     self = [super initWithFrame:[[UIScreen mainScreen] bounds]];
     
     if (self) {
+        
         _backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _backgroundImageView.image = [UIImage imageNamed:@"pop_bg.png"];
         [self addSubview:_backgroundImageView];
@@ -80,7 +82,6 @@
         [_okButton addTarget:self action:@selector(okClicked) forControlEvents:UIControlEventTouchUpInside];
         [_alertboxImageView addSubview:_okButton];
         _okButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        
         _delegate = delegate;
         
         [self addObserverofKeyBoard];
@@ -96,9 +97,7 @@
 - (void)keyBoardWillShow:(NSNotification *)notice
 {
     
-    NSLog(@"%@",[[notice userInfo] allKeys]);
     CGRect rect = [[[notice userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
     CGRect finalRect = _alertboxImageView.frame;
     finalRect.origin.y -= (finalRect.origin.y +finalRect.size.height - rect.origin.y);
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -116,7 +115,6 @@
         [self removeFromSuperview];
     }];
 }
-
 - (void)show
 {
     [[[UIApplication sharedApplication].delegate window] addSubview:self];
@@ -130,10 +128,55 @@
         [self removeFromSuperview];
     }
 }
+- (BOOL)stringContainsEmoji:(NSString *)string {
+    __block BOOL returnValue = NO;
+    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
+     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+         
+         const unichar hs = [substring characterAtIndex:0];
+         // surrogate pair
+         if (0xd800 <= hs && hs <= 0xdbff) {
+             if (substring.length > 1) {
+                 const unichar ls = [substring characterAtIndex:1];
+                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                 if (0x1d000 <= uc && uc <= 0x1f77f) {
+                     returnValue = YES;
+                 }
+             }
+         } else if (substring.length > 1) {
+             const unichar ls = [substring characterAtIndex:1];
+             if (ls == 0x20e3) {
+                 returnValue = YES;
+             }
+             
+         } else {
+             // non surrogate
+             if (0x2100 <= hs && hs <= 0x27ff) {
+                 returnValue = YES;
+             } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                 returnValue = YES;
+             } else if (0x2934 <= hs && hs <= 0x2935) {
+                 returnValue = YES;
+             } else if (0x3297 <= hs && hs <= 0x3299) {
+                 returnValue = YES;
+             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
+                 returnValue = YES;
+             }
+         }
+     }];
+    
+    return returnValue;
+}
 
 - (void)okClicked
 {
     if (!_renameField.text || [_renameField.text isEqualToString:@""]) {
+        return;
+    }
+    if ([self stringContainsEmoji:_renameField.text]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"相册名称包含非法字符,请重新输入" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [tip show];
+        [tip release];
         return;
     }
     if ([_delegate respondsToSelector:@selector(renameAlertView:OKClicked:)]) {

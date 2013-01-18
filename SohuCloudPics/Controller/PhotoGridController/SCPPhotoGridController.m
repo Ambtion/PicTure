@@ -672,6 +672,7 @@
         [self refresh];
         return;
     }
+    
     NSDictionary * requsetInfo = [[[notification userInfo] objectForKey:@"RequsetInfo"] objectForKey:@"data"];
     if (requsetInfo) self.albumData.photoNum++;
     SCPPhoto * photo = [_photoList objectAtIndex:self.uploadTaskList.taskList.count];

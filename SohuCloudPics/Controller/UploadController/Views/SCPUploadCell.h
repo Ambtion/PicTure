@@ -25,5 +25,5 @@
 @property (strong, nonatomic) UIImageView *descBackgroundImageView;
 @property (strong, nonatomic) UITextView *descTextView;
 @property (strong, nonatomic) UILabel *descCountLabel;
-
+- (void)descTextViewresignFirstResponder;
 @end

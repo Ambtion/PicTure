@@ -13,9 +13,8 @@
 #import "SCPAlert_CustomeView.h"
 
 #define UPTIMEOUT 10.f
+#define UPLOADIMAGESIZE 1024 * 1024 * 10  // 图片最大10MB 
 
-
-#define UPLOADIMAGESIZE 1024 * 1024 * 15  // 图片最大15MB 
 
 @implementation SCPAlbumTaskList
 @synthesize taskList = _taskList;
@@ -60,11 +59,14 @@
             
             if ([imageData length] > UPLOADIMAGESIZE) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    SCPAlert_CustomeView * cus = [[SCPAlert_CustomeView  alloc] initWithTitle:@"图片太大,无法上传"];
-                    [cus show];
-                    [cus release];
+//                    SCPAlert_CustomeView * cus = [[SCPAlert_CustomeView  alloc] initWithTitle:@"图片太大,无法上传"];
+//                    [cus show];
+//                    [cus release];
+                    [self.currentTask.request setUserInfo:[NSDictionary dictionaryWithObject:@"图片太大,无法上传" forKey:@"FAILTURE"]];
+                    [self requestFailed:self.currentTask.request];
+                    return ;
                 });
-                [self.currentTask.request setData:nil withFileName:@"fromIOS" andContentType:@"image/*" forKey:@"files"];
+               
             }else{
                 [self.currentTask.request setData:imageData withFileName:@"fromIOS" andContentType:@"image/*" forKey:@"file"];
             }
@@ -146,12 +148,19 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+    
     NSLog(@"requestFailed :NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
-    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
-    [cus show];
+    NSDictionary * dic = [request userInfo];
     
+    if (dic) {
+        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:[dic objectForKey:@"FAILTURE"]] autorelease];
+        [cus show];
+    }else{
+        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
+        [cus show];
+    }
     if (self.taskList.count)
         [self.taskList removeObjectAtIndex:0];
     if ([_delegate respondsToSelector:@selector(albumTask:requsetFailed:)]) {

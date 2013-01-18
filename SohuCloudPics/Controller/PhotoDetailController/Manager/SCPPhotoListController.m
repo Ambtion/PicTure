@@ -253,7 +253,6 @@
     CGFloat scale = 1.0;
     
     CGAffineTransform transform = CGAffineTransformIdentity;
-    
     if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
         transform = CGAffineTransformInvert(self.view.transform);
         CGSize identifySzie = [self getIdentifyImageSizeWithImageView:(InfoImageView *)[self getCurrentImageView]];

@@ -40,8 +40,54 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+- (BOOL)stringContainsEmoji:(NSString *)string {
+    __block BOOL returnValue = NO;
+    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
+     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+         
+         const unichar hs = [substring characterAtIndex:0];
+         // surrogate pair
+         if (0xd800 <= hs && hs <= 0xdbff) {
+             if (substring.length > 1) {
+                 const unichar ls = [substring characterAtIndex:1];
+                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                 if (0x1d000 <= uc && uc <= 0x1f77f) {
+                     returnValue = YES;
+                 }
+             }
+         } else if (substring.length > 1) {
+             const unichar ls = [substring characterAtIndex:1];
+             if (ls == 0x20e3) {
+                 returnValue = YES;
+             }
+             
+         } else {
+             // non surrogate
+             if (0x2100 <= hs && hs <= 0x27ff) {
+                 returnValue = YES;
+             } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                 returnValue = YES;
+             } else if (0x2934 <= hs && hs <= 0x2935) {
+                 returnValue = YES;
+             } else if (0x3297 <= hs && hs <= 0x3299) {
+                 returnValue = YES;
+             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
+                 returnValue = YES;
+             }
+         }
+     }];
+    
+    return returnValue;
+}
+
 - (void)saveButton:(UIButton *)button
 {
+    if ([self stringContainsEmoji:_textView.text]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"您输入的内容包含非法字符,请重新输入" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [tip show];
+        [tip release];
+        return;
+    }
     [requset feedBackWithidea:_textView.text success:^(NSString *response) {
         SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"成功提交,感谢您的反馈"] autorelease];
         [cus show];
@@ -101,13 +147,12 @@
     _textView.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:16];
     _textView.returnKeyType = UIReturnKeyDefault;
     _textView.delegate = self;
+
     [_textView becomeFirstResponder];
     _textView.textColor = [UIColor colorWithRed:102.f/255 green:102.f/255 blue:102.f/255 alpha:1];
     
     [textView_bg addSubview:_textView];
     _placeHolder = [[UITextField alloc] initWithFrame:CGRectMake(10, 6, 250, 20)];
-//    _placeHolder.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:15];
-//    _placeHolder.textColor = [UIColor colorWithRed:137.f/255 green:137.f/255 blue:137.f/255 alpha:1];
     _placeHolder.placeholder = PLACEHOLDER;
     [_placeHolder setUserInteractionEnabled:NO];
     [_textView addSubview:_placeHolder];
