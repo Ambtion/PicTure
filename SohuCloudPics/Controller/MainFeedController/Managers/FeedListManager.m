@@ -64,7 +64,9 @@
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
         NSLog(@"%@",response);
         allFollowed = [[response objectForKey:@"followings"] intValue];
-        [self.controller.pullingController.headView BannerreloadDataSource];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.controller.pullingController.headView BannerreloadDataSource];
+        });
     } failure:^(NSString *error) {
         [self requestFailed:error];
     }];

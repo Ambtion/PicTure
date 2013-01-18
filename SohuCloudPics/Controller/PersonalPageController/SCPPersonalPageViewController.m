@@ -24,6 +24,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s",__FUNCTION__);
     self.footView = nil;
     [_tableView release];
     [_topButton release];

@@ -99,7 +99,7 @@
     _albumsTable.layer.borderWidth = 1.0;
     _albumsTable.layer.borderColor = [UIColor colorWithRed:145.f/255 green:145.f/255 blue:145.f/255 alpha:1].CGColor;
     _albumsTable.layer.cornerRadius = 8.f;
-
+    
 }
 - (void)initManager
 {
@@ -124,7 +124,6 @@
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     NSArray * array = [[info objectForKey:@"folderinfo"] objectForKey:@"folders"];
-    NSLog(@"%@",[array lastObject]);
     for (NSDictionary * dic in array) {
         FoldersMode * mode = [[FoldersMode alloc] init];
         mode.foldrsName = [dic objectForKey:@"folder_name"];
@@ -150,6 +149,7 @@
 }
 - (void)requestFailed:(NSString *)error
 {
+    
     SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"当前网络不给力，请稍后重试"] autorelease];
     [cus show];
     _albumNameLabel.text = @"网络相册获取失败";
@@ -157,14 +157,14 @@
     [_activity stopAnimating];
     if ([_delegate respondsToSelector:@selector(uploadHeader:selectAlbum:)])
         [_delegate performSelector:@selector(uploadHeader:selectAlbum:) withObject:nil withObject:nil];
-
+    
 }
 #pragma mark Create Folder
 - (void)renameAlertView:(SCPAlert_Rename *)view OKClicked:(UITextField *)textField
 {
     if (!textField.text ||[textField.text isEqualToString:@""]) return;
     if (self.albumChooseButton.selected)
-            [self albumChooseButtonClicked];
+        [self albumChooseButtonClicked];
     [_requestmanager createAlbumWithName:textField.text success:^(NSString *response) {
         [self refreshData];
     } failure:^(NSString *error) {
@@ -233,6 +233,7 @@
         cell.labelText.text = @"新建相册";
         cell.addView.image = [UIImage imageNamed:@"add_new_albume.png"];
     }else{
+        
         FoldersMode * model = [_header.foldersArray objectAtIndex:(row - 1)];
         cell.labelText.text = model.foldrsName;
         if (model.isPublic) {
@@ -251,6 +252,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     int row = indexPath.row;
     if (row == 0) {
         if ([_header.delegate respondsToSelector:@selector(uploadHeadershowCreateAlertView:)])

@@ -26,6 +26,7 @@ static float OFFSET = 0.f;
 
 - (void)dealloc
 {
+    NSLog(@"%s",__FUNCTION__);
     if (wait) {
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
@@ -78,7 +79,9 @@ static float OFFSET = 0.f;
         _personalDataSource.followedAmount = [[response objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[response objectForKey:@"followings"] intValue];
         _personalDataSource.isFollowByMe = [[response objectForKey:@"is_following"] boolValue];
-        [self.controller.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.controller.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [self requestFailed:error];
     }];
@@ -181,6 +184,7 @@ static float OFFSET = 0.f;
 #pragma mark  Limit Scrollview
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    
     if (scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height + 44 && scrollView.contentOffset.y >= 44 && !self.controller.footView.hidden && !_isLoading) {
         [self showLoadingMore];
         _loadingMore = YES;
@@ -189,6 +193,7 @@ static float OFFSET = 0.f;
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    
     if (scrollView.contentOffset.y < 368 - 480) {
         scrollView.contentOffset = CGPointMake(0, 368  - 480);
     }
@@ -245,7 +250,7 @@ static float OFFSET = 0.f;
     label.text  = @"加载更多...";
     UIActivityIndicatorView * act = (UIActivityIndicatorView *)[view viewWithTag:200];
     [act stopAnimating];
-    [_controller.tableView reloadData];
+    [self.controller.tableView reloadData];
 }
 
 #pragma mark TableView Deleagte
@@ -321,7 +326,6 @@ static float OFFSET = 0.f;
     }
     if (personal.datasource.isFollowByMe) {
         [_requestManager destoryFollowing:_user_ID  success:^(NSString *response) {
-            NSLog(@"%@",response);
             [self refreshUserinfo];
         } failure:^(NSString *error) {
             [self requestFailed:error];

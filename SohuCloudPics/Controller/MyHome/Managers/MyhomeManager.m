@@ -69,14 +69,15 @@ static float OFFSET = 0.f;
 {
     if (_isinit || ![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
-//        NSLog(@"%@",response);
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
         _personalDataSource.desc = [response objectForKey:@"user_desc"];
         _personalDataSource.albumAmount = [[response objectForKey:@"public_folders"] intValue] + [[response objectForKey:@"private_folders"] intValue];
         _personalDataSource.followedAmount = [[response objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[response objectForKey:@"followings"] intValue];
-        [self.controller.homeTable reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.controller.homeTable reloadData];
+        });
     } failure:^(NSString *error) {
         [self requestFailed:error];
     }];

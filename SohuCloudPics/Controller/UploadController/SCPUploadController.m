@@ -110,6 +110,8 @@
     [_selectButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
     [_selectButton addTarget:self action:@selector(dismissModalView:) forControlEvents:UIControlEventTouchUpInside];
     _selectButton.frame = CGRectMake(320 - 40, 2, 35, 35);
+    [_selectButton setAlpha:0.3];
+    [_selectButton setUserInteractionEnabled:NO];
     [self.view addSubview:_selectButton];
     
 }
@@ -248,8 +250,9 @@ done:
         [_selectButton setUserInteractionEnabled:NO];
         return;
     }
-    NSLog(@"%@",albumID);
-    self.curAlbumID = albumID;
+        self.curAlbumID = albumID;
+    [_selectButton setAlpha:1.f];
+    [_selectButton setUserInteractionEnabled:YES];
 }
 - (void)uploadHeadershowCreateAlertView:(SCPUploadHeader *)header
 {
