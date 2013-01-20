@@ -50,7 +50,9 @@ void customedExceptionHandler(NSException *exception)
 
 - (void)pragramerSetting
 {
-    NSSetUncaughtExceptionHandler(customedExceptionHandler);
+	/* the following line may prevent umeng statistic module from sending crash reports */
+	/* so, do NOT remove the comment of the following line */
+    /* NSSetUncaughtExceptionHandler(customedExceptionHandler); */
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
