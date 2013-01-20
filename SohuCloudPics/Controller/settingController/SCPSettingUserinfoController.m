@@ -78,7 +78,6 @@
              if (ls == 0x20e3) {
                  returnValue = YES;
              }
-             
          } else {
              // non surrogate
              if (0x2100 <= hs && hs <= 0x27ff) {
@@ -101,6 +100,7 @@
 {
     [super viewDidLoad];
     [self addSubviews];
+    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -133,7 +133,6 @@
     UITapGestureRecognizer * tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGuesture:)] autorelease];
     tap.delegate = self;
     [self.view addGestureRecognizer:tap];
-    
     
     UIButton* okButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [okButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];

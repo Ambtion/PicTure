@@ -15,7 +15,8 @@
 
 #define TIMEOUT 10.f
 #define STRINGENCODING NSUTF8StringEncoding
-#define REQUSETFAILERROR @"当前网络不给力,请稍后重试"
+#define REQUSETFAILERROR [NSString stringWithFormat:@"%@",@"当前网络不给力,请稍后重试"]
+
 #define OAUTHFAILED 401
 @implementation SCPRequestManager
 @synthesize delegate = _delegate;
@@ -622,7 +623,9 @@
             failure(REQUSETFAILERROR);
         }];
     }];
+    
     [request startAsynchronous];
+    
 }
 - (void)createAlbumWithName:(NSString *)newName success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
@@ -634,9 +637,13 @@
     [request setPostValue:[NSNumber numberWithBool:NO] forKey:@"is_public"];
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
 	[request setCompletionBlock:^{
+        NSLog(@"%@",[request responseString]);
         NSInteger code = [request responseStatusCode];
-        if ([self handlerequsetStatucode:code withblock:failure]) {
-            success([request responseString]);
+//        if ([self handlerequsetStatucode:code withblock:failure]) {
+//            success([request responseString]);
+//        }
+        if (code != 200) {
+            failure(REQUSETFAILERROR); 
         }
     }];
     [request setFailedBlock:^{
@@ -647,6 +654,7 @@
 
 - (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName ispublic:(BOOL)ispublic success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
+    
     NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     [request setStringEncoding:STRINGENCODING];

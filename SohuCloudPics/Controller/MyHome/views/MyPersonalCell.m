@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCPAppDelegate.h"
 #import "SCPMenuNavigationController.h"
+#import "SCPLoginPridictive.h"
 
 @implementation MyPersonalCelldataSource
 
@@ -96,7 +97,10 @@
 
 - (void)setHomeBackGroudImage
 {
-    NSString * bgname = [[NSUserDefaults standardUserDefaults] objectForKey:@"HomeBackImage"];
+    
+    NSDictionary * dic = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
+    NSString * bgname = [dic objectForKey:@"HomeBackImage"];
+    NSLog(@"%@",dic);
     if (bgname) {
         _backgroundImageView.image = [UIImage imageNamed:bgname];
     }else{

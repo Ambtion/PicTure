@@ -9,6 +9,7 @@
 #import "SCPCacheManager.h"
 
 @implementation SCPCacheManager
+
 + (void)removeCacheOfImage
 {
     NSFileManager * manager  = [NSFileManager defaultManager];
@@ -18,13 +19,14 @@
     [manager createDirectoryAtPath:str withIntermediateDirectories:YES attributes:nil error:NULL];
     if (error) NSLog(@"error::%@",error);
 }
-+ (void)removeCacheAlluserInfo:(BOOL)isRemove
++ (void)removeCacheAlluserInfobutMe
 {
     
     NSDictionary * dic = [[NSBundle mainBundle] infoDictionary];
     NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
     NSUserDefaults *appUserDefaults = [[[NSUserDefaults alloc] init] autorelease];
     NSDictionary * cacheDic = [appUserDefaults persistentDomainForName: bundleId];
+    NSLog(@"cacheDic::%@",cacheDic);
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSString * _use_id = nil;
@@ -32,7 +34,8 @@
     NSString * _refresh_token = nil;
     NSNumber * GuideViewShowed = nil;
     NSNumber * FunctionShowed = nil;
-    NSNumber * JPEG = nil;
+    NSDictionary * userinfo = nil;
+    
     //read
     if ([defaults objectForKey:USER_ID])
         _use_id = [NSString stringWithFormat:@"%@",[defaults objectForKey:USER_ID]];
@@ -44,12 +47,14 @@
         GuideViewShowed = [[[defaults objectForKey:@"GuideViewShowed"] copy] autorelease];
     if ([defaults objectForKey:@"FunctionShowed"])
         FunctionShowed = [[[defaults objectForKey:@"FunctionShowed"] copy] autorelease];
-    if ([defaults objectForKey:@"JPEG"]) {
-        JPEG = [[[defaults objectForKey:@"JPEG"] copy] autorelease];
+    if ([defaults objectForKey:[SCPLoginPridictive currentUserId]]) {
+        userinfo = [[[defaults objectForKey:[SCPLoginPridictive currentUserId]] copy] autorelease];
     }
+    
     //remove
     for (NSString * str in [cacheDic allKeys])
         [defaults removeObjectForKey:str];
+    
     if (_use_id)
         [defaults setObject:_use_id forKey:USER_ID];
     if (_use_token)
@@ -60,11 +65,12 @@
         [defaults setObject:GuideViewShowed forKey:@"GuideViewShowed"];
     if (FunctionShowed)
         [defaults setObject:FunctionShowed forKey:@"FunctionShowed"];
-    if (!isRemove){
-        if (JPEG)
-            [defaults setObject:JPEG forKey:@"JPEG"];
-    }
+    
+    if (userinfo)
+        [defaults setObject:userinfo forKey:[SCPLoginPridictive currentUserId]];
     [defaults synchronize];
+    NSDictionary * cacheDics = [appUserDefaults persistentDomainForName: bundleId];
+    NSLog(@"After::cacheDic::%@",cacheDics);
 }
 
 @end

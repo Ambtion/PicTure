@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "SCPStoreLibaray.h"
+#import "SCPLoginPridictive.h"
 
 @interface SCPCacheManager : NSObject
 
 + (void)removeCacheOfImage;
-+ (void)removeCacheAlluserInfo:(BOOL)isRemove;
++ (void)removeCacheAlluserInfobutMe;
 @end

@@ -797,6 +797,7 @@
             [self refreshScrollView];
             return;
         }
+        
         if (curPage == 0) {
             curPage = 1;
             [self refreshScrollView];
@@ -810,7 +811,6 @@
             return;
         }
     }
-    
     if(x == (self.scrollView.frame.size.width * 2)) {
         curPage = [self validPageValue:curPage + 1];
         NSLog(@"more::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);

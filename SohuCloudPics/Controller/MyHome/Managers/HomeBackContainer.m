@@ -8,6 +8,7 @@
 
 #import "HomeBackContainer.h"
 #import "SCPAppDelegate.h"
+#import "SCPLoginPridictive.h"
 
 static NSString * IMAGENAME[4]  = {@"user_bg_plain.png",
     @"user_bg_sea.png",
@@ -64,7 +65,6 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
         [_boxViews addSubview:imageview];
         [_boxViews addSubview:button];
     }
-    
     [self setSelecteStateonButton];
 }
 - (void)tapGestureHandle:(id)gesture
@@ -105,17 +105,22 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
 
 - (void)memoryBackImageWithName:(NSString *)name
 {
+    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
     if ([name isEqualToString:@""]) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"HomeBackImage"];
+//        [userDefault removeObjectForKey:@"HomeBackImage"];
     }else{
-        [[NSUserDefaults standardUserDefaults] setObject:name forKey:@"HomeBackImage"];
+        NSMutableDictionary * userinfo = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:[SCPLoginPridictive currentUserId]]];
+        if (!userinfo) userinfo = [NSMutableDictionary dictionaryWithCapacity:0];
+        [userinfo setValue:name forKey:@"HomeBackImage"];
+        [userDefault setObject:userinfo forKey:[SCPLoginPridictive currentUserId]];
     }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
+    [userDefault synchronize];
 }
 - (NSInteger)getSelectedImage
 {
-    NSString * str = [[NSUserDefaults standardUserDefaults] objectForKey:@"HomeBackImage"];
+    
+    NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
+    NSString * str = [userinfo objectForKey:@"HomeBackImage"];
     if (!str || [str isEqualToString:@""])       return 1002;
     for (int i = 0; i < 4; i++)
         if([IMAGENAME[i] isEqualToString:str]) return 1000 + i;

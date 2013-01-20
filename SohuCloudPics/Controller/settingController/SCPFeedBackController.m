@@ -167,7 +167,6 @@
         textView_bg.frame = rect;
         _textView.frame = CGRectMake(2, 2, textView_bg.frame.size.width - 4, textView_bg.frame.size.height - 4);
     }];
-    NSLog(@"%@",[dic objectForKey:UIKeyboardFrameEndUserInfoKey]);
 }
 - (void)keyboardWillHide:(NSNotification *)notification
 {

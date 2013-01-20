@@ -17,7 +17,7 @@
     [_imageView release];
     [super dealloc];
 }
--(id)initWithOrinal:(CGPoint)point
+-(id)initWithOrigin:(CGPoint)point
 {
     self = [super init];
     if (self) {

@@ -146,6 +146,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         [loginView show];
     }
 }
+
 -(void)onCheckVersion
 {
     
@@ -181,7 +182,6 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     if (loginView == alertView && buttonIndex == 1) {
         
         [SCPLoginPridictive logout];
-        [SCPCacheManager removeCacheAlluserInfo:YES];
         SCPMenuNavigationController * mnv = (SCPMenuNavigationController *)_controller;
         [mnv popToRootViewControllerAnimated:NO];
         SCPMainTabController * mainTab = [[mnv childViewControllers] lastObject];
@@ -191,7 +191,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     if (cacheView == alertView && buttonIndex == 1) {
         
         [SCPCacheManager removeCacheOfImage];
-        [SCPCacheManager removeCacheAlluserInfo:NO];
+//        [SCPCacheManager removeCacheAlluserInfobutMe];
     }
 }
 

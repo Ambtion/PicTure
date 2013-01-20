@@ -7,6 +7,7 @@
 //
 
 #import "SCPTaskUnit.h"
+#import "SCPLoginPridictive.h"
 
 @implementation SCPTaskUnit
 
@@ -53,7 +54,8 @@
     [lib assetForURL:_asseetUrl resultBlock:^(ALAsset *asset) {
         CGImageRef  cgimage =[[asset defaultRepresentation] fullResolutionImage];
         UIImage * image = [UIImage imageWithCGImage:cgimage];
-        NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"JPEG"];
+        NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
+        NSNumber * num = [userinfo objectForKey:@"JPEG"];
         NSData * data = nil;
         if (!num || ![num boolValue]) {
             //PNG

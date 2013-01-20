@@ -16,7 +16,9 @@ static NSString * url_string = nil;
 static NSString * title = nil;
 static NSString * provider = nil;
 
-
+@interface SCPAuthorizeViewController()
+- (void)webviewCancelLogin:(id)sender;
+@end
 @implementation SCPAuthorizeViewController
 @synthesize delegate;
 
@@ -25,6 +27,7 @@ static NSString * provider = nil;
     [self stopWait];
     [super dealloc];
 }
+
 - (id)initWithMode:(LoginModel)loginMode controller:(id)Acontroller
 {
     self = [super init];
@@ -44,7 +47,6 @@ static NSString * provider = nil;
                 url_string = RENRENAUTHOR2URL;
                 title = @"人人登录";
                 provider = @"renren";
-                
                 break;
             default:
                 break;
@@ -56,11 +58,20 @@ static NSString * provider = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem * cancelLogin = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelLogin:)] autorelease];
+    UIBarButtonItem * cancelLogin = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(webviewCancelLogin:)] autorelease];
     self.navigationItem.leftBarButtonItem = cancelLogin;
     self.title = title;
+//    [self workaround51Crash];
     [self OAuth2authorize];
     
+}
+- (void)workaround51Crash
+{
+    id workaround51Crash = [[NSUserDefaults standardUserDefaults] objectForKey:@"WebKitLocalStorageDatabasePathPreferenceKey"];
+    NSDictionary * emptySettings = (workaround51Crash != nil)
+    ? [NSDictionary dictionaryWithObject:workaround51Crash forKey:@"WebKitLocalStorageDatabasePathPreferenceKey"]
+    : [NSDictionary dictionary];
+    [[NSUserDefaults standardUserDefaults] setPersistentDomain:emptySettings forName:[[NSBundle mainBundle] bundleIdentifier]];
 }
 - (void)OAuth2authorize
 {
@@ -72,7 +83,7 @@ static NSString * provider = nil;
     [self.view addSubview:webView];
     
 }
-- (void)cancelLogin:(id)sender
+- (void)webviewCancelLogin:(id)sender
 {
     [controller dismissModalViewControllerAnimated:YES];
 }

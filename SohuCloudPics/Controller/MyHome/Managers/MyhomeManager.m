@@ -67,6 +67,7 @@ static float OFFSET = 0.f;
 }
 - (void)refreshUserinfo
 {
+    
     if (_isinit || ![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];

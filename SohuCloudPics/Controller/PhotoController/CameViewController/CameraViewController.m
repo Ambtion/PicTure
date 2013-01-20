@@ -108,6 +108,7 @@
     [((SCPMenuNavigationController *)self.navigationController).ribbonView setHidden:NO];
 }
 #pragma mark -
+#pragma mark initViews
 -(void)initDataContainers
 {
     _gifArray = [[NSMutableArray alloc] initWithCapacity:0];
@@ -137,6 +138,7 @@
     [self.preview setUserInteractionEnabled:YES];
     [self.view addSubview:_preview];
     UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlFocus:)];
+    tap.delegate = self;
     tap.numberOfTapsRequired = 1;
     self.preview.userInteractionEnabled = YES;
     [self.preview addGestureRecognizer:tap];
@@ -146,16 +148,16 @@
 -(void)addFuctionsubviews
 {
     //add Flash on preview
-    _flashButton = [[FlashButton alloc] initWithOrinal:CGPointMake(10, 12)];
+    _flashButton = [[FlashButton alloc] initWithOrigin:CGPointMake(10, 12)];
     [_flashButton addtarget:self action:@selector(flashswitch:)];
     [self.preview addSubview:_flashButton.view];
-    
     //add secenSwitch preview
+    
     _secenSwitch = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     _secenSwitch.frame = CGRectMake(240, 10, 70, 40);
-    [_secenSwitch addTarget:self action:@selector(secenSwitch:) forControlEvents:UIControlEventTouchUpInside];
     [_secenSwitch setImage:[UIImage imageNamed:@"摄像头.png"] forState:UIControlStateNormal];
     [_secenSwitch setImage:[UIImage imageNamed:@"摄像头-2.png"] forState:UIControlStateHighlighted];
+    [_secenSwitch addTarget:self action:@selector(secenSwitch:) forControlEvents:UIControlEventTouchUpInside];
     [self.preview addSubview:_secenSwitch];
     
     //add TabbarBg selfView
@@ -190,6 +192,14 @@
     
 }
 
+#pragma mark GestureDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+//    CGPoint point = [touch locationInView:self.view];
+    if ([touch.view isKindOfClass:[UIButton class]])
+        return NO;
+    return YES;
+}
 #pragma mark-
 #pragma mark Camera
 -(void)openCamera
@@ -282,20 +292,21 @@
     [UIView commitAnimations];
     
 }
+
 -(void)flashswitch:(FlashButton*)button
 {
-    //    [CameraImageHelper setFlashMode:button.selection];
     [camerBox setFlashMode:button.selection];
 }
+
 -(void)secenSwitch:(UIButton*)button
 {
+    
     NSLog(@"secenSwitch");
-    // [self closeCamera];
     [self photoSwitch:nil setPhotoTypeOfImage:outPutImage];
     [camerBox switchCameraPosition];
     
-    
 }
+
 -(void)backClick:(UIButton*)button
 {
     NSLog(@"backClick");

@@ -168,6 +168,7 @@
     [_requestmanager createAlbumWithName:textField.text success:^(NSString *response) {
         [self refreshData];
     } failure:^(NSString *error) {
+        
         SCPAlert_CustomeView * alterview = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
         [alterview show];
         [alterview release];

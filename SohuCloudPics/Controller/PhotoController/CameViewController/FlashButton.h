@@ -16,6 +16,6 @@
     id _controller;
 }
 @property(assign)NSInteger selection;
--(id)initWithOrinal:(CGPoint)point;
+-(id)initWithOrigin:(CGPoint)point;
 -(void)addtarget:(UIViewController*)controller  action:(SEL)Aaction;
 @end

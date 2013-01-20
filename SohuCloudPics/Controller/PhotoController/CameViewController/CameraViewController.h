@@ -20,7 +20,7 @@
 
 @class CameraViewController;
 
-@interface CameraViewController : UIViewController<phothswitchDelegate,UIAlertViewDelegate>
+@interface CameraViewController : UIViewController<phothswitchDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate>
 {
     CameraImageBox * camerBox;
     UIImageView * _preview;
