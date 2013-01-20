@@ -27,7 +27,7 @@
     [request setPostValue:CLIENT_ID forKey:@"client_id"];
     [request addRequestHeader:@"accept" value:@"application/json"];
     [request setCompletionBlock:^{
-        
+        NSLog(@"%@ %d",[request responseString],[request responseStatusCode]);
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [NSString stringWithFormat:@"%@/api/v1/user?access_token=%@",BASICURL,[[[request responseString] JSONValue] objectForKey:@"access_token"]];
             NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[[request responseString] JSONValue]];

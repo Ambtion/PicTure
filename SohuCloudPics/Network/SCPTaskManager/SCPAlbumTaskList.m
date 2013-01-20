@@ -59,9 +59,7 @@
             
             if ([imageData length] > UPLOADIMAGESIZE) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-//                    SCPAlert_CustomeView * cus = [[SCPAlert_CustomeView  alloc] initWithTitle:@"图片太大,无法上传"];
-//                    [cus show];
-//                    [cus release];
+                    
                     [self.currentTask.request setUserInfo:[NSDictionary dictionaryWithObject:@"图片太大,无法上传" forKey:@"FAILTURE"]];
                     [self requestFailed:self.currentTask.request];
                     return ;

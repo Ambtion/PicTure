@@ -529,7 +529,6 @@
         [_alterView dismissWithClickedButtonIndex:0 animated:YES];
         [_alterView release],_alterView = nil;
     }
-//    SCPAlert_CustomeView * cus = [[SCPAlert_CustomeView alloc] initWithTitle:@"图片"]
 }
 
 

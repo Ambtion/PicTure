@@ -12,10 +12,9 @@
 #import "JSON.h"
 #import "SCPAlert_CustomeView.h"
 
-
 #define TIMEOUT 10.f
 #define STRINGENCODING NSUTF8StringEncoding
-#define REQUSETFAILERROR [NSString stringWithFormat:@"%@",@"当前网络不给力,请稍后重试"]
+#define REQUSETFAILERROR @"当前网络不给力,请稍后重试"
 
 #define OAUTHFAILED 401
 @implementation SCPRequestManager
@@ -35,6 +34,7 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [tempDic release];
     [super dealloc];
+    
 }
 - (void)refreshToken:(NSInteger)requsetStatusCode
 {
@@ -619,9 +619,7 @@
         }
     }];
     [request setFailedBlock:^{
-        [request setFailedBlock:^{
-            failure(REQUSETFAILERROR);
-        }];
+        failure(REQUSETFAILERROR);
     }];
     
     [request startAsynchronous];
@@ -637,13 +635,10 @@
     [request setPostValue:[NSNumber numberWithBool:NO] forKey:@"is_public"];
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
 	[request setCompletionBlock:^{
-        NSLog(@"%@",[request responseString]);
+        
         NSInteger code = [request responseStatusCode];
-//        if ([self handlerequsetStatucode:code withblock:failure]) {
-//            success([request responseString]);
-//        }
-        if (code != 200) {
-            failure(REQUSETFAILERROR); 
+        if ([self handlerequsetStatucode:code withblock:failure]) {
+            success([request responseString]);
         }
     }];
     [request setFailedBlock:^{
@@ -654,6 +649,7 @@
 
 - (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName ispublic:(BOOL)ispublic success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
+    
     
     NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];

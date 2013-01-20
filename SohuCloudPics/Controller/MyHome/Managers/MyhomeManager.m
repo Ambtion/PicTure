@@ -76,9 +76,7 @@ static float OFFSET = 0.f;
         _personalDataSource.albumAmount = [[response objectForKey:@"public_folders"] intValue] + [[response objectForKey:@"private_folders"] intValue];
         _personalDataSource.followedAmount = [[response objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[response objectForKey:@"followings"] intValue];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.controller.homeTable reloadData];
-        });
+        [self.controller.homeTable reloadData];
     } failure:^(NSString *error) {
         [self requestFailed:error];
     }];

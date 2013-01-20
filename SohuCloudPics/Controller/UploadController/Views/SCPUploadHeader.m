@@ -16,6 +16,7 @@
 
 #import "SCPNewFoldersCell.h"
 #define DESLABEL @"网络相册获取中"
+#define MAXLIMITNUM 1000
 
 @interface AlbumsTableManager : NSObject <UITableViewDelegate, UITableViewDataSource>
 @property (assign, nonatomic) SCPUploadHeader *header;
@@ -171,7 +172,6 @@
         
         SCPAlert_CustomeView * alterview = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
         [alterview show];
-        [alterview release];
     }];
 }
 #pragma mark -
@@ -244,8 +244,8 @@
         }
     }
     return cell;
+    
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _header.foldersArray.count + 1;
@@ -257,7 +257,12 @@
     int row = indexPath.row;
     if (row == 0) {
         if ([_header.delegate respondsToSelector:@selector(uploadHeadershowCreateAlertView:)])
-            [_header.delegate performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:_header];
+            [_header.delegate performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:_header];\
+        if ([_header foldersArray].count >= MAXLIMITNUM) {
+            SCPAlert_CustomeView * alterview = [[[SCPAlert_CustomeView alloc] initWithTitle:@"相册数已达上限,无法创建"] autorelease];
+            [alterview show];
+            return;
+        }
         SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:_header name:@"相册名"] autorelease];
         [aln show];
     } else {
