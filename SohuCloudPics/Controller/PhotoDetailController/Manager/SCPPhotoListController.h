@@ -15,7 +15,6 @@
 @class PhotoDetailManager;
 
 @interface InfoImageView : UIImageView<UIWebViewDelegate,ASIHTTPRequestDelegate>
-
 @property(nonatomic,retain)NSDictionary * info;
 @property(nonatomic,assign)UIActivityIndicatorView * actV;
 @property(nonatomic,retain)UIWebView * webView;
@@ -29,6 +28,14 @@
 @protocol SCPPhotoListControllerDeletate <NSObject>
 - (void)whenViewRemveFromSuperview;
 @end
+
+typedef enum _imageStatePosition
+{
+    AtLess = 0,
+    AtNomal,
+    AtMore
+    
+}imageStatePosition;
 
 @interface SCPPhotoListController : UIViewController <UIScrollViewDelegate,SCPRequestManagerDelegate>
 {
@@ -52,6 +59,7 @@
     NSInteger Pagenum;
     BOOL isInit;
     BOOL hasNextPage;
+    imageStatePosition Imagestate;
     //for animation
     BOOL animation;
     BOOL isLoading;

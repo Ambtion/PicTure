@@ -37,7 +37,7 @@
         for (int i = 0; i < photoCount;  i++) {
             
             /* imageView */
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(4 + i * 79, 5, 75, 75)];
+            UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(4 + i * 79, 5, 75, 75)];
             UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTap:)];
             [imageView addGestureRecognizer:gesture];
             [gesture release];

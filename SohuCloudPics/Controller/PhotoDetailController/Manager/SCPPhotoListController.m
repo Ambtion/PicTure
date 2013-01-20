@@ -279,7 +279,7 @@
             self.view.frame = [UIScreen mainScreen].bounds;
         animation = NO;
         [self initSubViews];
-        NSLog(@"after %s , %@",__FUNCTION__ , NSStringFromCGSize([self currentImageView].bounds.size));
+//        NSLog(@"after %s , %@",__FUNCTION__ , NSStringFromCGSize([self currentImageView].bounds.size));
         [self.view setUserInteractionEnabled:YES];
     }];
 }
@@ -349,16 +349,16 @@
     self.bgView = [[[UIView alloc] initWithFrame:rect] autorelease];
     self.bgView.backgroundColor = [UIColor blackColor];
     [self.view  addSubview:self.bgView];
-
+    
     self.scrollView = [[[UIScrollView alloc] initWithFrame:self.bgView.bounds] autorelease];
     self.scrollView.delegate = self;
     self.scrollView.backgroundColor = [UIColor blackColor];
     [self.bgView addSubview:self.scrollView];
-
+    
     [self addFontScrollView];
     [self addCurScrollView];
     [self addrearScrollView];
-
+    
     [self setScrollViewProperty];
     [self refreshScrollView];
     
@@ -626,10 +626,10 @@
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
     CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
     CGRect frameRect = self.scrollView.frame;
-
+    
     frameRect.size.width -= 2  * OFFSET;
     [self resetRect:imageView];
-
+    
     if ([imageView isEqual:self.currentImageView]) {
         self.curscrollView.contentSize = imageView.frame.size;
         [self.curscrollView setContentOffset:CGPointMake(0, 0)];
@@ -647,7 +647,7 @@
     [self resetModel:imageView];
     
     if (![[[imageView info] objectForKey:@"multi_frames"] boolValue])
-            [imageView.actV startAnimating];
+        [imageView.actV startAnimating];
     NSString * str = nil;
     if (h > w) {
         str = [NSString stringWithFormat:@"%@_h960",[[imageView info] objectForKey:@"photo_url"]];
@@ -683,16 +683,21 @@
 }
 - (void)refreshScrollviewOnMinBounds
 {
+    
     self.fontImageView.info = [imageArray objectAtIndex:0];
     self.currentImageView.info = [imageArray objectAtIndex:1];
     self.rearImageView.info = [imageArray objectAtIndex:2];
     self.info = self.fontImageView.info;
+    
     [self resetImageFrame:self.fontImageView];
     [self resetImageFrame:self.currentImageView];
     [self resetImageFrame:self.rearImageView];
     
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
+//    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointZero];
+    Imagestate = AtLess;
+    NSLog(@"min ::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
+
 }
 - (void)refreshScrollviewOnMaxBounds
 {
@@ -700,14 +705,17 @@
     self.currentImageView.info = [imageArray objectAtIndex:imageArray.count - 2];
     self.fontImageView.info = [imageArray objectAtIndex:imageArray.count - 3];
     self.info = self.rearImageView.info;
-    [self resetImageFrame:self.fontImageView];
-    [self resetImageFrame:self.currentImageView];
-    [self resetImageFrame:self.rearImageView];
     
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
+    [self resetImageFrame:self.rearImageView];
+    [self resetImageFrame:self.currentImageView];
+    [self resetImageFrame:self.fontImageView];
+    
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2,0)];
+    Imagestate = AtMore;
+    NSLog(@"max ::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
 
 }
+
 - (void)refreshScrollviewWhenPhotonumLessThree
 {
     self.fontImageView.info = [imageArray objectAtIndex:0];
@@ -726,12 +734,12 @@
     if (photoNum == 1) {
         [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
     }
+    
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * curPage, 0)];
-
 }
 - (void)refreshScrollViewNormal
 {
-    if ([self getDisplayImagesWithCurpage:curPage]) {
+    if ([self getDisplayImagesWithCurpage:curPage]) { //read images into curImages
         
         self.fontImageView.info = [curImages objectAtIndex:0];
         self.currentImageView.info = [curImages objectAtIndex:1];
@@ -741,8 +749,11 @@
         [self resetImageFrame:self.currentImageView];
         [self resetImageFrame:self.fontImageView];
         [self resetImageFrame:self.rearImageView];
+        
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
     }
+    NSLog(@"Nomal ::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
+
 }
 
 - (void)refreshScrollView{
@@ -750,26 +761,25 @@
     if (!imageArray || imageArray.count == 0) {
         return;
     }
-    [self.scrollView setUserInteractionEnabled:NO];
-    NSLog(@"current ::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
+    [self.view setUserInteractionEnabled:NO];
     if (photoNum < 3) {
         [self refreshScrollviewWhenPhotonumLessThree];
     }else if (curPage == 0) {
         [self refreshScrollviewOnMinBounds];
     }else if (curPage == imageArray.count - 1) {
         [self refreshScrollviewOnMaxBounds];
+        
     }else{
         [self refreshScrollViewNormal];
     }
-    [self.scrollView setUserInteractionEnabled:YES];
-
-
+    [self.view setUserInteractionEnabled:YES];
 }
 
 #pragma mark scrollView  Delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    
     if (isLoading || animation)  return;
     if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging])      return;
     
@@ -780,14 +790,19 @@
     int x = self.scrollView.contentOffset.x;
     if (x == self.scrollView.frame.size.width) {
         
+        if (Imagestate != AtNomal) {
+            if (Imagestate == AtLess) curPage++;
+            if (Imagestate == AtMore) curPage--;
+            Imagestate = AtNomal;
+            [self refreshScrollView];
+            return;
+        }
         if (curPage == 0) {
-            
             curPage = 1;
             [self refreshScrollView];
             NSLog(@"srollView To less");
             return;
         }
-        
         if (curPage == photoNum - 1) {
             curPage = photoNum - 2;
             [self refreshScrollView];
@@ -795,22 +810,22 @@
             return;
         }
     }
+    
     if(x == (self.scrollView.frame.size.width * 2)) {
-        
         curPage = [self validPageValue:curPage + 1];
-        NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
+        NSLog(@"more::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
         [self refreshScrollView];
         if (curPage >= imageArray.count - 1 && imageArray.count <= photoNum)  [self getMoreImage];
         return;
     }
+    
     if(x == 0) {
-        NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
-        curPage = [self validPageValue:curPage-1];
+        curPage = [self validPageValue:curPage - 1];
+        NSLog(@"less::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
         [self refreshScrollView];
     }
     
 }
-
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     if ([scrollView isEqual:self.curscrollView]) {

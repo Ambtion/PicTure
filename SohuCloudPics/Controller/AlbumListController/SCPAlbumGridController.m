@@ -81,7 +81,7 @@
         [cell updateViewWithAlbum:album position:indexInCell preToDel:(_state == SCPAlbumControllerStateDelete)];
         [cell coverImageViewAt:indexInCell].tag = i;
 		[cell deleteViewAt:indexInCell].tag = i; // for delete button
-		
+        [cell nameLabelAt:indexInCell].tag  = i;
         //显示 所有任务Progress
         for(SCPAlbumTaskList * tasks in [SCPUploadTaskManager currentManager].taskList)
         {

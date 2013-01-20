@@ -31,6 +31,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier photoCount:(int)count;
 
 - (UIImageView *)coverImageViewAt:(int)position;
+- (UILabel *)nameLabelAt:(int)position;
 - (UIImageView *)deleteViewAt:(int)position;
 - (UIProgressView *)progressViewAt:(int)position;
 - (void)hideAllViews;

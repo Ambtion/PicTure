@@ -71,10 +71,9 @@
             [frameImageView release];
             
             /* cover image view */
-            UIImageView *coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10,10, 75, 75)];
-            coverImageView.userInteractionEnabled = YES;
-            
-            UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
+            UIImageView * coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10,10, 75, 75)];
+            coverImageView.userInteractionEnabled = YES;            
+            UIGestureRecognizer * gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
             [coverImageView addGestureRecognizer:gesture];
             [gesture release];
             gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)];
@@ -84,8 +83,9 @@
             [frameImageView addSubview:coverImageView];
             [_coverImageViewList addObject:coverImageView];
             [coverImageView release];
+            
             /* name label view */
-            UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 5, 100, frameSize - 10, 20)];
+            UILabel * nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 5, 100, frameSize - 10, 20)];
             [UIUtils updateNormalLabel:nameLabel title:nil];
             [nameLabel setTextAlignment:UITextAlignmentCenter];
             [nameLabel setUserInteractionEnabled:YES];

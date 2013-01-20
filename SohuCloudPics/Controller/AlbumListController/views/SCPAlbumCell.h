@@ -11,8 +11,8 @@
 
 @protocol SCPAlbumCellDelegate <NSObject>
 @optional
-- (void)onImageViewClicked:(UIImageView *)imageView;
-- (void)onImageViewLongPressed:(UIImageView *)imageView;
+- (void)onImageViewClicked:(UIView *)imageView;
+- (void)onImageViewLongPressed:(UIView *)imageView;
 @end
 
 

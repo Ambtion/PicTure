@@ -289,7 +289,7 @@
     }
     return YES;
 }
-- (void)onImageViewClicked:(UIImageView *)imageView
+- (void)onImageViewClicked:(UIView *)imageView
 {
     switch (_state) {
         case SCPAlbumControllerStateNormal:
@@ -314,7 +314,7 @@
             break;
     }
 }
-- (void)onImageViewLongPressed:(UIImageView *)imageView
+- (void)onImageViewLongPressed:(UIView *)imageView
 {
     
     if (![self loginPridecate]) return;
