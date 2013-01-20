@@ -59,7 +59,7 @@ void customedExceptionHandler(NSException *exception)
 {
 	/* The following statements are used for umeng statistic */
 	[MobClick startWithAppkey:@"50f9208b52701543dc000009"];
-	
+    
     [UIApplication sharedApplication].statusBarHidden = YES;
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];

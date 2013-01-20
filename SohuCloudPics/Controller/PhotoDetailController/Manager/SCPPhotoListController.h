@@ -50,6 +50,7 @@
     NSMutableArray * curImages;
     NSInteger photoNum;
     NSInteger Pagenum;
+    BOOL isInit;
     BOOL hasNextPage;
     //for animation
     BOOL animation;

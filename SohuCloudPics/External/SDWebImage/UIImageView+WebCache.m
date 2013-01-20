@@ -59,7 +59,6 @@
         [manager downloadWithURL:url delegate:self options:options success:success failure:failure];
     }
 }
-
 #endif
 
 - (void)cancelCurrentImageLoad
@@ -75,16 +74,14 @@
 }
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImageinCache:(UIImage *)image
 {
-
     self.image = image;
-//    [self setNeedsDisplay];
-    
+    [self setNeedsDisplay];
 }
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image
 {
     self.image = image;
-//    [self setNeedsDisplay];
+    [self setNeedsDisplay];
     return;
 //    return;
 //    NSString * str;
