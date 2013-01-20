@@ -806,7 +806,7 @@
     if(x == 0) {
         NSLog(@"photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
         curPage = [self validPageValue:curPage-1];
-        [self refreshScrollView];gf
+        [self refreshScrollView];
     }
     
 }
