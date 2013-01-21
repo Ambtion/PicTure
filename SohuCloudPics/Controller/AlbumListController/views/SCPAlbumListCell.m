@@ -164,7 +164,7 @@
     if (self.album.permission) {
         str = [NSString stringWithFormat:@"公开专辑  %d次浏览",self.album.viewCount];
     }else{
-        str = [NSString stringWithFormat:@"私有专辑  %d次浏览",self.album.viewCount];
+        str = [NSString stringWithFormat:@"私密专辑  %d次浏览",self.album.viewCount];
     }
     
 	[_viewCountLabel setText:str];

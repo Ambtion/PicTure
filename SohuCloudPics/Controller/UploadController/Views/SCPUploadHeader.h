@@ -42,6 +42,7 @@
 @property (strong, nonatomic) UILabel *albumChooseLabel;
 @property (strong, nonatomic) UIButton *albumChooseButton;
 @property (strong, nonatomic) UILabel * albumNameLabel;
+@property (strong, nonatomic) UIImageView * iconImageView;
 //@property (strong, nonatomic) UITableViewCell * albumName;
 @property (strong, nonatomic) UILabel *labelBoxLabel;
 

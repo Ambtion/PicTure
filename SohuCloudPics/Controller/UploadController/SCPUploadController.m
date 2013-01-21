@@ -52,12 +52,13 @@
     
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
+        
         controller = decontrller;
         _requsetManager = [[SCPRequestManager alloc] init];
         _imageList = [[NSArray arrayWithArray:imageList] retain];
         int count = _imageList.count;
-        
         NSMutableArray * mCells = [NSMutableArray arrayWithArray:0];
+        
         for (int i = 0; i < count; ++i) {
             SCPUploadCell *cell = [[SCPUploadCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.uploadController = self;
@@ -78,6 +79,7 @@
     _uploadHeader = [[SCPUploadHeader alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _uploadHeader.selectionStyle = UITableViewCellEditingStyleNone;
     _uploadHeader.delegate = self;
+    
     _descCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _descCell.selectionStyle = UITableViewCellEditingStyleNone;
     _descCell.textLabel.font = [UIFont systemFontOfSize:15];
@@ -87,13 +89,14 @@
     
     _uploadTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     _uploadTableView.autoresizesSubviews = YES;
-    _uploadTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
     _uploadTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _uploadTableView.dataSource = self;
     _uploadTableView.delegate = self;
     _uploadTableView.bounces = NO;
+    _uploadTableView.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     [self.view addSubview:_uploadTableView];
     [self customizeNavigationBar];
+    
 }
 - (void)customizeNavigationBar
 {
@@ -136,19 +139,7 @@
 }
 - (void)resignFirstResponderForAll
 {
-    [_uploadHeader dismissAlbumChooseTable];
-    for (UIView *view in _uploadTableView.subviews) {
-        if ([view class] == [SCPUploadCell class]) {
-            for (view in view.subviews) {
-                if ([view class] == [UITextView class] && [view isFirstResponder]) {
-                    [view resignFirstResponder];
-                    goto done;
-                }
-            }
-        }
-    }
-done:
-    return;
+    [_cells makeObjectsPerformSelector:@selector(resignmyFirstResponder)];
 }
 - (void)onUploadTableViewTapped:(id)sender
 {
@@ -164,10 +155,9 @@ done:
         [alterView show];
         return;
     }
-    
     for(SCPUploadCell * cell in _cells) {
         if ([self stringContainsEmoji:cell.descTextView.text]) {
-            SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"图片描述包含非法字符,请重新输入" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:@"图片描述包含非法字符,请重新输入" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
             [tip show];
             [tip release];
             return;
@@ -241,6 +231,7 @@ done:
 {
     [controller dismissModalViewControllerAnimated:YES];
 }
+
 #pragma mark -
 #pragma mark SCPUploadDelegate
 - (void)uploadHeader:(SCPUploadHeader *)header selectAlbum:(NSString *)albumID
@@ -256,36 +247,33 @@ done:
 }
 - (void)uploadHeadershowCreateAlertView:(SCPUploadHeader *)header
 {
-    NSLog(@"%s",__FUNCTION__);
     [_cells makeObjectsPerformSelector:@selector(descTextViewresignFirstResponder)];
 }
 #pragma mark -
 #pragma mark keyboard delegate
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    
-    [_uploadHeader dismissAlbumChooseTable];
+//    NSLog(@"%s",__FUNCTION__);
+//    [_uploadHeader dismissAlbumChooseTable];
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    CGRect frame = self.view.frame;
-    
-    frame.size.height -= keyboardSize.height;
     self.keyboardHeight = keyboardSize.height;
-    
+//
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
-    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
-    _uploadTableView.frame = frame;
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    _uploadTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.keyboardHeight);
     [UIView commitAnimations];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    self.keyboardHeight = 0;
+    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
-    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
-    _uploadTableView.frame = self.view.frame;
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    _uploadTableView.frame = self.view.bounds;
     [UIView commitAnimations];
+    
 }
 #pragma mark -
 #pragma mark tableViewDelegate & datasource
@@ -297,10 +285,6 @@ done:
     switch (row) {
         case 0:
             return _uploadHeader;
-            //        case 1:
-            //            return _labelBox;
-            //        case 1:
-            //            return _labelChooser;
         case 1:
             return _descCell;
         default:
@@ -321,24 +305,25 @@ done:
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = indexPath.row;
-    
     switch (row) {
             
         case 0:
-            return _uploadHeader.frame.size.height;
+            return 170;
             //        case 1:
             //            return _labelBox.frame.size.height;
             //        case 1:
             //            return _labelChooser.frame.size.height;
         case 1:
-            return _descCell.frame.size.height;
+            return _descCell.frame.size.height + 8;
         default:
-            return ((SCPUploadCell *) [_cells objectAtIndex:row - 2]).frame.size.height;
+            return ((SCPUploadCell *) [_cells objectAtIndex:row - 2]).frame.size.height + 20;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    tableView.contentOffset = CGPointZero;
     [self resignFirstResponderForAll];
 }
 

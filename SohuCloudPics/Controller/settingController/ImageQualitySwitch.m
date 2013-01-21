@@ -44,6 +44,7 @@ static BOOL store = YES;
     UISwipeGestureRecognizer * gesutre = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(buttonDrag:)] autorelease];
     gesutre.direction = UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight;
     [_button addGestureRecognizer:gesutre];
+    [_button addTarget:self action:@selector(buttonDrag:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_button];
     if (store) {
         self.image = [UIImage imageNamed:@"switch_btn.png"];

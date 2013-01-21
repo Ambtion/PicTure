@@ -35,28 +35,27 @@
 {
     
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (_desc_back_img == nil) {
-        _desc_back_img = [[UIImage imageNamed:@"share_pic_comments.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:30];
-    }
     
     if (self) {
-        self.frame = CGRectMake(0, 0, 320, 0);
-        _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 17, 50, 50)];
+        
+        self.frame = CGRectMake(0, 0, 320, 68);
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.frame.size.width - 20, self.frame.size.height)];
+        _bgView.backgroundColor = [UIColor whiteColor];
+        _bgView.layer.borderColor = [UIColor colorWithRed:209.f/255 green:209.f/255 blue:209.f/255 alpha:1].CGColor;
+        _bgView.layer.borderWidth = 1.f;
+        _bgView.layer.cornerRadius = 4.f;
+        [self addSubview:_bgView];
+        
+        _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 50, 50)];
         _portraitImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
+        _portraitImageView.layer.borderWidth = 1.f;
+        _portraitImageView.layer.shadowColor = [UIColor grayColor].CGColor;
+        _portraitImageView.layer.shadowOffset = CGSizeMake(0, 2);
         _portraitImageView.layer.masksToBounds = NO;
         _portraitImageView.layer.shouldRasterize = YES;
-        [self addSubview:_portraitImageView];
+        [_bgView addSubview:_portraitImageView];
         
-        CGRect frame = CGRectMake(65, 15, 245, 58);
-        _descBackgroundImageView = [[UIImageView alloc] initWithFrame:frame];
-        _descBackgroundImageView.image = _desc_back_img;
-        [self addSubview:_descBackgroundImageView];
-        
-        frame.origin.x += 10;
-        frame.origin.y += 2;
-        frame.size.width -= 12;
-        frame.size.height -= 20;
-        
+        CGRect frame = CGRectMake(60, 9, 230, _bgView.frame.size.height - 18);        
         _descTextView = [[UITextView alloc] initWithFrame:frame];
         _descTextView.font = [_descTextView.font fontWithSize:15];
         _descTextView.textColor = [UIColor colorWithRed:128.0 / 255 green:128.0 / 255 blue:128.0 / 255 alpha:1];
@@ -64,44 +63,46 @@
         _descTextView.autocorrectionType = UITextAutocorrectionTypeNo;
         _descTextView.keyboardAppearance = UIKeyboardAppearanceDefault;
         _descTextView.keyboardType = UIKeyboardTypeDefault;
-        _descTextView.returnKeyType = UIReturnKeyDefault;
-        _descTextView.scrollEnabled = NO;
+        _descTextView.returnKeyType = UIReturnKeyDone;
+//        _descTextView.scrollEnabled = NO;
         _descTextView.delegate = self;
         _descTextView.backgroundColor = [UIColor clearColor];
-        [self addSubview:_descTextView];
+        [_bgView addSubview:_descTextView];
         
-        _descCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height + 1, frame.size.width, 15)];
-        _descCountLabel.layer.cornerRadius = 4;
+        _descCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 15, frame.origin.y + frame.size.height + 10, frame.size.width, 15)];
+        _descCountLabel.backgroundColor = [UIColor clearColor];
         [UIUtils updateCountLabel:_descCountLabel];
         [_descCountLabel setText:[NSString stringWithFormat:@"%d/%d", _descTextView.text.length, DESC_COUNT_LIMIT]];
         [self addSubview:_descCountLabel];
-        [self textViewDidChange:_descTextView];
+//        [self textViewDidChange:_descTextView];
     }
     return self;
 }
+
 - (void)descTextViewresignFirstResponder
 {
     [_descTextView resignFirstResponder];
 }
+
 #pragma mark
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     return textView.text.length - range.length + text.length <= DESC_COUNT_LIMIT;
 }
+
 - (void)textViewDidChange:(UITextView *)textView
 {
     [_descCountLabel setText:[NSString stringWithFormat:@"%d/%d", textView.text.length, DESC_COUNT_LIMIT]];
+    return;
     CGSize maxinumSize = CGSizeMake(textView.frame.size.width - 13, MAXFLOAT);
-    UIFont *font = textView.font;
+    UIFont * font = textView.font;
     CGSize myStringSize = [textView.text sizeWithFont:font constrainedToSize:maxinumSize lineBreakMode:UILineBreakModeClip];
     CGRect descFrame = _descTextView.frame;
     descFrame.size.height = myStringSize.height + 19;
     if (descFrame.size.height < 38) {
         descFrame.size.height = 38;
     }
-    CGRect backFrame = _descBackgroundImageView.frame;
-    backFrame.size.height = descFrame.size.height + 20;
     
     CGRect cellFrame = self.frame;
     cellFrame.size.height = descFrame.size.height + 40;
@@ -109,9 +110,8 @@
     [UIView beginAnimations:nil context:nil];
     _descTextView.frame = descFrame;
     _descCountLabel.frame = CGRectMake(descFrame.origin.x, descFrame.origin.y + descFrame.size.height + 1, descFrame.size.width, 15);
-    _descBackgroundImageView.frame = backFrame;
     self.frame = cellFrame;
-    
+    _bgView.frame = CGRectMake(10, 0, self.frame.size.width - 20, self.frame.size.height);
     [_uploadController.uploadTableView beginUpdates];
     [_uploadController.uploadTableView endUpdates];
     [UIView commitAnimations];
@@ -123,5 +123,8 @@
     offset.y += ((currentCellBottom + _uploadController.keyboardHeight) - [UIApplication sharedApplication].keyWindow.screen.bounds.size.height);
     [_uploadController.uploadTableView setContentOffset:offset animated:YES];
 }
-
+- (void)resignmyFirstResponder
+{
+    [_descTextView resignFirstResponder];
+}
 @end

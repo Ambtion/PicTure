@@ -96,6 +96,7 @@ static NSString * staticImage6[4] = {@"welcome-guid-ios61.png",@"cloudios62.png"
     [button setBackgroundImage:[UIImage imageNamed:@"login_btn_press.png"] forState:UIControlStateHighlighted];
     [button setTitle:@"开始使用" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1] forState:UIControlStateNormal];
+    [button.titleLabel setFont:[UIFont systemFontOfSize:16]];
     button.frame = CGRectMake(105, self.view.frame.size.height - 120, 110, 35);
     [button addTarget:self action:@selector(beginUse:) forControlEvents:UIControlEventTouchUpInside];
     [imageView addSubview:button];

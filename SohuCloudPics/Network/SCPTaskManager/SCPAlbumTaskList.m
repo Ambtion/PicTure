@@ -64,7 +64,7 @@
                     [self requestFailed:self.currentTask.request];
                     return ;
                 });
-               
+                
             }else{
                 [self.currentTask.request setData:imageData withFileName:@"fromIOS" andContentType:@"image/*" forKey:@"file"];
             }
@@ -125,7 +125,15 @@
         [self requestFailed:request];
         return;
     }
-    NSLog(@"requestFinished:MMMM:%s,%d, %@",__FUNCTION__,[request responseStatusCode], [request responseString]);
+    NSDictionary * dic = [[request responseString] JSONValue];
+    NSInteger code = [[dic objectForKey:@"code"] intValue];
+    if (code == 12) {
+        
+        [request cancel];
+        [request clearDelegatesAndCancel];
+        [self requestClearCurTask];
+        return;
+    }
     [request cancel];
     [request clearDelegatesAndCancel];
     if (self.taskList.count)
@@ -143,7 +151,16 @@
         }
     }
 }
-
+- (void)requestClearCurTask
+{
+    self.currentTask = nil;
+    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"专辑已满,上传失败"] autorelease];
+    [cus show];
+    NSLog(@"Task Finished");
+    if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
+        [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
+    }
+}
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     

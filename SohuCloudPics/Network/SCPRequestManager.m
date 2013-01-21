@@ -77,7 +77,15 @@
 {
     NSLog(@"%s",__FUNCTION__);
     if (requsetCode >= 200 && requsetCode <= 300) return YES;
-    if (requsetCode == 401) [self refreshToken:401];
+    if (requsetCode == 401) {
+        [self refreshToken:401];
+        failure(REQUSETFAILERROR);
+        return NO;
+    }
+    if (requsetCode == 406) {
+        failure(@"专辑数目已到最大");
+        return NO;
+    }
     failure(REQUSETFAILERROR);
     return NO;
 }

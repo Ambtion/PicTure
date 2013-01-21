@@ -186,8 +186,8 @@
 - (NSString*)bannerDataSouceLeftLabel
 {
     if ([self isNULL:[self.infoFromSuper objectForKey:@"folder_name"]])
-        return [NSString stringWithFormat:@"来自未命名专辑"];
-    return [NSString stringWithFormat:@"来自%@专辑",[self.infoFromSuper objectForKey:@"folder_name"]];
+        return [NSString stringWithFormat:@"未命名专辑"];
+    return [NSString stringWithFormat:@"来自%@",[self.infoFromSuper objectForKey:@"folder_name"]];
 }
 - (NSString*)bannerDataSouceRightLabel
 {

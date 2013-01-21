@@ -31,7 +31,6 @@
 #pragma mark view
 //管理相册列表上传进度
 
-
 //管理照片列表下载进度
 - (SCPAlbumTaskList *)getAlbumTaskWithAlbum:(NSString *)albumId;
 @end

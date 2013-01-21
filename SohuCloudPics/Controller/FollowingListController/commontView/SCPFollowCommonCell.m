@@ -99,7 +99,7 @@
         _titleLabel.text = @"用户没起名";
     }
     
-    _descLabel.text = [NSString stringWithFormat:@"%d张图片, %d个相册",_dataSource.pictureCount,_dataSource.albumCount];
+    _descLabel.text = [NSString stringWithFormat:@"%d张图片, %d个专辑",_dataSource.pictureCount,_dataSource.albumCount];
     if (!_dataSource.following) {
         [_follweButton setBackgroundImage:[UIImage imageNamed:@"add_feed.png"] forState:UIControlStateNormal];
         [_follweButton setBackgroundImage:[UIImage imageNamed:@"add_feed_press.png"] forState:UIControlStateHighlighted];

@@ -258,7 +258,7 @@
 {
     NSString * str = textField.text;
     if ([self stringContainsEmoji:str]) {
-        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"您输入的内容包含非法字符,请重新输入" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:@"专辑名称不能包含特殊字符或表情" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [tip show];
         [tip release];
         return;
@@ -663,7 +663,7 @@
 }
 - (void)albumTaskOver:(NSNotification *)notification
 {
-//    [self refresh];
+    [self refresh];
 }
 - (void)albumChange:(NSNotification *)notification
 {

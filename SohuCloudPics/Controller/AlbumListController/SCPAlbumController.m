@@ -88,7 +88,7 @@
 	if (count < 0) {
 		count = 0;
 	}
-    self.bannerLeftString = [NSString stringWithFormat:@"有%d个相册", count];
+    self.bannerLeftString = [NSString stringWithFormat:@"有%d个专辑", count];
 	
 	if (!name || name.length == 0) {
 		name = @"无名英雄";

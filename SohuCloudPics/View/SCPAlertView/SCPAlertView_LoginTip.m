@@ -25,7 +25,7 @@
             UILabel *label = (UILabel *)v;
             label.numberOfLines = 0;
             label.lineBreakMode = UILineBreakModeWordWrap;
-            label.font = [UIFont systemFontOfSize:20.f];
+//            label.font = [UIFont systemFontOfSize:15.f];
             label.textColor = [UIColor colorWithRed:98.0/255 green:98.0/255 blue:98.0/255 alpha:1];
             label.shadowColor = [UIColor clearColor];
             label.backgroundColor = [UIColor clearColor];
@@ -36,7 +36,7 @@
             button.titleLabel.minimumFontSize = 10;
             button.titleLabel.textAlignment = UITextAlignmentCenter;
             button.backgroundColor = [UIColor clearColor];
-            [button.titleLabel setFont:[UIFont systemFontOfSize:15.f]];
+            [button.titleLabel setFont:[UIFont systemFontOfSize:16.f]];
             UIImage * image = nil;
             image = [UIImage imageNamed:@"ALertView.png"];
             image = [image stretchableImageWithLeftCapWidth:(int)(image.size.width+1)>>1 topCapHeight:0];

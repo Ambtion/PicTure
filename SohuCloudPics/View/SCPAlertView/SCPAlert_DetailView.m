@@ -53,7 +53,7 @@
         nameLabel.font = font;
         nameLabel.textColor =  [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         nameLabel.textAlignment = UITextAlignmentLeft;
-        nameLabel.text = @"相册名称";
+        nameLabel.text = @"专辑名称";
         [_alertboxImageView addSubview:nameLabel];
         UILabel * nameDeLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 70, _alertboxImageView.frame.size.width - 60, 17)] autorelease];
         nameDeLabel.numberOfLines = 2;
@@ -85,7 +85,7 @@
         permission.backgroundColor = [UIColor clearColor];
         permission.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         permission.textAlignment = UITextAlignmentLeft;
-        permission.text = @"相册权限";
+        permission.text = @"专辑权限";
         [_alertboxImageView addSubview:permission];
         
         UILabel * permissionDe = [[[UILabel alloc] initWithFrame:CGRectMake(20, 170, _alertboxImageView.frame.size.width - 60, 15)] autorelease];
@@ -94,11 +94,11 @@
         permissionDe.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         permissionDe.textAlignment = UITextAlignmentLeft;
         if (album.permission){
-            permissionDe.text = @"公开相册";
+            permissionDe.text = @"公开专辑";
         }else{
-            permissionDe.text = @"私有相册";
+            permissionDe.text = @"私密专辑";
         }
-        
+
         [_alertboxImageView addSubview:permissionDe];
         
         

@@ -17,6 +17,7 @@
 @interface SCPUploadCell : UITableViewCell <UITextViewDelegate>
 {
     UIImage *_desc_back_img;
+    UIView * _bgView;
 }
 
 @property (assign, nonatomic) SCPUploadController *uploadController;
@@ -26,4 +27,5 @@
 @property (strong, nonatomic) UITextView *descTextView;
 @property (strong, nonatomic) UILabel *descCountLabel;
 - (void)descTextViewresignFirstResponder;
+- (void)resignmyFirstResponder;
 @end

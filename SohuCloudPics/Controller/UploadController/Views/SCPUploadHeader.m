@@ -13,9 +13,9 @@
 #import "UIUtils.h"
 #import "SCPLoginPridictive.h"
 #import "SCPAlert_CustomeView.h"
-
 #import "SCPNewFoldersCell.h"
-#define DESLABEL @"网络相册获取中"
+
+#define DESLABEL @"网络专辑获取中"
 #define MAXLIMITNUM 1000
 
 @interface AlbumsTableManager : NSObject <UITableViewDelegate, UITableViewDataSource>
@@ -23,12 +23,14 @@
 @end
 @implementation FoldersMode
 @synthesize folders_Id,foldrsName,isPublic;
+
 - (void)dealloc
 {
     self.foldrsName = nil;
     self.folders_Id = nil;
     [super dealloc];
 }
+
 @end
 @implementation SCPUploadHeader
 @synthesize delegate = _delegate;
@@ -36,6 +38,7 @@
 @synthesize albumChooseLabel = _albumChooseLabel;
 @synthesize albumChooseButton = _albumChooseButton;
 @synthesize albumNameLabel = _albumNameLabel;
+@synthesize iconImageView = _iconImageView;
 @synthesize labelBoxLabel = _labelBoxLabel;
 
 - (void)dealloc
@@ -47,11 +50,13 @@
     [_manager release];
     [_albumChooseLabel release];
     [_albumNameLabel release];
+    [_iconImageView release];
     [_albumChooseButton release];
     [_activity release];
     [_labelBoxLabel release];
     [super dealloc];
 }
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -73,38 +78,40 @@
     
     // album choose
     _albumChooseLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 86, 300, 20)];
-    [UIUtils updateNormalLabel:_albumChooseLabel title:@"请选择一个目标相册"];
+    [UIUtils updateNormalLabel:_albumChooseLabel title:@"请选择一个专辑"];
     [self addSubview:_albumChooseLabel];
     _currentAlbum = 0;
     
     _albumChooseButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    _albumChooseButton.frame = CGRectMake(10, 111 + 10, 200, 40);
+    _albumChooseButton.frame = CGRectMake(10, 111 + 10, 300, 40);
     _albumChooseButton.tag = 0;
-    [_albumChooseButton setImage:[UIImage imageNamed:@"share_btn_down_normal-2.png"] forState:UIControlStateNormal];
     [_albumChooseButton addTarget:self action:@selector(albumChooseButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_albumChooseButton];
     
-    _albumNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, 40)];
+    _albumNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, _albumChooseButton.frame.size.width - 80, _albumChooseButton.frame.size.height)];
     _albumNameLabel.backgroundColor = [UIColor clearColor];
     _albumNameLabel.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
     _albumNameLabel.font = [_albumChooseButton.titleLabel.font fontWithSize:15];
-    _albumNameLabel.textAlignment = UITextAlignmentCenter;
+    _albumNameLabel.textAlignment = UITextAlignmentLeft;
     _albumNameLabel.text = DESLABEL;
     [_albumChooseButton addSubview:_albumNameLabel];
+    
+    _iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 5, 30, 30)];
+    [_albumChooseButton addSubview:_iconImageView];
+    
     _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    _activity.frame = CGRectMake(155, 0, 40, 40);
+    _activity.frame = CGRectMake(_albumChooseButton.frame.size.width - 80 , 0, 40, 40);
     _activity.hidesWhenStopped = YES;
     [_albumChooseButton addSubview:_activity];
     
-    _albumsTable = [[UITableView alloc] initWithFrame:CGRectMake(10, 163, 200, 120) style:UITableViewStylePlain];
+    _albumsTable = [[UITableView alloc] initWithFrame:CGRectMake(10, _albumChooseButton.frame.origin.y + _albumChooseButton.frame.size.height + 2, _albumChooseButton.frame.size.width, 120) style:UITableViewStylePlain];
     _albumsTable.layer.borderWidth = 1.0;
-    _albumsTable.layer.borderColor = [UIColor colorWithRed:145.f/255 green:145.f/255 blue:145.f/255 alpha:1].CGColor;
-    _albumsTable.layer.cornerRadius = 8.f;
+    _albumsTable.layer.borderColor = [UIColor colorWithRed:209.f/255 green:209.f/255 blue:209.f/255 alpha:1].CGColor;
     
 }
 - (void)initManager
 {
-    NSLog(@"%s",__FUNCTION__);
+    
     _foldersArray = [[NSMutableArray alloc] initWithCapacity:0];
     _manager = [[AlbumsTableManager alloc] init];
     _manager.header = self;
@@ -153,7 +160,7 @@
     
     SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"当前网络不给力，请稍后重试"] autorelease];
     [cus show];
-    _albumNameLabel.text = @"网络相册获取失败";
+    _albumNameLabel.text = @"网络专辑获取失败";
     [self setUserInteractionEnabled:NO];
     [_activity stopAnimating];
     if ([_delegate respondsToSelector:@selector(uploadHeader:selectAlbum:)])
@@ -181,7 +188,7 @@
     if (!_foldersArray.count) {
         if ([self.delegate respondsToSelector:@selector(uploadHeadershowCreateAlertView:)])
             [self performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:self];
-        SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:self name:@"专辑名"] autorelease];
+        SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:self name:@"输入名称"] autorelease];
         [aln show];
         return;
     }
@@ -189,7 +196,7 @@
     if (_albumChooseButton.tag) {
         // very very bad design, must be fixed later!!!
         UITableView *table = (UITableView *) self.superview;
-        _albumsTable.frame = CGRectMake(10, 163 - table.contentOffset.y, 200, 120);
+        _albumsTable.frame = CGRectMake(10, _albumsTable.frame.origin.y  - table.contentOffset.y, _albumChooseButton.frame.size.width, 200);
         [self.superview.superview addSubview:_albumsTable];
         [self.superview.superview bringSubviewToFront:_albumsTable];
         [_albumsTable becomeFirstResponder];
@@ -208,6 +215,7 @@
     _currentAlbum = currentAlbum;
     FoldersMode * mode = (FoldersMode *)[_foldersArray objectAtIndex:_currentAlbum];
     _albumNameLabel.text = mode.foldrsName;
+    _iconImageView.image = mode.isPublic ? [UIImage imageNamed:@"unlock_icon.png"] : [UIImage imageNamed:@"lock_icon.png"];
     if ([_delegate respondsToSelector:@selector(uploadHeader:selectAlbum:)])
         [_delegate performSelector:@selector(uploadHeader:selectAlbum:) withObject:self withObject:mode.folders_Id];
 }
@@ -219,8 +227,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 38;
+    return 40;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -230,18 +239,24 @@
         cell = [[[SCPNewFoldersCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NewFolders"] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    
     if (row == 0) {
-        cell.labelText.text = @"新建相册";
-        cell.addView.image = [UIImage imageNamed:@"add_new_albume.png"];
-    }else{
         
+        cell.mylabelText.text = @"新建私密专辑";
+        cell.mylabelText.frame = CGRectMake(40, 0, 280, 40);
+        cell.iconView.image = [UIImage imageNamed:@"add_album_icon.png"];
+        cell.mydetailText.text = nil;
+    }else{
+        cell.mylabelText.frame = CGRectMake(40, 4, 240, 18);
         FoldersMode * model = [_header.foldersArray objectAtIndex:(row - 1)];
-        cell.labelText.text = model.foldrsName;
+        cell.mylabelText.text = model.foldrsName;
         if (model.isPublic) {
-            cell.addView.image = [UIImage imageNamed:@"unlock_albume.png"];
+            cell.mydetailText.text = @"公开专辑";
+            
         }else{
-            cell.addView.image = [UIImage imageNamed:@"lock_albume.png"];
+            cell.mydetailText.text = @"私密专辑";
         }
+        cell.iconView.image = model.isPublic ? [UIImage imageNamed:@"unlock_icon.png"] : [UIImage imageNamed:@"lock_icon.png"];
     }
     return cell;
     
@@ -257,14 +272,11 @@
     int row = indexPath.row;
     if (row == 0) {
         if ([_header.delegate respondsToSelector:@selector(uploadHeadershowCreateAlertView:)])
-            [_header.delegate performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:_header];\
-        if ([_header foldersArray].count >= MAXLIMITNUM) {
-            SCPAlert_CustomeView * alterview = [[[SCPAlert_CustomeView alloc] initWithTitle:@"相册数已达上限,无法创建"] autorelease];
-            [alterview show];
-            return;
-        }
-        SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:_header name:@"相册名"] autorelease];
+            [_header.delegate performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:_header];
+        
+        SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:_header name:@"输入名称"] autorelease];
         [aln show];
+    
     } else {
         _header.currentAlbum = row - 1;
         [_header albumChooseButtonClicked];

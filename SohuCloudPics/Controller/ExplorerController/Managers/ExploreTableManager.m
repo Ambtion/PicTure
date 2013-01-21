@@ -145,6 +145,7 @@ static NSInteger lastNum = -1;
 
 - (NSArray *)urlArray:(NSArray *)frames info:(NSArray *)info
 {
+    
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < frames.count; i++) {
         NSDictionary * dic = [info objectAtIndex:[self offsetOfDataSouce] - _lastCount + i];
@@ -155,6 +156,7 @@ static NSInteger lastNum = -1;
 
 - (NSUInteger)offsetOfDataSouce
 {
+    
     if (!_strategyArray.count) {
         return 0;
     }
@@ -190,45 +192,7 @@ static NSInteger lastNum = -1;
     }
     return array;
 }
-//- (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
-//{
-//    NSArray * infoArray = [info objectForKey:@"photos"];
-//    if (_willRefresh)
-//        [_strategyArray removeAllObjects];
-//    for (int i = 0; i < infoArray.count / 4 ; i++) {
-//        ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
-//        NSInteger num_strategy = [self randomNum];
-//        NSMutableArray * frames = [[NSMutableArray alloc] init];
-//        dataSouce.heigth = strategys[num_strategy](frames,nil);
-//        dataSouce.viewRectFrame = frames;
-//        dataSouce.infoArray = [self urlArray:frames info:infoArray];
-//        dataSouce.imageFrame =[self getImageViewFrameWithInfoArray:dataSouce.infoArray :frames];
-//        dataSouce.identify = [NSString stringWithFormat:@"startegy%d", num_strategy];
-//        [_strategyArray addObject:dataSouce];
-//        [frames release];
-//        [dataSouce release];
-//    }
-//    _lastCount = [self offsetOfDataSouce];
-//    if (_isinit) {
-//        _isinit = NO;
-//        _isLoading = NO;
-//        [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-//        [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-//        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-//        return ;
-//    }
-//    if (_willRefresh) {
-//        [self refreshDataFinishLoad];
-//    }else{
-//        [self moreDataFinishLoad];
-//    }
-//}
-//- (void)SCPRequestManagerequestFailed:(NSString *)error
-//{
-//    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
-//    [alertView show];
-//    [self restNetWorkState];
-//}
+
 #pragma mark -
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
@@ -236,14 +200,14 @@ static NSInteger lastNum = -1;
     _willRefresh = isRefresh;
     if(isRefresh || !_strategyArray.count){
         _lastCount = 0;
-        [self getExploreFrom:0 count:60];
+        [self getExploreFrom:0 count:80];
     }else{
         if ((MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
             _isLoading = NO;
             [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
             return;
         }
-        [self getExploreFrom:[self offsetOfDataSouce] count:60];
+        [self getExploreFrom:[self offsetOfDataSouce] count:80];
     }
 }
 

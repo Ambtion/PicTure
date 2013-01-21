@@ -173,7 +173,7 @@
     [self.contentView addSubview:bg_menu];
     
     _albumButton = [[MenuButtonView alloc] initWithFrame:CGRectMake(0, 0, 106, 60)];
-    _albumButton.nameLabel.text = @"相册";
+    _albumButton.nameLabel.text = @"专辑";
     _albumButton.delegate = self;
     [bg_menu addSubview:_albumButton];
 

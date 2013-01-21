@@ -50,7 +50,7 @@
         label.textColor =  [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         label.textAlignment = UITextAlignmentCenter;
         label.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:18];
-        label.text = @"编辑相册";
+        label.text = @"编辑专辑";
         [_alertboxImageView addSubview:label];
         
         UILabel * rename = [[[UILabel alloc] initWithFrame:CGRectMake(20 , 40 + OFFSET, 200, 15)] autorelease];
@@ -58,6 +58,7 @@
         rename.textColor =  [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         rename.textAlignment = UITextAlignmentLeft;
         rename.text = @"重命名";
+        
         [_alertboxImageView addSubview:rename];
         
         UIImageView * bg_view = [[[UIImageView alloc] initWithFrame:CGRectMake(20, 62 + OFFSET, 200, 35)] autorelease];
@@ -78,7 +79,7 @@
         UILabel * public = [[[UILabel alloc] initWithFrame:CGRectMake(20, 115 + OFFSET, 109, 16)] autorelease];
         public.backgroundColor = [UIColor clearColor];
         public.textColor =  [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
-        public.text = @"相册权限";
+        public.text = @"专辑权限";
         public.textAlignment = UITextAlignmentLeft;
         [_alertboxImageView addSubview:public];
         //相反的 ..
