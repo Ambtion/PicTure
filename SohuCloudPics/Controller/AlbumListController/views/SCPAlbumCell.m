@@ -8,10 +8,6 @@
 
 #import "SCPAlbumCell.h"
 
-
-static UIImage *emptyFolderCoverImage = nil;
-
-
 @implementation SCPAlbumCell
 
 @synthesize delegate = _delegate;

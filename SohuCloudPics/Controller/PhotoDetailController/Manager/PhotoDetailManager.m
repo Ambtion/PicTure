@@ -298,7 +298,7 @@
 #pragma mark - FeedDesDelegate
 - (void)feedDescription:(FeedDescription *)feed_des DesEditClick:(id)sender
 {
-    [self.controller.navigationController pushViewController:[[[SCPDescriptionEditController alloc]initphoto:_photo_ID withDes:[self.infoFromSuper objectForKey:@"photo_desc"]] autorelease] animated:YES];
+    [self.controller.navigationController pushViewController:[[[SCPDescriptionEditController alloc] initphoto:_photo_ID withDes:[self.infoFromSuper objectForKey:@"photo_desc"]] autorelease] animated:YES];
 }
 #pragma mark -
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object

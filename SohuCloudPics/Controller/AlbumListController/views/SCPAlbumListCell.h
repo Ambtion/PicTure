@@ -14,7 +14,7 @@
 
 @interface SCPAlbumListCell : SCPAlbumCell
 
-@property (strong, nonatomic) UIImageView *photoImageView;		// 封面
+@property (strong, nonatomic) UIImageView * photoImageView;		// 封面
 @property (strong, nonatomic) UIProgressView *progressView;		// 上传进度条
 @property (strong, nonatomic) UIImageView *deleteView;			// 删除按钮
 @property (strong, nonatomic) UILabel *photoNumLabel;			// 图片数

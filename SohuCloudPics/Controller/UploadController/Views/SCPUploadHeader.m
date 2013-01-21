@@ -201,7 +201,7 @@
         [self.superview.superview bringSubviewToFront:_albumsTable];
         [_albumsTable becomeFirstResponder];
     } else {
-       g [_albumsTable removeFromSuperview];
+        [_albumsTable removeFromSuperview];
     }
 }
 - (void)dismissAlbumChooseTable

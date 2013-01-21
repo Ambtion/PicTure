@@ -138,7 +138,7 @@
 	self.album = album;
 	/* set photo image */
 	if (self.album.coverURL == nil || [self.album.coverURL isKindOfClass:[NSNull class]] || self.album.coverURL.length == 0) {
-		[_photoImageView setImage:[UIImage imageNamed:@"frame_alubme_default_image.png"]];
+        _photoImageView.image =[UIImage imageNamed:@"frame_alubme_default_image.png"];
 	} else {
         NSString * coverUrl  =[NSString stringWithFormat:@"%@_c150",_album.coverURL];
 		[_photoImageView setImageWithURL:[NSURL URLWithString:coverUrl] placeholderImage:nil options:0];
