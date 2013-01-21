@@ -8,10 +8,6 @@
 
 #import "SCPAlbumCell.h"
 
-
-static UIImage *emptyFolderCoverImage = nil;
-
-
 @implementation SCPAlbumCell
 
 @synthesize delegate = _delegate;
@@ -42,19 +38,6 @@ static UIImage *emptyFolderCoverImage = nil;
     }
 //    }
    
-}
-
-#pragma mark - PlaceHolderImage
-- (UIImage *)getEmptyFolderCoverImage
-{
-	if (emptyFolderCoverImage == nil) {
-		@synchronized (self) {
-			if (emptyFolderCoverImage == nil) {
-				emptyFolderCoverImage = [UIImage imageNamed:@"frame_alubme_default_image.png"];
-			}
-		}
-	}
-	return emptyFolderCoverImage;
 }
 
 @end

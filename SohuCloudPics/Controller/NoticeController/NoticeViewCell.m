@@ -80,16 +80,15 @@
 -(void)updataData
 {
     
-    if (!_dataSource.image) {
-        NSString * photo_url =[NSString stringWithFormat:@"%@_c150",_dataSource.photoUrl];
-        [_imageCoverView setImageWithURL:[NSURL URLWithString:photo_url] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] options:0];
-    }else{
-        _imageCoverView.image = _dataSource.image;
-    }
-    NSLog(@"%@",_dataSource.name);
-    _titleLabel.text = _dataSource.name;
+//    if (!_dataSource.image) {
+//        NSString * photo_url =[NSString stringWithFormat:@"%@_c150",_dataSource.photoUrl];
+//        [_imageCoverView setImageWithURL:[NSURL URLWithString:photo_url] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] options:0];
+//    }else{
+//        _imageCoverView.image = _dataSource.image;
+//    }
+    
     _descLabel.text = _dataSource.content;
-//    _timeLabel.text = _dataSource.upTime;
+    _imageCoverView.image = [UIImage imageNamed:@"frame_alubme_default_image.png"];
 }
 
 - (NoticeDataSource *)dataSource

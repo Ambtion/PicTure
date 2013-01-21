@@ -22,7 +22,4 @@
 
 - (void)onImageViewTapped:(UIGestureRecognizer *)gesture;
 - (void)onImageViewLongPressed:(UILongPressGestureRecognizer *)gesture;
-
-- (UIImage *)getEmptyFolderCoverImage;
-
 @end

@@ -54,7 +54,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"camera_bg.png"]];
     
     //reload gesture
     UIImageView *bgView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"camera_bg.png"]] autorelease];
@@ -144,7 +143,7 @@
 
 -(void)addTabBar
 {
-    UIImageView * bgview = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 431, 320, 49)] autorelease];
+    UIImageView * bgview = [[[UIImageView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 49, 320, 49)] autorelease];
     bgview.image = [UIImage imageNamed:@"camera_bar.png"];
     bgview.tag = 5000;
     [bgview setUserInteractionEnabled:YES];

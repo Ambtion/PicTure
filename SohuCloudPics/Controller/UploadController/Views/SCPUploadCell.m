@@ -55,7 +55,7 @@
         _portraitImageView.layer.shouldRasterize = YES;
         [_bgView addSubview:_portraitImageView];
         
-        CGRect frame = CGRectMake(60, 9, 230, _bgView.frame.size.height - 18);        
+        CGRect frame = CGRectMake(60, 4, 230, _bgView.frame.size.height - 8);
         _descTextView = [[UITextView alloc] initWithFrame:frame];
         _descTextView.font = [_descTextView.font fontWithSize:15];
         _descTextView.textColor = [UIColor colorWithRed:128.0 / 255 green:128.0 / 255 blue:128.0 / 255 alpha:1];

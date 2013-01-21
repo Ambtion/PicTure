@@ -74,7 +74,7 @@
     [_saveButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
     [_saveButton addTarget:self action:@selector(saveButton:) forControlEvents:UIControlEventTouchUpInside];
     _saveButton.frame = CGRectMake(0, 0, 35, 35);
-    UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithCustomView:_saveButton];
+    UIBarButtonItem * item = [[[UIBarButtonItem alloc] initWithCustomView:_saveButton] autorelease];
     self.navigationItem.rightBarButtonItem = item;
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -228,13 +228,13 @@
 -(void)textViewDidChange:(UITextView *)textView
 {
     if (textView.text && ![textView.text isEqualToString:@""]) {
-//        [_saveButton setAlpha:1.0];
-//        [_saveButton setUserInteractionEnabled:YES];
+        //        [_saveButton setAlpha:1.0];
+        //        [_saveButton setUserInteractionEnabled:YES];
         if (!_placeHolder.hidden)
             [_placeHolder setHidden:YES];
     }else{
-//        [_saveButton setAlpha:0.3];
-//        [_saveButton setUserInteractionEnabled:NO];
+        //        [_saveButton setAlpha:0.3];
+        //        [_saveButton setUserInteractionEnabled:NO];
         if (_placeHolder.hidden)
             [_placeHolder setHidden:NO];
     }

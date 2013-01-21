@@ -54,7 +54,7 @@
         _nameLabelList = [[NSMutableArray alloc] init];
         _countLabelList = [[NSMutableArray alloc] init];
         _deleteViewList = [[NSMutableArray alloc] init];
-		_albumList = [[NSMutableArray alloc] initWithCapacity:count];
+		_albumList = [[NSMutableArray alloc] initWithCapacity:0];
         _photoCount = count;
         int frameSize = 320 / count;
         self.frame = CGRectMake(0, 0, 320, GRID_CELL_HEIGHT);
@@ -63,25 +63,26 @@
         for (int i = 0; i < _photoCount; i++) {
             
             /* frame image view */
-            UIImageView *frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 5, 0, 95, 95)];
+            UIImageView * frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 5, 0, 95, 95)];
             [frameImageView setImage:background];
             [frameImageView setUserInteractionEnabled:YES];
             [_frameImageViewList addObject:frameImageView];
             [self.contentView addSubview:frameImageView];
-            [frameImageView release];
             
             /* cover image view */
             UIImageView * coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10,10, 75, 75)];
             coverImageView.userInteractionEnabled = YES;            
             UIGestureRecognizer * gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
             [coverImageView addGestureRecognizer:gesture];
-            [gesture release];
+            [gesture release],gesture = nil;
             gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)];
             [coverImageView addGestureRecognizer:gesture];
-            [gesture release];
-            gesture = nil;
+            [gesture release],gesture = nil;
+            
             [frameImageView addSubview:coverImageView];
             [_coverImageViewList addObject:coverImageView];
+            
+            [frameImageView release];
             [coverImageView release];
             
             /* name label view */
@@ -91,9 +92,7 @@
             [nameLabel setUserInteractionEnabled:YES];
             UITapGestureRecognizer * nameTap = [[[UITapGestureRecognizer   alloc] initWithTarget:self action:@selector(onImageViewTapped:)] autorelease];
             [nameLabel addGestureRecognizer:nameTap];
-            
             [_nameLabelList addObject:nameLabel];
-            
             [self.contentView addSubview:nameLabel];
             [nameLabel release];
             /* count label view */
@@ -120,12 +119,9 @@
             UIImageView *deleteView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"album_delete.png"]];
             deleteView.frame = CGRectMake(i * frameSize + 5, -2, 29, 29);
 			deleteView.userInteractionEnabled = YES;
-            
 			gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
 			[deleteView addGestureRecognizer:gesture];
-			[gesture release];
-			gesture = nil;
-			
+			[gesture release],gesture = nil;
             [_deleteViewList addObject:deleteView];
             [self.contentView addSubview:deleteView];
             [deleteView release];
@@ -145,7 +141,7 @@
 
 - (UIImageView *)coverImageViewAt:(int)position
 {
-    UIImageView *view = nil;
+    UIImageView * view = nil;
     if (position < _coverImageViewList.count) {
         view = [_coverImageViewList objectAtIndex:position];
     }
@@ -222,19 +218,22 @@
 - (void)updateViewWithAlbum:(SCPAlbum *)album position:(int)position preToDel:(BOOL)deleting
 {
     /* set frame image view */
-    UIImageView *frameImageView = [self frameImageViewAt:position];
+    
+    UIImageView * frameImageView = [self frameImageViewAt:position];
     [frameImageView setHidden:NO];
+    
 	[_albumList setObject:album atIndexedSubscript:position];
+    
     /* set cover image view */
-    UIImageView *coverImageView = [self coverImageViewAt:position];
+    UIImageView * coverImageView = [self coverImageViewAt:position];
+    
     [coverImageView setHidden:NO];
 	if (album.coverURL != nil && ![album.coverURL isKindOfClass:[NSNull class]] && album.coverURL.length != 0) {
         NSString *str = [NSString stringWithFormat:@"%@_c150",album.coverURL];
 		[coverImageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options:0];
 	} else {
-		[coverImageView setImage:[self getEmptyFolderCoverImage]];
+        coverImageView.image =[UIImage imageNamed:@"frame_alubme_default_image.png"];
 	}
-    
     /* set progess view */
     UIProgressView *progressView = [self progressViewAt:position];
     [progressView setHidden:!album.isUploading];

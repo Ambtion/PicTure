@@ -182,10 +182,11 @@
 }
 - (void)onSwitchClicked:(id)sender
 {
+    
     isSwitch = YES;
     SCPAlbumController *ctrl = [self switchController];
 	ctrl.user_id = self.user_id;
-    ctrl.albumList = self.albumList;
+    ctrl.albumList = [[self.albumList copy] autorelease];
 	ctrl.bannerLeftString = self.bannerLeftString;
 	ctrl.bannerRightString = self.bannerRightString;
     UINavigationController *nav = self.navigationController;
@@ -195,6 +196,7 @@
     [nav.view.layer addAnimation:animation forKey:nil];
     [nav popViewControllerAnimated:NO];
     [nav pushViewController:ctrl animated:NO];
+    
 }
 
 - (void)onUploadClicked:(id)sender
@@ -229,6 +231,7 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
+    
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
@@ -250,7 +253,7 @@
 		SCPAlbum *album = [[SCPAlbum alloc] init];
 		album.creatorId = _user_id;
 		album.albumId = [NSString stringWithFormat:@"%@",[Afolder objectForKey:@"folder_id"]];
-        album.coverURL = [Afolder objectForKey:@"cover_url"];
+        album.coverURL = [NSString stringWithFormat:@"%@",[Afolder objectForKey:@"cover_url"]];
         album.name = [Afolder objectForKey:@"folder_name"];
         album.permission = [[Afolder objectForKey:@"is_public"] intValue];
 		album.updatedAtDesc = [Afolder objectForKey:@"update_at_desc"];
@@ -259,8 +262,8 @@
 		[_albumList addObject:album];
 		[album release];
 	}
+    [_pullingController refreshDoneLoadingTableViewData];
 	[_pullingController.tableView reloadData];
-	[_pullingController refreshDoneLoadingTableViewData];
 }
 - (void)requestFailed:(NSString *)error
 {

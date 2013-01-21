@@ -49,6 +49,7 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_request setDelegate:nil];
     [_request release];
+    
     self.albumData = nil;
     self.photoList = nil;
     self.thumbnailArray = nil;
@@ -214,8 +215,9 @@
         [_photoList addObject:photo];
 		[photo release];
 	}
+    [[SCPUploadTaskManager currentManager].curTask clearProgreessView];
+    [_pullingController refreshDoneLoadingTableViewData];
 	[_pullingController reloadDataSourceWithAniamtion:NO];
-	[_pullingController refreshDoneLoadingTableViewData];
     
 }
 
@@ -636,7 +638,7 @@
     [super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
-    [self refresh];
+//    [self refresh];
     [self addObserVerOnCenter];
 }
 - (void)viewWillDisappear:(BOOL)animated
