@@ -95,6 +95,7 @@
 {
     [_descCountLabel setText:[NSString stringWithFormat:@"%d/%d", textView.text.length, DESC_COUNT_LIMIT]];
     return;
+	
     CGSize maxinumSize = CGSizeMake(textView.frame.size.width - 13, MAXFLOAT);
     UIFont * font = textView.font;
     CGSize myStringSize = [textView.text sizeWithFont:font constrainedToSize:maxinumSize lineBreakMode:UILineBreakModeClip];

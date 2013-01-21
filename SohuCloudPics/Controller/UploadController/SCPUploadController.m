@@ -74,8 +74,8 @@
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
+	
     _uploadHeader = [[SCPUploadHeader alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _uploadHeader.selectionStyle = UITableViewCellEditingStyleNone;
     _uploadHeader.delegate = self;
@@ -253,11 +253,10 @@
 #pragma mark keyboard delegate
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-//    NSLog(@"%s",__FUNCTION__);
-//    [_uploadHeader dismissAlbumChooseTable];
+    [_uploadHeader dismissAlbumChooseTable];
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     self.keyboardHeight = keyboardSize.height;
-//
+
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -267,7 +266,6 @@
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -322,8 +320,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    tableView.contentOffset = CGPointZero;
     [self resignFirstResponderForAll];
 }
 
