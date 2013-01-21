@@ -145,7 +145,7 @@
 
 - (UIImageView *)coverImageViewAt:(int)position
 {
-    UIImageView *view = nil;
+    UIImageView * view = nil;
     if (position < _coverImageViewList.count) {
         view = [_coverImageViewList objectAtIndex:position];
     }
@@ -222,17 +222,18 @@
 - (void)updateViewWithAlbum:(SCPAlbum *)album position:(int)position preToDel:(BOOL)deleting
 {
     /* set frame image view */
-    UIImageView *frameImageView = [self frameImageViewAt:position];
+    
+    UIImageView * frameImageView = [self frameImageViewAt:position];
     [frameImageView setHidden:NO];
+    
 	[_albumList setObject:album atIndexedSubscript:position];
     /* set cover image view */
     UIImageView *coverImageView = [self coverImageViewAt:position];
+    
     [coverImageView setHidden:NO];
 	if (album.coverURL != nil && ![album.coverURL isKindOfClass:[NSNull class]] && album.coverURL.length != 0) {
         NSString *str = [NSString stringWithFormat:@"%@_c150",album.coverURL];
-		[coverImageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options:0];
-	} else {
-		[coverImageView setImage:[self getEmptyFolderCoverImage]];
+		[coverImageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:[UIImage imageNamed:@"frame_alubme_default_image.png"] options:0];
 	}
     
     /* set progess view */

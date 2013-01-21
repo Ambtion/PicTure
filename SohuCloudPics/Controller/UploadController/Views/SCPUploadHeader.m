@@ -187,7 +187,7 @@
 {
     if (!_foldersArray.count) {
         if ([self.delegate respondsToSelector:@selector(uploadHeadershowCreateAlertView:)])
-            [self performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:self];
+            [self.delegate performSelector:@selector(uploadHeadershowCreateAlertView:) withObject:self];
         SCPAlert_Rename * aln = [[[SCPAlert_Rename alloc] initWithDelegate:self name:@"输入名称"] autorelease];
         [aln show];
         return;
@@ -201,7 +201,7 @@
         [self.superview.superview bringSubviewToFront:_albumsTable];
         [_albumsTable becomeFirstResponder];
     } else {
-        [_albumsTable removeFromSuperview];
+       g [_albumsTable removeFromSuperview];
     }
 }
 - (void)dismissAlbumChooseTable

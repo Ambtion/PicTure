@@ -67,18 +67,20 @@
     
     static NSString *identifier = @"albumListCell";
     SCPAlbumListCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    
     if (!cell) {
+        
         cell = [[[SCPAlbumListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
     }
+    
     SCPAlbum * album = [self.albumList objectAtIndex:indexPath.row];
     [cell updateViewWithAlbum:album preToDel:(_state == SCPAlbumControllerStateDelete)];
 	cell.photoImageView.tag = indexPath.row;
     cell.nameLabel.tag = indexPath.row;
 	cell.deleteView.tag = indexPath.row;
-    
-    
+
     //显示 所有任务Progress
     for(SCPAlbumTaskList * tasks in [SCPUploadTaskManager currentManager].taskList)
     {

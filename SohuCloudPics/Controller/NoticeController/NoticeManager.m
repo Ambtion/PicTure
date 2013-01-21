@@ -42,24 +42,19 @@
     [_resqust getUserInfoWithID:[SCPLoginPridictive currentUserId] asy:NO success:^(NSDictionary *response) {
         if (numFollowing != 0) {
             NoticeDataSource * dataSouce =  [[NoticeDataSource alloc] init];
-            dataSouce.name = [response objectForKey:@"user_nick"];
+//            dataSouce.name = [response objectForKey:@"user_nick"];
             dataSouce.content = [NSString stringWithFormat:@"有%d个人跟随了我",numFollowing];
-            dataSouce.photoUrl = [response objectForKey:@"user_icon"];
+//            dataSouce.photoUrl = [response objectForKey:@"user_icon"];
             [_dataSource addObject:dataSouce];
             [dataSouce release];
         }
-//        NoticeDataSource * dataSouces =  [[NoticeDataSource alloc] init];
-//        dataSouces.name = @"系统管理员";
-//        dataSouces.content = @"最新版本敬请期待";
-//        dataSouces.image = [UIImage imageNamed:@"systerm.png"];
-//        [_dataSource addObject:dataSouces];
-//        [dataSouces release];
+        
         [self.controller.pullingController refreshDoneLoadingTableViewData];
         [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
     } failure:^(NSString *error) {
         _isLoading = NO;
     }];
-
+    
 }
 #pragma Network Failed
 - (void)requestFailed:(NSString *)error

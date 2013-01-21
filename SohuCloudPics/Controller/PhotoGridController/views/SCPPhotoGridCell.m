@@ -35,7 +35,6 @@
         
         int photoCount = 4;
         for (int i = 0; i < photoCount;  i++) {
-            
             /* imageView */
             UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(4 + i * 79, 5, 75, 75)];
             UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTap:)];
@@ -56,7 +55,7 @@
             [prog release];
             
             /* deleteView */
-            UIImageView *deleteFrameImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_box_select_image.png"]];
+            UIImageView * deleteFrameImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_box_select_image.png"]];
             deleteFrameImageView.frame = imageView.frame;
             [_deleteViewList addObject:deleteFrameImageView];
             // not added first
@@ -123,7 +122,6 @@
         
         UIImageView *view = [self imageViewAt:position];
         [view setHidden:NO];
-        
         NSString *url = [NSString stringWithFormat:@"%@_c150", photo.photoUrl];
         [view cancelCurrentImageLoad];
         [view setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:0];
