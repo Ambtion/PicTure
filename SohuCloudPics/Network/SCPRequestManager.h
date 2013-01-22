@@ -12,7 +12,10 @@
 #import "URLLibaray.h"
 #import "ASIHTTPRequest.h"
 
+#import "UMFeedback.h"
+
 @class SCPRequestManager;
+
 @protocol SCPRequestManagerDelegate <NSObject>
 @optional
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info;
@@ -21,10 +24,11 @@
 @end
 
 
-@interface SCPRequestManager : NSObject<ASIHTTPRequestDelegate>
+@interface SCPRequestManager : NSObject <ASIHTTPRequestDelegate, UMFeedbackDataDelegate>
 {
     NSMutableDictionary * tempDic;
     id<SCPRequestManagerDelegate> _delegate;
+	UMFeedback *umFeedBack;
 }
 
 @property (nonatomic,assign) id<SCPRequestManagerDelegate> delegate;

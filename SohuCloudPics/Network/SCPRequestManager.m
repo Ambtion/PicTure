@@ -12,6 +12,8 @@
 #import "JSON.h"
 #import "SCPAlert_CustomeView.h"
 
+#import "UMAppKey.h"
+
 #define TIMEOUT 10.f
 #define STRINGENCODING NSUTF8StringEncoding
 #define REQUSETFAILERROR @"当前网络不给力,请稍后重试"
@@ -34,6 +36,7 @@
     NSLog(@"%s",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [tempDic release];
+	umFeedBack.delegate = nil;
     [super dealloc];
     
 }
@@ -695,25 +698,42 @@
 }
 - (void)feedBackWithidea:(NSString *)idea success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
+	umFeedBack = [UMFeedback sharedInstance];
+	[umFeedBack setAppkey:UM_APP_KEY delegate:self];
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	[dic setObject:idea forKey:@"content"];
+	[dic setObject:[NSDictionary dictionaryWithObject:[SCPLoginPridictive currentUserId] forKey:@"user_id"] forKey:@"contact"];
+	[umFeedBack post:dic];
     
-    NSString * str =[NSString stringWithFormat:@"%@/feedback?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
-    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setStringEncoding:STRINGENCODING];
-    [request setPostValue:idea forKey:@"content"];
-    [request setData:nil forKey:@"mm"];
-    [request setCompletionBlock:^{
-        NSInteger code = [request responseStatusCode];
-        if ([self handlerequsetStatucode:code withblock:failure]) {
-            success([request responseString]);
-        }
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"%@",[request responseString]);
-        failure(REQUSETFAILERROR);
-    }];
-    [request startAsynchronous];
-    
+//    NSString * str =[NSString stringWithFormat:@"%@/feedback?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
+//    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
+//    [request setStringEncoding:STRINGENCODING];
+//    [request setPostValue:idea forKey:@"content"];
+//    [request setData:nil forKey:@"mm"];
+//    [request setCompletionBlock:^{
+//        NSInteger code = [request responseStatusCode];
+//        if ([self handlerequsetStatucode:code withblock:failure]) {
+//            success([request responseString]);
+//        }
+//    }];
+//    [request setFailedBlock:^{
+//        NSLog(@"%@",[request responseString]);
+//        failure(REQUSETFAILERROR);
+//    }];
+//    [request startAsynchronous];
 }
+
+- (void)postFinishedWithError:(NSError *)error
+{
+	if (error == nil) {
+		/* success */
+		
+		
+	} else {
+		/* failed */
+	}
+}
+
 - (void)editphotot:(NSString * )photo_id Description:(NSString *)des success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
     NSString * str =[NSString stringWithFormat:@"%@/photos/%@?access_token=%@",BASICURL_V1,photo_id,[SCPLoginPridictive currentToken]];
