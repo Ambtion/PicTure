@@ -275,7 +275,7 @@
     if (cell) {
         NSIndexPath * path = [_uploadTableView indexPathForCell:cell];
         [_uploadTableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }g
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
