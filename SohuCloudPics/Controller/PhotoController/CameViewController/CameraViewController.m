@@ -257,7 +257,7 @@
     
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:g];
+    [UIView setAnimationDuration:0.5];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     _upView.frame = CGRectMake(0, 0, 320, 480);
     _downView.frame = CGRectMake(0,0, 320, 480);
