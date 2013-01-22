@@ -275,6 +275,7 @@
     SCPUploadCell * cell = [self getCellOfFirstResponder];
     if (cell) {
         NSIndexPath * path = [_uploadTableView indexPathForCell:cell];
+        [_uploadTableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
 }
 
