@@ -274,37 +274,19 @@
     SCPUploadCell * cell = [self getCellOfFirstResponder];
     if (cell) {
         NSIndexPath * path = [_uploadTableView indexPathForCell:cell];
-        NSLog(@"%@",path);
         [_uploadTableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
-
-   
+    }g
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    NSLog(@"%@",NSStringFromCGPoint(_uploadTableView.contentOffset));
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         _uploadTableView.frame = self.view.bounds;
+        [_uploadTableView setContentOffset:CGPointZero animated:NO];
+
     } completion:^(BOOL finished) {
     }];
-    [_uploadTableView setContentOffset:CGPointZero animated:YES];
-//	double max_offset_y = _uploadTableView.contentSize.height - self.view.bounds.size.height;
-//	max_offset_y = max_offset_y < 0 ? 0 : max_offset_y;
-//	CGPoint current_offset = _uploadTableView.contentOffset;
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.3];
-//    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-//	if (current_offset.y > max_offset_y) {
-//		current_offset.y = max_offset_y;
-//	}
-//	_uploadTableView.contentOffset = current_offset;
-//    [UIView commitAnimations];
-//	[UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.3];
-//    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-////	_uploadTableView.frame = self.view.bounds;
-//    [UIView commitAnimations];
-    
 }
 #pragma mark -
 #pragma mark tableViewDelegate & datasource
