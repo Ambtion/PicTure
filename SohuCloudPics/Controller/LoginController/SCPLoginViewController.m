@@ -87,7 +87,7 @@
     _passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     _passwordTextField.secureTextEntry = YES;
     _passwordTextField.placeholder = @"密码";
-    [_passwordTextField addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [_passwordTextField addTarget:self action:@selector(loginButtonClicked:) forControlEvents:UIControlEventEditingDidEndOnExit];
     
     //注册
     _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];

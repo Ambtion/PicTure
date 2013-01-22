@@ -74,8 +74,8 @@
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
+	
     _uploadHeader = [[SCPUploadHeader alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     _uploadHeader.selectionStyle = UITableViewCellEditingStyleNone;
     _uploadHeader.delegate = self;
@@ -253,25 +253,37 @@
 #pragma mark keyboard delegate
 - (void)keyboardWillShow:(NSNotification *)notification
 {
+
+    [_uploadHeader dismissAlbumChooseTable];
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     self.keyboardHeight = keyboardSize.height;
-    [_uploadTableView setContentInset:UIEdgeInsetsMake(0, 0, self.keyboardHeight, 0)];
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.3];
-//    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-////    _uploadTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.keyboardHeight);
-//    [UIView commitAnimations];
+
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    _uploadTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.keyboardHeight);
+    [UIView commitAnimations];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    
+	double max_offset_y = _uploadTableView.contentSize.height - self.view.bounds.size.height;
+	max_offset_y = max_offset_y < 0 ? 0 : max_offset_y;
+	CGPoint current_offset = _uploadTableView.contentOffset;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    _uploadTableView.frame = self.view.bounds;
+	if (current_offset.y > max_offset_y) {
+		current_offset.y = max_offset_y;
+	}
+	_uploadTableView.contentOffset = current_offset;
     [UIView commitAnimations];
-    
+
+	[UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+	_uploadTableView.frame = self.view.bounds;
+    [UIView commitAnimations];
 }
 #pragma mark -
 #pragma mark tableViewDelegate & datasource
@@ -320,8 +332,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    tableView.contentOffset = CGPointZero;
     [self resignFirstResponderForAll];
 }
 

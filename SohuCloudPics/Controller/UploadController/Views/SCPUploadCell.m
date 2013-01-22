@@ -68,7 +68,7 @@
         _descTextView.backgroundColor = [UIColor clearColor];
         [_bgView addSubview:_descTextView];
         
-        _descCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 15, frame.origin.y + frame.size.height + 10, frame.size.width, 15)];
+        _descCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 15, frame.origin.y + frame.size.height + 4, frame.size.width, 15)];
         _descCountLabel.backgroundColor = [UIColor clearColor];
         [UIUtils updateCountLabel:_descCountLabel];
         [_descCountLabel setText:[NSString stringWithFormat:@"%d/%d", _descTextView.text.length, DESC_COUNT_LIMIT]];
@@ -94,6 +94,7 @@
 {
     [_descCountLabel setText:[NSString stringWithFormat:@"%d/%d", textView.text.length, DESC_COUNT_LIMIT]];
     return;
+	
     CGSize maxinumSize = CGSizeMake(textView.frame.size.width - 13, MAXFLOAT);
     UIFont * font = textView.font;
     CGSize myStringSize = [textView.text sizeWithFont:font constrainedToSize:maxinumSize lineBreakMode:UILineBreakModeClip];
