@@ -245,13 +245,6 @@
 #pragma mark funcitonClick
 - (void)personalFollowButton:(UIButton *)button
 {
-
-//    self.datasource.isFollowed = !self.datasource.isFollowed;
-//    if (self.datasource.isFollowed) {
-//        [_followButton setTitle:@"取消跟随" forState:UIControlStateNormal];
-//    }else{
-//        [_followButton setTitle:@"跟随对方" forState:UIControlStateNormal];
-//    }
     if ([_delegate respondsToSelector:@selector(personalPageCell:follwetogether:)]) {
         [_delegate personalPageCell:self follwetogether:button];
     }

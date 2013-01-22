@@ -76,7 +76,6 @@
 - (void)showGuideView
 {
     NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
-    NSLog(@"%s num %@",__FUNCTION__ , num );
     if (!num || ![num boolValue]) {
         SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
         if ([[UIScreen mainScreen] bounds].size.height > 480) {

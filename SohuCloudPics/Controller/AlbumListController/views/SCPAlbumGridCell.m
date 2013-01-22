@@ -98,6 +98,7 @@
             /* count label view */
             //            UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 56, 60, 30, 16)];
             UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(75 - 30, 75 - 16, 30, 18)];
+            
             [UIUtils updateAlbumCountLabel:countLabel];
             
             [countLabel setTextAlignment:UITextAlignmentCenter];
@@ -106,7 +107,7 @@
             [countLabel release];
             
             /* progress view */
-            UIProgressView * progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 73 + 5, 64, 9)];
+            UIProgressView * progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 73 , 64, 9)];
             [progressView setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             [progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             progressView.progress = 0.f;
@@ -226,30 +227,35 @@
     
     /* set cover image view */
     UIImageView * coverImageView = [self coverImageViewAt:position];
-    
     [coverImageView setHidden:NO];
-	if (album.coverURL != nil && ![album.coverURL isKindOfClass:[NSNull class]] && album.coverURL.length != 0) {
-        NSString *str = [NSString stringWithFormat:@"%@_c150",album.coverURL];
-		[coverImageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options:0];
-	} else {
-        coverImageView.image =[UIImage imageNamed:@"frame_alubme_default_image.png"];
-	}
+    NSString *str = [NSString stringWithFormat:@"%@_c150",album.coverURL];
+    [coverImageView cancelCurrentImageLoad];
+    [coverImageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:[UIImage imageNamed:@"frame_alubme_default_image.png"] options:0];
+
     /* set progess view */
     UIProgressView *progressView = [self progressViewAt:position];
     [progressView setHidden:!album.isUploading];
+    
     /* set name label */
     UILabel *nameLabel = [self nameLabelAt:position];
     [nameLabel setHidden:NO];
 	nameLabel.text = album.name;
-    
+
     /* set count label */
-    UILabel *countLabel = [self countLabelAt:position];
-    [countLabel setHidden:album.isUploading];
-    [countLabel setText:[NSString stringWithFormat:@" %d ", album.photoNum]];
-    [countLabel sizeToFit];
-    countLabel.frame = CGRectMake(75 - countLabel.frame.size.width - 5, 75 - countLabel.frame.size.height - 5,
-                                  countLabel.frame.size.width > 18 ? countLabel.frame.size.width : 18 , 18);
+    UILabel * countLabel = [self countLabelAt:position];
+    if (album.isUploading) {
+        countLabel.backgroundColor = [UIColor clearColor];
+        countLabel.text = nil;
+    }else{
+        
+        [UIUtils updateAlbumCountLabel:countLabel];
+        [countLabel setText:[NSString stringWithFormat:@" %d ", album.photoNum]];
+        [countLabel sizeToFit];
+        countLabel.frame = CGRectMake(75 - countLabel.frame.size.width - 5, 75 - countLabel.frame.size.height - 5,
+                                      countLabel.frame.size.width > 18 ? countLabel.frame.size.width : 18 , 18);
+    }
     
+   
     /* delete ? */
     UIImageView *deleteView = [self deleteViewAt:position];
     deleteView.hidden = !deleting;

@@ -172,7 +172,8 @@
     _textView_bg.layer.cornerRadius = 5.f;
     _textView_bg.layer.borderColor = [UIColor colorWithRed:222.f/255.f green:222.f/255.f blue:222.f/255.f alpha:1].CGColor;
     _textView_bg.layer.borderWidth = 1.f;
-    _textView_bg.layer.shouldRasterize = NO;
+    _textView_bg.layer.masksToBounds = NO;
+    _textView_bg.layer.shouldRasterize = YES;
     [self.view addSubview:_textView_bg];
     
     _textView = [[UITextView alloc] initWithFrame:CGRectMake(2, 2, 300, 130)];

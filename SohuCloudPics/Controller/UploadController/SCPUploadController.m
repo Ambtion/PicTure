@@ -253,16 +253,14 @@
 #pragma mark keyboard delegate
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-//    NSLog(@"%s",__FUNCTION__);
-//    [_uploadHeader dismissAlbumChooseTable];
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     self.keyboardHeight = keyboardSize.height;
-//
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    _uploadTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.keyboardHeight);
-    [UIView commitAnimations];
+    [_uploadTableView setContentInset:UIEdgeInsetsMake(0, 0, self.keyboardHeight, 0)];
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+////    _uploadTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.keyboardHeight);
+//    [UIView commitAnimations];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification

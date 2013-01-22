@@ -126,10 +126,12 @@
 }
 - (void)albumTaskOver:(NSNotification *)notification
 {
+    
     [self.curProgreeeView setHidden:YES];
     self.curProgreeeView = nil;
     [self refresh];
 }
+
 - (void)albumChange:(NSNotification *)notification
 {
     NSDictionary * dic = [notification userInfo];

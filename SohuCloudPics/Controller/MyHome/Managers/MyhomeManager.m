@@ -27,6 +27,7 @@ static float OFFSET = 0.f;
 
 - (void)dealloc
 {
+    NSLog(@"%s",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     if (wait) {
         [wait dismissWithClickedButtonIndex:0 animated:YES];
@@ -69,7 +70,6 @@ static float OFFSET = 0.f;
 {
     
     if (_isinit || ![SCPLoginPridictive currentUserId]) return;
-    
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
@@ -84,14 +84,15 @@ static float OFFSET = 0.f;
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
+    
     if (wait) {
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
     }
     if (_willRefresh) {
+        
         [_dataArray removeAllObjects];
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
-        
         _personalDataSource.isInit = NO;
         _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
         _personalDataSource.name = [userInfo objectForKey:@"user_nick"];
@@ -99,6 +100,7 @@ static float OFFSET = 0.f;
         _personalDataSource.albumAmount = [[userInfo objectForKey:@"public_folders"] intValue] + [[userInfo objectForKey:@"private_folders"] intValue];
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
+        
     }
     curPage = [[[info objectForKey:@"feedList"]objectForKey:@"page"] intValue];
     hasNextpage = [[[info objectForKey:@"feedList"]objectForKey:@"has_next"] boolValue];
@@ -187,6 +189,7 @@ static float OFFSET = 0.f;
     _isLoading = NO;
     [self.controller.homeTable reloadData];
 }
+
 - (void)showLoadingMore
 {
     
@@ -285,6 +288,7 @@ static float OFFSET = 0.f;
         pageCell.datasource = _personalDataSource;
         return pageCell;
     }
+    
     else {
         
         FeedCell * feedCell = [tableView dequeueReusableCellWithIdentifier:@"FEEDCELL"];

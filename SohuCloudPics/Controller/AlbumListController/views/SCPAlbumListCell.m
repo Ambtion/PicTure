@@ -151,7 +151,7 @@
 
     /* count label */
     [_photoNumLabel setHidden:self.album.isUploading];
-    [_photoNumLabel setText:[NSString stringWithFormat:@"共有%d张图片", self.album.photoNum]];
+    [_photoNumLabel setText:[NSString stringWithFormat:@"有%d张图片", self.album.photoNum]];
 	
 	/* name label */
 	_nameLabel.frame = NAME_RECT;

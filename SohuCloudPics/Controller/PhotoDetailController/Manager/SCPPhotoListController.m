@@ -753,7 +753,6 @@
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
     }
     NSLog(@"Nomal ::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
-
 }
 
 - (void)refreshScrollView{
@@ -762,7 +761,7 @@
         return;
     }
     [self.view setUserInteractionEnabled:NO];
-    if (photoNum < 3) {
+    if (photoNum <= 3) {
         [self refreshScrollviewWhenPhotonumLessThree];
     }else if (curPage == 0) {
         [self refreshScrollviewOnMinBounds];
@@ -783,8 +782,9 @@
     if (isLoading || animation)  return;
     if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging])      return;
     
-    if (photoNum < 3) {
+    if (photoNum <= 3) {
         curPage = self.scrollView.contentOffset.x / self.view.frame.size.width;
+        self.info = [imageArray objectAtIndex:curPage];
         return;
     }
     int x = self.scrollView.contentOffset.x;

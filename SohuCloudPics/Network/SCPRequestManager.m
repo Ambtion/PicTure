@@ -31,6 +31,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [tempDic release];
     [super dealloc];
@@ -63,9 +64,7 @@
 - (BOOL)handlerequsetStatucode:(NSInteger)requsetCode
 {
     NSLog(@"%s",__FUNCTION__);
-
     if (requsetCode >= 200 && requsetCode <= 300) return YES;
-    
     if (requsetCode == 401) [self refreshToken:401];
     
     if ([_delegate respondsToSelector:@selector(requestFailed:)])
@@ -194,10 +193,9 @@
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
-    
+    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
-    
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
         if ([self handlerequsetStatucode:code]) {
@@ -249,11 +247,9 @@
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,uses_id];
     }
-    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        
         NSInteger code = [request responseStatusCode];
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];

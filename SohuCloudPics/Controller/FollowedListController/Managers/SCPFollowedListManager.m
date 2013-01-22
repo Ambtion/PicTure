@@ -160,7 +160,7 @@
 #pragma mark bannerDataSource
 - (NSString*)bannerDataSouceLeftLabel
 {
-    return [NSString stringWithFormat:@"有%d人跟随",_maxNum];
+    return [NSString stringWithFormat:@"有%d人关注",_maxNum];
 }
 
 - (NSString*)bannerDataSouceRightLabel

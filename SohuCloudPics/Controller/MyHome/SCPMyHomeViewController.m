@@ -20,6 +20,7 @@
 
 - (void)dealloc
 {
+    self.manager.controller = nil;
     self.manager = nil;
     self.homeTable = nil;
     self.footView = nil;
@@ -50,11 +51,12 @@
     _homeTable.delegate = _manager;
     [self.view addSubview:_homeTable];
     [self addTableFootView];
-    
     if ([SCPLoginPridictive isLogin]) [self.manager dataSourcewithRefresh:YES];
+    
 }
 - (void)addTableFootView
 {
+    
     self.footView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)] autorelease];
     _footView.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];
     UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self.manager action:@selector(loadingMore:)] autorelease];

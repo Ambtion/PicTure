@@ -39,7 +39,6 @@
     [_passwordTextField release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
-    NSLog(@"%s end",__FUNCTION__);
 }
 
 - (void)loadView

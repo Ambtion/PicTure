@@ -22,7 +22,5 @@
 
 - (id)initWithinfo:(NSDictionary *)dic;
 - (id)initWithuseId:(NSString*) useId photoId:(NSString*)photoId;
-//- (void)displayCommentPostBar;
-//- (void)dismissCommentPostBar;
 
 @end

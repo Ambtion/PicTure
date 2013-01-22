@@ -64,7 +64,6 @@
         _descTextView.keyboardAppearance = UIKeyboardAppearanceDefault;
         _descTextView.keyboardType = UIKeyboardTypeDefault;
         _descTextView.returnKeyType = UIReturnKeyDone;
-//        _descTextView.scrollEnabled = NO;
         _descTextView.delegate = self;
         _descTextView.backgroundColor = [UIColor clearColor];
         [_bgView addSubview:_descTextView];

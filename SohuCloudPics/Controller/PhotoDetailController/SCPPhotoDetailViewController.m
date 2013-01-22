@@ -17,6 +17,8 @@
 
 - (void)dealloc
 {
+    
+    self.manager.controller = nil;
     [_manager release];
     [_pullingController release];
     [super dealloc];
@@ -51,15 +53,8 @@
     self.pullingController.headView.datasouce = self.manager;
     [self.pullingController.footView setHidden:YES];
     [self.view addSubview:self.pullingController.view];
+    [self.manager dataSourcewithRefresh:YES];
     
-//    [self.manager dataSourcewithRefresh:YES];
-//    _commentPostBar = [[CommentPostBar alloc] initWithFrame:CGRectMake(0, self.view.bounds.origin.y + self.view.bounds.size.height, 320, 45)];
-//    _commentPostBar.delegate = self;
-//    [self.view addSubview:_commentPostBar];
-    self.view.backgroundColor = [UIColor clearColor];
-//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-//    [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//    [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 #pragma mark -
 #pragma mark customer Navigationiteam
@@ -74,7 +69,6 @@
     backButton.frame = CGRectMake(0, 0, 35, 35);
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
-    [self.manager dataSourcewithRefresh:YES];
 }
 
 - (void)navigationBack:(UIButton*)button

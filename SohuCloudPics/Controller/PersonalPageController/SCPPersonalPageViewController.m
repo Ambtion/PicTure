@@ -28,6 +28,7 @@
     self.footView = nil;
     [_tableView release];
     [_topButton release];
+    self.manager.controller = nil;
     [_manager release];
     [super dealloc];
 }

@@ -53,7 +53,7 @@
         photoNum.backgroundColor = [UIColor clearColor];
         photoNum.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         photoNum.textAlignment = UITextAlignmentLeft;
-        photoNum.text = @"照片数量";
+        photoNum.text = @"图片数量";
         [_alertboxImageView addSubview:photoNum];
         
         UILabel * photoNumDe = [[[UILabel alloc] initWithFrame:CGRectMake(_alertboxImageView.frame.size.width - 120 , 50, 100, 15)] autorelease];
@@ -61,7 +61,7 @@
         photoNumDe.backgroundColor = [UIColor clearColor];
         photoNumDe.textColor = [UIColor colorWithRed:98.0 / 255 green:98.0 / 255 blue:98.0 / 255 alpha:1];
         photoNumDe.textAlignment = UITextAlignmentRight;
-        photoNumDe.text = [NSString stringWithFormat: @"共%d张照片",album.photoNum];
+        photoNumDe.text = [NSString stringWithFormat: @"共%d张图片",album.photoNum];
         [_alertboxImageView addSubview:photoNumDe];
         
         UILabel * permission = [[[UILabel alloc] initWithFrame:CGRectMake(20 , 85, 100, 15)] autorelease];

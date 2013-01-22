@@ -77,7 +77,7 @@
     [self.contentView addSubview:titleImage];
     
     // album choose
-    _albumChooseLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 86, 300, 20)];
+    _albumChooseLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 86 + 10, 300, 20)];
     [UIUtils updateNormalLabel:_albumChooseLabel title:@"请选择一个专辑"];
     [self addSubview:_albumChooseLabel];
     _currentAlbum = 0;
@@ -174,9 +174,10 @@
     if (self.albumChooseButton.selected)
         [self albumChooseButtonClicked];
     [_requestmanager createAlbumWithName:textField.text success:^(NSString *response) {
+        [self dismissAlbumChooseTable];
         [self refreshData];
     } failure:^(NSString *error) {
-        
+        [self dismissAlbumChooseTable];
         SCPAlert_CustomeView * alterview = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
         [alterview show];
     }];

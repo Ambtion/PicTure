@@ -46,7 +46,7 @@
             [imageView release];
             
             /* progressView */
-            UIProgressView *prog = [[UIProgressView alloc] initWithFrame:CGRectMake(i * 79 + 8, 60, 64, 9)];
+            UIProgressView *prog = [[UIProgressView alloc] initWithFrame:CGRectMake(i * 79 + 8, 60 + 5, 64, 9)];
             [prog setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             [prog setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             prog.progress = 0;

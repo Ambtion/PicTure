@@ -82,7 +82,8 @@
     view.backgroundColor = [UIColor clearColor];
     _pullingController.tableView.tableFooterView = view;
     [self.view addSubview:_pullingController.view];
-    [self initNavigationItem];    
+    [self initNavigationItem];
+    [self refresh];
 }
 
 - (void)initNavigationItem
@@ -610,7 +611,7 @@
 #pragma mark BannerDataSource
 - (NSString *)bannerDataSouceLeftLabel
 {
-    return [NSString stringWithFormat:@"共有%d张图片", self.albumData.photoNum];
+    return [NSString stringWithFormat:@"有%d张图片", self.albumData.photoNum];
 }
 - (NSString *)bannerDataSouceRightLabel
 {

@@ -68,7 +68,7 @@
     }
     
     [self ConfigurationOutput];
-    
+
 }
 -(void)initconfigurationInput
 {
@@ -126,26 +126,38 @@
 }
 
 -(void) embedPreviewInView: (UIView *) aView {
+    
     if (!session) return;
     preview = [AVCaptureVideoPreviewLayer layerWithSession: session];
-    //    preview.orientation = UIInterfaceOrientationPortrait;
+    preview.orientation = UIInterfaceOrientationPortrait;
     preview.frame = aView.bounds;
     preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [aView.layer addSublayer: preview];
+    
 }
 
 - (void)changePreviewOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    
     [CATransaction begin];
+    
+    imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
+    movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
     if (interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         g_orientation = UIImageOrientationUp;
-        preview.orientation = AVCaptureVideoOrientationLandscapeRight;
-        
+            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+            movieConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
     }else if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft){
         g_orientation = UIImageOrientationDown;
-        preview.orientation = AVCaptureVideoOrientationLandscapeLeft;
+            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+            movieConnection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+    }else{
+            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationPortrait;
+            movieConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
     }
+    NSLog(@"%s, %d",__FUNCTION__, interfaceOrientation);
     [CATransaction commit];
+    
 }
 
 #pragma mark -
@@ -154,16 +166,14 @@
 {
     //get UIImage
     if ([imagecaptureOutput isCapturingStillImage] || !imageCaptureconnection.isEnabled) {
-//        UIAlertView * alt = [[[UIAlertView alloc] initWithTitle:@"imageConnection" message:@"DisEnable" delegate:session cancelButtonTitle:@"cancel" otherButtonTitles: nil] autorelease];
-//        [alt show];
         return;
     }else {
-        NSLog(@"Image::%@",imageCaptureconnection);
         [imagecaptureOutput captureStillImageAsynchronouslyFromConnection:imageCaptureconnection completionHandler:
          ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
              NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
              NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-             UIImage *t_image = [[UIImage alloc] initWithData:imageData]  ;
+             UIImage *t_image = [[UIImage alloc] initWithData:imageData ];
+             NSLog(@"BBBBBBBBBB :::%d",[t_image imageOrientation]);
              self.image = [[[UIImage alloc]initWithCGImage:t_image.CGImage scale:1.0 orientation:UIImageOrientationRight] autorelease];
              [t_image release],t_image = nil;
              //t_image is  same  to self.image
@@ -199,7 +209,7 @@
     BOOL lockAcquired = [currentDevice lockForConfiguration:&error];
     if (lockAcquired) {
         if ([currentDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
-            CGFloat x = point.x / 480;
+            CGFloat x = point.x / [[UIScreen mainScreen] bounds].size.height;
             CGFloat y = point.y /  320;
             [currentDevice setFocusPointOfInterest:CGPointMake(x, y)];
             [currentDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
@@ -263,24 +273,20 @@
 {
     imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
     movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
-    
     session.sessionPreset = AVCaptureSessionPresetMedium;
     movieConnection.enabled = YES;
     imageCaptureconnection.enabled = NO;
     NSLog(@"movieConnection %d,imageCaptureconnection: %d",movieConnection.isEnabled,imageCaptureconnection.isEnabled);
+    
 }
-
 #pragma mark -
 #pragma mark recording
 -(void)recordingAtPath:(NSString *)path
 {
     NSURL * outUrl = [[[NSURL alloc] initFileURLWithPath:path] autorelease];
     if ([movieFileOutPut isRecording] || !movieConnection.isEnabled) {
-//        UIAlertView * alt = [[[UIAlertView alloc] initWithTitle:@"movieConnection" message:@"DisEnable" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil] autorelease];
-//        [alt show];
         return;
     }else {
-		//Start recording
         [movieFileOutPut startRecordingToOutputFileURL:outUrl  recordingDelegate:self];
     }
 }

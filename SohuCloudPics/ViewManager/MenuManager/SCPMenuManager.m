@@ -290,7 +290,7 @@ static NSString *menuPress[6] = {
 
 - (void)onAccountClicked:(id)sender
 {
-    
+    NSLog(@"%s",__FUNCTION__);
     [self hideMenuWithRibbon:NO];
     if (![SCPLoginPridictive isLogin]) {
         self.homelogin = [[[SCPLoginViewController alloc] init] autorelease];

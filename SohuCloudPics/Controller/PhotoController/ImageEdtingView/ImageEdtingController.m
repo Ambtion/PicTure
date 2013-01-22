@@ -64,19 +64,15 @@
     self = [super init];
     if (self) {
         
-        
         controller = Acontroller;
-        NSLog(@"initWithUIImage %@",NSStringFromCGSize(image.size));
+        NSLog(@"initWithUIImage %@ imageOrientation:%d",NSStringFromCGSize(image.size),[image imageOrientation]);
         [self initdataContainer];
         [self compressImage:image];
-        
         UIGraphicsBeginImageContext(image.size);
         [image drawInRect:(CGRect){0,0,image.size}];
         UIImage* N_image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         self.originalImage = N_image;
-        
-//        [self writeImageToalbum:image];
         [self addSubViews];
     }
     return self;
@@ -144,14 +140,13 @@
     
     [super viewDidLoad];
     NSLog(@"viewDidLoad start");
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"camera_bg.png"]];
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"camera_bg.png"]];
     //reload gesture
     UISwipeGestureRecognizer * right = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:nil];
     right.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:right];
     [right release];
-    
     NSLog(@"viewDidLoad end");
     
 }
@@ -244,7 +239,6 @@
         
         [button setBackgroundImage:[UIImage imageNamed:@"crop.png"] forState:UIControlStateNormal];
         [button setBackgroundImage:[UIImage imageNamed:@"crop.png"] forState:UIControlStateHighlighted];
-        
         [_clipview removeFromSuperview];
         [_clipview release];
         _clipview = nil;
@@ -483,7 +477,7 @@
 }
 -(void)writeToAlbum
 {
-    
+
     [_library writeImageToSavedPhotosAlbum:self.originalImage.CGImage orientation:(ALAssetOrientation)[self.originalImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
             NSLog(@"error%@",error);

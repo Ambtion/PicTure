@@ -238,7 +238,7 @@
     if (![SCPLoginPridictive isLogin]) {
         return nil;
     }
-    return [NSString stringWithFormat:@"跟随了%d人",allFollowed];
+    return [NSString stringWithFormat:@"关注了%d人",allFollowed];
 }
 - (NSString*)bannerDataSouceRightLabel
 {

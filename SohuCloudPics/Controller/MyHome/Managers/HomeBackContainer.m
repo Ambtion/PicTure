@@ -107,7 +107,7 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
 {
     NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
     if ([name isEqualToString:@""]) {
-//        [userDefault removeObjectForKey:@"HomeBackImage"];
+        
     }else{
         NSMutableDictionary * userinfo = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:[SCPLoginPridictive currentUserId]]];
         if (!userinfo) userinfo = [NSMutableDictionary dictionaryWithCapacity:0];

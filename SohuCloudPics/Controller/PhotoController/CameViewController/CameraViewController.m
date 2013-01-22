@@ -61,12 +61,21 @@
     if (_tampview == nil){
         _tampview = [[UIImageView alloc] initWithFrame:self.view.bounds];
         _tampview.backgroundColor = [UIColor colorWithRed:45/255.f green:45/255.f blue:45/255.f alpha:1];
-        _tampview.image = [UIImage imageNamed:@"short_bg.png"];
+//        _tampview.image = [UIImage imageNamed:@"short_bg.png"];
         _tampview.userInteractionEnabled = NO;
     }
-    
     [self.preview  addSubview:_tampview];
+    
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(listOrientationChanged:)
+//                                                 name:UIDeviceOrientationDidChangeNotification
+//                                               object:nil];
 }
+//- (void)listOrientationChanged:(NSNotification *)notification
+//{
+//    [camerBox changePreviewOrientation:[[UIDevice currentDevice] orientation]];
+//}
 - (void)dealloc {
     
     NSLog(@"%s",__FUNCTION__);
@@ -106,6 +115,7 @@
     [super viewDidDisappear:animated];
     [self.navigationController.navigationBar setHidden:NO];
     [((SCPMenuNavigationController *)self.navigationController).ribbonView setHidden:NO];
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
 #pragma mark -
 #pragma mark initViews
@@ -209,7 +219,7 @@
     [camerBox startRunning];
     CATransition * transiton = [CATransition animation];
     transiton.fillMode = kCAFillModeForwards;
-    transiton.duration = 0.5;
+    transiton.duration = 0.3;
     transiton.speed = 1.0;
 //    transiton.type = @"cameraIrisHollowOpen";
     transiton.type = kCATransitionFade;
@@ -224,7 +234,7 @@
     [camerBox stopRunning];
     CATransition * transiton = [CATransition animation];
     transiton.fillMode = kCAFillModeBoth;
-    transiton.duration = 0.5;
+    transiton.duration = 0.3;
     transiton.speed = 1.0;
     transiton.delegate = self;
 //    transiton.type = @"cameraIrisHollowClose";
@@ -546,6 +556,7 @@
     [self.view addSubview:_alview];
     [_alview startAnimating];
 }
+
 -(void)closesActivityIndicator
 {
     //    [_alview stopAnimating];
@@ -553,5 +564,6 @@
     [_alview release];
     [self.view setUserInteractionEnabled:YES];
 }
+#pragma mark orientation
 
 @end

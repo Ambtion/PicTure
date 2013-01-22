@@ -53,7 +53,7 @@
     ALAssetsLibrary * lib = [[ALAssetsLibrary alloc] init];
     [lib assetForURL:_asseetUrl resultBlock:^(ALAsset *asset) {
         CGImageRef  cgimage =[[asset defaultRepresentation] fullResolutionImage];
-        UIImage * image = [UIImage imageWithCGImage:cgimage];
+        UIImage * image = [UIImage imageWithCGImage:cgimage scale:1 orientation:[[asset valueForProperty:ALAssetPropertyOrientation] intValue]];
         NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
         NSNumber * num = [userinfo objectForKey:@"JPEG"];
         NSData * data = nil;

@@ -33,6 +33,7 @@
 - (void) startRunning;
 - (void) stopRunning;
 - (void)embedPreviewInView: (UIView *) aView;
+- (void)changePreviewOrientation:(UIInterfaceOrientation)interfaceOrientation;
 //imageOutPut
 -(void)CaptureStillImageWithblockSucecces:(void(^)(UIImage* image))sucecces;
 -(void)switchCameraPosition;

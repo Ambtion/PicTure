@@ -82,18 +82,13 @@
 {
 	[self.pullingController.headView BannerreloadDataSource];
 }
-
-- (void)updateBannerWithAlbumCount:(int)count andAuthorName:(NSString *)name
+- (void)updateBannerWithAlbumCount:(int)count andAuthorName:(NSString *)name photoNum:(NSInteger)photo_num
 {
 	if (count < 0) {
 		count = 0;
 	}
     self.bannerLeftString = [NSString stringWithFormat:@"有%d个专辑", count];
-	
-	if (!name || name.length == 0) {
-		name = @"无名英雄";
-	}
-    self.bannerRightString = [NSString stringWithFormat:@"作者:%@", name];
+    self.bannerRightString = [NSString stringWithFormat:@"有%d张照片",photo_num];
     [self.pullingController.headView BannerreloadDataSource];
 }
 - (void)pullingreloadMoreTableViewData:(id)sender
@@ -186,7 +181,7 @@
     isSwitch = YES;
     SCPAlbumController *ctrl = [self switchController];
 	ctrl.user_id = self.user_id;
-    ctrl.albumList = [[self.albumList copy] autorelease];
+    ctrl.albumList = [NSMutableArray arrayWithArray:self.albumList];
 	ctrl.bannerLeftString = self.bannerLeftString;
 	ctrl.bannerRightString = self.bannerRightString;
     UINavigationController *nav = self.navigationController;
@@ -234,6 +229,7 @@
     
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
+    NSLog(@"%@",folderinfo);
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
 	_hasNextPage = [[folderinfo objectForKey:@"has_next"] boolValue];
     _loadedPage = _currentPage;
@@ -244,9 +240,11 @@
 			albumCount += [[creator objectForKey:@"private_folders"] intValue];
 		}
 		NSString * nickname = [creator objectForKey:@"user_nick"];
-		[self updateBannerWithAlbumCount:albumCount andAuthorName:nickname];
-		[_albumList removeAllObjects];
-	}
+		[self updateBannerWithAlbumCount:albumCount andAuthorName:nickname photoNum:[[creator objectForKey:@"photo_num"] intValue]];
+        if (_albumList.count)
+            [_albumList removeAllObjects];
+    }
+
 	NSArray *folderList = [folderinfo  objectForKey:@"folders"];
 	for (int i = 0; i < folderList.count; ++i) {
 		NSDictionary *Afolder = [folderList objectAtIndex:i];
@@ -262,6 +260,7 @@
 		[_albumList addObject:album];
 		[album release];
 	}
+    
     [_pullingController refreshDoneLoadingTableViewData];
 	[_pullingController.tableView reloadData];
 }
@@ -347,6 +346,7 @@
 
 - (void)onOKClicked:(id)sender
 {
+    
     _state = SCPAlbumControllerStateNormal;
     CATransition *animation = [CATransition animation];
     animation.type = kCATransitionMoveIn;
@@ -359,8 +359,8 @@
     [_rightBarView addSubview:_uploadButton];
     _backButton.hidden = NO;
     [_pullingController.tableView reloadData];
+    
 }
-
 #pragma mark -
 #pragma mark SCPAlertDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

@@ -128,7 +128,6 @@
     NSDictionary * dic = [[request responseString] JSONValue];
     NSInteger code = [[dic objectForKey:@"code"] intValue];
     if (code == 12) {
-        
         [request cancel];
         [request clearDelegatesAndCancel];
         [self requestClearCurTask];
@@ -156,7 +155,6 @@
     self.currentTask = nil;
     SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"专辑已满,上传失败"] autorelease];
     [cus show];
-    NSLog(@"Task Finished");
     if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
         [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
     }
@@ -202,9 +200,8 @@
     [request setDelegate:self];
     [request setTimeOutSeconds:UPTIMEOUT];
     [request setShowAccurateProgress:YES];
-#if __IPHONE_OS_VERSION_MIN_ALLOWED >= __IPHONE_4_0
     [request setShouldContinueWhenAppEntersBackground:YES];
-#endif
+//#endif
     return request;
 }
 

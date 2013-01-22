@@ -18,8 +18,9 @@
 
 - (void)dealloc
 {
-    [_pullingController release];
+    self.manager.controller = nil;
     [_manager release];
+    [_pullingController release];
     [_refreshButton release];
     [super dealloc];
 }

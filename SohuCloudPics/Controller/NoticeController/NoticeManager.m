@@ -8,8 +8,7 @@
 
 #import "NoticeManager.h"
 #import "SCPPersonalPageViewController.h"
-#import "SCPFollowingListViewController.h"
-
+#import "SCPFollowedListViewController.h"
 @implementation NoticeManager
 @synthesize controller = _controller;
 
@@ -38,23 +37,14 @@
 {
     [_dataSource removeAllObjects];
     numFollowing = [[info objectForKey:@"followed"] intValue];
-    NSLog(@"numFollowing %d",numFollowing);
-    [_resqust getUserInfoWithID:[SCPLoginPridictive currentUserId] asy:NO success:^(NSDictionary *response) {
-        if (numFollowing != 0) {
-            NoticeDataSource * dataSouce =  [[NoticeDataSource alloc] init];
-//            dataSouce.name = [response objectForKey:@"user_nick"];
-            dataSouce.content = [NSString stringWithFormat:@"有%d个人跟随了我",numFollowing];
-//            dataSouce.photoUrl = [response objectForKey:@"user_icon"];
-            [_dataSource addObject:dataSouce];
-            [dataSouce release];
-        }
-        
-        [self.controller.pullingController refreshDoneLoadingTableViewData];
-        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-    } failure:^(NSString *error) {
-        _isLoading = NO;
-    }];
-    
+    _isLoading = NO;
+    NoticeDataSource * dataSouce =  [[NoticeDataSource alloc] init];
+    dataSouce.content = [NSString stringWithFormat:@"有%d个人关注了我",numFollowing];
+    [_dataSource addObject:dataSouce];
+    [dataSouce release];
+
+    [self.controller.pullingController refreshDoneLoadingTableViewData];
+    [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
 #pragma Network Failed
 - (void)requestFailed:(NSString *)error
@@ -117,7 +107,7 @@
 {
     [_resqust destoryNotificationAndsuccess:^(NSString *response) {
         UINavigationController *nav = _controller.navigationController;
-        SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
+        SCPFollowedListViewController *ctrl = [[SCPFollowedListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
         [nav pushViewController:ctrl animated:YES];
         [ctrl release];
     } failure:^(NSString *error) {
@@ -127,7 +117,7 @@
 #pragma mark - dataSouce
 - (NSString *)bannerDataSouceLeftLabel
 {
-    if (_dataSource && _dataSource.count)
+    if (_dataSource && _dataSource.count && numFollowing)
         return [NSString stringWithFormat:@"有%d条提醒",_dataSource.count];
     return @"暂无提醒";
 }
@@ -142,6 +132,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (!numFollowing) return 0;
     return _dataSource.count;
 }
 
@@ -158,7 +149,6 @@
                                        reuseIdentifier:str] autorelease];
         cell.delegate = self;
     }
-//    NSLog(@"%@",((NoticeDataSource *)[_dataSource objectAtIndex:1]).name);
     cell.dataSource = [_dataSource objectAtIndex:indexPath.row];
   
     return cell;

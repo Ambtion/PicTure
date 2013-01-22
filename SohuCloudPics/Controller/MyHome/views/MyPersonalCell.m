@@ -100,7 +100,6 @@
     
     NSDictionary * dic = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
     NSString * bgname = [dic objectForKey:@"HomeBackImage"];
-    NSLog(@"%@",dic);
     if (bgname) {
         _backgroundImageView.image = [UIImage imageNamed:bgname];
     }else{
@@ -207,7 +206,6 @@
 }
 - (void)updataData
 {
-    NSLog(@"%@",_dataSource.portrait);
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"] success:^(UIImage *image) {
         CGSize size = [self getRectofProtrait:image];
         

@@ -12,7 +12,7 @@
 #import "SCPUploadController.h"
 
 
-#define DESC_COUNT_LIMIT 400
+#define DESC_COUNT_LIMIT 300
 
 @interface SCPUploadCell : UITableViewCell <UITextViewDelegate>
 {
