@@ -74,8 +74,8 @@
     label.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4].CGColor;
     label.layer.borderWidth = 1.f;
     label.clipsToBounds = YES;
-    label.layer.masksToBounds = NO;
-    label.layer.shouldRasterize = YES;
+    label.layer.masksToBounds = YES;
+    label.layer.shouldRasterize = NO;
     label.textAlignment = UITextAlignmentCenter;
     label.font = [label.font fontWithSize:13];
 }

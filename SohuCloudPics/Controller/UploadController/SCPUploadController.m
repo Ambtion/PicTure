@@ -133,6 +133,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -251,39 +252,59 @@
 }
 #pragma mark -
 #pragma mark keyboard delegate
+- (SCPUploadCell *)getCellOfFirstResponder
+{
+    for (SCPUploadCell * cell in _cells) {
+        if ([cell.descTextView isFirstResponder]) return cell;
+    }
+    return nil;
+}
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-
+    
     [_uploadHeader dismissAlbumChooseTable];
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     self.keyboardHeight = keyboardSize.height;
+    
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        _uploadTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.keyboardHeight);
+    } completion:^(BOOL finished) {
+        
+    }];
+    SCPUploadCell * cell = [self getCellOfFirstResponder];
+    if (cell) {
+        NSIndexPath * path = [_uploadTableView indexPathForCell:cell];
+        NSLog(@"%@",path);
+        [_uploadTableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
 
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    _uploadTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.keyboardHeight);
-    [UIView commitAnimations];
+   
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-	double max_offset_y = _uploadTableView.contentSize.height - self.view.bounds.size.height;
-	max_offset_y = max_offset_y < 0 ? 0 : max_offset_y;
-	CGPoint current_offset = _uploadTableView.contentOffset;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-	if (current_offset.y > max_offset_y) {
-		current_offset.y = max_offset_y;
-	}
-	_uploadTableView.contentOffset = current_offset;
-    [UIView commitAnimations];
-
-	[UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-	_uploadTableView.frame = self.view.bounds;
-    [UIView commitAnimations];
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        _uploadTableView.frame = self.view.bounds;
+    } completion:^(BOOL finished) {
+    }];
+    [_uploadTableView setContentOffset:CGPointZero animated:YES];
+//	double max_offset_y = _uploadTableView.contentSize.height - self.view.bounds.size.height;
+//	max_offset_y = max_offset_y < 0 ? 0 : max_offset_y;
+//	CGPoint current_offset = _uploadTableView.contentOffset;
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+//	if (current_offset.y > max_offset_y) {
+//		current_offset.y = max_offset_y;
+//	}
+//	_uploadTableView.contentOffset = current_offset;
+//    [UIView commitAnimations];
+//	[UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+////	_uploadTableView.frame = self.view.bounds;
+//    [UIView commitAnimations];
+    
 }
 #pragma mark -
 #pragma mark tableViewDelegate & datasource
@@ -319,11 +340,7 @@
             
         case 0:
             return 170;
-            //        case 1:
-            //            return _labelBox.frame.size.height;
-            //        case 1:
-            //            return _labelChooser.frame.size.height;
-        case 1:
+            case 1:
             return _descCell.frame.size.height + 8;
         default:
             return ((SCPUploadCell *) [_cells objectAtIndex:row - 2]).frame.size.height + 20;

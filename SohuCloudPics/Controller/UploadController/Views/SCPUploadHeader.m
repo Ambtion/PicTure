@@ -221,6 +221,7 @@
         [_delegate performSelector:@selector(uploadHeader:selectAlbum:) withObject:self withObject:mode.folders_Id];
 }
 
+
 @end
 @implementation AlbumsTableManager
 

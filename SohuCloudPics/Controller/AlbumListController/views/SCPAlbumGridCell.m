@@ -243,19 +243,22 @@
 
     /* set count label */
     UILabel * countLabel = [self countLabelAt:position];
+    
+    [countLabel setHidden:NO];
     if (album.isUploading) {
+        
         countLabel.backgroundColor = [UIColor clearColor];
         countLabel.text = nil;
+        
     }else{
         
-        [UIUtils updateAlbumCountLabel:countLabel];
+        countLabel.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
         [countLabel setText:[NSString stringWithFormat:@" %d ", album.photoNum]];
         [countLabel sizeToFit];
         countLabel.frame = CGRectMake(75 - countLabel.frame.size.width - 5, 75 - countLabel.frame.size.height - 5,
                                       countLabel.frame.size.width > 18 ? countLabel.frame.size.width : 18 , 18);
     }
     
-   
     /* delete ? */
     UIImageView *deleteView = [self deleteViewAt:position];
     deleteView.hidden = !deleting;

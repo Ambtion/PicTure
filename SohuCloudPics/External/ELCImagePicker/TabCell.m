@@ -35,7 +35,7 @@
         imageView.layer.shadowOpacity = 0.8;
         imageView.layer.shadowOffset = CGSizeMake(0, 2);
         imageView.layer.masksToBounds = NO;
-        imageView.layer.shouldRasterize = YES;
+        imageView.layer.shouldRasterize = NO;
         imageView.backgroundColor = [UIColor clearColor];
         
         

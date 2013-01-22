@@ -160,7 +160,7 @@
     textView_bg.layer.borderColor = [UIColor colorWithRed:222.f/255.f green:222.f/255.f blue:222.f/255.f alpha:1].CGColor;
     textView_bg.layer.borderWidth = 1.f;
     textView_bg.layer.masksToBounds = NO;
-    textView_bg.layer.shouldRasterize = YES;
+    textView_bg.layer.shouldRasterize = NO;
     [self.view addSubview:textView_bg];
 
     _description = [[UITextView alloc] initWithFrame:CGRectMake(2, 2, 300, 111)];

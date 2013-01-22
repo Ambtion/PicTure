@@ -52,7 +52,7 @@
         _portraitImageView.layer.shadowColor = [UIColor grayColor].CGColor;
         _portraitImageView.layer.shadowOffset = CGSizeMake(0, 2);
         _portraitImageView.layer.masksToBounds = NO;
-        _portraitImageView.layer.shouldRasterize = YES;
+        _portraitImageView.layer.shouldRasterize = NO;
         [_bgView addSubview:_portraitImageView];
         
         CGRect frame = CGRectMake(60, 4, 230, _bgView.frame.size.height - 8);
@@ -73,7 +73,6 @@
         [UIUtils updateCountLabel:_descCountLabel];
         [_descCountLabel setText:[NSString stringWithFormat:@"%d/%d", _descTextView.text.length, DESC_COUNT_LIMIT]];
         [self addSubview:_descCountLabel];
-//        [self textViewDidChange:_descTextView];
     }
     return self;
 }
