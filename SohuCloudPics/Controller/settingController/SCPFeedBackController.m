@@ -19,17 +19,19 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [requset release];
+    [_requset setDelegate:nil];
+    [_requset release];
     [_textView release];
     [_placeHolder release];
-    [saveButton release];
-    [textView_bg release];
+    [_saveButton release];
+    [_textView_bg release];
     [super dealloc];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    requset = [[SCPRequestManager alloc] init];
+    _requset = [[SCPRequestManager alloc] init];
+    _requset.delegate = self;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -88,15 +90,30 @@
         [tip release];
         return;
     }
-    [requset feedBackWithidea:_textView.text success:^(NSString *response) {
-        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"成功提交,感谢您的反馈"] autorelease];
-        [cus show];
-        [self.navigationController popViewControllerAnimated:YES];
+    [_requset feedBackWithidea:_textView.text success:^(NSString * response) {
+        /*由于友盟,使用代理传递参数*/
+//        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"成功提交,感谢您的反馈"] autorelease];
+//        [cus show];
+//        [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
-        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
-        [cus show];
-        [self.navigationController popViewControllerAnimated:YES];
+//        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+//        [cus show];
+//        [self.navigationController popViewControllerAnimated:YES];
     }];
+}
+#pragma mark -
+#pragma mark RequsetDelegate
+- (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
+{
+    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"成功提交,感谢您的反馈"] autorelease];
+    [cus show];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)requestFailed:(NSString *)error
+{
+    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [cus show];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)addSubviews
 {
@@ -125,23 +142,23 @@
     backButton.frame = CGRectMake(5, 2, 35, 35);
     [self.view addSubview:backButton];
     
-    saveButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    [saveButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
-    [saveButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
-    [saveButton addTarget:self action:@selector(saveButton:) forControlEvents:UIControlEventTouchUpInside];
-    saveButton.frame = CGRectMake(320 - 40, 2, 35, 35);
-    [saveButton setAlpha:0.3];
-    [saveButton setUserInteractionEnabled:NO];
-    [self.view addSubview:saveButton];
+    _saveButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [_saveButton setBackgroundImage:[UIImage imageNamed:@"header_OK.png"] forState:UIControlStateNormal];
+    [_saveButton setBackgroundImage:[UIImage imageNamed:@"header_OK_press.png"] forState:UIControlStateHighlighted];
+    [_saveButton addTarget:self action:@selector(saveButton:) forControlEvents:UIControlEventTouchUpInside];
+    _saveButton.frame = CGRectMake(320 - 40, 2, 35, 35);
+    [_saveButton setAlpha:0.3];
+    [_saveButton setUserInteractionEnabled:NO];
+    [self.view addSubview:_saveButton];
     
-    textView_bg = [[UIView alloc] initWithFrame:CGRectMake(8, 122, 304, 134)];
-    textView_bg.backgroundColor = [UIColor whiteColor];
-    textView_bg.layer.cornerRadius = 5.f;
-    textView_bg.layer.borderColor = [UIColor colorWithRed:222.f/255.f green:222.f/255.f blue:222.f/255.f alpha:1].CGColor;
-    textView_bg.layer.borderWidth = 1.f;
-    textView_bg.layer.masksToBounds = NO;
-    textView_bg.layer.shouldRasterize = NO;
-    [self.view addSubview:textView_bg];
+    _textView_bg = [[UIView alloc] initWithFrame:CGRectMake(8, 122, 304, 134)];
+    _textView_bg.backgroundColor = [UIColor whiteColor];
+    _textView_bg.layer.cornerRadius = 5.f;
+    _textView_bg.layer.borderColor = [UIColor colorWithRed:222.f/255.f green:222.f/255.f blue:222.f/255.f alpha:1].CGColor;
+    _textView_bg.layer.borderWidth = 1.f;
+    _textView_bg.layer.masksToBounds = NO;
+    _textView_bg.layer.shouldRasterize = NO;
+    [self.view addSubview:_textView_bg];
     
     _textView = [[UITextView alloc] initWithFrame:CGRectMake(2, 2, 300, 130)];
     _textView.backgroundColor = [UIColor clearColor];
@@ -152,7 +169,7 @@
     [_textView becomeFirstResponder];
     _textView.textColor = [UIColor colorWithRed:102.f/255 green:102.f/255 blue:102.f/255 alpha:1];
     
-    [textView_bg addSubview:_textView];
+    [_textView_bg addSubview:_textView];
     _placeHolder = [[UITextField alloc] initWithFrame:CGRectMake(10, 6, 250, 20)];
     _placeHolder.placeholder = PLACEHOLDER;
     [_placeHolder setUserInteractionEnabled:NO];
@@ -162,18 +179,18 @@
 {
     NSDictionary * dic = [notification userInfo];
     CGFloat heigth = [[dic objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    CGRect rect = textView_bg.frame;
+    CGRect rect = _textView_bg.frame;
     rect.size.height = self.view.bounds.size.height - heigth - rect.origin.y - 8;
     [UIView animateWithDuration:0.3 animations:^{
-        textView_bg.frame = rect;
-        _textView.frame = CGRectMake(2, 2, textView_bg.frame.size.width - 4, textView_bg.frame.size.height - 4);
+        _textView_bg.frame = rect;
+        _textView.frame = CGRectMake(2, 2, _textView_bg.frame.size.width - 4, _textView_bg.frame.size.height - 4);
     }];
 }
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     [UIView animateWithDuration:0.3 animations:^{
-        textView_bg.frame = CGRectMake(8, 122, 304, 134);
-        _textView.frame = CGRectMake(2, 2, textView_bg.frame.size.width - 4, textView_bg.frame.size.height - 4);
+        _textView_bg.frame = CGRectMake(8, 122, 304, 134);
+        _textView.frame = CGRectMake(2, 2, _textView_bg.frame.size.width - 4, _textView_bg.frame.size.height - 4);
     }];
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -195,13 +212,13 @@
 -(void)textViewDidChange:(UITextView *)textView
 {
     if (textView.text && ![textView.text isEqualToString:@""]) {
-        [saveButton setAlpha:1.0];
-        [saveButton setUserInteractionEnabled:YES];
+        [_saveButton setAlpha:1.0];
+        [_saveButton setUserInteractionEnabled:YES];
         if (!_placeHolder.hidden)
             [_placeHolder setHidden:YES];
     }else{
-        [saveButton setAlpha:0.3];
-        [saveButton setUserInteractionEnabled:NO];
+        [_saveButton setAlpha:0.3];
+        [_saveButton setUserInteractionEnabled:NO];
         if (_placeHolder.hidden)
             [_placeHolder setHidden:NO];
     }

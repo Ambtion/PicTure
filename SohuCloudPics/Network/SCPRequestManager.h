@@ -33,6 +33,7 @@
 
 @property (nonatomic,assign) id<SCPRequestManagerDelegate> delegate;
 
+
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture;
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID;
 //personal Home

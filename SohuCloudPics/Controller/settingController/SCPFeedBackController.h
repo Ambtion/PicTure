@@ -10,12 +10,12 @@
 #import "SCPSecondLayerController.h"
 #import "SCPRequestManager.h"
 
-@interface SCPFeedBackController : SCPSecondLayerController<UITextViewDelegate,UIGestureRecognizerDelegate>
+@interface SCPFeedBackController : SCPSecondLayerController<UITextViewDelegate,UIGestureRecognizerDelegate,SCPRequestManagerDelegate>
 {
     UITextView * _textView;
     UITextField * _placeHolder;
-    SCPRequestManager * requset;
-    UIButton * saveButton;
-    UIView * textView_bg;
+    SCPRequestManager * _requset;
+    UIButton * _saveButton;
+    UIView * _textView_bg;
 }
 @end

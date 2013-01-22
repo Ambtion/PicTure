@@ -22,6 +22,7 @@
 @implementation SCPRequestManager
 @synthesize delegate = _delegate;
 
+
 - (id)init
 {
     self = [super init];
@@ -34,9 +35,9 @@
 - (void)dealloc
 {
     NSLog(@"%s",__FUNCTION__);
+    umFeedBack.delegate = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [tempDic release];
-	umFeedBack.delegate = nil;
     [super dealloc];
     
 }
@@ -698,6 +699,7 @@
 }
 - (void)feedBackWithidea:(NSString *)idea success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
+    
 	umFeedBack = [UMFeedback sharedInstance];
 	[umFeedBack setAppkey:UM_APP_KEY delegate:self];
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -705,6 +707,7 @@
 	[dic setObject:[NSDictionary dictionaryWithObject:[SCPLoginPridictive currentUserId] forKey:@"user_id"] forKey:@"contact"];
 	[umFeedBack post:dic];
     
+//    self.feedBacksuccess
 //    NSString * str =[NSString stringWithFormat:@"%@/feedback?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
 //    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
 //    [request setStringEncoding:STRINGENCODING];
@@ -727,10 +730,13 @@
 {
 	if (error == nil) {
 		/* success */
-		
-		
+        if ([_delegate respondsToSelector:@selector(requestFinished:output:)])
+            [_delegate performSelector:@selector(requestFinished:output:) withObject:nil withObject:nil];
 	} else {
 		/* failed */
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
+        }
 	}
 }
 
