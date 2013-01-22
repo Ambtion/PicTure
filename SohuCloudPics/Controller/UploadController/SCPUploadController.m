@@ -266,12 +266,23 @@
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
+	double max_offset_y = _uploadTableView.contentSize.height - self.view.bounds.size.height;
+	max_offset_y = max_offset_y < 0 ? 0 : max_offset_y;
+	CGPoint current_offset = _uploadTableView.contentOffset;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    _uploadTableView.frame = self.view.bounds;
+	if (current_offset.y > max_offset_y) {
+		current_offset.y = max_offset_y;
+	}
+	_uploadTableView.contentOffset = current_offset;
     [UIView commitAnimations];
-    
+
+	[UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+	_uploadTableView.frame = self.view.bounds;
+    [UIView commitAnimations];
 }
 #pragma mark -
 #pragma mark tableViewDelegate & datasource
