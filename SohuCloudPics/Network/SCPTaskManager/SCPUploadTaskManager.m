@@ -64,7 +64,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
     
     SCPAlbumTaskList * task = [_taskList objectAtIndex:0];
     if (self.curTask == task) {
-        NSLog(@"There is Task going");
+//        NSLog(@"There is Task going");
         return;
     }else{
         self.curTask = task;
@@ -90,7 +90,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 {
     
     NSMutableDictionary * albumInfo = [_taskDic objectForKey:taskList.albumId];
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     if (!albumInfo || ![albumInfo objectForKey:@"Total"]) {
         return 0;
     }else{
@@ -108,7 +108,6 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 }
 - (void)finishOneRequsetWith:(SCPAlbumTaskList *)taskList
 {
-    NSLog(@"%s",__FUNCTION__);
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     NSInteger total = [self getTotalNumWith:taskList];
     NSInteger finished = [self getFinisheNumWith:taskList];
@@ -121,7 +120,6 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 }
 - (void)cancelOneRequestWith:(SCPAlbumTaskList *)taskList
 {
-    NSLog(@"%s",__FUNCTION__);
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     NSInteger total = [self getTotalNumWith:taskList];
     NSInteger finished = [self getFinisheNumWith:taskList];
@@ -133,7 +131,6 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 }
 - (void)removeAlbunInfo:(NSString  *)albumId
 {
-    NSLog(@"%s",__FUNCTION__);
     for (SCPAlbumTaskList * task in _taskList) {
         if ([task.albumId isEqualToString:albumId]) {
             return;
@@ -158,7 +155,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 }
 - (void)cancelOperationWithAlbumID:(NSString *)albumID
 {
-    NSLog(@"Operation cancel");
+//    NSLog(@"Operation cancel");
     if ([self.curTask.albumId isEqualToString:albumID]) {
         [self.curTask.currentTask.request cancel];
         [self.curTask.currentTask.request clearDelegatesAndCancel];
@@ -200,7 +197,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 #pragma mark AlbumProgress
 - (void)albumTaskQueneFinished:(SCPAlbumTaskList *)albumTaskList
 {
-    NSLog(@"Finished one Operation");
+//    NSLog(@"Finished one Operation");
     if (!albumTaskList) return;
     [_taskList removeObjectAtIndex:0];
     [self removeAlbunInfo:self.curTask.albumId];
@@ -209,14 +206,14 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
     if (_taskList.count) {
         [self gotoNext];
     }else{
-        NSLog(@"All operation Over");
+//        NSLog(@"All operation Over");
     }
     
 }
 - (void)albumTask:(SCPAlbumTaskList *)albumTaskList requsetFinish:(ASIHTTPRequest *)requset
 {
     [self finishOneRequsetWith:self.curTask];
-    NSLog(@"%@",_taskDic);
+//    NSLog(@"%@",_taskDic);
     NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[_taskDic objectForKey:self.curTask.albumId]];
     if (requset && [requset responseString] && [[requset responseString] JSONValue])
         [dic setObject:[[requset responseString] JSONValue] forKey:@"RequsetInfo"];
@@ -225,7 +222,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 }
 - (void)albumTask:(SCPAlbumTaskList *)albumTaskList requsetFailed:(ASIHTTPRequest *)requset
 {
-    NSLog(@"fail one Requset");
+//    NSLog(@"fail one Requset");
     [[NSNotificationCenter defaultCenter] postNotificationName:ALBUMTASKCHANGE object:nil userInfo:nil];
 }
 

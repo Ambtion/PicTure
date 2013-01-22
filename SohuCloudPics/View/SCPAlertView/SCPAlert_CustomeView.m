@@ -32,13 +32,12 @@
 }
 - (void)dealloc
 {
-    NSLog(@"%s",__FUNCTION__);
     [super dealloc];
 }
 - (void)show
 {
     UIWindow * win = [[UIApplication sharedApplication].delegate window];
-    NSLog(@"%@",[win subviews]);
+//    NSLog(@"%@",[win subviews]);
     for (UIView * view in [win subviews]) {
         if ([view isKindOfClass:[SCPAlert_CustomeView class]] ) {
             return;

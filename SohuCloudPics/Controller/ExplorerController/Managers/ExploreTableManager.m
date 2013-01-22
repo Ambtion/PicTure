@@ -269,7 +269,6 @@ static NSInteger lastNum = -1;
 
 - (void)refreshData:(id)sender
 {
-    NSLog(@"%s, %d",__FUNCTION__, _isLoading);
     if (_isLoading)  return;
     [self dataSourcewithRefresh:YES];
 }

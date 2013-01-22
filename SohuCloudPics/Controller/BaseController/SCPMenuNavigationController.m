@@ -193,7 +193,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
             [menuManager hideRibbonWithAnimation:YES];
         }
     } else {
-        NSLog(@"[self.ribbonViewFake setHidden:NO];");
+//        NSLog(@"[self.ribbonViewFake setHidden:NO];");
         if (!menuManager.isMenuShowing) {
             [menuManager showRibbonWithAnimation:YES];
             [self performSelector:@selector(restMenuViewLayer:) withObject:nil afterDelay:0.3];
@@ -234,7 +234,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 }
 - (void)reseticon
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     SCPMainTabController * maintab = [self.childViewControllers objectAtIndex:0];
     switch (maintab.selectedIndex) {
         case 0:

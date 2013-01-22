@@ -39,7 +39,7 @@
 }
 - (NSURL *)asseetUrl
 {
-    NSLog(@"%s : AssetURL is Write property",__FUNCTION__);
+//    NSLog(@"%s : AssetURL is Write property",__FUNCTION__);
     return nil;
 }
 

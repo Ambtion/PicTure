@@ -58,29 +58,29 @@
     _focusView.backgroundColor = [UIColor clearColor];
     _focusView.image = [UIImage imageNamed:@"focus.png"];
     //preview picture
-    if (_tampview == nil){
-        _tampview = [[UIImageView alloc] initWithFrame:self.view.bounds];
-        _tampview.backgroundColor = [UIColor colorWithRed:45/255.f green:45/255.f blue:45/255.f alpha:1];
-//        _tampview.image = [UIImage imageNamed:@"short_bg.png"];
-        _tampview.userInteractionEnabled = NO;
+    if (_upView == nil){
+        _upView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        _upView.image = [UIImage imageNamed:@"camera_bg_1.png"];
+        _upView.backgroundColor = [UIColor clearColor];
+        _upView.userInteractionEnabled = NO;
     }
-    [self.preview  addSubview:_tampview];
-    
-//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(listOrientationChanged:)
-//                                                 name:UIDeviceOrientationDidChangeNotification
-//                                               object:nil];
+    if (_downView == nil) {
+        _downView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        _downView.image = [UIImage imageNamed:@"camera_bg_2.png"];
+        _downView.backgroundColor = [UIColor clearColor];
+        _downView.userInteractionEnabled = NO;
+    }
+    [self.preview  addSubview:_upView];
+    [self.preview addSubview:_downView];
+
 }
-//- (void)listOrientationChanged:(NSNotification *)notification
-//{
-//    [camerBox changePreviewOrientation:[[UIDevice currentDevice] orientation]];
-//}
+
 - (void)dealloc {
     
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [_tampview release];
+    [_upView release];
+    [_downView release];
     [_preview release];
     [_focusView release];
     [_flashButton release];
@@ -131,7 +131,7 @@
 }
 -(void)initializeCamera
 {
-    NSLog(@"initializeCamera start");
+//    NSLog(@"initializeCamera start");
     if (!camerBox)
         camerBox = [[CameraImageBox alloc] init];
     [camerBox embedPreviewInView:self.preview];
@@ -139,7 +139,7 @@
     //    [CameraImageHelper initialize];
     //    [CameraImageHelper embedPreviewInView:self.preview];
     [self photoSwitch:nil setPhotoTypeOfImage:outPutImage];
-    NSLog(@"initializeCamera end");
+//    NSLog(@"initializeCamera end");
     
 }
 -(void)addPreviews
@@ -215,39 +215,61 @@
 -(void)openCamera
 {
     
+//    [self.view setUserInteractionEnabled:YES];
+//    [camerBox startRunning];
+//    CATransition * transiton = [CATransition animation];
+//    transiton.fillMode = kCAFillModeForwards;
+//    transiton.duration = 0.3;
+//    transiton.speed = 1.0;
+////    transiton.type = @"cameraIrisHollowOpen";
+//    transiton.type = kCATransitionFade;
+//    transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//    [_upView.layer addAnimation:transiton forKey:@"Open"];
+//    _upView.alpha = 0;
+    
+    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDelay:0.2];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    _upView.frame = CGRectMake(0, -self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
+    _downView.frame = CGRectMake(0,self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
+    [UIView commitAnimations];
     [self.view setUserInteractionEnabled:YES];
     [camerBox startRunning];
-    CATransition * transiton = [CATransition animation];
-    transiton.fillMode = kCAFillModeForwards;
-    transiton.duration = 0.3;
-    transiton.speed = 1.0;
-//    transiton.type = @"cameraIrisHollowOpen";
-    transiton.type = kCATransitionFade;
-    transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    [_tampview.layer addAnimation:transiton forKey:@"Open"];
-    _tampview.alpha = 0;
 }
+
 -(void)closeCamera
 {
     
-    [self.view setUserInteractionEnabled:NO];
-    [camerBox stopRunning];
-    CATransition * transiton = [CATransition animation];
-    transiton.fillMode = kCAFillModeBoth;
-    transiton.duration = 0.3;
-    transiton.speed = 1.0;
-    transiton.delegate = self;
-//    transiton.type = @"cameraIrisHollowClose";
-    transiton.type = kCATransitionFade;
-    transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    [_tampview.layer addAnimation:transiton forKey:@"close"];
-    _tampview.alpha = 1;
+//    [self.view setUserInteractionEnabled:NO];
+//    [camerBox stopRunning];
+//    CATransition * transiton = [CATransition animation];
+//    transiton.fillMode = kCAFillModeBoth;
+//    transiton.duration = 0.3;
+//    transiton.speed = 1.0;
+//    transiton.delegate = self;
+////    transiton.type = @"cameraIrisHollowClose";
+//    transiton.type = kCATransitionFade;
+//    transiton.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//    [_upView.layer addAnimation:transiton forKey:@"close"];
+//    _upView.alpha = 1;
     
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    _upView.frame = self.view.bounds;
+    _downView.frame = self.view.bounds;
+    [UIView commitAnimations];
+    [camerBox stopRunning];
+    [self.view setUserInteractionEnabled:NO];
+
 }
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    
-    [_tampview.layer removeAllAnimations];
+    NSLog(@"%s",__FUNCTION__);
+//    [_upView.layer removeAllAnimations];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     if (isBack) {
@@ -310,29 +332,27 @@
 
 -(void)secenSwitch:(UIButton*)button
 {
-    
-    NSLog(@"secenSwitch");
-    [self photoSwitch:nil setPhotoTypeOfImage:outPutImage];
+//    NSLog(@"secenSwitch");
     [camerBox switchCameraPosition];
-    
+//    [self photoSwitch:nil setPhotoTypeOfImage:outPutImage];
 }
 
 -(void)backClick:(UIButton*)button
 {
-    NSLog(@"backClick");
+//    NSLog(@"backClick");
     isBack = YES;
     [self closeCamera];
 }
 -(void)photoBookClick:(UIButton*)button
 {
-    NSLog(@"photoBookClick");
+//    NSLog(@"photoBookClick");
     isForwardPhoto = YES;
     [self closeCamera];
 }
 #pragma mark Focus
 -(void)handlFocus:(UITapGestureRecognizer *)gesture
 {
-    NSLog(@"handlFocus");
+//    NSLog(@"handlFocus");
     CGPoint point = [gesture locationInView:self.preview];
     if (gesture.state == UIGestureRecognizerStateEnded) {
         if (_focusView.superview == nil) {
@@ -359,16 +379,14 @@
 #pragma mark photoSwitch-Method
 -(void)photoSwitch:(PhotoSwitch *)swith setPhotoTypeOfImage:(BOOL)isImage
 {
+    
     [self closeCamera];
     outPutImage = isImage;
     [self resetFlashButton];
     if (isImage) {
         [camerBox changeOutPutToimage];
         [_flashButton.view setUserInteractionEnabled:YES];
-        NSLog(@"changeOutPutToimage");
     }else {
-        NSLog(@"changeOutPutToMoveFile");
-        //        [CameraImageHelper changeOutPutToMoveFile];
         [camerBox changeOutPutToMoveFile];
         [_flashButton.view setUserInteractionEnabled:NO];
     }
@@ -392,20 +410,20 @@
 }
 -(void)playMovie
 {
-    NSLog(@"playMovie start");
+//    NSLog(@"playMovie start");
     NSString * outputPath = [[[NSString alloc] initWithFormat:@"%@/Documents/%@",NSHomeDirectory(), @"output.mov"] autorelease];
     NSURL * url = [NSURL fileURLWithPath:outputPath];
     
     MPMoviePlayerViewController * pm = [[[MPMoviePlayerViewController alloc] initWithContentURL:url] autorelease];
     [self presentMoviePlayerViewControllerAnimated:pm];
-    NSLog(@"playMovie end");
+//    NSLog(@"playMovie end");
     
 }
 -(void)takePicture
 {
     //    [CameraImageHelper CaptureStillImageWithblockSucecces:^(UIImage *image) {
     [camerBox CaptureStillImageWithblockSucecces:^(UIImage *image) {
-        NSLog(@"CaptureStillImageWithblockSucecces");
+//        NSLog(@"CaptureStillImageWithblockSucecces");
         self.imageForTemp = image;
         isForwardImage = YES;
         [self closeCamera];
@@ -430,9 +448,7 @@
     [camerBox recordingAtPath:[self getMoviePath]];
     
     if ([[camerBox  movieFileOutPut] isRecording]) {
-        NSLog(@"CameraImageHelper isRecording ");
         [self.view setUserInteractionEnabled:YES];
-        
     }
     
 }
@@ -472,7 +488,7 @@
 }
 -(NSString*)getMoviePath
 {
-    NSLog(@"getMovie Path start");
+//    NSLog(@"getMovie Path start");
     NSString * outputPath = [[NSString alloc] initWithFormat:@"%@/Documents/%@",NSHomeDirectory(), @"output.mov"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:outputPath])
@@ -480,12 +496,12 @@
         NSError *error;
         if ([fileManager removeItemAtPath:outputPath error:&error] == NO)
         {
-            NSLog(@"removeItemAtPath %@",error);
+//            NSLog(@"removeItemAtPath %@",error);
         }else{
-            NSLog(@"removeItemAtPath ");
+//            NSLog(@"removeItemAtPath ");
         }
     }
-    NSLog(@"getMovie Path end");
+//    NSLog(@"getMovie Path end");
     return [outputPath autorelease];
 }
 
@@ -527,10 +543,10 @@
                 }
             }
             if (result == AVAssetImageGeneratorFailed) {
-                NSLog(@"Failed with error: %@", [error localizedDescription]);
+//                NSLog(@"Failed with error: %@", [error localizedDescription]);
             }
             if (result == AVAssetImageGeneratorCancelled) {
-                NSLog(@"Canceled");
+//                NSLog(@"Canceled");
             }
             
         }

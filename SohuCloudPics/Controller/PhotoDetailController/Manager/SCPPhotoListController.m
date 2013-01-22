@@ -13,7 +13,6 @@
 
 #define OFFSET 20
 
-
 @class SCPPhotoListController;
 
 @implementation InfoImageView
@@ -64,11 +63,9 @@
     NSFileManager * manager  = [NSFileManager defaultManager];
     NSString * str = [self getStringWithURL:url];
     if ([manager fileExistsAtPath:str]){
-        NSLog(@"file fileExistsAtPath");
         data = [NSData dataWithContentsOfFile:str];
     }
     if (data) {
-        NSLog(@"read Form Memory");
         [self.webView loadData:data MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
     }else{
         [self.requset clearDelegatesAndCancel];
@@ -76,7 +73,6 @@
         self.requset.delegate = self;
         [self.requset setTimeOutSeconds:5.f];
         [self.requset startAsynchronous];
-        NSLog(@"read Form NetWork");
     }
 }
 #pragma mark -RequseDelegate
@@ -85,18 +81,12 @@
     NSData * data = [requset responseData];
     if (self.webView)
         [self.webView loadData:data MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
-    NSLog(@"start play gif");
     NSFileManager * manager  = [NSFileManager defaultManager];
     NSString * str = [self getStringWithURL:requset.url];
     if ([manager fileExistsAtPath:str])
         [manager removeItemAtPath:str error:nil];
     NSError * error = nil;
     [data writeToFile:str options:NSDataWritingAtomic error:&error];
-    if (error) {
-        NSLog(@"%@",error);
-    }else{
-        NSLog(@"store into Memory");
-    }
 }
 - (NSString *)getStringWithURL:(NSURL *)url
 {
@@ -129,7 +119,6 @@
 }
 - (void)dealloc
 {
-    NSLog(@"%s",__FUNCTION__);
     [self resetGigView];
     self.info = nil;
     self.actV = nil;
@@ -156,7 +145,6 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s",__FUNCTION__);
     if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications])
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [_requestManger setDelegate:nil];
@@ -279,7 +267,6 @@
             self.view.frame = [UIScreen mainScreen].bounds;
         animation = NO;
         [self initSubViews];
-//        NSLog(@"after %s , %@",__FUNCTION__ , NSStringFromCGSize([self currentImageView].bounds.size));
         [self.view setUserInteractionEnabled:YES];
     }];
 }
@@ -298,7 +285,6 @@
     [imageArray addObjectsFromArray:[photolist objectForKey:@"photos"]];
     curPage =  [self getindexofImages];
     [self.view setUserInteractionEnabled:YES];
-    NSLog(@"MMMMMMM %d %d",curPage, imageArray.count);
     if (curPage == -1) {
         [self getMoreImage];
     }else{
@@ -693,10 +679,8 @@
     [self resetImageFrame:self.currentImageView];
     [self resetImageFrame:self.rearImageView];
     
-//    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 3, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointZero];
     Imagestate = AtLess;
-    NSLog(@"min ::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
 
 }
 - (void)refreshScrollviewOnMaxBounds
@@ -712,7 +696,6 @@
     
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2,0)];
     Imagestate = AtMore;
-    NSLog(@"max ::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
 
 }
 
@@ -745,14 +728,12 @@
         self.currentImageView.info = [curImages objectAtIndex:1];
         self.rearImageView.info = [curImages objectAtIndex:2];
         self.info = self.currentImageView.info;
-        
         [self resetImageFrame:self.currentImageView];
         [self resetImageFrame:self.fontImageView];
         [self resetImageFrame:self.rearImageView];
-        
+        Imagestate = AtNomal;
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
     }
-    NSLog(@"Nomal ::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
 }
 
 - (void)refreshScrollView{
@@ -761,6 +742,7 @@
         return;
     }
     [self.view setUserInteractionEnabled:NO];
+    
     if (photoNum <= 3) {
         [self refreshScrollviewWhenPhotonumLessThree];
     }else if (curPage == 0) {
@@ -801,19 +783,16 @@
         if (curPage == 0) {
             curPage = 1;
             [self refreshScrollView];
-            NSLog(@"srollView To less");
             return;
         }
         if (curPage == photoNum - 1) {
             curPage = photoNum - 2;
             [self refreshScrollView];
-            NSLog(@"srollView To top");
             return;
         }
     }
     if(x == (self.scrollView.frame.size.width * 2)) {
         curPage = [self validPageValue:curPage + 1];
-        NSLog(@"more::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
         [self refreshScrollView];
         if (curPage >= imageArray.count - 1 && imageArray.count <= photoNum)  [self getMoreImage];
         return;
@@ -821,7 +800,6 @@
     
     if(x == 0) {
         curPage = [self validPageValue:curPage - 1];
-        NSLog(@"less::photoNum:%d imageCount::%d  curnum: %d",photoNum, imageArray.count, curPage);
         [self refreshScrollView];
     }
     

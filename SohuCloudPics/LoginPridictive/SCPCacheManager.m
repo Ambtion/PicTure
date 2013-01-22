@@ -17,7 +17,7 @@
     NSError * error = nil;
     [manager removeItemAtPath:str error:&error];
     [manager createDirectoryAtPath:str withIntermediateDirectories:YES attributes:nil error:NULL];
-    if (error) NSLog(@"error::%@",error);
+//    if (error) NSLog(@"error::%@",error);
 }
 + (void)removeCacheAlluserInfobutMe
 {
@@ -26,7 +26,7 @@
     NSString *bundleId = [dic  objectForKey: @"CFBundleIdentifier"];
     NSUserDefaults *appUserDefaults = [[[NSUserDefaults alloc] init] autorelease];
     NSDictionary * cacheDic = [appUserDefaults persistentDomainForName: bundleId];
-    NSLog(@"cacheDic::%@",cacheDic);
+//    NSLog(@"cacheDic::%@",cacheDic);
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSString * _use_id = nil;
@@ -69,8 +69,8 @@
     if (userinfo)
         [defaults setObject:userinfo forKey:[SCPLoginPridictive currentUserId]];
     [defaults synchronize];
-    NSDictionary * cacheDics = [appUserDefaults persistentDomainForName: bundleId];
-    NSLog(@"After::cacheDic::%@",cacheDics);
+//    NSDictionary * cacheDics = [appUserDefaults persistentDomainForName: bundleId];
+//    NSLog(@"After::cacheDic::%@",cacheDics);
 }
 
 @end

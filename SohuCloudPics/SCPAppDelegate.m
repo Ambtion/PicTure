@@ -22,22 +22,6 @@
 #import "MobClick.h"
 #import "UMAppKey.h"
 
-void customedExceptionHandler(NSException *exception)
-{
-    
-#ifdef DEBUG
-    NSLog(@"CRASH name: %@\n", [exception name]);
-    NSLog(@"CRASH reason: %@\n", [exception reason]);
-    NSLog(@"StackTrace: %@\n", [exception callStackSymbols]);
-    NSMutableArray * array =[NSMutableArray arrayWithArray:[exception callStackSymbols]];
-    [array insertObject:[exception reason] atIndex:0];
-    [array insertObject:[exception name] atIndex:0];
-    [array writeToFile:DEBUGFILE atomically:YES];
-#else
-    
-#endif
-    
-}
 
 @implementation SCPAppDelegate
 @synthesize window = _window;
@@ -49,13 +33,6 @@ void customedExceptionHandler(NSException *exception)
     [super dealloc];
 }
 
-- (void)pragramerSetting
-{
-	/* the following line may prevent umeng statistic module from sending crash reports */
-	/* so, do NOT remove the comment of the following line */
-    /* NSSetUncaughtExceptionHandler(customedExceptionHandler); */
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	/* The following statements are used for umeng statistic */
@@ -64,7 +41,6 @@ void customedExceptionHandler(NSException *exception)
     [UIApplication sharedApplication].statusBarHidden = YES;
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
-    [self pragramerSetting];
 	
     SCPMainTabController *mainTab = [[SCPMainTabController alloc] initWithNibName:nil bundle:NULL];
     SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];

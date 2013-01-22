@@ -123,7 +123,7 @@ static NSString * provider = nil;
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"fail StatusCode : %d",[request responseStatusCode]);
+//        NSLog(@"fail StatusCode : %d",[request responseStatusCode]);
         if ([delegate respondsToSelector:@selector(loginFailture:)]) {
             [delegate performSelector:@selector(loginFailture:) withObject:@"连接失败"];
         }
@@ -141,7 +141,6 @@ static NSString * provider = nil;
         if (rang.length) {
             code = [[NSString alloc] initWithString:[str substringFromIndex:rang.length + rang.location]];
             [webView stopLoading];
-            NSLog(@"%@, &&&:%@",str, code);
             [self loginWithCode];
         }
         return NO;

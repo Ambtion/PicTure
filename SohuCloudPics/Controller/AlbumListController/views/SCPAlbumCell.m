@@ -32,7 +32,7 @@
 - (void)onImageViewLongPressed:(UILongPressGestureRecognizer *)gesture
 {
 //    if (gesture.state != UIGestureRecognizerStateBegan) {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     if ([_delegate respondsToSelector:@selector(onImageViewLongPressed:)]) {
         [_delegate onImageViewLongPressed:(UIView *) gesture.view];
     }

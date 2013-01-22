@@ -255,7 +255,7 @@
 
 -(void)follweCommonCell:(SCPFollowCommonCell *)cell followImage:(id)image
 {
-    NSLog(@"follweCommonCell followImage");
+//    NSLog(@"follweCommonCell followImage");
     if ([SCPLoginPridictive currentUserId] &&
         [cell.dataSource.user_id isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
         

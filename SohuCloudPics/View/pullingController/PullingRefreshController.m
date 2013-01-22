@@ -526,7 +526,7 @@ static CGFloat OFFSET = 0.f;
 - (void)realLoadingMore:(id)sender
 {
     if (_shutDown) return;
-    NSLog(@"%d",_manager->_reloading);
+//    NSLog(@"%d",_manager->_reloading);
     if (_manager->_reloading) return;
     _manager->_reloading = YES;
     [self showLoadingMore];

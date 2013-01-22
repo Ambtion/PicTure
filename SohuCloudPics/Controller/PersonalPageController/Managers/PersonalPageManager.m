@@ -88,7 +88,6 @@ static float OFFSET = 0.f;
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-//    NSLog(@"%@",info);
     if (wait) {
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
@@ -377,13 +376,13 @@ static float OFFSET = 0.f;
 -(void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     // do nothing, cause it's personal page 个人页面所有的头像都是自己
-    NSLog(@"clickedAtPortraitView");
+//    NSLog(@"clickedAtPortraitView");
 }
 
 - (void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object
 {
     // do something 暂时不支持评论
-    NSLog(@"clickedAtFavorButton");
+//    NSLog(@"clickedAtFavorButton");
 }
 
 -(void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx
@@ -400,7 +399,7 @@ static float OFFSET = 0.f;
 }
 -(void)personalPageCell:(PersonalPageCell *)personal favoriteClicked:(id)sender
 {
-    NSLog(@"favoriteClicked");
+//    NSLog(@"favoriteClicked");
 }
 - (void)personalPageCell:(PersonalPageCell *)personal followingButtonClicked:(id)sender
 {

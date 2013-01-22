@@ -93,7 +93,6 @@
 }
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
-    NSLog(@"%s",__FUNCTION__);
     [self.pullingController moreDoneLoadingTableViewData];
 }
 - (void)initNavigationItem
@@ -153,7 +152,6 @@
 - (void)loadNextPage
 {
     if (isLoading) return;
-    NSLog(@"%s",__FUNCTION__);
 	if (_hasNextPage) {
 		if (_currentPage == _loadedPage) {
             isLoading = YES;
@@ -229,7 +227,6 @@
     
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
-    NSLog(@"%@",folderinfo);
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
 	_hasNextPage = [[folderinfo objectForKey:@"has_next"] boolValue];
     _loadedPage = _currentPage;

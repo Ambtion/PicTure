@@ -83,7 +83,7 @@
                        // Group Enumerator Failure Block
                        void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
                            [self customizeNavigationWhenALbumCannotRead];
-                           NSLog(@"A problem occured %@", [error description]);
+//                           NSLog(@"A problem occured %@", [error description]);
                        };
                        // Enumerate Albums
                        [library enumerateGroupsWithTypes:ALAssetsGroupAll

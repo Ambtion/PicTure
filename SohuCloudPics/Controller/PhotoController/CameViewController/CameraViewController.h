@@ -24,7 +24,8 @@
 {
     CameraImageBox * camerBox;
     UIImageView * _preview;
-    UIImageView * _tampview;
+    UIImageView * _upView;
+    UIImageView * _downView;
     UIImageView * _focusView;
     FlashButton * _flashButton;
     UIButton* _secenSwitch;

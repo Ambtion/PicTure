@@ -59,10 +59,10 @@
 }
 - (void)refreshUserinfo
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     if (_isInit || ![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
-        NSLog(@"%@",response);
+//        NSLog(@"%@",response);
         allFollowed = [[response objectForKey:@"followings"] intValue];
         [self.controller.pullingController.headView BannerreloadDataSource];
     } failure:^(NSString *error) {
@@ -300,7 +300,7 @@
 
 - (void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
-    NSLog(@"feedCell: %@",cell.dataSource.allInfo);
+//    NSLog(@"feedCell: %@",cell.dataSource.allInfo);
     SCPPhotoDetailViewController *controller = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];

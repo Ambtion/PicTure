@@ -40,7 +40,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     CGRect rect = self.view.frame;
-    NSLog(@"NSS ^^^^^^^^ %@",NSStringFromCGRect(rect));
+//    NSLog(@"NSS ^^^^^^^^ %@",NSStringFromCGRect(rect));
     rect.size.height = self.view.frame.size.height - 121;
     self.view.frame = rect;
 
@@ -48,9 +48,9 @@
 -(void)preparePhotos {
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSLog(@"%@",self.parentViewController.parentViewController);
-    NSLog(@"enumerating photos");
-    [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) 
+//	NSLog(@"%@",self.parentViewController.parentViewController);
+//    NSLog(@"enumerating photos");
+    [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop)
      {         
          if(result == nil){
              return;
@@ -69,7 +69,7 @@
          elcAsset.toggleDelegate = self.delController;
          [self.elcAssets addObject:elcAsset];
          if (index == [self.assetGroup numberOfAssets] - 1) {
-             NSLog(@"done enumerating photos");
+//             NSLog(@"done enumerating photos");
              dispatch_async(dispatch_get_main_queue(), ^{
                  [self.tableView reloadData];
              });

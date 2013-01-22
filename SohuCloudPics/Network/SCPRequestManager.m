@@ -34,7 +34,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     umFeedBack.delegate = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [tempDic release];
@@ -48,7 +48,7 @@
     __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:CLIENT_ID forKey:@"client_id"];
     [request setPostValue:CLIENT_SECRET forKey:@"client_secret"];
-    NSLog(@"ACCESS_TOKEN:%@",[SCPLoginPridictive currentToken]);
+//    NSLog(@"ACCESS_TOKEN:%@",[SCPLoginPridictive currentToken]);
     [request setPostValue:[SCPLoginPridictive refreshToken] forKey:@"refresh_token"];
     [request setCompletionBlock:^{
         if ([request responseStatusCode] == 200) {
@@ -67,7 +67,7 @@
 }
 - (BOOL)handlerequsetStatucode:(NSInteger)requsetCode
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     if (requsetCode >= 200 && requsetCode <= 300) return YES;
     if (requsetCode == 401) [self refreshToken:401];
     
@@ -78,7 +78,7 @@
 }
 - (BOOL)handlerequsetStatucode:(NSInteger)requsetCode withblock:(void (^) (NSString * error))failure
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     if (requsetCode >= 200 && requsetCode <= 300) return YES;
     if (requsetCode == 401) {
         [self refreshToken:401];
@@ -103,7 +103,7 @@
 //    [requset setDelegate:self];
 //    [requset startAsynchronous];
     NSString * str_url = [NSString stringWithFormat:@"%@/plaza?start=%d&count=%d",BASICURL_V1,startIndex,maxresult];
-    NSLog(@"%@",str_url);
+//    NSLog(@"%@",str_url);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str_url]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -137,7 +137,7 @@
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID
 {
     NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@",BASICURL_V1,photo_ID,user_id];
-    NSLog(@"%@",str);
+//    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -197,7 +197,7 @@
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
-    NSLog(@"%@",str);
+//    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -346,7 +346,7 @@
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
-            NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
+//            NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
             [tempDic setObject:dic forKey:@"photoList"];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
@@ -520,7 +520,7 @@
 - (void)getNotificationUser
 {
     NSString * str = [NSString stringWithFormat:@"%@/notifications?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
-    NSLog(@"%@",str);
+//    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
@@ -570,7 +570,7 @@
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"%@",[request error]);
+//        NSLog(@"%@",[request error]);
         failure(REQUSETFAILERROR);
     }];
     
@@ -692,7 +692,7 @@
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"%@",[request responseString]);
+//        NSLog(@"%@",[request responseString]);
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
@@ -706,24 +706,6 @@
 	[dic setObject:idea forKey:@"content"];
 	[dic setObject:[NSDictionary dictionaryWithObject:[SCPLoginPridictive currentUserId] forKey:@"user_id"] forKey:@"contact"];
 	[umFeedBack post:dic];
-    
-//    self.feedBacksuccess
-//    NSString * str =[NSString stringWithFormat:@"%@/feedback?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
-//    __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-//    [request setStringEncoding:STRINGENCODING];
-//    [request setPostValue:idea forKey:@"content"];
-//    [request setData:nil forKey:@"mm"];
-//    [request setCompletionBlock:^{
-//        NSInteger code = [request responseStatusCode];
-//        if ([self handlerequsetStatucode:code withblock:failure]) {
-//            success([request responseString]);
-//        }
-//    }];
-//    [request setFailedBlock:^{
-//        NSLog(@"%@",[request responseString]);
-//        failure(REQUSETFAILERROR);
-//    }];
-//    [request startAsynchronous];
 }
 
 - (void)postFinishedWithError:(NSError *)error

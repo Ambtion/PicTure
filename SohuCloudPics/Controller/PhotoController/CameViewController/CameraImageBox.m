@@ -44,7 +44,7 @@
 	AVCaptureDeviceInput *captureInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
 	if (!captureInput)
 	{
-		NSLog(@"Error: %@", error);
+//		NSLog(@"Error: %@", error);
 		return;
 	}
     
@@ -64,7 +64,7 @@
     if ([self.session canAddOutput:movieFileOutPut]) {
         [self.session addOutput:movieFileOutPut];
     }else {
-        NSLog(@"cannot AddOutput movieFileOutPut");
+//        NSLog(@"cannot AddOutput movieFileOutPut");
     }
     
     [self ConfigurationOutput];
@@ -86,6 +86,7 @@
         if ([currentDevice isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeAutoWhiteBalance]) {
             [currentDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];
         }
+        
         [currentDevice unlockForConfiguration];
     }
 }
@@ -94,7 +95,7 @@
     //3.3 连接
     imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
     if (imageCaptureconnection == nil) {
-        NSLog(@"imageCaptureconnection nil");
+//        NSLog(@"imageCaptureconnection nil");
     }
     [imageCaptureconnection setEnabled:YES];
     if (imageCaptureconnection.isVideoOrientationSupported)
@@ -102,7 +103,7 @@
     
     movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
     if (movieConnection == nil) {
-        NSLog(@"movieConnection is nil");
+//        NSLog(@"movieConnection is nil");
     }
     [movieConnection setEnabled:NO];
     if (movieConnection.isVideoOrientationSupported)
@@ -129,7 +130,7 @@
     
     if (!session) return;
     preview = [AVCaptureVideoPreviewLayer layerWithSession: session];
-    preview.orientation = UIInterfaceOrientationPortrait;
+//    preview.orientation = UIInterfaceOrientationPortrait;
     preview.frame = aView.bounds;
     preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [aView.layer addSublayer: preview];
@@ -155,7 +156,7 @@
             imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationPortrait;
             movieConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
     }
-    NSLog(@"%s, %d",__FUNCTION__, interfaceOrientation);
+//    NSLog(@"%s, %d",__FUNCTION__, interfaceOrientation);
     [CATransaction commit];
     
 }
@@ -173,7 +174,7 @@
              NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
              NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
              UIImage *t_image = [[UIImage alloc] initWithData:imageData ];
-             NSLog(@"BBBBBBBBBB :::%d",[t_image imageOrientation]);
+//             NSLog(@"BBBBBBBBBB :::%d",[t_image imageOrientation]);
              self.image = [[[UIImage alloc]initWithCGImage:t_image.CGImage scale:1.0 orientation:UIImageOrientationRight] autorelease];
              [t_image release],t_image = nil;
              //t_image is  same  to self.image
@@ -219,7 +220,7 @@
 }
 -(void)switchCameraPosition
 {
-    NSLog(@"switchCameraPosition start %@",imageCaptureconnection);
+//    NSLog(@"switchCameraPosition start %@",imageCaptureconnection);
     [session beginConfiguration];
     // Remove an existing capture device.
     // Add a new capture device.
@@ -254,7 +255,7 @@
     [self initconfigurationInput];
     
     //  [self ConfigurationOutput];
-    NSLog(@"switchCameraPosition end %@",imageCaptureconnection);
+//    NSLog(@"switchCameraPosition end %@",imageCaptureconnection);
     
 }
 #pragma chang outPut
@@ -262,11 +263,12 @@
 {
     imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
     movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
-    
-    movieConnection.enabled = NO;
-    imageCaptureconnection.enabled = YES;
+    if (movieConnection.isEnabled)
+        movieConnection.enabled = NO;
+    if (!imageCaptureconnection.isEnabled)
+        imageCaptureconnection.enabled = YES;
     session.sessionPreset = AVCaptureSessionPresetPhoto;
-    NSLog(@"movieConnection %d,imageCaptureconnection: %d",movieConnection.isEnabled,imageCaptureconnection.isEnabled);
+//    NSLog(@"movieConnection %d,imageCaptureconnection: %d",movieConnection.isEnabled,imageCaptureconnection.isEnabled);
     
 }
 -(void)changeOutPutToMoveFile
@@ -274,9 +276,11 @@
     imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
     movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
     session.sessionPreset = AVCaptureSessionPresetMedium;
-    movieConnection.enabled = YES;
-    imageCaptureconnection.enabled = NO;
-    NSLog(@"movieConnection %d,imageCaptureconnection: %d",movieConnection.isEnabled,imageCaptureconnection.isEnabled);
+    if (!movieConnection.isEnabled)
+        movieConnection.enabled = YES;
+    if (imageCaptureconnection.isEnabled)
+        imageCaptureconnection.enabled = NO;
+//    NSLog(@"movieConnection %d,imageCaptureconnection: %d",movieConnection.isEnabled,imageCaptureconnection.isEnabled);
     
 }
 #pragma mark -
@@ -293,9 +297,9 @@
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
 {
     if (error) {
-        NSLog(@"didFinishRecordingToOutputFileAtURL %@",error);
+//        NSLog(@"didFinishRecordingToOutputFileAtURL %@",error);
     }
-    NSLog(@"record ok");
+//    NSLog(@"record ok");
 }
 -(void)stopRecoding
 {

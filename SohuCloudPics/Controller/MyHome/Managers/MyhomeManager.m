@@ -27,7 +27,6 @@ static float OFFSET = 0.f;
 
 - (void)dealloc
 {
-    NSLog(@"%s",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     if (wait) {
         [wait dismissWithClickedButtonIndex:0 animated:YES];
@@ -60,7 +59,6 @@ static float OFFSET = 0.f;
 {
     CGFloat finalHeigth = 0.f;
     finalHeigth = O_height * (320.f / O_width);
-    //    NSLog(@"finalHeigth %f",finalHeigth);
     if (!finalHeigth) {
         finalHeigth = 320;
     }
@@ -320,14 +318,14 @@ static float OFFSET = 0.f;
 -(void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     // do nothing, cause it's personal page
-    NSLog(@"clickedAtPortraitView");
+//    NSLog(@"clickedAtPortraitView");
     
 }
 
 -(void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object
 {
     // do something
-    NSLog(@"clickedAtFavorButton");
+//    NSLog(@"clickedAtFavorButton");
 }
 
 -(void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx
@@ -359,7 +357,7 @@ static float OFFSET = 0.f;
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell followingButtonClicked:(id)sender
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     UINavigationController *nav = _controller.navigationController;
     SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [nav pushViewController:ctrl animated:YES];

@@ -115,7 +115,7 @@
             [_placeHolder setHidden:YES];
         }
     } failure:^(NSString *error) {
-        NSLog(@"%s, %@",__FUNCTION__, error);
+//        NSLog(@"%s, %@",__FUNCTION__, error);
     }];
 }
 - (void)addSubviews

@@ -121,7 +121,7 @@
 }
 - (void)homeBackContainerSeleced:(UIImage *)image
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     _backgroundImageView.image = image;
 }
 -(void)addUserPhotoLabel

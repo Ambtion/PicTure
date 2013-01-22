@@ -29,7 +29,7 @@
     if (self) {
         _delegate = delegete;
         isHiddenFitter = YES;
-        NSLog(@"initWithDeleggate");
+//        NSLog(@"initWithDeleggate");
         ImageEdtingController* ivc = (ImageEdtingController *)_delegate;
         CGRect rect  = CGRectMake(0, ivc.view.frame.size.height - 49, 320, 49);
         self.view.frame = rect;
@@ -46,13 +46,7 @@
 }
 #pragma mark-
 #pragma mark   viewLoading
-- (void)viewDidLoad
-{
-    NSLog(@"viewDidLoad");
-    [super viewDidLoad];
-    NSLog(@"ImageEdtingController %@",_delegate);
 
-}
 -(void)addMysubViews
 {
     _bgview = [[UIImageView alloc] initWithFrame:self.view.bounds];

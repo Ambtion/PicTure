@@ -30,10 +30,8 @@ CGSize CGSizeAbsolute(CGSize size) {
 //clip
 +(UIImage*)image:(UIImage*)imageSource clipinRect:(CGRect)rect scale:(CGFloat)scale
 {
-    NSLog(@"AAAAAAArect on thumbImage %@",NSStringFromCGRect(rect));
     CGRect finalrect = CGRectZero;
     finalrect =  CGRectMake(rect.origin.x * scale , rect.origin.y * scale, rect.size.width * scale, rect.size.height  * scale);
-    NSLog(@"AAAAAAArect on final image%@",NSStringFromCGRect(finalrect));
     
     CGImageRef  cgimage = CGImageCreateWithImageInRect(imageSource.CGImage, finalrect);
     UIImage* finalimage = [UIImage imageWithCGImage:cgimage];
@@ -114,11 +112,9 @@ CGSize CGSizeAbsolute(CGSize size) {
     CGRect rect = (CGRect){ radius - point.x * scale ,radius-point.y *scale,imageSource.size};
     [imageSource drawInRect:rect];
     
-    NSLog(@"image Draw Rect: %@",NSStringFromCGRect(rect));
     CGContextRestoreGState(ctx);
     
     UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
-    NSLog(@"%@",NSStringFromCGSize(image.size));
     
     image = [[self maskImage:image withMask:[UIImage imageNamed:@"s.png"]] retain];
     UIGraphicsEndImageContext();

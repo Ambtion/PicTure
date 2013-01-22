@@ -71,11 +71,12 @@
         [self.navigationController.navigationBar addSubview:_item];
     [super viewDidAppear:animated];
     [self showGuideView];
+    
 }
-
 - (void)showGuideView
 {
     NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
+//    NSLog(@"NUM::%@",num);
     if (!num || ![num boolValue]) {
         SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
         if ([[UIScreen mainScreen] bounds].size.height > 480) {

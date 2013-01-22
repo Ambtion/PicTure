@@ -12,7 +12,7 @@
 
 -(void)layoutSubviews
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     for (UIView *v in self.subviews) {
         
         if ([v isKindOfClass:[UIImageView class]]) {

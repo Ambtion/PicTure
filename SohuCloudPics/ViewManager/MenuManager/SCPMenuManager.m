@@ -290,7 +290,7 @@ static NSString *menuPress[6] = {
 
 - (void)onAccountClicked:(id)sender
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     [self hideMenuWithRibbon:NO];
     if (![SCPLoginPridictive isLogin]) {
         self.homelogin = [[[SCPLoginViewController alloc] init] autorelease];
@@ -390,7 +390,7 @@ static NSString *menuPress[6] = {
 - (void)showMenuWithRibbon
 {
     if (isMenuShowing || isMoving) return;
-    NSLog(@"showMenu");
+//    NSLog(@"showMenu");
     isMoving = TRUE;
     isMenuShowing = YES;
     [[[[UIApplication sharedApplication] delegate] window] setUserInteractionEnabled:NO];
@@ -481,9 +481,9 @@ static NSString *menuPress[6] = {
 - (void)hideMenuWithRibbon:(BOOL)hideRibbon
 {
     
-    NSLog(@"isMenudone :%d,isMoving :%d ",isMenudone, isMoving);
+//    NSLog(@"isMenudone :%d,isMoving :%d ",isMenudone, isMoving);
     if (!isMenuShowing || isMoving)  return;
-    NSLog(@"hideMenu");
+//    NSLog(@"hideMenu");
     isMoving = TRUE;
     [[[[UIApplication sharedApplication] delegate] window] setUserInteractionEnabled:NO];
     isMenuShowing = NO;
@@ -504,7 +504,7 @@ static NSString *menuPress[6] = {
         CABasicAnimation *translateAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         translateAnimation.fromValue = [NSValue valueWithCGPoint:layer.position];
         CGPoint toPoint = layer.position;
-        NSLog(@"hide menum %@",NSStringFromCGPoint(layer.position));
+//        NSLog(@"hide menum %@",NSStringFromCGPoint(layer.position));
 //        if(i % 2){
 //            toPoint.y -= menuHeight;
 //        }
@@ -644,7 +644,7 @@ static NSString *menuPress[6] = {
 
 - (void)menuDidHide
 {
-    NSLog(@"didHide");
+//    NSLog(@"didHide");
     isMoving = FALSE;
     ribbonFake.frame = ribbon.frame;
     [rootView setHidden:YES];
@@ -655,7 +655,7 @@ static NSString *menuPress[6] = {
 
 - (void)menuDidShow
 {
-    NSLog(@"didSHow");
+//    NSLog(@"didSHow");
     isMoving = FALSE;
     ribbonFake.frame = ribbon.frame;
     if ([self.menuDelegate respondsToSelector:@selector(menuDidShow)]) {

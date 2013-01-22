@@ -223,7 +223,7 @@
             [self dismissModalViewControllerAnimated:YES];
         });
     } failureBlock:^(NSError *error) {
-        NSLog(@"%@,%@",[self class],error);
+//        NSLog(@"%@,%@",[self class],error);
     }];
     
 }

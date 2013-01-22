@@ -46,7 +46,7 @@
 
 - (void)goNextTask
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     [self addTaskUnitToQuene];
 }
 - (void)addTaskUnitToQuene
@@ -73,7 +73,7 @@
             if (!self.currentTask.request.isCancelled)
                 [self.currentTask.request startAsynchronous];
         } failture:^(NSError *error, SCPTaskUnit *unit) {
-            NSLog(@"%s, %@",__FUNCTION__,error);
+//            NSLog(@"%s, %@",__FUNCTION__,error);
             unit.taskState = UPLoadStatusFailedUpload;
             [self goNextTask];
             SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
@@ -86,14 +86,14 @@
 
 - (void)go
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     [self addTaskUnitToQuene];
 }
 - (void)cancelupLoadWithTag:(NSArray *)unitArray
 {
-    NSLog(@"requset cancel %d",_taskList.count);
-    for (SCPTaskUnit * unit in _taskList)
-        NSLog(@"original::unit ::%@",unit.thumbnail);
+//    NSLog(@"requset cancel %d",_taskList.count);
+//    for (SCPTaskUnit * unit in _taskList)
+//        NSLog(@"original::unit ::%@",unit.thumbnail);
     for (SCPTaskUnit * unit in unitArray) {
         if ([self.currentTask isEqual:unit]) {
             [self.currentTask.request cancel];
@@ -106,8 +106,8 @@
             if ([tss isEqual:unit]) [self.taskList removeObject:tss];
         }
     }
-    for (SCPTaskUnit * unit in _taskList)
-        NSLog(@"after Remove::unit ::%@",unit.thumbnail);
+//    for (SCPTaskUnit * unit in _taskList)
+//        NSLog(@"after Remove::unit ::%@",unit.thumbnail);
 }
 
 - (void)clearProgreessView
@@ -144,7 +144,7 @@
     if (self.taskList.count) {
         [self goNextTask];
     }else{
-        NSLog(@"Task Finished");
+//        NSLog(@"Task Finished");
         if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
             [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
         }
@@ -162,7 +162,7 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     
-    NSLog(@"requestFailed :NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+//    NSLog(@"requestFailed :NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
     NSDictionary * dic = [request userInfo];
@@ -182,7 +182,7 @@
     if (self.taskList.count) {
         [self goNextTask];
     }else{
-        NSLog(@"Task Finished");
+//        NSLog(@"Task Finished");
         if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
             [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
         }
@@ -192,7 +192,7 @@
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
     NSString * str = [NSString stringWithFormat:@"%@/upload/api?folder_id=%@&access_token=%@",BASICURL,self.albumId,[SCPLoginPridictive currentToken]];
-    NSLog(@"UploadRequestURL:: %@",str);
+//    NSLog(@"UploadRequestURL:: %@",str);
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
     [request setStringEncoding:NSUTF8StringEncoding];

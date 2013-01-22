@@ -28,7 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"initWithFrame start");
+//    NSLog(@"initWithFrame start");
     _isSegHidden = YES;
     self.view.layer.cornerRadius = 16;
     self.view.layer.borderWidth = 1.f;

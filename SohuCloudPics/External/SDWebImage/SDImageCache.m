@@ -191,7 +191,6 @@ static natural_t get_free_memory(void)
         if ([delegate respondsToSelector:@selector(imageCache:didFindImage:forKey:userInfo:)])
         {
             //硬盘中找到文件;;;;
-            NSString * Cache;
             [delegate imageCache:self didFindImage:image forKey:key userInfo:info];
 //            [delegate imageCache:self didFindImage:image forKey:@"Cache" userInfo:info];
         }
@@ -327,7 +326,6 @@ static natural_t get_free_memory(void)
         if ([delegate respondsToSelector:@selector(imageCache:didFindImage:forKey:userInfo:)])
         {
 
-            NSString * Cache;
             [delegate imageCache:self didFindImage:image forKey:key userInfo:info];
 //            [delegate imageCache:self didFindImage:image forKey:@"Cache" userInfo:info];
         }

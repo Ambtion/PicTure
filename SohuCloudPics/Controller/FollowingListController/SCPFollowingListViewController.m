@@ -57,7 +57,7 @@
     [super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     
     [self.navigationItem setHidesBackButton:YES];
     _refreshButton = [[RefreshButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
@@ -82,7 +82,7 @@
 }
 - (void)navigationIteamRefreshClick:(UIButton*)button
 {
-    NSLog(@"%@ navigationIteamRefreshClick",[self class]);
+//    NSLog(@"%@ navigationIteamRefreshClick",[self class]);
 }
 - (void)navigationBack:(UIButton*)button
 {

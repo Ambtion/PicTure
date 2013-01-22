@@ -71,7 +71,7 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    NSLog(@"info :: %@",info);
+//    NSLog(@"info :: %@",info);
     if (_willRefresh){
         
         [_dataSourceArray removeAllObjects];
@@ -154,7 +154,7 @@
 
 - (void)pullingreloadTableViewDataSource:(id)sender
 {
-    NSLog(@"dataSourcewithRefresh");
+//    NSLog(@"dataSourcewithRefresh");
     [self refreshData:nil];
 }
 - (void)refreshDataFinishLoad:(id)sender
@@ -288,7 +288,7 @@
 }
 - (void)whenViewRemveFromSuperview
 {
-    NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
+//    NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
     self.listView  = nil;
 }
 

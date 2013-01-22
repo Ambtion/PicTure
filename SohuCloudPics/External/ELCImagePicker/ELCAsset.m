@@ -67,8 +67,8 @@
 -(void)toggleSelection {
     
     //图片点击的时候
-    NSLog(@"self %@",_asset);
-    NSLog(@"toggleSelection %d",self.parent == nil && (!_overlayView.hidden));
+//    NSLog(@"self %@",_asset);
+//    NSLog(@"toggleSelection %d",self.parent == nil && (!_overlayView.hidden));
     if(self.parent == nil && (!_overlayView.hidden)){
         if(toggleDelegate){
             _overlayView.hidden = !_overlayView.hidden;
@@ -78,7 +78,6 @@
         }
         return;
     }
-    NSString * maxSelected;
     if([(ELCAssetTablePicker*)self.parent totalSelectedAssets] >= 10 && _overlayView.hidden) {
         SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"选择数量已达上限" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [tip show];

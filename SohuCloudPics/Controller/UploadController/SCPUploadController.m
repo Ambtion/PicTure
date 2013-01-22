@@ -29,7 +29,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_requsetManager setDelegate:nil];
     [_requsetManager release];
@@ -283,7 +283,7 @@
 {
     _uploadTableView.frame = self.view.bounds;
 
-    NSLog(@"%@",NSStringFromCGPoint(_uploadTableView.contentOffset));
+//    NSLog(@"%@",NSStringFromCGPoint(_uploadTableView.contentOffset));
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         [_uploadTableView setContentOffset:offset animated:NO];
 

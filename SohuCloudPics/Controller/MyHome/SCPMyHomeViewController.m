@@ -52,7 +52,6 @@
     [self.view addSubview:_homeTable];
     [self addTableFootView];
     if ([SCPLoginPridictive isLogin]) [self.manager dataSourcewithRefresh:YES];
-    
 }
 - (void)addTableFootView
 {

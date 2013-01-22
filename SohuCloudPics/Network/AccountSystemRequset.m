@@ -27,7 +27,7 @@
     [request setPostValue:CLIENT_ID forKey:@"client_id"];
     [request addRequestHeader:@"accept" value:@"application/json"];
     [request setCompletionBlock:^{
-        NSLog(@"%@ %d",[request responseString],[request responseStatusCode]);
+//        NSLog(@"%@ %d",[request responseString],[request responseStatusCode]);
         if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300 &&[[request responseString] JSONValue]) {
             NSString * str = [NSString stringWithFormat:@"%@/api/v1/user?access_token=%@",BASICURL,[[[request responseString] JSONValue] objectForKey:@"access_token"]];
             NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[[request responseString] JSONValue]];
@@ -35,7 +35,7 @@
             [user_id startSynchronous];
             if ([user_id responseStatusCode]>= 200 && [user_id responseStatusCode] < 300 && [user_id responseString]) {
                 [dic setObject:[[[user_id responseString] JSONValue] objectForKey:@"user_id"] forKey:@"user_id"];
-                NSLog(@"user_dic::%@",dic);
+//                NSLog(@"user_dic::%@",dic);
                 success(dic);
             }else{
                 faiture(@"当前网络不给力，请稍后重试");

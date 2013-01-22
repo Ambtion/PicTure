@@ -18,7 +18,7 @@
 @synthesize imageArray = _imageArray;
 - (void)dealloc
 {
-    NSLog(@"%s start",__FUNCTION__);
+//    NSLog(@"%s start",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     self.imageArray = nil;
     [_gifResize release];
@@ -32,7 +32,7 @@
     [_waitView release];
     [_saveButton release];
     [super dealloc];
-    NSLog(@"%s start end",__FUNCTION__);
+//    NSLog(@"%s start end",__FUNCTION__);
  
 }
 #pragma mark -
@@ -68,7 +68,7 @@
     [self addPlayButton];
     [self addViewBar];
     [self addTabBar];
-    NSLog(@"self Frame:%@",NSStringFromCGRect(self.view.frame));
+//    NSLog(@"self Frame:%@",NSStringFromCGRect(self.view.frame));
     
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -184,7 +184,7 @@
 }
 -(void)setFilterBackImage:(UIButton* )button
 {
-    NSLog(@"setFilterBackImage");
+//    NSLog(@"setFilterBackImage");
     if (isHiddenFitter) {
         [button setBackgroundImage:[UIImage imageNamed:@"特效.png"] forState:UIControlStateNormal];
         [button setBackgroundImage:[UIImage imageNamed:@"特效-2.png"] forState:UIControlStateHighlighted];
@@ -342,7 +342,7 @@
             default:
                 break;
         }
-        NSLog(@"_gifDuration %f",duration);
+//        NSLog(@"_gifDuration %f",duration);
         _imageview.animationDuration = duration;
     }
     if (controller == _gifResize) {
@@ -361,14 +361,14 @@
             default:
                 break;
         }
-        NSLog(@"scale = 128.f/_imageview.frame.size.width ,%f",_boundsView.frame.size.width);
+//        NSLog(@"scale = 128.f/_imageview.frame.size.width ,%f",_boundsView.frame.size.width);
         _boundsView.transform = CGAffineTransformConcat(_boundsView.transform, CGAffineTransformMakeScale(scale, scale));
     }
 }
 -(void)fitterAction:(UIButton *)button
 {
     if (button.tag == 500) {
-        NSLog(@"fitterAction original");
+//        NSLog(@"fitterAction original");
         _imageview.animationImages = self.imageArray;
         _imageview.image = [_imageview.animationImages objectAtIndex:0];
 
@@ -391,7 +391,6 @@
        [self.view setUserInteractionEnabled:NO];
        NSArray * array_s = [Filterlibrary cachedArrayDataForName:filternum];
        if (array_s) {
-           NSLog(@"helloWorld");
            dispatch_async(dispatch_get_main_queue(), ^{
                _imageview.animationImages = array_s;
                _imageview.image = [_imageview.animationImages objectAtIndex:0];
@@ -442,7 +441,6 @@
     [_alterView dismissWithClickedButtonIndex:0 animated:YES];
 
     //Gif unlogin
-    NSString * gif_unlogin;
     if (![SCPLoginPridictive isLogin]) {
         [_controller dismissModalViewControllerAnimated:YES];
         return;
@@ -456,29 +454,29 @@
 }
 - (void)image:(UIImage *)image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
 {
-    NSLog(@"%@",error);
+//    NSLog(@"%@",error);
 }
 -(void)makeRation
 {
     if (_rotate == 0) {
         return;
     }
-    NSLog(@"makeRation start");
+//    NSLog(@"makeRation start");
     _imageview.animationImages = [UIImage imageByRotate:_imageview.animationImages :_rotate];
     _rotate = 0;
-    NSLog(@"makeRation end");
+//    NSLog(@"makeRation end");
 }
 -(void)makeResize
 {
     if (_imageview.frame.size.width == 256) {
         return;
     }
-    NSLog(@"makeResize start");
+//    NSLog(@"makeResize start");
     _imageview.animationImages = [UIImage imageByScalingProportionallyToSize:_imageview.animationImages :_imageview.bounds.size];
     CGRect rect = _imageview.frame;
     _imageview.transform = CGAffineTransformIdentity;
     _imageview.frame = rect;
-    NSLog(@"makeResize end");
+//    NSLog(@"makeResize end");
 }
 
 - (void)viewDidUnload

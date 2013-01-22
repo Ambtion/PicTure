@@ -65,7 +65,7 @@
     if (self) {
         
         controller = Acontroller;
-        NSLog(@"initWithUIImage %@ imageOrientation:%d",NSStringFromCGSize(image.size),[image imageOrientation]);
+//        NSLog(@"initWithUIImage %@ imageOrientation:%d",NSStringFromCGSize(image.size),[image imageOrientation]);
         [self initdataContainer];
         [self compressImage:image];
         UIGraphicsBeginImageContext(image.size);
@@ -93,7 +93,7 @@
                 [self addSubViews];
             });
         } failureBlock:^(NSError *error) {
-            NSLog(@"initWithAsset : %@",error);
+//            NSLog(@"initWithAsset : %@",error);
         }];
     }
     return self;
@@ -103,8 +103,7 @@
     if (_library == nil) {
         _library = [[ALAssetsLibrary alloc] init];
     }
-    NSLog(@"initdataContainer");
-    _isBlured = NO;
+     _isBlured = NO;
     _filternum = -1;
     _angleNum = 0;
     _roationScale = 1.f;
@@ -114,7 +113,6 @@
 -(void)compressImage:(UIImage*)image
 {
     
-    NSLog(@"compressImage ");
     CGFloat scaleX = 0;
     CGFloat scaleY = 0;
     if (image.size.width >= 600 | image.size.height >= 800) {
@@ -130,7 +128,6 @@
         _scale_compress = 1;
     }
     self.filterImage = self.originalThumbImage;
-    NSLog(@"compressImage size:%@",NSStringFromCGSize(image.size));
 }
 
 #pragma mark -
@@ -139,15 +136,12 @@
 {
     
     [super viewDidLoad];
-    NSLog(@"viewDidLoad start");
-    
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"camera_bg.png"]];
     //reload gesture
     UISwipeGestureRecognizer * right = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:nil];
     right.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:right];
     [right release];
-    NSLog(@"viewDidLoad end");
     
 }
 -(void)addSubViews
@@ -160,8 +154,7 @@
 }
 -(void)addImageview
 {
-    NSLog(@"%@",NSStringFromCGRect(self.view.frame));
-    
+//    NSLog(@"%@",NSStringFromCGRect(self.view.frame));
     CGRect rect = CGRectMake(0, 0, self.originalThumbImage.size.width /2, self.originalThumbImage.size.height /2);
     _imageview = [[UIImageView alloc] initWithFrame:rect];
     
@@ -230,7 +223,7 @@
     
     if (_clipview == nil) {
         
-        NSLog(@"%d %@",button.tag,_clipview);
+//        NSLog(@"%d %@",button.tag,_clipview);
         _clipview = [[UICliper alloc] initWithImageView:_imageview];
         [button setBackgroundImage:[UIImage imageNamed:@"crop_2.png"] forState:UIControlStateNormal];
         [button setBackgroundImage:[UIImage imageNamed:@"crop_2.png"] forState:UIControlStateHighlighted];
@@ -288,17 +281,17 @@
 }
 -(void)tapPressGuesture:(UILongPressGestureRecognizer*)gesture
 {
-    NSLog(@"tapGuesture");
+//    NSLog(@"tapGuesture");
     if (_isBlured == NO) {
         return;
     }
     if (gesture.state != UIGestureRecognizerStateBegan) {
-        NSLog(@"touchesBegan");
+//        NSLog(@"touchesBegan");
         //first get current image
         CGPoint  point = [gesture locationInView:_imageview];
         _clearPoint = point;
         _imageview.image = [ImageToolBox image:self.filterImage addRadiuOnBlurimage:_clearPoint scale:1];
-        NSLog(@"%@",NSStringFromCGPoint(point));
+//        NSLog(@"%@",NSStringFromCGPoint(point));
     }
 }
 
@@ -372,7 +365,6 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         UIImage * image = [Filterlibrary cachedDataForName:number];
         if (image) {
-            NSLog(@"Image not nill");
             self.filterImage = image;
             dispatch_async(dispatch_get_main_queue(), ^{
                 _imageview.image = self.filterImage;
@@ -443,7 +435,7 @@
             [self modifImage];
         });
     } failureBlock:^(NSError *error) {
-        NSLog(@"error %@",error);
+//        NSLog(@"error %@",error);
     }];
     
 }
@@ -480,7 +472,7 @@
 
     [_library writeImageToSavedPhotosAlbum:self.originalImage.CGImage orientation:(ALAssetOrientation)[self.originalImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
-            NSLog(@"error%@",error);
+//            NSLog(@"error%@",error);
             return ;
         }
         if (![SCPLoginPridictive isLogin]) {
