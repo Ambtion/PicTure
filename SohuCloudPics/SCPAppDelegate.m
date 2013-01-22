@@ -20,6 +20,7 @@
 #import "AccountSystemRequset.h"
 
 #import "MobClick.h"
+#import "UMAppKey.h"
 
 void customedExceptionHandler(NSException *exception)
 {
@@ -58,7 +59,7 @@ void customedExceptionHandler(NSException *exception)
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	/* The following statements are used for umeng statistic */
-	[MobClick startWithAppkey:@"50f9208b52701543dc000009"];
+	[MobClick startWithAppkey:UM_APP_KEY];
     
     [UIApplication sharedApplication].statusBarHidden = YES;
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

@@ -527,6 +527,7 @@
 		4ABF6135166CE634001B0FCB /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		4AC844A816AE5D9F00272620 /* libUMFeedback.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMFeedback.a; sourceTree = "<group>"; };
 		4AC844A916AE5D9F00272620 /* UMFeedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMFeedback.h; sourceTree = "<group>"; };
+		4AC844AC16AE5FF800272620 /* UMAppKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMAppKey.h; sourceTree = "<group>"; };
 		61124E0015DE0BF6002C844F /* SohuCloudPics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SohuCloudPics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61124E0415DE0BF6002C844F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		61124E0615DE0BF6002C844F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1298,6 +1299,7 @@
 		61124E0A15DE0BF6002C844F /* SohuCloudPics */ = {
 			isa = PBXGroup;
 			children = (
+				4AC844AC16AE5FF800272620 /* UMAppKey.h */,
 				61124E1315DE0BF6002C844F /* SCPAppDelegate.h */,
 				61124E1415DE0BF6002C844F /* SCPAppDelegate.m */,
 				C588DE36168559DF008744D1 /* Network */,
