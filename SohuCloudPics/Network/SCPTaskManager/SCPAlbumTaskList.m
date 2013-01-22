@@ -125,12 +125,14 @@
         [self requestFailed:request];
         return;
     }
+//    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     NSDictionary * dic = [[request responseString] JSONValue];
     NSInteger code = [[dic objectForKey:@"code"] intValue];
-    if (code == 12) {
+    
+    if (code == 12 || code == 11) {
         [request cancel];
         [request clearDelegatesAndCancel];
-        [self requestClearCurTask];
+        [self requestClearCurTask:code == 11];
         return;
     }
     [request cancel];
@@ -150,10 +152,18 @@
         }
     }
 }
-- (void)requestClearCurTask
+- (void)requestClearCurTask:(BOOL)isPhotoMax
 {
+    
+    [self.taskList removeAllObjects];
     self.currentTask = nil;
-    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"专辑已满,上传失败"] autorelease];
+    NSString * str = nil;
+    if (isPhotoMax) {
+        str = [NSString  stringWithFormat:@"%@",@"专辑已满,上传失败"];
+    }else{
+        str = [NSString  stringWithFormat:@"%@",@"空间已满,上传失败"];
+    }
+    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:str] autorelease];
     [cus show];
     if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
         [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
@@ -161,8 +171,8 @@
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    
-//    NSLog(@"requestFailed :NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+
+//    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
     NSDictionary * dic = [request userInfo];

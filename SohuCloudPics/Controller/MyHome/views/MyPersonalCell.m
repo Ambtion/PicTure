@@ -219,16 +219,12 @@
         _portraitImageView.frame = _portraitImageView.superview.bounds;
     }];
     
-    if (!_dataSource.name ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
-        _nameLabel.text = @"起个名字吧";
-    }else{
-        _nameLabel.text = [_dataSource name];
-    }
+    _nameLabel.text = [_dataSource name];
+    
     if (!_dataSource.desc ||[_dataSource.desc isKindOfClass:[NSNull class]] || [_dataSource.desc isEqualToString:@""]) {
-        _descLabel.text = @"赶快装扮下吧";
+        _descLabel.text = @"该用户无描述";
     }else{
         _descLabel.text = self.datasource.desc;
-        
     }
     CGSize size = [_descLabel.text sizeWithFont:_descLabel.font constrainedToSize:CGSizeMake(280, 35) lineBreakMode:_descLabel.lineBreakMode];
     _descLabel.frame = CGRectMake((self.frame.size.width - size.width)/2.f, 240, size.width, size.height);

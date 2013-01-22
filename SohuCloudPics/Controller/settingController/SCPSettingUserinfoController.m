@@ -14,7 +14,8 @@
 
 #define DESC_COUNT_LIMIT 400
 #define NAME_COUNT_LIMIT 12
-#define PLACEHOLDER @"请描述一下"
+
+#define PLACEHOLDER @"添加描述"
 
 @implementation SCPSettingUserinfoController
 - (void)dealloc
@@ -178,7 +179,7 @@
     [_placeHolder setUserInteractionEnabled:NO];
     _placeHolder.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:15];
     _placeHolder.textColor = [UIColor colorWithRed:137.f/255 green:137.f/255 blue:137.f/255 alpha:1];
-    _placeHolder.text = PLACEHOLDER;
+    _placeHolder.placeholder = PLACEHOLDER;
     [_description addSubview:_placeHolder];
 
 }

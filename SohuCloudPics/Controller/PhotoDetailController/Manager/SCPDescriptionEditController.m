@@ -12,6 +12,8 @@
 #import "SCPAlert_CustomeView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCPMenuNavigationController.h"
+#import "SCPPhotoDetailViewController.h"
+#import "PhotoDetailManager.h"
 
 #define DESC_COUNT_LIMIT 300
 
@@ -98,10 +100,13 @@
         [tip release];
         return;
     }
-    
     [_requset editphotot:self.photo_id Description:_textView.text success:^(NSString *response) {
         SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"修改成功"] autorelease];
         [cus show];
+        NSArray * array = [self.navigationController childViewControllers];
+        SCPPhotoDetailViewController * dvc = [array objectAtIndex:array.count - 1];
+        PhotoDetailManager * mana = [dvc manager];
+        [mana dataSourcewithRefresh:YES];
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
