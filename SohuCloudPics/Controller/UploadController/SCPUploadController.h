@@ -20,6 +20,7 @@
     NSArray *_cells;
     id controller;
     UIButton * _selectButton;
+    CGPoint offset;
 }
 
 @property (assign, nonatomic) CGFloat keyboardHeight;

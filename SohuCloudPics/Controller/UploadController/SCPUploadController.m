@@ -259,14 +259,15 @@
     }
     return nil;
 }
+
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    
+    offset = _uploadTableView.contentOffset;
     [_uploadHeader dismissAlbumChooseTable];
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     self.keyboardHeight = keyboardSize.height;
     
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         _uploadTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.keyboardHeight);
     } completion:^(BOOL finished) {
         
@@ -274,19 +275,26 @@
     SCPUploadCell * cell = [self getCellOfFirstResponder];
     if (cell) {
         NSIndexPath * path = [_uploadTableView indexPathForCell:cell];
-        [_uploadTableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
+g    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
+    _uploadTableView.frame = self.view.bounds;
+
     NSLog(@"%@",NSStringFromCGPoint(_uploadTableView.contentOffset));
-    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        _uploadTableView.frame = self.view.bounds;
-        [_uploadTableView setContentOffset:CGPointZero animated:NO];
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        [_uploadTableView setContentOffset:offset animated:NO];
 
     } completion:^(BOOL finished) {
+        
     }];
+//    SCPUploadCell * cell = [self getCellOfFirstResponder];
+//    if (cell) {
+//        NSLog(@"%s",__FUNCTION__);
+//        NSIndexPath * path = [_uploadTableView indexPathForCell:cell];
+//        [_uploadTableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+//    }
 }
 #pragma mark -
 #pragma mark tableViewDelegate & datasource

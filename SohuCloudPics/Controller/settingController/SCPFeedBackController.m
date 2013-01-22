@@ -12,6 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define DESC_COUNT_LIMIT 200
+
 #define PLACEHOLDER  @"您遇到的任何问题或您的建议"
 #define TITLE_DES @"您的反馈有助于我们的改进"
 
