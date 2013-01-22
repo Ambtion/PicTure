@@ -59,13 +59,13 @@
     _focusView.image = [UIImage imageNamed:@"focus.png"];
     //preview picture
     if (_upView == nil){
-        _upView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        _upView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
         _upView.image = [UIImage imageNamed:@"camera_bg_1.png"];
         _upView.backgroundColor = [UIColor clearColor];
         _upView.userInteractionEnabled = NO;
     }
     if (_downView == nil) {
-        _downView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        _downView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
         _downView.image = [UIImage imageNamed:@"camera_bg_2.png"];
         _downView.backgroundColor = [UIColor clearColor];
         _downView.userInteractionEnabled = NO;
@@ -232,8 +232,8 @@
     [UIView setAnimationDuration:0.4];
     [UIView setAnimationDelay:0.2];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    _upView.frame = CGRectMake(0, -self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
-    _downView.frame = CGRectMake(0,self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
+    _upView.frame = CGRectMake(0, - 480, 320, 480);
+    _downView.frame = CGRectMake(0,480, 320, 480);
     [UIView commitAnimations];
     [self.view setUserInteractionEnabled:YES];
     [camerBox startRunning];
@@ -257,10 +257,10 @@
     
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationDuration:g];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    _upView.frame = self.view.bounds;
-    _downView.frame = self.view.bounds;
+    _upView.frame = CGRectMake(0, 0, 320, 480);
+    _downView.frame = CGRectMake(0,0, 320, 480);
     [UIView commitAnimations];
     [camerBox stopRunning];
     [self.view setUserInteractionEnabled:NO];
@@ -268,7 +268,7 @@
 }
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
 //    [_upView.layer removeAllAnimations];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
