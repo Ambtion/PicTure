@@ -275,7 +275,7 @@
     SCPUploadCell * cell = [self getCellOfFirstResponder];
     if (cell) {
         NSIndexPath * path = [_uploadTableView indexPathForCell:cell];
-g    }
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
