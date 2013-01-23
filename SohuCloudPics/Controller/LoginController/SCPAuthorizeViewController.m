@@ -89,7 +89,7 @@ static NSString * provider = nil;
 }
 - (void)loginWithCode
 {
-    NSString * url_s = @"http://10.10.79.134/oauth2/access_token";
+    NSString * url_s = [NSString stringWithFormat:@"%@/oauth2/access_token",BASICURL];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url_s]];
     [request addRequestHeader:@"accept" value:@"application/json"];
     [request setPostValue:@"third_party_code" forKey:@"grant_type"];
