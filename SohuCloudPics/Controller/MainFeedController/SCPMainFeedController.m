@@ -47,7 +47,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataWhenLoginStateChange:) name:@"LoginStateChange" object:nil];
     [self.pullingController realLoadingMore:nil];
-    
 }
 
 - (void)handleDataWhenLoginStateChange:(NSNotification *)notifition
@@ -87,7 +86,12 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-
+    
     [self.manager refreshUserinfo];
+}
+- (void)didReceiveMemoryWarning
+{
+    NSLog(@"%s %d",__FUNCTION__,_manager.dataArray.count);
+    [super didReceiveMemoryWarning];
 }
 @end

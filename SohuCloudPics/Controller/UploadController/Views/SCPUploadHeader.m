@@ -17,7 +17,7 @@
 
 #define DESLABEL @"网络专辑获取中"
 #define MAXLIMITNUM 1000
-
+#define OFFSET 5
 @interface AlbumsTableManager : NSObject <UITableViewDelegate, UITableViewDataSource>
 @property (assign, nonatomic) SCPUploadHeader *header;
 @end
@@ -197,10 +197,11 @@
     if (_albumChooseButton.tag) {
         // very very bad design, must be fixed later!!!
         UITableView *table = (UITableView *) self.superview;
-        _albumsTable.frame = CGRectMake(10, _albumsTable.frame.origin.y  - table.contentOffset.y, _albumChooseButton.frame.size.width, 200);
+        _albumsTable.frame = CGRectMake(10, _albumsTable.frame.origin.y  - table.contentOffset.y, _albumChooseButton.frame.size.width, _foldersArray.count * 40 + 40  > 200 ? 200 + OFFSET :_foldersArray.count * 40 + 40 + OFFSET);
         [self.superview.superview addSubview:_albumsTable];
         [self.superview.superview bringSubviewToFront:_albumsTable];
         [_albumsTable becomeFirstResponder];
+        [_albumsTable flashScrollIndicators];
     } else {
         [_albumsTable removeFromSuperview];
     }

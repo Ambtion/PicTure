@@ -56,6 +56,10 @@
 - (void)handleGustre:(UITapGestureRecognizer *)gesture
 {
     if (self.superview) {
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"GuideViewShowed"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         SCPAppDelegate * delegte = (SCPAppDelegate *)[[UIApplication sharedApplication] delegate];
         [UIView transitionWithView:delegte.window duration:0.5 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionTransitionCrossDissolve animations:^{
             [self removeFromSuperview];

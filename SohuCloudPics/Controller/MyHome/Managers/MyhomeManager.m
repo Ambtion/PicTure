@@ -228,7 +228,7 @@ static float OFFSET = 0.f;
     if(_willRefresh | !_dataArray.count){
         [_requestManager getUserInfoWithID:[SCPLoginPridictive currentUserId]];
     }else{
-        if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit) {
+        if (MAXPICTURE <= _dataArray.count|| !hasNextpage || _isinit) {
             _isLoading = NO;
             UIView *  view = _controller.homeTable.tableFooterView;
             UILabel * label = (UILabel *)[view viewWithTag:100];
@@ -250,7 +250,7 @@ static float OFFSET = 0.f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit) {
+    if (MAXPICTURE <= _dataArray.count|| !hasNextpage || _isinit) {
         [self.controller.footView setHidden:YES];
     }else{
         [self.controller.footView setHidden:NO];

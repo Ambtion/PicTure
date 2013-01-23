@@ -41,6 +41,7 @@
             [imageView addGestureRecognizer:gesture];
             [gesture release];
             imageView.userInteractionEnabled = YES;
+            [imageView setBackgroundColor:[UIColor whiteColor]];
             [_imageViewList addObject:imageView];
             [self addSubview:imageView];
             [imageView release];

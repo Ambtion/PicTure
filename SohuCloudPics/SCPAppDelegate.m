@@ -17,6 +17,8 @@
 #import "SCPExplorerController.h"
 #import "SCPAlert_DetailView.h"
 #import "FunctionguideScroll.h"
+#import "SCPGuideView.h"
+
 #import "AccountSystemRequset.h"
 
 #import "MobClick.h"
@@ -48,9 +50,8 @@
     [_window makeKeyAndVisible];
     [mainTab release];
     [nav release];
-	
+	[self showGuideView];
     [self showfunctionGuide];
-	
     return YES;
 }
 
@@ -63,7 +64,20 @@
         [SCPGuideViewExchange exchageViewForwindow];
     }
 }
-
+- (void)showGuideView
+{
+    
+    NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
+    if (!num || ![num boolValue]) {
+        SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+        if ([[UIScreen mainScreen] bounds].size.height > 480) {
+            view.image = [UIImage imageNamed:@"exporeGuideIos6_2.png"];
+        }else{
+            view.image = [UIImage imageNamed:@"exporeGuide.png"];
+        }
+        [view show];
+    }
+}
 - (void)removeFromWindows
 {
     CATransition * animation = [CATransition animation];

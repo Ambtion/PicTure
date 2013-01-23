@@ -132,6 +132,7 @@
 - (void)albumTaskOver:(NSNotification *)notification
 {
     [self.curProgreeeView setHidden:YES];
+    self.curProgreeeView.progress = 0.01;
     self.curProgreeeView = nil;
     [self.currlabel setHidden:NO];
     self.currlabel  = nil;

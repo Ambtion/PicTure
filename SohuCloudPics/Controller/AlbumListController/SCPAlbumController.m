@@ -75,8 +75,8 @@
 	[self updateBanner];
     [self initNavigationItem];
     
-    [_pullingController.tableView reloadData];
-	[_pullingController refreshDoneLoadingTableViewData];
+    [_pullingController refreshDoneLoadingTableViewData];
+    [_pullingController reloadDataSourceWithAniamtion:NO];
 }
 - (void)updateBanner
 {
@@ -88,7 +88,7 @@
 		count = 0;
 	}
     self.bannerLeftString = [NSString stringWithFormat:@"有%d个专辑", count];
-    self.bannerRightString = [NSString stringWithFormat:@"有%d张照片",photo_num];
+    self.bannerRightString = [NSString stringWithFormat:@"有%d张图片",photo_num];
     [self.pullingController.headView BannerreloadDataSource];
 }
 - (void)pullingreloadMoreTableViewData:(id)sender
@@ -127,6 +127,7 @@
         [_switchButton addTarget:self action:@selector(onSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_rightBarView addSubview:_switchButton];
     }
+    
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_rightBarView];
     self.navigationItem.rightBarButtonItem = item;
     [item release];
@@ -149,6 +150,7 @@
     if (isLoading) return;
     [_request getFoldersinfoWithID:_user_id];
 }
+
 - (void)loadNextPage
 {
     if (isLoading) return;
@@ -204,9 +206,7 @@
 	[super viewWillAppear:animated];
     tempRibbon = ((SCPMenuNavigationController *) self.navigationController).ribbonView;
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
-    [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
-//    [self refresh];
-   
+    [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];   
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -241,7 +241,6 @@
         if (_albumList.count)
             [_albumList removeAllObjects];
     }
-
 	NSArray *folderList = [folderinfo  objectForKey:@"folders"];
 	for (int i = 0; i < folderList.count; ++i) {
 		NSDictionary *Afolder = [folderList objectAtIndex:i];
@@ -259,14 +258,16 @@
 	}
     
     [_pullingController refreshDoneLoadingTableViewData];
-	[_pullingController.tableView reloadData];
+	[_pullingController reloadDataSourceWithAniamtion:NO];
+    
 }
 - (void)requestFailed:(NSString *)error
 {
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
     [self.pullingController refreshDoneLoadingTableViewData];
-    [_pullingController moreDoneLoadingTableViewData];
+    [self.pullingController moreDoneLoadingTableViewData];
+    
 }
 #pragma mark -
 #pragma mark BannerDataSource

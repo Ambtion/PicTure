@@ -334,6 +334,8 @@
 		C58B4D36168D318B00789F25 /* SCPAlert_CustomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58B4D35168D318B00789F25 /* SCPAlert_CustomeView.m */; };
 		C58B4D3B168D405500789F25 /* popup_alert.png in Resources */ = {isa = PBXBuildFile; fileRef = C58B4D3A168D405500789F25 /* popup_alert.png */; };
 		C58B4D3F168D53F300789F25 /* frame_alubme_default_image.png in Resources */ = {isa = PBXBuildFile; fileRef = C58B4D3E168D53F300789F25 /* frame_alubme_default_image.png */; };
+		C58B5EB016AF887A00D7E4FE /* album_nb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58B5EAF16AF887A00D7E4FE /* album_nb@2x.png */; };
+		C58B5EB516AF8B4A00D7E4FE /* CountLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C58B5EB416AF8B4A00D7E4FE /* CountLabel.m */; };
 		C58BD83E166E01B700BEBA9E /* end_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C58BD83D166E01B700BEBA9E /* end_bg.png */; };
 		C58BEF25168951A1004946B1 /* explore_up_page_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C58BEF24168951A1004946B1 /* explore_up_page_icon.png */; };
 		C58D865C1612CB9F006FE9EF /* SCPLoginPridictive.m in Sources */ = {isa = PBXBuildFile; fileRef = C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */; };
@@ -935,6 +937,9 @@
 		C58B4D35168D318B00789F25 /* SCPAlert_CustomeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlert_CustomeView.m; sourceTree = "<group>"; };
 		C58B4D3A168D405500789F25 /* popup_alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popup_alert.png; sourceTree = "<group>"; };
 		C58B4D3E168D53F300789F25 /* frame_alubme_default_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame_alubme_default_image.png; sourceTree = "<group>"; };
+		C58B5EAF16AF887A00D7E4FE /* album_nb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "album_nb@2x.png"; sourceTree = "<group>"; };
+		C58B5EB316AF8B4A00D7E4FE /* CountLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CountLabel.h; path = View/CountLabel.h; sourceTree = "<group>"; };
+		C58B5EB416AF8B4A00D7E4FE /* CountLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CountLabel.m; path = View/CountLabel.m; sourceTree = "<group>"; };
 		C58BD83D166E01B700BEBA9E /* end_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = end_bg.png; sourceTree = "<group>"; };
 		C58BEF24168951A1004946B1 /* explore_up_page_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explore_up_page_icon.png; sourceTree = "<group>"; };
 		C58D865A1612CB9F006FE9EF /* SCPLoginPridictive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPLoginPridictive.h; sourceTree = "<group>"; };
@@ -1396,6 +1401,7 @@
 		617F2AE516016E50005CBF49 /* album */ = {
 			isa = PBXGroup;
 			children = (
+				C58B5EAF16AF887A00D7E4FE /* album_nb@2x.png */,
 				C58B4D3E168D53F300789F25 /* frame_alubme_default_image.png */,
 				C59172A41676CA2C001EEB18 /* upload_delete_press.png */,
 				C59172A51676CA2C001EEB18 /* upload_delete.png */,
@@ -1412,6 +1418,7 @@
 		617FCF2C15F73AEA003968FE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C58B5EB216AF8B2900D7E4FE /* CountViewLabel */,
 				B7EF8832163A85BC0071C26A /* SCPHGestureRecognizer */,
 				C53BB11C1654D9F10043B7E7 /* RefreshButton */,
 				C58DA655162EADD1001E881D /* BannerView */,
@@ -2402,6 +2409,15 @@
 			path = Controller/NoticeController;
 			sourceTree = "<group>";
 		};
+		C58B5EB216AF8B2900D7E4FE /* CountViewLabel */ = {
+			isa = PBXGroup;
+			children = (
+				C58B5EB316AF8B4A00D7E4FE /* CountLabel.h */,
+				C58B5EB416AF8B4A00D7E4FE /* CountLabel.m */,
+			);
+			name = CountViewLabel;
+			sourceTree = "<group>";
+		};
 		C58D86591612CB78006FE9EF /* LoginPridictive */ = {
 			isa = PBXGroup;
 			children = (
@@ -2901,6 +2917,7 @@
 				C560EB3416AE891900B31708 /* camera_bg_1.png in Resources */,
 				C560EB3516AE891900B31708 /* camera_bg_2.png in Resources */,
 				C560EB3716AEA42200B31708 /* title_photos.png in Resources */,
+				C58B5EB016AF887A00D7E4FE /* album_nb@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3057,6 +3074,7 @@
 				C5246CF916A6D58E004E32DF /* SCPCacheManager.m in Sources */,
 				C595934A16A79D320020B800 /* SCPGuideViewExchange.m in Sources */,
 				C593BFA516AD0BBD0015CE50 /* SCPNewFoldersCell.m in Sources */,
+				C58B5EB516AF8B4A00D7E4FE /* CountLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

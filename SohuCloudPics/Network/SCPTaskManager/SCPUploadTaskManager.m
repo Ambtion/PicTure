@@ -167,6 +167,14 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
         if ([tss.albumId isEqualToString:albumID]) [self.taskList removeObject:tss];
     }
 }
+- (void)cancelAllOperation
+{
+    [self.curTask.currentTask.request cancel];
+    [self.curTask.currentTask.request clearDelegatesAndCancel];
+    [self.taskList removeAllObjects];
+    [self albumTaskQueneFinished:nil];
+
+}
 - (void)cancelupLoadWithAlbumID:(NSString *)albumId WithUnit:(NSArray *)unitArray
 {
     if ([self.curTask.albumId isEqualToString:albumId]) {

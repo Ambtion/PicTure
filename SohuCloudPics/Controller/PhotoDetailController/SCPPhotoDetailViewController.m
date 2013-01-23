@@ -52,13 +52,13 @@
     self.pullingController.headView.datasouce = self.manager;
     [self.pullingController.footView setHidden:YES];
     [self.view addSubview:self.pullingController.view];
-    [self.manager dataSourcewithRefresh:YES];
     
 }
 #pragma mark -
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated
 {
+    
     [super viewWillAppear:animated];
     self.navigationItem.hidesBackButton = YES;
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -68,6 +68,7 @@
     backButton.frame = CGRectMake(0, 0, 35, 35);
     UIBarButtonItem* left = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     self.navigationItem.leftBarButtonItem = left;
+    [self.manager dataSourcewithRefresh:YES];
 }
 
 - (void)navigationBack:(UIButton*)button

@@ -13,7 +13,7 @@
 #import "SCPAlert_CustomeView.h"
 
 #define UPTIMEOUT 10.f
-#define UPLOADIMAGESIZE 1024 * 1024 * 10  // 图片最大10MB 
+#define UPLOADIMAGESIZE 1024 * 1024 * 10  // 图片最大10MB
 
 
 @implementation SCPAlbumTaskList
@@ -46,7 +46,7 @@
 
 - (void)goNextTask
 {
-//    NSLog(@"%s",__FUNCTION__);
+    //    NSLog(@"%s",__FUNCTION__);
     [self addTaskUnitToQuene];
 }
 - (void)addTaskUnitToQuene
@@ -73,7 +73,7 @@
             if (!self.currentTask.request.isCancelled)
                 [self.currentTask.request startAsynchronous];
         } failture:^(NSError *error, SCPTaskUnit *unit) {
-//            NSLog(@"%s, %@",__FUNCTION__,error);
+            //            NSLog(@"%s, %@",__FUNCTION__,error);
             unit.taskState = UPLoadStatusFailedUpload;
             [self goNextTask];
             SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
@@ -86,14 +86,14 @@
 
 - (void)go
 {
-//    NSLog(@"%s",__FUNCTION__);
+    //    NSLog(@"%s",__FUNCTION__);
     [self addTaskUnitToQuene];
 }
 - (void)cancelupLoadWithTag:(NSArray *)unitArray
 {
-//    NSLog(@"requset cancel %d",_taskList.count);
-//    for (SCPTaskUnit * unit in _taskList)
-//        NSLog(@"original::unit ::%@",unit.thumbnail);
+    //    NSLog(@"requset cancel %d",_taskList.count);
+    //    for (SCPTaskUnit * unit in _taskList)
+    //        NSLog(@"original::unit ::%@",unit.thumbnail);
     for (SCPTaskUnit * unit in unitArray) {
         if ([self.currentTask isEqual:unit]) {
             [self.currentTask.request cancel];
@@ -106,8 +106,8 @@
             if ([tss isEqual:unit]) [self.taskList removeObject:tss];
         }
     }
-//    for (SCPTaskUnit * unit in _taskList)
-//        NSLog(@"after Remove::unit ::%@",unit.thumbnail);
+    //    for (SCPTaskUnit * unit in _taskList)
+    //        NSLog(@"after Remove::unit ::%@",unit.thumbnail);
 }
 
 - (void)clearProgreessView
@@ -125,16 +125,12 @@
         [self requestFailed:request];
         return;
     }
-//    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+    NSLog(@"requestFinish:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     NSDictionary * dic = [[request responseString] JSONValue];
     NSInteger code = [[dic objectForKey:@"code"] intValue];
     
-    if (code == 12 || code == 11) {
-        [request cancel];
-        [request clearDelegatesAndCancel];
-        [self requestClearCurTask:code == 11];
-        return;
-    }
+    if (![self handleCode:code]) return;
+    
     [request cancel];
     [request clearDelegatesAndCancel];
     if (self.taskList.count)
@@ -146,24 +142,50 @@
     if (self.taskList.count) {
         [self goNextTask];
     }else{
-//        NSLog(@"Task Finished");
+        
+    //        NSLog(@"Task Finished");
         if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
             [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
         }
     }
 }
-- (void)requestClearCurTask:(BOOL)isPhotoMax
+- (BOOL)handleCode:(NSInteger)code
+{
+    BOOL returnValue = NO;
+    NSString * reason = nil;
+    switch (code) {
+        case 0:
+            returnValue = YES;
+            break;
+        case 1:
+            reason = [NSString stringWithFormat:@"当前未登录,上传失败"];//取消任务;
+            [self requestClearCurTask:reason];
+            break;
+        case 2:
+            reason = [NSString stringWithFormat:@"专辑不存在,上传失败"];//取消任务;
+            [self requestClearCurTask:reason];
+            break;
+        case 11:
+            reason = [NSString stringWithFormat:@"专辑已满,上传失败"];//取消任务;
+            [self requestClearCurTask:reason];
+            break;
+        case 12:
+            reason = [NSString stringWithFormat:@"空间已满,上传失败"];//取消任务;
+            [self requestClearCurTask:reason];
+            break;
+        default:
+            [self requestFailed:nil];
+            break;
+    }
+    return returnValue;
+    
+}
+- (void)requestClearCurTask:(NSString *)reason
 {
     
     [self.taskList removeAllObjects];
     self.currentTask = nil;
-    NSString * str = nil;
-    if (isPhotoMax) {
-        str = [NSString  stringWithFormat:@"%@",@"专辑已满,上传失败"];
-    }else{
-        str = [NSString  stringWithFormat:@"%@",@"空间已满,上传失败"];
-    }
-    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:str] autorelease];
+    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:reason] autorelease];
     [cus show];
     if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
         [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
@@ -171,12 +193,11 @@
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-
-//    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+    
+    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
     NSDictionary * dic = [request userInfo];
-    
     if (dic) {
         SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:[dic objectForKey:@"FAILTURE"]] autorelease];
         [cus show];
@@ -192,7 +213,7 @@
     if (self.taskList.count) {
         [self goNextTask];
     }else{
-//        NSLog(@"Task Finished");
+        //        NSLog(@"Task Finished");
         if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
             [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
         }
@@ -202,7 +223,7 @@
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
     NSString * str = [NSString stringWithFormat:@"%@/upload/api?folder_id=%@&access_token=%@",BASICURL,self.albumId,[SCPLoginPridictive currentToken]];
-//    NSLog(@"UploadRequestURL:: %@",str);
+    //    NSLog(@"UploadRequestURL:: %@",str);
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
     [request setStringEncoding:NSUTF8StringEncoding];
@@ -211,7 +232,7 @@
     [request setTimeOutSeconds:UPTIMEOUT];
     [request setShowAccurateProgress:YES];
     [request setShouldContinueWhenAppEntersBackground:YES];
-//#endif
+    //#endif
     return request;
 }
 

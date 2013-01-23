@@ -26,7 +26,7 @@ static float OFFSET = 0.f;
 
 - (void)dealloc
 {
-    NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s",__FUNCTION__);
     if (wait) {
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
@@ -166,7 +166,7 @@ static float OFFSET = 0.f;
     if(_willRefresh | !_dataArray.count){
         [_requestManager getUserInfoWithID:_user_ID];
     }else{
-        if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit){
+        if (MAXPICTURE <= _dataArray.count|| !hasNextpage || _isinit){
             _isLoading = NO;
             UIView *  view = _controller.tableView.tableFooterView;
             UILabel * label = (UILabel *)[view viewWithTag:100];
@@ -259,7 +259,7 @@ static float OFFSET = 0.f;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (MAXPICTURE < _dataArray.count|| !hasNextpage || _isinit){
+    if (MAXPICTURE <= _dataArray.count|| !hasNextpage || _isinit){
         [self.controller.footView setHidden:YES];
     }else{
         [self.controller.footView setHidden:NO];

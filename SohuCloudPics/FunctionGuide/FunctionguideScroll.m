@@ -57,7 +57,6 @@ static NSString * staticImage6[4] = {@"welcome-guid-ios61.png",@"cloudios62.png"
     
     [_pagecontroll setPageIndicatorImage:[UIImage imageNamed:@"currentPageDot.png"]];
     [_pagecontroll setCurrentPageIndicatorImage:[UIImage imageNamed:@"pageDot.png"]];
-    
     [_pagecontroll setUserInteractionEnabled:NO];
     [self.view addSubview:_pagecontroll];
     

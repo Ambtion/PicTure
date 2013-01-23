@@ -328,7 +328,6 @@
 {
     int row = indexPath.row;
     switch (row) {
-            
         case 0:
             return 170;
             case 1:

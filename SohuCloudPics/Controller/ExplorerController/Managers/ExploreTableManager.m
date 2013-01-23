@@ -202,7 +202,7 @@ static NSInteger lastNum = -1;
         _lastCount = 0;
         [self getExploreFrom:0 count:80];
     }else{
-        if ((MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
+        if ((MAXPICTURE <= [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
             _isLoading = NO;
             [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
             return;
@@ -319,7 +319,7 @@ static NSInteger lastNum = -1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ((MAXPICTURE < [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
+    if ((MAXPICTURE <= [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
         [self.controller.pullingController.footView setHidden:NO];

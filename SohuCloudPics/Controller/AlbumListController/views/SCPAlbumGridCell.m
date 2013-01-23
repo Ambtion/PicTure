@@ -16,6 +16,8 @@
 #import "UIUtils.h"
 #import "SCPALbum.h"
 
+#import "CountLabel.h"
+
 
 @implementation SCPAlbumGridCell
 
@@ -97,11 +99,11 @@
             [nameLabel release];
             /* count label view */
             //            UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 56, 60, 30, 16)];
-            UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(75 - 30, 75 - 16, 30, 18)];
+            CountLabel *countLabel = [[CountLabel alloc] initWithFrame:CGRectMake(75 - 30, 75 - 16, 30, 18)];
             
             [UIUtils updateAlbumCountLabel:countLabel];
             
-            [countLabel setTextAlignment:UITextAlignmentCenter];
+//            [countLabel setTextAlignment:UITextAlignmentCenter];
             [_countLabelList addObject:countLabel];
             [coverImageView addSubview:countLabel];
             [countLabel release];
@@ -242,22 +244,23 @@
 	nameLabel.text = album.name;
 
     /* set count label */
-    UILabel * countLabel = [self countLabelAt:position];
-    
-    [countLabel setHidden:NO];
-    if (album.isUploading) {
-        
-        countLabel.backgroundColor = [UIColor clearColor];
-        countLabel.text = nil;
-        
-    }else{
-        
-        countLabel.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
-        [countLabel setText:[NSString stringWithFormat:@" %d ", album.photoNum]];
-        [countLabel sizeToFit];
-        countLabel.frame = CGRectMake(75 - countLabel.frame.size.width - 5, 75 - countLabel.frame.size.height - 5,
-                                      countLabel.frame.size.width > 18 ? countLabel.frame.size.width : 18 , 18);
-    }
+    CountLabel * countLabel = (CountLabel *)[self countLabelAt:position];
+    [countLabel setHidden:album.isUploading];
+//    if (album.isUploading) {
+//        countLabel.backgroundColor = [UIColor clearColor];
+//        countLabel.text = nil;
+//    }else{
+////        countLabel.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
+//        countLabel.backgroundColor = [UIColor clearColor];
+//        [countLabel setText:[NSString stringWithFormat:@" %d ", album.photoNum]];
+//        [countLabel sizeToFit];
+//        countLabel.frame = CGRectMake(75 - countLabel.frame.size.width - 5, 75 - countLabel.frame.size.height - 5,
+//                                      countLabel.frame.size.width > 18 ? countLabel.frame.size.width : 18 , 18);
+//    }
+    [countLabel setText:[NSString stringWithFormat:@" %d ", album.photoNum]];
+    [countLabel sizeToFit];
+    countLabel.frame = CGRectMake(75 - countLabel.frame.size.width - 5, 75 - countLabel.frame.size.height - 5,
+                                  countLabel.frame.size.width > 18 ? countLabel.frame.size.width : 18 , 18);
     
     /* delete ? */
     UIImageView *deleteView = [self deleteViewAt:position];

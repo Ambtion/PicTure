@@ -1,6 +1,6 @@
 //
 //  PulingRefreshController.m
-//  
+//
 //
 //  Created by Qu on 12-10-22.
 //  Copyright (c) 2012年 Qu. All rights reserved.
@@ -23,7 +23,7 @@ static CGFloat OFFSET = 0.f;
 - (void)openChangeFunction
 {
     _shutDown = NO;
-
+    
 }
 - (void)reloadTableViewDataSource
 {
@@ -82,18 +82,18 @@ static CGFloat OFFSET = 0.f;
     if (scrollView.contentOffset.y <= scrollView.contentSize.height - scrollView.frame.size.height || scrollView.contentSize.height <= scrollView.frame.size.height) {
         if (_loadingMore) {
             _loadingMore = NO;
-           [controller realLoadingMore:nil];
+            [controller realLoadingMore:nil];
         }
     }
     if (scrollView.contentOffset.y >= scrollView.bounds.size.width && scrollView.contentOffset.y < OFFSET && scrollView.contentOffset.y < scrollView.contentSize.height - 580) {
         [controller.topbutton setHidden:NO];
     }else{
-         [controller.topbutton setHidden:YES];
+        [controller.topbutton setHidden:YES];
     }
     OFFSET = scrollView.contentOffset.y;
     
     [_refreshView egoRefreshScrollViewDidScroll:scrollView];
-
+    
     if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)]){
         [self.delegate scrollViewDidScroll:scrollView];
     }
@@ -112,13 +112,13 @@ static CGFloat OFFSET = 0.f;
 }
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-   
+    
     if ([self.delegate respondsToSelector:@selector(scrollViewWillBeginDragging:)])
         [self.delegate scrollViewWillBeginDragging:scrollView];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{   
+{
     if ([self.delegate respondsToSelector:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)])
         [self.delegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
 }
@@ -421,24 +421,24 @@ static CGFloat OFFSET = 0.f;
     [_scrollView setContentSize:CGSizeMake(320, 1000)];
     [_scrollView setUserInteractionEnabled:NO];
     [_scrollView addSubview:_headView];
-
-    _scrollView.backgroundColor = [UIColor clearColor];
     
+    _scrollView.backgroundColor = [UIColor clearColor];
     CGRect frame = CGRectMake(0, 0, 320, self.view.bounds.size.height );
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     _tableView.separatorColor = [UIColor clearColor];
-//    _tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     
+    //    _tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     UIView * headView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)] autorelease];
+    
     headView.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     _tableView.tableHeaderView = headView;
     _refreshView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0, 40, 320, 60) arrowImageName:@"dorp_down.png" textColor:[UIColor colorWithRed:98.f/255.f green:98.f/255.f blue:98.f/255.f alpha:1]];
     [_tableView.tableHeaderView addSubview:_refreshView];
     [self.view addSubview:_tableView];
     [self.view addSubview:_scrollView];
-
+    
     _manager = [[DelegateManager alloc] init];
     _manager->_reloading = NO;
     _manager->controller = self;
@@ -456,6 +456,7 @@ static CGFloat OFFSET = 0.f;
     [_topbutton setHidden:YES];
     [self.view addSubview:_topbutton];
     [self addTableFootView];
+    
 }
 
 - (void)addTableFootView
@@ -526,7 +527,7 @@ static CGFloat OFFSET = 0.f;
 - (void)realLoadingMore:(id)sender
 {
     if (_shutDown) return;
-//    NSLog(@"%d",_manager->_reloading);
+    //    NSLog(@"%d",_manager->_reloading);
     if (_manager->_reloading) return;
     _manager->_reloading = YES;
     [self showLoadingMore];
@@ -545,7 +546,7 @@ static CGFloat OFFSET = 0.f;
     _manager.delegate = _delegate;
 }
 - (void)reloadDataSourceWithAniamtion:(BOOL)animation
-{    
+{
     if (animation && [_tableView numberOfRowsInSection:0]) {
         [_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }else{

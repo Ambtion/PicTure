@@ -704,22 +704,30 @@
     self.fontImageView.info = [imageArray objectAtIndex:0];
     if (imageArray.count == 2) {
         self.currentImageView.info = [imageArray objectAtIndex:1];
+    }else if(imageArray.count == 3){
+        self.currentImageView.info = [imageArray objectAtIndex:1];
+        self.rearImageView.info = [imageArray objectAtIndex:2];
     }else{
-        self.currentImageView.info  = nil;
+        self.currentImageView.info = nil;
+        self.rearImageView.info = nil;
     }
-    self.info = self.fontImageView.info;
+    self.info = [imageArray objectAtIndex:curPage];
     [self resetImageFrame:self.fontImageView];
     [self resetImageFrame:self.currentImageView];
+    [self resetImageFrame:self.rearImageView];
     
-    if (photoNum == 2) {
-        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 2, self.scrollView.frame.size.height)];
-    }
-    if (photoNum == 1) {
-        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
-    }
+//    if (photoNum == 2) {
+//        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 2, self.scrollView.frame.size.height)];
+//    }
+//    if (photoNum == 1) {
+//        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
+//    }
     
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * photoNum, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * curPage, 0)];
+    
 }
+
 - (void)refreshScrollViewNormal
 {
     if ([self getDisplayImagesWithCurpage:curPage]) { //read images into curImages
@@ -731,12 +739,14 @@
         [self resetImageFrame:self.currentImageView];
         [self resetImageFrame:self.fontImageView];
         [self resetImageFrame:self.rearImageView];
-        Imagestate = AtNomal;
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
     }
+    Imagestate = AtNomal;
+
 }
 
-- (void)refreshScrollView{
+- (void)refreshScrollView
+{
     
     if (!imageArray || imageArray.count == 0) {
         return;
@@ -775,11 +785,10 @@
         if (Imagestate != AtNomal) {
             if (Imagestate == AtLess) curPage++;
             if (Imagestate == AtMore) curPage--;
-            Imagestate = AtNomal;
+//            Imagestate = AtNomal;
             [self refreshScrollView];
             return;
         }
-        
         if (curPage == 0) {
             curPage = 1;
             [self refreshScrollView];

@@ -16,11 +16,12 @@
 
 #define MAXIMAGEHEIGTH 320
 
-#define MAXPICTURE 200
+#define MAXPICTURE 160
 @implementation FeedListManager
 
 @synthesize controller = _controller;
 @synthesize isLoading = _isLoading;
+@synthesize dataArray = _dataArray;
 
 - (void)dealloc
 {
@@ -144,7 +145,7 @@
     if(isRefresh || !_dataArray.count){
         [_requestManager getFeedMineInfo];
     }else{
-        if ((MAXPICTURE < _dataArray.count || !hasNextPage)&&  !_isInit){
+        if ((MAXPICTURE <= _dataArray.count || !hasNextPage)&&  !_isInit){
             _isLoading = NO;
             [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
             return;
@@ -255,7 +256,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    if ((MAXPICTURE < _dataArray.count || !hasNextPage)&&  !_isInit) {
+    if ((MAXPICTURE <= _dataArray.count || !hasNextPage)&&  !_isInit) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
         [self.controller.pullingController.footView setHidden:NO];

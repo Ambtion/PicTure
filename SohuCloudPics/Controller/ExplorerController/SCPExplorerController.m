@@ -8,7 +8,6 @@
 
 #import "SCPExplorerController.h"
 #import "SCPMainFeedController.h"
-#import "SCPGuideView.h"
 
 @implementation SCPExplorerController
 
@@ -27,6 +26,7 @@
     [super viewDidLoad];
     [self addTableView];
     [self.pullingController realLoadingMore:nil];
+//    [self showGuideView];
 }
 
 - (void)addTableView
@@ -70,25 +70,9 @@
     if (!_item.superview)
         [self.navigationController.navigationBar addSubview:_item];
     [super viewDidAppear:animated];
-    [self showGuideView];
     
 }
-- (void)showGuideView
-{
-    NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
-//    NSLog(@"NUM::%@",num);
-    if (!num || ![num boolValue]) {
-        SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:self.view.bounds] autorelease];
-        if ([[UIScreen mainScreen] bounds].size.height > 480) {
-            view.image = [UIImage imageNamed:@"exporeGuideIos6_2.png"];
-        }else{
-            view.image = [UIImage imageNamed:@"exporeGuide.png"];
-        }
-        [view show];
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"GuideViewShowed"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     if (_item.superview) {

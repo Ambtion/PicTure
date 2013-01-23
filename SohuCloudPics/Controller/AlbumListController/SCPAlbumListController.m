@@ -129,6 +129,7 @@
     
     [self.curProgreeeView setHidden:YES];
     self.curProgreeeView = nil;
+    self.curProgreeeView.progress = 0.01;
     [self refresh];
 }
 

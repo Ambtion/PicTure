@@ -47,6 +47,7 @@
         }
     }];
     [request setFailedBlock:^{
+//        NSLog(@"Failture::%@ %d",[request responseString],[request responseStatusCode]);
         faiture(@"当前网络不给力，请稍后重试");
     }];
     [request startAsynchronous];

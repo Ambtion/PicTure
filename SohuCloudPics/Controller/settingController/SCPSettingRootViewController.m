@@ -18,6 +18,8 @@
 #import "SCPFeedBackController.h"
 #import "ImageQualitySwitch.h"
 
+#import "SCPUploadTaskManager.h"
+
 #import "SCPCacheManager.h"
 #import "JSON.h"
 
@@ -142,7 +144,14 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         [self.navigationController pushViewController:[[[SCPAboutController alloc] init] autorelease] animated:YES];
     }
     if (indexPath.row == 7) {//
-        loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确定要登出吗?" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil];
+        
+        NSString * str = nil;
+        if (![[SCPUploadTaskManager currentManager] taskList] || ![[SCPUploadTaskManager currentManager] taskList].count) {
+            str  = [NSString stringWithFormat:@"确定要登出吗?"];
+        }else{
+            str  = [NSString stringWithFormat:@"图片上传中,确定登出?"];
+        }
+        loginView = [[SCPAlertView_LoginTip alloc] initWithTitle:str message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil];
         [loginView show];
     }
 }
@@ -181,6 +190,7 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     
     if (loginView == alertView && buttonIndex == 1) {
         
+        [[SCPUploadTaskManager currentManager] cancelAllOperation];
         [SCPLoginPridictive logout];
         SCPMenuNavigationController * mnv = (SCPMenuNavigationController *)_controller;
         [mnv popToRootViewControllerAnimated:NO];
@@ -189,7 +199,6 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
         [_controller dismissModalViewControllerAnimated:YES];
     }
     if (cacheView == alertView && buttonIndex == 1) {
-        
         [SCPCacheManager removeCacheOfImage];
 //        [SCPCacheManager removeCacheAlluserInfobutMe];
     }

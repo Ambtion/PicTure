@@ -73,7 +73,6 @@
 {
 //    NSLog(@"info :: %@",info);
     if (_willRefresh){
-        
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
         FeedCellDataSource *fAdapter = [[FeedCellDataSource alloc] init];
@@ -99,14 +98,14 @@
         [_dataSourceArray addObject:data];
         [data release];
     }
-    if (_isinit) {
-        _isinit = NO;
-        _isLoading = NO;
-        [self.controller.pullingController moreDoneLoadingTableViewData];
-        [self.controller.pullingController refreshDoneLoadingTableViewData];
-        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-        return;
-    }
+//    if (_isinit) {
+//        _isinit = NO;
+//        _isLoading = NO;
+//        [self.controller.pullingController moreDoneLoadingTableViewData];
+//        [self.controller.pullingController refreshDoneLoadingTableViewData];
+//        [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
+//        return;
+//    }
     if (_willRefresh) {
         [self refreshDataFinishLoad:nil];
     }
@@ -187,6 +186,7 @@
 {
     return [NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"folder_name"]];
 }
+
 - (NSString*)bannerDataSouceRightLabel
 {
     return [NSString stringWithFormat:@"浏览数:%d",numCount];
@@ -199,11 +199,11 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (_isinit) {
-        [self.controller.pullingController.footView setHidden:NO];
-    }else{
-        [self.controller.pullingController.footView setHidden:YES];
-    }
+//    if (_isinit) {
+//        [self.controller.pullingController.footView setHidden:NO];
+//    }else{
+//        [self.controller.pullingController.footView setHidden:YES];
+//    }
     return _dataSourceArray.count;
 }
 
