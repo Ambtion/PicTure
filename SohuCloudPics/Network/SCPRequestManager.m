@@ -80,7 +80,7 @@
             [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
         return NO;
     }
-    return g;
+    return NO;
 }
 - (BOOL)handlerequsetStatucode:(NSInteger)requsetCode withblock:(void (^) (NSString * error))failure
 {
