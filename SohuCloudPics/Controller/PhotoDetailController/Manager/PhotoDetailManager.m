@@ -175,7 +175,6 @@
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
-
 #pragma mark -
 #pragma mark Banner Datasouce
 - (BOOL)isNULL:(id)str
@@ -184,7 +183,11 @@
 }
 - (NSString*)bannerDataSouceLeftLabel
 {
-    return [NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"folder_name"]];
+    if (self.infoFromSuper) {
+        return [NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"folder_name"]];
+    }else{
+        return nil;
+    }
 }
 
 - (NSString*)bannerDataSouceRightLabel

@@ -125,10 +125,9 @@
         [self requestFailed:request];
         return;
     }
-//    NSLog(@"requestFinish:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     NSDictionary * dic = [[request responseString] JSONValue];
+    NSLog(@"%@",dic);
     NSInteger code = [[dic objectForKey:@"code"] intValue];
-    
     if (![self handleCode:code]) return;
     
     [request cancel];
@@ -142,7 +141,6 @@
     if (self.taskList.count) {
         [self goNextTask];
     }else{
-        
     //        NSLog(@"Task Finished");
         if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
             [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
@@ -193,8 +191,7 @@
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    
-//    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
     NSDictionary * dic = [request userInfo];

@@ -50,7 +50,11 @@
         [tip release];
         return;
     }
+    
     [_request renameUserinfWithnewName:_nameFiled.text Withdescription:_description.text success:^(NSString *response) {
+        SCPAlert_CustomeView * toast = [[SCPAlert_CustomeView alloc] initWithTitle:@"修改成功"];
+        [toast show];
+        [toast release];
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         SCPAlertView_LoginTip * alterview = [[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];

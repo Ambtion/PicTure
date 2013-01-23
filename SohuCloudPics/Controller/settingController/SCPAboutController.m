@@ -7,7 +7,7 @@
 //
 
 #import "SCPAboutController.h"
-
+#define PPHOST @"http://pp.sohu.com"
 
 @implementation SCPAboutController
 
@@ -20,7 +20,6 @@
     image.frame = CGRectMake(0, 0, 320, 480);
     [self.view addSubview:image];
     self.view.backgroundColor = [UIColor colorWithRed:244.0f/255.f green:244.0f/255.f blue:244.0f/255.f alpha:1];
-
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back.png"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"header_back_press.png"] forState:UIControlStateHighlighted];
@@ -35,9 +34,19 @@
     sohu2003.frame = rect;
     [self.view addSubview:sohu2003];
     
+    UIButton * ppsohu = [UIButton buttonWithType:UIButtonTypeCustom];
+    ppsohu.frame = CGRectMake(183/ 2.f, 768 / 2.f, 150, 20);
+    [ppsohu addTarget:self action:@selector(openPPSohu:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:ppsohu];
+}
+- (void)openPPSohu:(id)sender
+{
+    NSLog(@"%s",__FUNCTION__);
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:PPHOST]];
 }
 - (void)aboutNavigationBack:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 @end

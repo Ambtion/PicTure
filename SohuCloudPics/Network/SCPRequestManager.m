@@ -68,24 +68,37 @@
 {
     //    NSLog(@"%s",__FUNCTION__);
     if (requsetCode >= 200 && requsetCode <= 300) return YES;
-    if (requsetCode == 401) [self refreshToken:401];
-    
-    if ([_delegate respondsToSelector:@selector(requestFailed:)])
-        [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
-    
-    return NO;
+    if (requsetCode == 401) {
+        [self refreshToken:401];
+        if ([_delegate respondsToSelector:@selector(requestFailed:)])
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
+        return NO;
+    }
+    //for folders
+    if (requsetCode == 404) {
+        if ([_delegate respondsToSelector:@selector(requestFailed:)])
+            [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
+        return NO;
+    }
+    return g;
 }
 - (BOOL)handlerequsetStatucode:(NSInteger)requsetCode withblock:(void (^) (NSString * error))failure
 {
-    //    NSLog(@"%s",__FUNCTION__);
+    
     if (requsetCode >= 200 && requsetCode <= 300) return YES;
     if (requsetCode == 401) {
         [self refreshToken:401];
         failure(REQUSETFAILERROR);
         return NO;
     }
+    //for create Album
     if (requsetCode == 406) {
         failure(@"专辑数目已到最大");
+        return NO;
+    }
+    //for rename user name
+    if (requsetCode == 403) {
+        failure(@"用户名存在,修改失败");
         return NO;
     }
     failure(REQUSETFAILERROR);
@@ -637,7 +650,6 @@
     [request setPostValue:[NSNumber numberWithBool:NO] forKey:@"is_public"];
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
 	[request setCompletionBlock:^{
-        
         NSInteger code = [request responseStatusCode];
         if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
@@ -680,13 +692,14 @@
     [request setPostValue:description forKey:@"description"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
+//        NSLog(@" sucess::%d :%@",[request responseStatusCode],[request responseString]);
         NSInteger code = [request responseStatusCode];
         if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
         }
     }];
     [request setFailedBlock:^{
-        //        NSLog(@"%@",[request responseString]);
+//        NSLog(@" failture::%d :%@",[request responseStatusCode],[request responseString]);
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
@@ -730,7 +743,6 @@
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"%@",[request responseString]);
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];

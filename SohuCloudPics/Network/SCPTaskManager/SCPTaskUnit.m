@@ -13,8 +13,7 @@
 
 - (UIImage *)fixOrientation {
     
-    NSLog(@"imageOrientation::%d",self.imageOrientation);
-    
+//    NSLog(@"imageOrientation::%d",self.imageOrientation);
     // No-op if the orientation is already correct
     
     if (self.imageOrientation == UIImageOrientationUp) return self;
@@ -159,7 +158,7 @@
         }
         NSData * data = nil;
         if (!num || ![num boolValue]) {
-            NSLog(@"%s JPEG",__FUNCTION__ );
+//            NSLog(@"%s JPEG",__FUNCTION__ );
             //PNG
             data = UIImageJPEGRepresentation(image, 1.f);
         }else{

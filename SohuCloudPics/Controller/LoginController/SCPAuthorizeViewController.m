@@ -83,10 +83,12 @@ static NSString * provider = nil;
     [self.view addSubview:webView];
     
 }
+
 - (void)webviewCancelLogin:(id)sender
 {
     [controller dismissModalViewControllerAnimated:YES];
 }
+
 - (void)loginWithCode
 {
     NSString * url_s = [NSString stringWithFormat:@"%@/oauth2/access_token",BASICURL];

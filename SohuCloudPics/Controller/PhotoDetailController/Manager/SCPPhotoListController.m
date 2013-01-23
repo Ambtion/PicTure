@@ -299,6 +299,10 @@
     [self.view setUserInteractionEnabled:YES];
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
+    photoNum = curPage = 0;
+    [imageArray addObject:self.info];
+    [self refreshScrollView];
+    isInit = NO;
 }
 
 - (NSInteger)getindexofImages
@@ -520,7 +524,6 @@
 #pragma mark Refresh ScrollView
 - (void)setScrollViewProperty
 {
-    
     self.scrollView.pagingEnabled = YES;
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 3 , self.scrollView.bounds.size.height);
     self.scrollView.bounces = NO;

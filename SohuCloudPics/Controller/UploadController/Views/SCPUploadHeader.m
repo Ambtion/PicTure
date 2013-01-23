@@ -197,11 +197,12 @@
     if (_albumChooseButton.tag) {
         // very very bad design, must be fixed later!!!
         UITableView *table = (UITableView *) self.superview;
-        _albumsTable.frame = CGRectMake(10, _albumsTable.frame.origin.y  - table.contentOffset.y, _albumChooseButton.frame.size.width, _foldersArray.count * 40 + 40  > 200 ? 200 + OFFSET :_foldersArray.count * 40 + 40 + OFFSET);
+        _albumsTable.frame = CGRectMake(10, _albumsTable.frame.origin.y  - table.contentOffset.y, _albumChooseButton.frame.size.width, _foldersArray.count * 40 + 40  > 200 ? 200 + OFFSET :_foldersArray.count * 40 + 40);
         [self.superview.superview addSubview:_albumsTable];
         [self.superview.superview bringSubviewToFront:_albumsTable];
         [_albumsTable becomeFirstResponder];
         [_albumsTable flashScrollIndicators];
+        
     } else {
         [_albumsTable removeFromSuperview];
     }
