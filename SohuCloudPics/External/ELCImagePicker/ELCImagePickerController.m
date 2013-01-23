@@ -27,12 +27,14 @@
     return self;
 }
 -(void)cancelImagePicker {
+    
 	if([delegate respondsToSelector:@selector(elcImagePickerControllerDidCancel:)]) {
 		[delegate performSelector:@selector(elcImagePickerControllerDidCancel:) withObject:self];
 	}
     
     [UIApplication sharedApplication].statusBarHidden = YES;
     [self.backTo dismissModalViewControllerAnimated:YES];
+    
 }
 
 -(void)selectedAssets:(NSArray*)_assets {

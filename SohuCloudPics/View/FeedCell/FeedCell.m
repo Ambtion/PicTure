@@ -71,7 +71,6 @@ enum {
 
 - (void)addsubViews
 {
-    
     [self addPhotoImageView];
     [self addtailer];
 }
@@ -89,7 +88,6 @@ enum {
     [self.contentView addSubview:view];
     _photoImageView.frame = CGRectMake(0, 0, 320, 320);
     _photoImageView.center = CGPointMake(160, 160);
-    
 }
 - (void)addtailer
 {
@@ -156,15 +154,28 @@ enum {
 - (void)updataData
 {
     
+  
     [_photoImageView cancelCurrentImageLoad];
     NSString * str = [NSString stringWithFormat:@"%@_c640",_dataSource.photoImage];
     [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
-    
     [self showGifButton];
     
-    _nameLabel.text = [_dataSource name];
-    _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
-    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
+    if (!_dataSource ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
+        _nameLabel.text = @"佚名";
+    }else{
+        _nameLabel.text = [_dataSource name];
+    }
+    if (!_dataSource.update ||![_dataSource.update isKindOfClass:[NSString class]] || [_dataSource.update isEqualToString:@""]) {
+        _positionTimeLabel.text = @"时间未知";
+    }else{
+        _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
+    }
+    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] success:^(UIImage *image) {
+        if (!image || !image.size.width)
+            _portraitView.image = [UIImage imageNamed:@"portrait_default.png"];
+    } failure:^(NSError *error) {
+        _portraitView.image = [UIImage imageNamed:@"portrait_default.png"];
+    }];
 }
 - (FeedCellDataSource *)dataSource
 {

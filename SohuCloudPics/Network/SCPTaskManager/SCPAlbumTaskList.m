@@ -125,7 +125,7 @@
         [self requestFailed:request];
         return;
     }
-    NSLog(@"requestFinish:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+//    NSLog(@"requestFinish:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     NSDictionary * dic = [[request responseString] JSONValue];
     NSInteger code = [[dic objectForKey:@"code"] intValue];
     
@@ -194,7 +194,7 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     
-    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+//    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
     NSDictionary * dic = [request userInfo];

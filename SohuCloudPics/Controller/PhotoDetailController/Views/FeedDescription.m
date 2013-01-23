@@ -58,7 +58,6 @@ static NSString * EDITIMAGE[2] = {@"",@"description_icon.png"};
         _describLabel.numberOfLines = 0;
         _describLabel.textColor = [UIColor colorWithRed:138/255.f green:157/255.f blue:181/255.f alpha:1];
         _describLabel.backgroundColor = [UIColor clearColor];
-        _describLabel.text = @"该图片无描述";
         [self.contentView addSubview:_describLabel];
         
     }
@@ -81,7 +80,7 @@ static NSString * EDITIMAGE[2] = {@"",@"description_icon.png"};
 {
     
     if (!_dataSource.describtion ||![_dataSource.describtion isKindOfClass:[NSString class]]||[_dataSource.describtion isEqualToString:@""]) {
-        _describLabel.text = @"该图片无描述";
+        _describLabel.text = @"暂无描述";
     }else{
         _describLabel.text = _dataSource.describtion;
     }

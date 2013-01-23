@@ -171,12 +171,12 @@
     if(position != NSNotFound){
         ELCAsset *asset = [assetList objectAtIndex:position];
         [asset toggleSelection];
-        
     }
 }
+
 -(void)updataLabel
 {
-    label.text = [NSString stringWithFormat:@"已经选择图片%d张,一次可以上传10张图片",assetList.count];
+    label.text = [NSString stringWithFormat:@"每次可上传10张图片,已选择%d张",assetList.count];
     if (assetList.count == 0 && bgimageView.superview == nil ) {
         [scrollView addSubview:bgimageView];
     }

@@ -82,14 +82,14 @@ static float OFFSET = 0.f;
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    
     if (wait) {
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
     }
+    
     if (_willRefresh) {
-        
         [_dataArray removeAllObjects];
+        
         NSDictionary * userInfo = [info objectForKey:@"userInfo"];
         _personalDataSource.isInit = NO;
         _personalDataSource.portrait = [userInfo objectForKey:@"user_icon"];
@@ -98,7 +98,6 @@ static float OFFSET = 0.f;
         _personalDataSource.albumAmount = [[userInfo objectForKey:@"public_folders"] intValue] + [[userInfo objectForKey:@"private_folders"] intValue];
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
-        
     }
     curPage = [[[info objectForKey:@"feedList"]objectForKey:@"page"] intValue];
     hasNextpage = [[[info objectForKey:@"feedList"]objectForKey:@"has_next"] boolValue];
@@ -196,6 +195,7 @@ static float OFFSET = 0.f;
     UIActivityIndicatorView * acv  = (UIActivityIndicatorView *)[view viewWithTag:200];
     label.text = @"加载中...";
     [acv startAnimating];
+    
 }
 - (void)loadingMore:(id)sender
 {

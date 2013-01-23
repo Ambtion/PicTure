@@ -685,6 +685,7 @@
 }
 - (void)refreshScrollviewOnMaxBounds
 {
+//    NSLog(@"%s %d",__FUNCTION__,curPage);
     self.rearImageView.info = [imageArray objectAtIndex:imageArray.count - 1];
     self.currentImageView.info = [imageArray objectAtIndex:imageArray.count - 2];
     self.fontImageView.info = [imageArray objectAtIndex:imageArray.count - 3];
@@ -715,14 +716,6 @@
     [self resetImageFrame:self.fontImageView];
     [self resetImageFrame:self.currentImageView];
     [self resetImageFrame:self.rearImageView];
-    
-//    if (photoNum == 2) {
-//        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * 2, self.scrollView.frame.size.height)];
-//    }
-//    if (photoNum == 1) {
-//        [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
-//    }
-    
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width * photoNum, self.scrollView.frame.size.height)];
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * curPage, 0)];
     
@@ -730,8 +723,8 @@
 
 - (void)refreshScrollViewNormal
 {
+//    NSLog(@"%s %d",__FUNCTION__,curPage);
     if ([self getDisplayImagesWithCurpage:curPage]) { //read images into curImages
-        
         self.fontImageView.info = [curImages objectAtIndex:0];
         self.currentImageView.info = [curImages objectAtIndex:1];
         self.rearImageView.info = [curImages objectAtIndex:2];
@@ -742,24 +735,19 @@
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
     }
     Imagestate = AtNomal;
-
 }
 
 - (void)refreshScrollView
 {
     
-    if (!imageArray || imageArray.count == 0) {
-        return;
-    }
+    if (!imageArray || imageArray.count == 0) return;
     [self.view setUserInteractionEnabled:NO];
-    
     if (photoNum <= 3) {
         [self refreshScrollviewWhenPhotonumLessThree];
     }else if (curPage == 0) {
         [self refreshScrollviewOnMinBounds];
     }else if (curPage == imageArray.count - 1) {
         [self refreshScrollviewOnMaxBounds];
-        
     }else{
         [self refreshScrollViewNormal];
     }
@@ -781,25 +769,27 @@
     }
     int x = self.scrollView.contentOffset.x;
     if (x == self.scrollView.frame.size.width) {
-        
+//        NSLog(@"%s %d",__FUNCTION__,Imagestate);
         if (Imagestate != AtNomal) {
             if (Imagestate == AtLess) curPage++;
             if (Imagestate == AtMore) curPage--;
-//            Imagestate = AtNomal;
+            Imagestate = AtNomal;
             [self refreshScrollView];
-            return;
         }
-        if (curPage == 0) {
-            curPage = 1;
-            [self refreshScrollView];
-            return;
-        }
-        if (curPage == photoNum - 1) {
-            curPage = photoNum - 2;
-            [self refreshScrollView];
-            return;
-        }
+        return;
+
+//        if (curPage == 0) {
+//            curPage = 1;
+//            [self refreshScrollView];
+//            return;
+//        }
+//        if (curPage == photoNum - 1) {
+//            curPage = photoNum - 2;
+//            [self refreshScrollView];
+//            return;
+//        }
     }
+    
     if(x == (self.scrollView.frame.size.width * 2)) {
         curPage = [self validPageValue:curPage + 1];
         [self refreshScrollView];
