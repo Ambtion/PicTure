@@ -106,9 +106,9 @@
 //        [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
 //        return;
 //    }
-    if (_willRefresh) {
+//    if (_willRefresh) {
         [self refreshDataFinishLoad:nil];
-    }
+//    }
 }
 #pragma networkFailed
 - (void)requestFailed:(NSString *)error

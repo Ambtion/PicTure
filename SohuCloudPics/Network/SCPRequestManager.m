@@ -74,12 +74,12 @@
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         return NO;
     }
-    //for folders
-    if (requsetCode == 404) {
-        if ([_delegate respondsToSelector:@selector(requestFailed:)])
-            [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
-        return NO;
-    }
+//    //for folders
+//    if (requsetCode == 404) {
+//        if ([_delegate respondsToSelector:@selector(requestFailed:)])
+//            [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
+//        return NO;
+//    }
     return NO;
 }
 - (BOOL)handlerequsetStatucode:(NSInteger)requsetCode withblock:(void (^) (NSString * error))failure
@@ -125,31 +125,27 @@
     }];
     [request startAsynchronous];
 }
-- (void)requestFinished:(ASIHTTPRequest *)request
-{
-    if ([request responseStatusCode]>= 200 && [request responseStatusCode] < 300){
-        if ([_delegate respondsToSelector:@selector(requestFinished:output:)])
-            [_delegate requestFinished:nil output:[[request responseString] JSONValue]];
-    }else {
-        [self requestFailed:nil];
-    }
-}
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    if ([_delegate respondsToSelector:@selector(SCPRequestManagerequestFailed:)]) {
-        [_delegate SCPRequestManagerequestFailed:REQUSETFAILERROR];
-    }
-}
 
-#pragma mark - PhotoDetail
+#pragma mark -
+#pragma mark  PhotoDetail
+
+//照片访问,无资源 404
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID
 {
     NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@",BASICURL_V1,photo_ID,user_id];
-    //    NSLog(@"%@",str);
+//    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
+        NSLog(@"sucess %d %@", [request responseStatusCode], [request responseString]);
         NSInteger code = [request responseStatusCode];
+        
+        //for pic
+        if (code == 404) {
+            if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的图片已不存在"];
+            return ;
+        }
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -158,15 +154,19 @@
             }
         }
     }];
-    
     [request setFailedBlock:^{
+//        NSLog(@"failture %d %@", [request responseStatusCode], [request responseString]);
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
+    
     [request startAsynchronous];
 }
-#pragma mark - Personal Home
+
+#pragma mark -
+//其他主页访问,404
+#pragma mark  Personal Home
 - (void)getUserInfoWithID:(NSString *)user_ID asy:(BOOL)isAsy success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure
 {
     NSString  * str = nil;
@@ -180,6 +180,11 @@
     [request setCompletionBlock:^{
         
         NSInteger  code = [request responseStatusCode];
+//        if (code == 404) {
+//            if ([_delegate respondsToSelector:@selector(requestFailed:)])
+//                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的用户已不存在"];
+//            return ;
+//        }
         if ([self handlerequsetStatucode:code withblock:failure]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -196,7 +201,6 @@
     }
     
 }
-
 - (void)getUserInfoWithID:(NSString *)user_ID
 {
     NSString  * str = nil;
@@ -209,6 +213,14 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
+        
+        //for user
+        if (code == 404) {
+            if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的用户已不存在"];
+            return ;
+        }
+        
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -226,8 +238,8 @@
 }
 - (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page
 {
-    NSString * str = [NSString stringWithFormat:@"%@/feed?user_id=%@&page=%d",BASICURL_V1,user_ID,page];
     
+    NSString * str = [NSString stringWithFormat:@"%@/feed?user_id=%@&page=%d",BASICURL_V1,user_ID,page];
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -249,7 +261,10 @@
     }];
     [request startAsynchronous];
 }
-#pragma mark - Folders
+
+//folder 访问
+#pragma mark -
+#pragma mark  Folders
 - (void)getFoldersinfoWithID:(NSString *)uses_id
 {
     NSString  * str = nil;
@@ -262,6 +277,13 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
+        
+        //for folder
+        if (code == 404) {
+            if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
+            return ;
+        }
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -289,6 +311,12 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
+        
+        if (code == 404) {
+            if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的用户已不存在"];
+            return ;
+        }
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -307,7 +335,10 @@
     [request startAsynchronous];
 }
 
-#pragma mark - PhotosList
+
+#pragma mark -
+//获取最终页不需要提醒
+#pragma mark  PhotosList
 - (void)getFolderinfoWihtUserID:(NSString *)user_id WithFolders:(NSString *)folder_id
 {
     NSString  * str = nil;
@@ -349,11 +380,16 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
+        
         NSInteger code = [request responseStatusCode];
+//        if (code == 404) {
+//            if ([_delegate respondsToSelector:@selector(requestFailed:)])
+//                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
+//            return ;
+//        }
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
-            //            NSLog(@" %s ,%@",__FUNCTION__,[tempDic allKeys]);
             [tempDic setObject:dic forKey:@"photoList"];
             if ([_delegate respondsToSelector:@selector(requestFinished:output:)]) {
                 [_delegate performSelector:@selector(requestFinished:output:) withObject:self withObject:[NSDictionary dictionaryWithDictionary:tempDic]];
@@ -369,6 +405,9 @@
     [request startAsynchronous];
 }
 
+
+#pragma mark -
+//获取个人信息不需要
 #pragma mark FeedMine
 - (void)getFeedMineInfo
 {
@@ -418,7 +457,10 @@
     [request startAsynchronous];
     
 }
-#pragma mark - Followings
+
+#pragma mark -
+//跟随,被跟随,页面不需要确定用户存在
+#pragma mark  Followings
 - (void)getFollowingInfoWithUserID:(NSString * ) use_id
 {
     NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,use_id,[SCPLoginPridictive currentToken]];
@@ -471,6 +513,7 @@
     [request startAsynchronous];
     
 }
+
 #pragma mark  - Followers
 - (void)getFollowedsInfoWithUseID:(NSString *)user_id
 {
@@ -494,6 +537,7 @@
     }];
     [request startAsynchronous];
 }
+
 - (void)getfollowedsWihtUseId:(NSString *)user_id page:(NSInteger)pagenum
 {
     NSString * str = nil;
@@ -506,6 +550,7 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
+       
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -527,7 +572,7 @@
 - (void)getNotificationUser
 {
     NSString * str = [NSString stringWithFormat:@"%@/notifications?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
-    NSLog(@"%@",str);
+//    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
@@ -599,7 +644,8 @@
     }];
     [request startAsynchronous];
 }
-
+#pragma mark  -
+#pragma mark Action-----------
 #pragma mark Delete
 - (void)deleteFolderWithUserId:(NSString *)user_id folderId:(NSString *)folder_id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
 {
@@ -640,6 +686,8 @@
     [request startAsynchronous];
     
 }
+
+#pragma mark create
 - (void)createAlbumWithName:(NSString *)newName success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
     
@@ -660,7 +708,7 @@
     }];
     [request startAsynchronous];
 }
-
+#pragma mark renameUser,Folders
 - (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName ispublic:(BOOL)ispublic success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
     
@@ -704,6 +752,7 @@
     }];
     [request startAsynchronous];
 }
+#pragma mark feedBack
 - (void)feedBackWithidea:(NSString *)idea success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
     
@@ -714,7 +763,6 @@
 	[dic setObject:[NSDictionary dictionaryWithObject:[SCPLoginPridictive currentUserId] forKey:@"user_id"] forKey:@"contact"];
 	[umFeedBack post:dic];
 }
-
 - (void)postFinishedWithError:(NSError *)error
 {
 	if (error == nil) {
@@ -728,7 +776,7 @@
         }
 	}
 }
-
+#pragma mark desPhoto
 - (void)editphotot:(NSString * )photo_id Description:(NSString *)des success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
     NSString * str =[NSString stringWithFormat:@"%@/photos/%@?access_token=%@",BASICURL_V1,photo_id,[SCPLoginPridictive currentToken]];

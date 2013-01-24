@@ -119,12 +119,15 @@
 }
 - (void)dealloc
 {
+    
+    [self cancelCurrentImageLoad];
     [self resetGigView];
     self.info = nil;
     self.actV = nil;
     self.webView = nil;
     self.requset = nil;
     [super dealloc];
+    
 }
 @end
 
@@ -297,10 +300,16 @@
 {
     isLoading = NO;
     [self.view setUserInteractionEnabled:YES];
-    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    if (!imageArray.count){
+        [imageArray addObject:self.info];
+        photoNum = 1;
+        curPage = 0;
+    }else{
+        if (curPage == -1)
+                curPage = 0;
+    }
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"专辑加载失败,请稍后在试"] autorelease];
     [alertView show];
-    photoNum = curPage = 0;
-    [imageArray addObject:self.info];
     [self refreshScrollView];
     isInit = NO;
 }
@@ -632,11 +641,12 @@
         self.rearScrollview.contentSize = imageView.frame.size;
         [self.rearScrollview setContentOffset:CGPointMake(0, 0)];
     }
+    
     [imageView resetGigView];
     [self resetModel:imageView];
-    
     if (![[[imageView info] objectForKey:@"multi_frames"] boolValue])
         [imageView.actV startAnimating];
+    
     NSString * str = nil;
     if (h > w) {
         str = [NSString stringWithFormat:@"%@_h960",[[imageView info] objectForKey:@"photo_url"]];

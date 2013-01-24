@@ -170,12 +170,9 @@ enum {
     }else{
         _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
     }
-    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"] success:^(UIImage *image) {
-        if (!image || !image.size.width)
-            _portraitView.image = [UIImage imageNamed:@"portrait_default.png"];
-    } failure:^(NSError *error) {
-        _portraitView.image = [UIImage imageNamed:@"portrait_default.png"];
-    }];
+    
+    [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
+    
 }
 - (FeedCellDataSource *)dataSource
 {
