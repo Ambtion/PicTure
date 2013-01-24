@@ -87,6 +87,8 @@ static float OFFSET = 0.f;
         [wait release],wait = nil;
     }
     
+    NSLog(@"%@",info);
+    
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         

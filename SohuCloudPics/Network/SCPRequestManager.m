@@ -43,6 +43,7 @@
 }
 - (void)refreshToken:(NSInteger)requsetStatusCode
 {
+    
     if (requsetStatusCode != OAUTHFAILED) return;
     NSString * str = [NSString stringWithFormat:@"%@/oauth2/access_token?grant_type=refresh_token",BASICURL];
     __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
@@ -54,6 +55,7 @@
             NSDictionary * dic = [[request responseString] JSONValue];
             [SCPLoginPridictive refreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"access_token"]] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
         }else{
+            
             SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登录"] autorelease];
             [cus show];
         }
@@ -137,7 +139,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        NSLog(@"sucess %d %@", [request responseStatusCode], [request responseString]);
+//        NSLog(@"sucess %d %@", [request responseStatusCode], [request responseString]);
         NSInteger code = [request responseStatusCode];
         
         //for pic
@@ -350,7 +352,14 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
+        
         NSInteger code = [request responseStatusCode];
+        if (code == 404) {
+            if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
+            return ;
+        }
+        gi
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];

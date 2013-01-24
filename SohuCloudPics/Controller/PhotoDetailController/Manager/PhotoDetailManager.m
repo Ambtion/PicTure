@@ -98,6 +98,8 @@
         [_dataSourceArray addObject:data];
         [data release];
     }
+    NSLog(@"photoDetail::%@", [self.infoFromSuper objectForKey:@"user_icon"]);
+
 //    if (_isinit) {
 //        _isinit = NO;
 //        _isLoading = NO;

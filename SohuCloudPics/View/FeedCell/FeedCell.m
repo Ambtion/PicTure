@@ -170,7 +170,6 @@ enum {
     }else{
         _positionTimeLabel.text = [NSString stringWithFormat:@"%@上传",_dataSource.update];
     }
-    
     [_portraitView setImageWithURL:[NSURL URLWithString:_dataSource.portrailImage] placeholderImage:[UIImage imageNamed:@"portrait_default.png"]];
     
 }

@@ -9,6 +9,7 @@
 #import "SCPAuthorizeViewController.h"
 #import "ASIFormDataRequest.h"
 #import "JSON.h"
+#import "SCPAlert_CustomeView.h"
 
 
 
@@ -81,7 +82,7 @@ static NSString * provider = nil;
     webView.scrollView.bounces = NO;
     webView.delegate = self;
     [self.view addSubview:webView];
-    
+    [self waitForMomentsWithTitle:@"加载中..."];
 }
 
 - (void)webviewCancelLogin:(id)sender
@@ -91,6 +92,7 @@ static NSString * provider = nil;
 
 - (void)loginWithCode
 {
+    
     NSString * url_s = [NSString stringWithFormat:@"%@/oauth2/access_token",BASICURL];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url_s]];
     [request addRequestHeader:@"accept" value:@"application/json"];
@@ -151,7 +153,7 @@ static NSString * provider = nil;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    [self waitForMomentsWithTitle:@"加载中..."];
+//    [self waitForMomentsWithTitle:@"加载中..."];
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
@@ -160,6 +162,9 @@ static NSString * provider = nil;
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [self stopWait];
+//    SCPAlert_CustomeView * cus = [[SCPAlert_CustomeView alloc] initWithTitle:@"当前网速不给力,请重新登陆"];
+//    [cus show];
+//    [cus release];
 }
 #pragma alertView
 -(void)waitForMomentsWithTitle:(NSString*)str

@@ -40,10 +40,10 @@
     numFollowing = [[info objectForKey:@"followed"] intValue];
     _isLoading = NO;
     NoticeDataSource * dataSouce =  [[NoticeDataSource alloc] init];
+    dataSouce.name = @"新增粉丝提醒";
     dataSouce.content = [NSString stringWithFormat:@"有%d个人关注了我",numFollowing];
     [_dataSource addObject:dataSouce];
     [dataSouce release];
-
     [self.controller.pullingController refreshDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
@@ -93,6 +93,7 @@
 {
     [self dataSourcewithRefresh:NO];
 }
+
 - (void)followedMoreDataFinishLoad
 {
     _isLoading = NO;
@@ -100,10 +101,10 @@
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
 #pragma mark - action
--(void)NoticeViewCell:(NoticeViewCell *)cell portraitClick:(id)sender
-{
-    
-}
+//-(void)NoticeViewCell:(NoticeViewCell *)cell portraitClick:(id)sender
+//{
+//    
+//}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [_resqust destoryNotificationAndsuccess:^(NSString *response) {
@@ -141,6 +142,7 @@
 {
     return 60;
 }
+
 - (UITableViewCell * )tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * str = @"CELL";

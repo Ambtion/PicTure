@@ -106,6 +106,7 @@ static float OFFSET = 0.f;
         _personalDataSource.isMe = NO;
 
     }
+    NSLog(@"personalDataSource.portrait: %@", _personalDataSource.portrait);
     NSDictionary * feedinfo = [info objectForKey:@"feedList"];
     hasNextpage = [[feedinfo objectForKey:@"has_next"] boolValue];
     curPage = [[feedinfo objectForKey:@"page"] intValue];

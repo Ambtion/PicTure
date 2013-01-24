@@ -58,6 +58,8 @@
     [self.contentView addSubview:_imageCoverView];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 200, 15)];
+//    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 21, 200, 18)];
+
     _titleLabel.textAlignment = UITextAlignmentLeft;
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
@@ -87,8 +89,9 @@
 //        _imageCoverView.image = _dataSource.image;
 //    }
     
+    _titleLabel.text = _dataSource.name;
     _descLabel.text = _dataSource.content;
-    _imageCoverView.image = [UIImage imageNamed:@"frame_alubme_default_image.png"];
+    _imageCoverView.image = [UIImage imageNamed:@"systerm.png"];
 }
 
 - (NoticeDataSource *)dataSource
