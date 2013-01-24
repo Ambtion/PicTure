@@ -66,7 +66,7 @@
                     [_delegate performSelector:@selector(requestFailed:) withObject:REFRESHFAILTURE];
             }
             [SCPLoginPridictive logout];
-        }g
+        }
     }];
     [request setFailedBlock:^{
         if (failure) {
