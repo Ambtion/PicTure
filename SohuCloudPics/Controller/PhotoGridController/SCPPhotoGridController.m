@@ -195,7 +195,7 @@
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
 }
-g
+
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     isLoading = NO;
