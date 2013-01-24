@@ -359,7 +359,6 @@
                 [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
             return ;
         }
-        gi
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
