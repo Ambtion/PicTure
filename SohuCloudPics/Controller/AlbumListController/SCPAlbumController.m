@@ -148,7 +148,7 @@
 	_currentPage = 0;
 	_loadedPage = 0;
     if (isLoading) return;
-    [_request getFoldersWithID:_user_id page:1];
+    [_request getFoldersinfoWithID:_user_id];
 }
 
 - (void)loadNextPage
@@ -210,7 +210,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated
-{
+{g
     [super viewWillDisappear:animated];
 }
 - (void)viewDidDisappear:(BOOL)animated
@@ -224,7 +224,7 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    
+//    NSLog(@"%@",info);
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];

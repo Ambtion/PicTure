@@ -191,13 +191,13 @@
 #pragma mark  Personal Home
 - (void)getUserInfoWithID:(NSString *)user_ID asy:(BOOL)isAsy success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure
 {
+    
     NSString  * str = nil;
-    if ([SCPLoginPridictive currentToken]) {
+    if ([SCPLoginPridictive currentToken] && [user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
         str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
-    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -280,6 +280,34 @@
 //folder 访问
 #pragma mark -
 #pragma mark  Folders
+- (void)getFoldersinfoWithID:(NSString *)uses_id
+{
+    NSString  * str = nil;
+    if ([SCPLoginPridictive isLogin] && [uses_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
+        str = [NSString stringWithFormat:@"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+    }else{
+        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,uses_id];
+    }
+    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
+    [request setTimeOutSeconds:TIMEOUT];
+    [request setCompletionBlock:^{
+        NSInteger code = [request responseStatusCode];
+        if ([self handlerequsetStatucode:code]) {
+            NSString * str = [request responseString];
+            NSDictionary * dic = [str JSONValue];
+            [tempDic removeAllObjects];
+            [tempDic setObject:dic forKey:@"userInfo"];
+            [self getFoldersWithID:uses_id page:1];
+        }
+    }];
+    [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return ;
+        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
+            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
+        }
+    }];
+    [request startAsynchronous];
+}
 - (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page
 {
     NSString * str = nil;
