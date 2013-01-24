@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCPRequestManager.h"
 
-@interface SCPDescriptionEditController : UIViewController<UITextViewDelegate>
+@interface SCPDescriptionEditController : UIViewController<UITextViewDelegate,UIAlertViewDelegate>
 {
     UITextView * _textView;
     UITextField * _placeHolder;

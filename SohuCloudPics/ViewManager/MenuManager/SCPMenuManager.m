@@ -481,9 +481,7 @@ static NSString *menuPress[6] = {
 - (void)hideMenuWithRibbon:(BOOL)hideRibbon
 {
     
-//    NSLog(@"isMenudone :%d,isMoving :%d ",isMenudone, isMoving);
     if (!isMenuShowing || isMoving)  return;
-//    NSLog(@"hideMenu");
     isMoving = TRUE;
     [[[[UIApplication sharedApplication] delegate] window] setUserInteractionEnabled:NO];
     isMenuShowing = NO;

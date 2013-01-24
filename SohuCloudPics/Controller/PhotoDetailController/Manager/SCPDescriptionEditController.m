@@ -105,12 +105,23 @@
         [cus show];
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
+        if ([error isEqualToString:REFRESHFAILTURE]) {
+            SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [tip show];
+            [tip release];
+            return;
+        }
         SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
         [cus show];
         [self.navigationController popViewControllerAnimated:YES];
     }];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.navigationController;
+    [menu.menuManager onExplorerClicked:nil];
+}
 - (BOOL)stringContainsEmoji:(NSString *)string {
     __block BOOL returnValue = NO;
     [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:

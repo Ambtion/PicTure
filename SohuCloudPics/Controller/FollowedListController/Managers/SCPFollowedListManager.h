@@ -14,7 +14,7 @@
 #import "SCPAlert_LoginView.h"
 #import "SCPLoginViewController.h"
 @class SCPFollowedListViewController;
-@interface SCPFollowedListManager : NSObject<PullingRefreshDelegate, UITableViewDataSource,BannerDataSoure,SCPFollowCommonCellDelegate,SCPRequestManagerDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate>
+@interface SCPFollowedListManager : NSObject<PullingRefreshDelegate, UITableViewDataSource,BannerDataSoure,SCPFollowCommonCellDelegate,SCPRequestManagerDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate,UIAlertViewDelegate>
 {
     NSMutableArray * _dataSource;
     SCPRequestManager * _requestManger;

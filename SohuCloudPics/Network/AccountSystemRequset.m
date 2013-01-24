@@ -35,7 +35,6 @@
             [user_id startSynchronous];
             if ([user_id responseStatusCode]>= 200 && [user_id responseStatusCode] < 300 && [user_id responseString]) {
                 [dic setObject:[[[user_id responseString] JSONValue] objectForKey:@"user_id"] forKey:@"user_id"];
-//                NSLog(@"user_dic::%@",dic);
                 success(dic);
             }else{
                 faiture(@"当前网络不给力，请稍后重试");

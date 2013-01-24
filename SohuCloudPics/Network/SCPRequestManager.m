@@ -11,17 +11,13 @@
 #import "SCPLoginPridictive.h"
 #import "JSON.h"
 #import "SCPAlert_CustomeView.h"
+#import "SCPMenuNavigationController.h"
 
 #import "UMAppKey.h"
 
-#define TIMEOUT 10.f
-#define STRINGENCODING NSUTF8StringEncoding
-#define REQUSETFAILERROR @"当前网络不给力,请稍后重试"
 
-#define OAUTHFAILED 401
 @implementation SCPRequestManager
 @synthesize delegate = _delegate;
-
 
 - (id)init
 {
@@ -31,20 +27,18 @@
     }
     return self;
 }
-
 - (void)dealloc
 {
-    //    NSLog(@"%s",__FUNCTION__);
     umFeedBack.delegate = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [tempDic release];
     [super dealloc];
     
 }
-- (void)refreshToken:(NSInteger)requsetStatusCode
+
+- (void)refreshToken:(NSInteger)requsetStatusCode withblock:(void (^) (NSString * error))failure
 {
     
-    if (requsetStatusCode != OAUTHFAILED) return;
     NSString * str = [NSString stringWithFormat:@"%@/oauth2/access_token?grant_type=refresh_token",BASICURL];
     __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:CLIENT_ID forKey:@"client_id"];
@@ -54,43 +48,53 @@
         if ([request responseStatusCode] == 200) {
             NSDictionary * dic = [[request responseString] JSONValue];
             [SCPLoginPridictive refreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"access_token"]] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
+            if (failure) {
+                failure(REQUSETFAILERROR);
+            }else{
+                if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                    [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
+            }
         }else{
-            
-            SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登录"] autorelease];
-            [cus show];
+            if (failure) {
+                failure(REFRESHFAILTURE);
+            }else{
+                if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                    [_delegate performSelector:@selector(requestFailed:) withObject:REFRESHFAILTURE];
+            }
+            [SCPLoginPridictive logout];
         }
     }];
     [request setFailedBlock:^{
-        SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"认证失败,请重新登录"] autorelease];
-        [cus show];
+        if (failure) {
+            failure(REFRESHFAILTURE);
+        }else{
+            if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                [_delegate performSelector:@selector(requestFailed:) withObject:REFRESHFAILTURE];
+        }
+        [SCPLoginPridictive logout];
     }];
     [request startAsynchronous];
+    
 }
 - (BOOL)handlerequsetStatucode:(NSInteger)requsetCode
 {
-    //    NSLog(@"%s",__FUNCTION__);
     if (requsetCode >= 200 && requsetCode <= 300) return YES;
     if (requsetCode == 401) {
-        [self refreshToken:401];
-        if ([_delegate respondsToSelector:@selector(requestFailed:)])
-            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
+        [self refreshToken:401 withblock:nil];
         return NO;
     }
-//    //for folders
-//    if (requsetCode == 404) {
-//        if ([_delegate respondsToSelector:@selector(requestFailed:)])
-//            [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
-//        return NO;
-//    }
+    //其他返回值
+    if ([_delegate respondsToSelector:@selector(requestFailed:)])
+        [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
     return NO;
 }
 - (BOOL)handlerequsetStatucode:(NSInteger)requsetCode withblock:(void (^) (NSString * error))failure
 {
     
     if (requsetCode >= 200 && requsetCode <= 300) return YES;
+    
     if (requsetCode == 401) {
-        [self refreshToken:401];
-        failure(REQUSETFAILERROR);
+        [self refreshToken:401 withblock:failure];
         return NO;
     }
     //for create Album
@@ -106,12 +110,13 @@
     failure(REQUSETFAILERROR);
     return NO;
 }
+
 - (BOOL)ishandleCode404:(NSInteger)code user_ID: (NSString *)user_ID
 {
     if (code == 404) {
         NSString * error = nil;
         if ([SCPLoginPridictive isLogin] && [user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
-            error = [NSString stringWithFormat:@"登录过期,请重新登录"];
+            error = [NSString stringWithFormat:REFRESHFAILTURE];
         }else{
             error = [NSString stringWithFormat:@"您访问的用户已不存在"];
         }
@@ -148,7 +153,7 @@
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID
 {
     NSString * str = [NSString stringWithFormat:@"%@/photos/%@?owner_id=%@",BASICURL_V1,photo_ID,user_id];
-//    NSLog(@"%@",str);
+    //    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -168,7 +173,7 @@
         }
     }];
     [request setFailedBlock:^{
-//        NSLog(@"failture %d %@", [request responseStatusCode], [request responseString]);
+        //        NSLog(@"failture %d %@", [request responseStatusCode], [request responseString]);
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -178,7 +183,6 @@
 }
 
 #pragma mark -
-//其他主页访问,404
 #pragma mark  Personal Home
 - (void)getUserInfoWithID:(NSString *)user_ID asy:(BOOL)isAsy success:(void (^) (NSDictionary * response))success  failure:(void (^) (NSString * error))failure
 {
@@ -210,16 +214,16 @@
     }
     
 }
+
+//个人主页获取信息判断
 - (void)getUserInfoWithID:(NSString *)user_ID
 {
     NSString  * str = nil;
-    if ([SCPLoginPridictive currentToken]) {
-        
-        str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
+    if ([SCPLoginPridictive isLogin] && [user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
+        str = [NSString stringWithFormat:@"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
-    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
@@ -235,6 +239,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -270,51 +275,11 @@
 //folder 访问
 #pragma mark -
 #pragma mark  Folders
-- (void)getFoldersinfoWithID:(NSString *)user_id
-{
-    NSString  * str = nil;
-    if ([SCPLoginPridictive isLogin]) {
-        str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_id,[SCPLoginPridictive currentToken]];
-    }else{
-        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_id];
-    }
-    __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setTimeOutSeconds:TIMEOUT];
-    [request setCompletionBlock:^{
-        NSInteger code = [request responseStatusCode];
-        
-        //for folder
-        if (code == 404) {
-            NSString * error = nil;
-            if ([SCPLoginPridictive isLogin] && [user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
-                error = [NSString stringWithFormat:@"登录过期,请重新登录"];
-            }else{
-                error = [NSString stringWithFormat:@"您访问的专辑已不存在"];
-            }
-            if ([_delegate respondsToSelector:@selector(requestFailed:)])
-                [_delegate performSelector:@selector(requestFailed:) withObject:error];
-            return ;
-        }
-        if ([self handlerequsetStatucode:code]) {
-            NSString * str = [request responseString];
-            NSDictionary * dic = [str JSONValue];
-            [tempDic removeAllObjects];
-            [tempDic setObject:dic forKey:@"userInfo"];
-            [self getFoldersWithID:user_id page:1];
-        }
-    }];
-    [request setFailedBlock:^{
-        if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
-            [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
-        }
-    }];
-    [request startAsynchronous];
-}
 - (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page
 {
     NSString * str = nil;
-    if ([SCPLoginPridictive isLogin]) {
-        str = [NSString stringWithFormat:@"%@/folders?owner_id=%@&page=%d&access_token=%@",BASICURL_V1,user_id,page,[SCPLoginPridictive currentToken]];
+    if ([SCPLoginPridictive isLogin] && [user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
+        str = [NSString stringWithFormat:@"%@/folders?&page=%d&access_token=%@",BASICURL_V1,page,[SCPLoginPridictive currentToken]];
     }else{
         str = [NSString stringWithFormat:@"%@/folders?owner_id=%@&page=%d",BASICURL_V1,user_id,page];
     }
@@ -322,12 +287,7 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
-        
-        if (code == 404) {
-            if ([_delegate respondsToSelector:@selector(requestFailed:)])
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的用户已不存在"];
-            return ;
-        }
+        if ([self ishandleCode404:code user_ID:user_id]) return ;
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -339,6 +299,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -346,15 +307,14 @@
     [request startAsynchronous];
 }
 
-
 #pragma mark -
 //获取最终页不需要提醒
 #pragma mark  PhotosList
 - (void)getFolderinfoWihtUserID:(NSString *)user_id WithFolders:(NSString *)folder_id
 {
     NSString  * str = nil;
-    if ([SCPLoginPridictive isLogin]) {
-        str = [NSString stringWithFormat:@"%@/folders/%@?owner_id=%@&access_token=%@",BASICURL_V1,folder_id,user_id,[SCPLoginPridictive currentToken]];
+    if ([SCPLoginPridictive isLogin] && [user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
+        str = [NSString stringWithFormat:@"%@/folders/%@?&access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     }else{
         str = [NSString stringWithFormat:@"%@/folders/%@?owner_id=%@",BASICURL_V1,folder_id,user_id];
     }
@@ -378,13 +338,14 @@
     }];
     
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
     }];
     [request startAsynchronous];
-    
 }
+
 - (void)getPhotosWithUserID:(NSString *)user_id FolderID:(NSString *)folder_id page:(NSInteger)page
 {
     NSString  * str = nil;
@@ -399,11 +360,6 @@
     [request setCompletionBlock:^{
         
         NSInteger code = [request responseStatusCode];
-//        if (code == 404) {
-//            if ([_delegate respondsToSelector:@selector(requestFailed:)])
-//                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
-//            return ;
-//        }
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -415,6 +371,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -428,14 +385,12 @@
 #pragma mark FeedMine
 - (void)getFeedMineInfo
 {
-    NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentUserId],[SCPLoginPridictive currentToken]];
+    NSString * str = [NSString stringWithFormat:@"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        
         NSInteger code = [request responseStatusCode];
-        if ([self ishandleCode404:code user_ID:[SCPLoginPridictive currentUserId]]) return ;//404处理
-        
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -445,6 +400,7 @@
         }
     }];
     [request setFailedBlock:^{
+        [self handlerequsetStatucode:[request responseStatusCode]];
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -470,6 +426,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return ;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -487,8 +444,6 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
-        if ([self ishandleCode404:code user_ID:use_id]) return ;//404处理
-    
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -527,6 +482,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return ;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -544,9 +500,6 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
-        
-        if ([self ishandleCode404:code user_ID:user_id]) return ;//404处理
-
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -561,8 +514,8 @@
         }
     }];
     [request startAsynchronous];
+    
 }
-
 - (void)getfollowedsWihtUseId:(NSString *)user_id page:(NSInteger)pagenum
 {
     NSString * str = nil;
@@ -575,7 +528,6 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
-       
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -587,6 +539,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return ;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -596,8 +549,8 @@
 #pragma mark Notificatin
 - (void)getNotificationUser
 {
+    
     NSString * str = [NSString stringWithFormat:@"%@/notifications?access_token=%@",BASICURL_V1, [SCPLoginPridictive currentToken]];
-//    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
@@ -610,6 +563,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return ;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
@@ -618,7 +572,6 @@
 }
 - (void)destoryNotificationAndsuccess:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
 {
-    
     NSString * str = [NSString stringWithFormat:@"%@/notifications/deletes?&access_token=%@",BASICURL_V1,
                       [SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
@@ -629,6 +582,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
@@ -647,7 +601,7 @@
         }
     }];
     [request setFailedBlock:^{
-        //        NSLog(@"%@",[request error]);
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
     
@@ -665,6 +619,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
@@ -684,6 +639,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
@@ -705,9 +661,9 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
-    
     [request startAsynchronous];
     
 }
@@ -724,19 +680,19 @@
     [request setPostValue:[SCPLoginPridictive currentToken] forKey:@"access_token"];
 	[request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
-        if ([self handlerequsetStatucode:code withblock:failure]) {
+        if ([self handlerequsetStatucode:code withblock:failure])
             success([request responseString]);
-        }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
+    
 }
 #pragma mark renameUser,Folders
 - (void)renameAlbumWithUserId:(NSString *)user_id folderId:(NSString *)folder_id newName:(NSString *)newName ispublic:(BOOL)ispublic success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
-    
     
     NSString *url = [NSString stringWithFormat: @"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
@@ -746,11 +702,16 @@
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
+        if (code == 404) {
+            failure(@"专辑已不存在,修改失败");
+            return ;
+        }
         if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
@@ -758,6 +719,7 @@
 
 - (void)renameUserinfWithnewName:(NSString *)newName Withdescription:(NSString *)description success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
+    
     NSString *url = [NSString stringWithFormat: @"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     [request setStringEncoding:STRINGENCODING];
@@ -765,14 +727,12 @@
     [request setPostValue:description forKey:@"description"];
     [request setRequestMethod:@"PUT"];
 	[request setCompletionBlock:^{
-//        NSLog(@" sucess::%d :%@",[request responseStatusCode],[request responseString]);
         NSInteger code = [request responseStatusCode];
-        if ([self handlerequsetStatucode:code withblock:failure]) {
+        if ([self handlerequsetStatucode:code withblock:failure])
             success([request responseString]);
-        }
     }];
     [request setFailedBlock:^{
-//        NSLog(@" failture::%d :%@",[request responseStatusCode],[request responseString]);
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return ;
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];
@@ -780,10 +740,9 @@
 #pragma mark feedBack
 - (void)feedBackWithidea:(NSString *)idea success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
-    
 	umFeedBack = [UMFeedback sharedInstance];
 	[umFeedBack setAppkey:UM_APP_KEY delegate:self];
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	NSMutableDictionary * dic = [NSMutableDictionary dictionary];
 	[dic setObject:idea forKey:@"content"];
 	[dic setObject:[NSDictionary dictionaryWithObject:[SCPLoginPridictive currentUserId] forKey:@"user_id"] forKey:@"contact"];
 	[umFeedBack post:dic];
@@ -801,9 +760,11 @@
         }
 	}
 }
+
 #pragma mark desPhoto
 - (void)editphotot:(NSString * )photo_id Description:(NSString *)des success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
+    
     NSString * str =[NSString stringWithFormat:@"%@/photos/%@?access_token=%@",BASICURL_V1,photo_id,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setStringEncoding:STRINGENCODING];
@@ -816,6 +777,7 @@
         }
     }];
     [request setFailedBlock:^{
+        if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
     [request startAsynchronous];

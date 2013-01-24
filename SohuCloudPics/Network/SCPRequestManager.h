@@ -11,8 +11,14 @@
 
 #import "URLLibaray.h"
 #import "ASIHTTPRequest.h"
-
 #import "UMFeedback.h"
+
+
+#define TIMEOUT 10.f
+#define STRINGENCODING NSUTF8StringEncoding
+#define REQUSETFAILERROR @"当前网络不给力,请稍后重试"
+#define REFRESHFAILTURE @"登录过期,请重新登录"
+#define OAUTHFAILED 401
 
 @class SCPRequestManager;
 
@@ -41,7 +47,7 @@
 - (void)getUserInfoWithID:(NSString *)user_ID;
 - (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page;
 //Folders
-- (void)getFoldersinfoWithID:(NSString *)user_id;
+//- (void)getFoldersinfoWithID:(NSString *)user_id;
 - (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page;
 //photoList
 - (void)getFolderinfoWihtUserID:(NSString *)user_id WithFolders:(NSString *)folder_id;

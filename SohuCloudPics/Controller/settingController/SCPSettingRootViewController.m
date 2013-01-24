@@ -124,11 +124,14 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
 #pragma mark delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if (indexPath.row == 0) {
         return;
     }
     if (indexPath.row == 1 ) {//个人信息修改
-        [self.navigationController pushViewController:[[[SCPSettingUserinfoController alloc] init] autorelease] animated:YES];
+        SCPSettingUserinfoController * suf = [[[SCPSettingUserinfoController alloc] init] autorelease];
+        suf.controller = _controller;
+        [self.navigationController pushViewController:suf animated:YES];
     }
     if (indexPath.row == 3) { //清除缓存
         cacheView = [[SCPAlertView_LoginTip alloc] initWithTitle:@"确认清除缓存" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil];

@@ -64,4 +64,5 @@
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag;
 - (void)onAccountClicked:(id)sender;
+- (void)onExplorerClicked:(id)sender;
 @end

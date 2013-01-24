@@ -158,7 +158,7 @@
 - (void)requestFailed:(NSString *)error
 {
     
-    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"当前网络不给力，请稍后重试"] autorelease];
+    SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [cus show];
     _albumNameLabel.text = @"网络专辑获取失败";
     [self setUserInteractionEnabled:NO];

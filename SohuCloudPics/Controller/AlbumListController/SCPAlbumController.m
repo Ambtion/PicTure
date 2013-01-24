@@ -148,7 +148,7 @@
 	_currentPage = 0;
 	_loadedPage = 0;
     if (isLoading) return;
-    [_request getFoldersinfoWithID:_user_id];
+    [_request getFoldersWithID:_user_id page:1];
 }
 
 - (void)loadNextPage
@@ -263,12 +263,20 @@
 }
 - (void)requestFailed:(NSString *)error
 {
-    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
-    [alertView show];
+    
     [self.pullingController refreshDoneLoadingTableViewData];
     [self.pullingController moreDoneLoadingTableViewData];
     
+    if ([error isEqualToString:REFRESHFAILTURE]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [tip show];
+        [tip release];
+        return;
+    }
+    SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+    [alertView show];
 }
+
 #pragma mark -
 #pragma mark BannerDataSource
 - (NSString *)bannerDataSouceLeftLabel
@@ -361,8 +369,14 @@
 }
 #pragma mark -
 #pragma mark SCPAlertDelegate
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if ([alertView message] && [alertView.message isEqualToString:REFRESHFAILTURE]) {
+        SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.navigationController;
+        [menu.menuManager onExplorerClicked:nil];
+        return;
+    }
     if (buttonIndex == 0) return;
     SCPAlbum *album = [[_albumList objectAtIndex:alertView.tag] retain];
     [_albumList removeObjectAtIndex:alertView.tag];

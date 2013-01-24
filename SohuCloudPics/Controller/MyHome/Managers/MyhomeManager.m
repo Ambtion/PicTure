@@ -17,6 +17,7 @@
 #import "SCPSetttingController.h"
 #import "SCPAlbumListController.h"
 
+#import "SCPAlertView_LoginTip.h"
 
 #define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 200
@@ -133,9 +134,21 @@ static float OFFSET = 0.f;
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
     }
+    [self restNetWorkState];
+    if ([error isEqualToString:REFRESHFAILTURE]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [tip show];
+        [tip release];
+        return;
+    }
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
-    [self restNetWorkState];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.controller.navigationController;
+    [menu.menuManager onExplorerClicked:nil];
 }
 - (void)restNetWorkState
 {
@@ -346,7 +359,6 @@ static float OFFSET = 0.f;
 {
     SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [alb refresh];
-
     [_controller.navigationController pushViewController:alb animated:YES];
     [alb release];
 }

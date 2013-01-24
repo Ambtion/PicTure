@@ -12,7 +12,7 @@
 #import "SCPMainFeedController.h"
 #import "SCPPersonalPageViewController.h"
 #import "SCPPhotoDetailViewController.h"
-
+#import "SCPAlertView_LoginTip.h"
 
 #define MAXIMAGEHEIGTH 320
 
@@ -58,17 +58,6 @@
     }
     return finalHeigth;
 }
-- (void)refreshUserinfo
-{
-    //    NSLog(@"%s",__FUNCTION__);
-    if (_isInit || ![SCPLoginPridictive currentUserId]) return;
-    [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
-        allFollowed = [[response objectForKey:@"followings"] intValue];
-        [self.controller.pullingController.headView BannerreloadDataSource];
-    } failure:^(NSString *error) {
-        [self requestFailed:error];
-    }];
-}
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     if (_willRefresh)
@@ -112,17 +101,21 @@
 #pragma Network Failed
 - (void)requestFailed:(NSString *)error
 {
+    [self restNetWorkState];
+    if ([error isEqualToString:REFRESHFAILTURE]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [tip show];
+        [tip release];
+        return;
+    }
+    if (![SCPLoginPridictive isLogin]) return;
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
-    [self restNetWorkState];
 }
 - (void)restNetWorkState
 {
-    if (_willRefresh) {
-        [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-    }else{
-        [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-    }
+    [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+    [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     _willRefresh = YES;
     _isLoading = NO;
 }
@@ -137,6 +130,7 @@
             [self feedMoreDataFinishLoad];
         }
         [self showViewForNoLogin];
+        
         return;
     }
     _isLoading = YES;
@@ -149,7 +143,6 @@
             [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
             return;
         }
-        NSLog(@"NNNNNNNNNNN");
         [_requestManager getFeedMineWithPage:curpage + 1];
     }
 }

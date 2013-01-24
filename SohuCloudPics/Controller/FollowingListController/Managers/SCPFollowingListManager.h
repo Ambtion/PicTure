@@ -15,7 +15,7 @@
 #import "SCPLoginViewController.h"
 
 @class SCPFollowingListViewController;
-@interface SCPFollowingListManager : NSObject<PullingRefreshDelegate,BannerDataSoure,UITableViewDataSource,SCPFollowCommonCellDelegate,SCPRequestManagerDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate>
+@interface SCPFollowingListManager : NSObject<PullingRefreshDelegate,BannerDataSoure,UITableViewDataSource,SCPFollowCommonCellDelegate,SCPRequestManagerDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate,UIAlertViewDelegate>
 {
     NSMutableArray * _dataSource;
     SCPRequestManager * _requestManger;

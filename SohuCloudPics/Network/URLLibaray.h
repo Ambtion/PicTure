@@ -5,7 +5,9 @@
 //  Created by sohu on 13-1-16.
 //
 //
-//#define DEV 1
+
+
+#define DEV 1
 
 #ifdef DEV
 
@@ -19,8 +21,8 @@
 
 #endif
 
-
 #define CLIENT_ID @"355d0ee5-d1dc-3cd3-bdc6-76d729f61655"
+
 #define CLIENT_SECRET @"47ae8860-2f8d-36c3-be99-3ebba8f1e7e7"
 
 #define WEIBOOAUTHOR2URL @"https://api.weibo.com/oauth2/authorize?display=mobile&response_type=code&redirect_uri=http://pp.sohu.com/users/auth/weibo/callback/aHR0cDovL3BwLnNvaHUuY29tLw!!&client_id=992243007"

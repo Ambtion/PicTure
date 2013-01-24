@@ -11,13 +11,14 @@
 #import "SCPLoginPridictive.h"
 #import "SCPAlertView_LoginTip.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "SCPMenuNavigationController.h"
 #define DESC_COUNT_LIMIT 400
 #define NAME_COUNT_LIMIT 12
 
 #define PLACEHOLDER @"添加描述"
 
 @implementation SCPSettingUserinfoController
+@synthesize controller;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -42,6 +43,7 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)saveButton:(UIButton *)button
 {
     if ([self stringContainsEmoji:_nameFiled.text] || [self stringContainsEmoji:_description.text]) {
@@ -57,10 +59,23 @@
         [toast release];
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
-        SCPAlertView_LoginTip * alterview = [[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        
+        if ([error isEqualToString:REFRESHFAILTURE]) {
+                SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+                [tip show];
+                [tip release];
+                return;
+        }
+        SCPAlert_CustomeView * alterview = [[SCPAlert_CustomeView alloc] initWithTitle:error];
         [alterview show];
         [alterview release];
     }];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    SCPMenuNavigationController * menu = (SCPMenuNavigationController *)controller;
+    [menu dismissModalViewControllerAnimated:NO];
+    [menu.menuManager onExplorerClicked:nil];
 }
 
 - (BOOL)stringContainsEmoji:(NSString *)string {

@@ -10,7 +10,7 @@
 #import "SCPRequestManager.h"
 #import "SCPSecondLayerController.h"
 
-@interface SCPSettingUserinfoController : SCPSecondLayerController<UITextFieldDelegate,UITextViewDelegate>
+@interface SCPSettingUserinfoController : SCPSecondLayerController<UITextFieldDelegate,UITextViewDelegate,UIAlertViewDelegate>
 
 {
     SCPRequestManager * _request;
@@ -21,5 +21,5 @@
     UITextField * _placeHolder;
     UIView * textView_bg;
 }
-
+@property(nonatomic,assign)id controller;
 @end

@@ -41,6 +41,7 @@
 
 + (void)loginUserId:(NSString *)uid withToken:(NSString *)token RefreshToken:(NSString *)refreshToken
 {
+//    NSLog(@"Token :%@",token);
     [self storeData:uid forKey:USER_ID];
     [self storeData:token forKey:USER_TOKEN];
     [self storeData:refreshToken forKey:REFRESH_TOKEN];
@@ -48,6 +49,7 @@
 }
 + (void)refreshToken:(NSString *)token RefreshToken:(NSString *)refreshToken
 {
+//    NSLog(@"afterrefresh :Toke :%@",token);
     [self storeData:token forKey:USER_TOKEN];
     [self storeData:refreshToken forKey:REFRESH_TOKEN];
 }

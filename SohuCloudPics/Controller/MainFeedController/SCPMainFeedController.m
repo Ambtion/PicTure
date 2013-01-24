@@ -44,9 +44,9 @@
     self.pullingController.headView.datasouce = self.manager;
     [self.pullingController setFootViewoffsetY:-10];
     [self.view addSubview:self.pullingController.view];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataWhenLoginStateChange:) name:@"LoginStateChange" object:nil];
     [self.pullingController realLoadingMore:nil];
+    
 }
 
 - (void)handleDataWhenLoginStateChange:(NSNotification *)notifition
@@ -85,14 +85,8 @@
     if (_item.superview)
         [_item removeFromSuperview];
 }
-- (void)viewWillAppear:(BOOL)animated
-{
-    
-    [self.manager refreshUserinfo];
-}
 - (void)didReceiveMemoryWarning
 {
-    NSLog(@"%s %d",__FUNCTION__,_manager.dataArray.count);
     [super didReceiveMemoryWarning];
 }
 @end

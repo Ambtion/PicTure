@@ -272,9 +272,16 @@
         self.pullingController.headView.labelName.text = str;
         [self.pullingController reloadDataSourceWithAniamtion:NO];
     } failure:^(NSString *error) {
+        if ([error isEqualToString:REFRESHFAILTURE]) {
+            SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            [tip show];
+            [tip release];
+            return ;
+        }
         [self requestFailed:error];
     }];
 }
+
 - (BOOL)stringContainsEmoji:(NSString *)string {
     __block BOOL returnValue = NO;
     [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
@@ -314,7 +321,7 @@
     
     return returnValue;
 }
-#pragma mark trash
+#pragma mark  - trash
 - (void)onTrashClicked:(id)sender
 {
     _state = PhotoGridStateDelete;
@@ -334,7 +341,7 @@
     self.navigationItem.leftBarButtonItem = item;
     [item release];
 }
-
+#pragma mark - detail
 - (void)oniMarkClicked:(id)sender
 {
     SCPAlert_DetailView * scp = [[[SCPAlert_DetailView alloc] initWithMessage:self.albumData delegate:self] autorelease];
@@ -344,6 +351,8 @@
 {
     [self setPhotoGridStateNormal];
 }
+#pragma mark -
+#pragma mark deletaTask and Image
 - (void)setPhotoGridStateNormal
 {
     
@@ -452,7 +461,6 @@
     [alterView show];
     [self.pullingController openDataChangeFunction];
 }
-
 - (void)onDeleteCancelClicked:(id)sender
 {
     _state = PhotoGridStateNormal;
@@ -596,6 +604,11 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if ([alertView message]&&[alertView.message isEqualToString:REFRESHFAILTURE]) {
+        SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.navigationController;
+        [menu.menuManager onExplorerClicked:nil];
+        return;
+    }
     if (buttonIndex) {
         if ([[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:_albumData.albumId].taskList.count == 0) return;
         SCPTaskUnit * unit = [self.uploadTaskList.taskList objectAtIndex:self.uploadTaskList.taskList.count - alertView.tag - 1];

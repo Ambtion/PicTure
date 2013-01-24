@@ -15,7 +15,7 @@
 
 @class SCPMyHomeViewController;
 @interface MyhomeManager : NSObject
-<UITableViewDataSource,MyPersonalCellDelegate,FeedCellDelegate,UITableViewDelegate,SCPRequestManagerDelegate>
+<UITableViewDataSource,MyPersonalCellDelegate,FeedCellDelegate,UITableViewDelegate,SCPRequestManagerDelegate,UIAlertViewDelegate>
 {
     NSMutableArray* _dataArray;
     SCPRequestManager  * _requestManager;
