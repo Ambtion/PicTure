@@ -39,6 +39,7 @@
 {
 	/* The following statements are used for umeng statistic */
 	[MobClick startWithAppkey:UM_APP_KEY];
+//    [SCPLoginPridictive loginUserId:@"234" withToken:@"sdf" RefreshToken:@"sdf"];
     [UIApplication sharedApplication].statusBarHidden = YES;
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];

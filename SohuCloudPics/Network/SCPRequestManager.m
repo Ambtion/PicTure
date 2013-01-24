@@ -68,6 +68,7 @@
             [SCPLoginPridictive logout];
         }
     }];
+    
     [request setFailedBlock:^{
         if (failure) {
             failure(REFRESHFAILTURE);
@@ -402,7 +403,7 @@
         }
     }];
     [request setFailedBlock:^{
-        [self handlerequsetStatucode:[request responseStatusCode]];
+        if (![self handlerequsetStatucode:[request responseStatusCode]]) return ;
         if ([_delegate respondsToSelector:@selector(requestFailed:)]) {
             [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
         }
