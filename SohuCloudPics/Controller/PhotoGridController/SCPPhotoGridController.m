@@ -185,10 +185,17 @@
 - (void)requestFailed:(NSString *)error
 {
     isLoading = NO;
+    [self.pullingController refreshDoneLoadingTableViewData];
+    if ([error isEqualToString:REFRESHFAILTURE]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [tip show];
+        [tip release];
+        return;
+    }
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
-    [self.pullingController refreshDoneLoadingTableViewData];
 }
+g
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     isLoading = NO;
@@ -597,7 +604,6 @@
         default:
             break;
     }
-    
     [_pullingController.tableView reloadData];
 }
 #pragma mark - AlterViewDelegate

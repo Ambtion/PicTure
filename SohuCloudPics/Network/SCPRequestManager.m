@@ -38,6 +38,16 @@
 
 - (void)refreshToken:(NSInteger)requsetStatusCode withblock:(void (^) (NSString * error))failure
 {
+    //    NSLog(@"%s",__FUNCTION__);
+    //    if (requsetStatusCode != OAUTHFAILED) return;
+    //    if (failure) {
+    //        failure(REFRESHFAILTURE);
+    //    }else{
+    //        if ([_delegate respondsToSelector:@selector(requestFailed:)])
+    //            [_delegate performSelector:@selector(requestFailed:) withObject:REFRESHFAILTURE];
+    //    }
+    //    [SCPLoginPridictive logout];
+    //    return;
     
     NSString * str = [NSString stringWithFormat:@"%@/oauth2/access_token?grant_type=refresh_token",BASICURL];
     __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
@@ -48,6 +58,7 @@
         if ([request responseStatusCode] == 200) {
             NSDictionary * dic = [[request responseString] JSONValue];
             [SCPLoginPridictive refreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"access_token"]] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
+            NSLog(@"%@",dic);
             if (failure) {
                 failure(REQUSETFAILERROR);
             }else{
@@ -379,14 +390,12 @@
     [request startAsynchronous];
 }
 
-
 #pragma mark -
 //获取个人feed
 #pragma mark FeedMine
 - (void)getFeedMineInfo
 {
     NSString * str = [NSString stringWithFormat:@"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
-    NSLog(@"%@",str);
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
