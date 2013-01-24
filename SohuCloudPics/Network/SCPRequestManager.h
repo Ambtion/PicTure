@@ -41,7 +41,7 @@
 - (void)getUserInfoWithID:(NSString *)user_ID;
 - (void)getUserInfoFeedWithUserID:(NSString *)user_ID page:(NSInteger)page;
 //Folders
-- (void)getFoldersinfoWithID:(NSString *)uses_id;
+- (void)getFoldersinfoWithID:(NSString *)user_id;
 - (void)getFoldersWithID:(NSString *)user_id page:(NSInteger)page;
 //photoList
 - (void)getFolderinfoWihtUserID:(NSString *)user_id WithFolders:(NSString *)folder_id;

@@ -60,10 +60,9 @@
 }
 - (void)refreshUserinfo
 {
-//    NSLog(@"%s",__FUNCTION__);
+    //    NSLog(@"%s",__FUNCTION__);
     if (_isInit || ![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
-//        NSLog(@"%@",response);
         allFollowed = [[response objectForKey:@"followings"] intValue];
         [self.controller.pullingController.headView BannerreloadDataSource];
     } failure:^(NSString *error) {
@@ -103,11 +102,11 @@
         [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
         return;
     }
-    if (_willRefresh) {
+    if (_willRefresh ) {
         [self feedRefreshDataFinishLoad];
     }else{
         [self feedMoreDataFinishLoad];
-    }    
+    }
 }
 
 #pragma Network Failed
@@ -150,6 +149,7 @@
             [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
             return;
         }
+        NSLog(@"NNNNNNNNNNN");
         [_requestManager getFeedMineWithPage:curpage + 1];
     }
 }
@@ -243,7 +243,7 @@
 }
 - (NSString*)bannerDataSouceRightLabel
 {
-//    return [self.controller getTimeString];
+    //    return [self.controller getTimeString];
     return nil;
 }
 #pragma mark -
@@ -286,7 +286,7 @@
         cell.maxImageHeigth = MAXIMAGEHEIGTH;
     }
     cell.dataSource = [_dataArray objectAtIndex:indexPath.row];
-
+    
     if (_dataArray.count - 1 == indexPath.row )
         [self.controller.pullingController realLoadingMore:nil];
     return cell;
@@ -301,7 +301,7 @@
 
 - (void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
-//    NSLog(@"feedCell: %@",cell.dataSource.allInfo);
+    //    NSLog(@"feedCell: %@",cell.dataSource.allInfo);
     SCPPhotoDetailViewController *controller = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];
@@ -323,9 +323,9 @@
 
 -(void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx
 {
-//    SCPPhotoDetailViewController *controller = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
-//    [_controller.navigationController pushViewController:controller animated:YES];
-//    [controller release];
+    //    SCPPhotoDetailViewController *controller = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
+    //    [_controller.navigationController pushViewController:controller animated:YES];
+    //    [controller release];
 }
 
 @end

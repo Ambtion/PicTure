@@ -101,10 +101,10 @@
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
 #pragma mark - action
-//-(void)NoticeViewCell:(NoticeViewCell *)cell portraitClick:(id)sender
-//{
-//    
-//}
+-(void)NoticeViewCell:(NoticeViewCell *)cell portraitClick:(id)sender
+{
+    
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [_resqust destoryNotificationAndsuccess:^(NSString *response) {

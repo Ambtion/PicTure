@@ -75,7 +75,8 @@
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
         [_item addRefreshtarget:self action:@selector(refreshButton:)];
     }
-    if (!_item.superview)    [self.navigationController.navigationBar addSubview:_item];
+    if (!_item.superview)
+        [self.navigationController.navigationBar addSubview:_item];
     
     [super viewDidAppear:animated];
 }

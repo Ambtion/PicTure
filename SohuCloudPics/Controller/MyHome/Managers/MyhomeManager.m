@@ -86,9 +86,6 @@ static float OFFSET = 0.f;
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
     }
-    
-    NSLog(@"%@",info);
-    
     if (_willRefresh) {
         [_dataArray removeAllObjects];
         

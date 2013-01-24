@@ -106,8 +106,21 @@
     failure(REQUSETFAILERROR);
     return NO;
 }
-
-
+- (BOOL)ishandleCode404:(NSInteger)code user_ID: (NSString *)user_ID
+{
+    if (code == 404) {
+        NSString * error = nil;
+        if ([SCPLoginPridictive isLogin] && [user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
+            error = [NSString stringWithFormat:@"登录过期,请重新登录"];
+        }else{
+            error = [NSString stringWithFormat:@"您访问的用户已不存在"];
+        }
+        if ([_delegate respondsToSelector:@selector(requestFailed:)])
+            [_delegate performSelector:@selector(requestFailed:) withObject:error];
+        return YES;
+    }
+    return NO;
+}
 #pragma mark - Explore
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture
 {
@@ -139,9 +152,7 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-//        NSLog(@"sucess %d %@", [request responseStatusCode], [request responseString]);
         NSInteger code = [request responseStatusCode];
-        
         //for pic
         if (code == 404) {
             if ([_delegate respondsToSelector:@selector(requestFailed:)])
@@ -177,16 +188,12 @@
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
+    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         
         NSInteger  code = [request responseStatusCode];
-//        if (code == 404) {
-//            if ([_delegate respondsToSelector:@selector(requestFailed:)])
-//                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的用户已不存在"];
-//            return ;
-//        }
         if ([self handlerequsetStatucode:code withblock:failure]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -207,22 +214,18 @@
 {
     NSString  * str = nil;
     if ([SCPLoginPridictive currentToken]) {
+        
         str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
     }else{
         str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
     }
+    
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
-        
         //for user
-        if (code == 404) {
-            if ([_delegate respondsToSelector:@selector(requestFailed:)])
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的用户已不存在"];
-            return ;
-        }
-        
+        if ([self ishandleCode404:code user_ID:user_ID]) return ;
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -267,13 +270,13 @@
 //folder 访问
 #pragma mark -
 #pragma mark  Folders
-- (void)getFoldersinfoWithID:(NSString *)uses_id
+- (void)getFoldersinfoWithID:(NSString *)user_id
 {
     NSString  * str = nil;
     if ([SCPLoginPridictive isLogin]) {
-        str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,uses_id,[SCPLoginPridictive currentToken]];
+        str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_id,[SCPLoginPridictive currentToken]];
     }else{
-        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,uses_id];
+        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_id];
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
@@ -282,8 +285,14 @@
         
         //for folder
         if (code == 404) {
+            NSString * error = nil;
+            if ([SCPLoginPridictive isLogin] && [user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
+                error = [NSString stringWithFormat:@"登录过期,请重新登录"];
+            }else{
+                error = [NSString stringWithFormat:@"您访问的专辑已不存在"];
+            }
             if ([_delegate respondsToSelector:@selector(requestFailed:)])
-                [_delegate performSelector:@selector(requestFailed:) withObject:@"您访问的专辑已不存在"];
+                [_delegate performSelector:@selector(requestFailed:) withObject:error];
             return ;
         }
         if ([self handlerequsetStatucode:code]) {
@@ -291,7 +300,7 @@
             NSDictionary * dic = [str JSONValue];
             [tempDic removeAllObjects];
             [tempDic setObject:dic forKey:@"userInfo"];
-            [self getFoldersWithID:uses_id page:1];
+            [self getFoldersWithID:user_id page:1];
         }
     }];
     [request setFailedBlock:^{
@@ -415,7 +424,7 @@
 
 
 #pragma mark -
-//获取个人信息不需要
+//获取个人feed
 #pragma mark FeedMine
 - (void)getFeedMineInfo
 {
@@ -423,7 +432,10 @@
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
+        
         NSInteger code = [request responseStatusCode];
+        if ([self ishandleCode404:code user_ID:[SCPLoginPridictive currentUserId]]) return ;//404处理
+        
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -467,7 +479,6 @@
 }
 
 #pragma mark -
-//跟随,被跟随,页面不需要确定用户存在
 #pragma mark  Followings
 - (void)getFollowingInfoWithUserID:(NSString * ) use_id
 {
@@ -476,6 +487,8 @@
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
+        if ([self ishandleCode404:code user_ID:use_id]) return ;//404处理
+    
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
@@ -525,11 +538,15 @@
 #pragma mark  - Followers
 - (void)getFollowedsInfoWithUseID:(NSString *)user_id
 {
+    
     NSString * str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_id,[SCPLoginPridictive currentToken]];
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
         NSInteger code = [request responseStatusCode];
+        
+        if ([self ishandleCode404:code user_ID:user_id]) return ;//404处理
+
         if ([self handlerequsetStatucode:code]) {
             NSString * str = [request responseString];
             NSDictionary * dic = [str JSONValue];
