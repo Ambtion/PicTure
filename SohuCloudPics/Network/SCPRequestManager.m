@@ -58,13 +58,6 @@
         if ([request responseStatusCode] == 200) {
             NSDictionary * dic = [[request responseString] JSONValue];
             [SCPLoginPridictive refreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"access_token"]] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
-            NSLog(@"%@",dic);
-            if (failure) {
-                failure(REQUSETFAILERROR);
-            }else{
-                if ([_delegate respondsToSelector:@selector(requestFailed:)])
-                    [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
-            }
         }else{
             if (failure) {
                 failure(REFRESHFAILTURE);
@@ -73,7 +66,7 @@
                     [_delegate performSelector:@selector(requestFailed:) withObject:REFRESHFAILTURE];
             }
             [SCPLoginPridictive logout];
-        }
+        }g
     }];
     [request setFailedBlock:^{
         if (failure) {
