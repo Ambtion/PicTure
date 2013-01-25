@@ -23,8 +23,8 @@
     [_requestManger release];
     [_dataSource release];
     [super dealloc];
+    
 }
-
 - (id)initWithViewController:(SCPFollowingListViewController *)ctrl useID:(NSString *)useID
 {
     self = [super init];
