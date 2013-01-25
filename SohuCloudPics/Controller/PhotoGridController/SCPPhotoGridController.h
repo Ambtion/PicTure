@@ -25,10 +25,10 @@ typedef enum {
 
 @interface SCPPhotoGridController : SCPSecondLayerController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPPhotoGridCellDelegate, SCPRequestManagerDelegate,SCPAlertDeletViewDelegate,SCPAlert_AlbumPropertyDelegate,SCPAlert_DetailViewDelegate,UIAlertViewDelegate>
 {
+    
     PhotoGridState _state;
     NSMutableSet *_tasksToDel;
     NSMutableSet *_imagesToDel;
-    
     UIButton *_backButton;
     UIView *_rightBarView;
     UIButton *_iMarkButton;
@@ -49,7 +49,6 @@ typedef enum {
 @property (strong, nonatomic) NSMutableArray *photoList;
 @property (strong, nonatomic) SCPAlbumTaskList *uploadTaskList; //下载的任务列 SCPTaskUnit
 @property (strong, nonatomic) NSMutableArray * thumbnailArray;
-
 @property (strong, nonatomic) NSString *bannerLeftString;
 @property (strong, nonatomic) NSString *bannerRightString;
 /* UI */

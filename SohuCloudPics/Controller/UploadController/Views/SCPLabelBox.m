@@ -244,14 +244,14 @@
 
 - (void)removeLabelAtIndex:(NSInteger)index
 {
-    NSMutableArray *subviews = [NSMutableArray arrayWithCapacity:0];
+    NSMutableArray * subviews = [NSMutableArray arrayWithCapacity:0];
     for (UIView *view in self.subviews) {
         if ([view class] == [SCPLabelView class]) {
             [subviews addObject:view];
         }
     }
     
-    SCPLabelObject *obj = [_labelObjects objectAtIndex:index];
+    SCPLabelObject * obj = [_labelObjects objectAtIndex:index];
     SCPLabelView *labelView = [subviews objectAtIndex:index];
     
     if (labelView.labelObject != obj) {
@@ -261,7 +261,7 @@
     [_labelObjects removeObjectAtIndex:index];
     [labelView removeFromSuperview];
     
-    subviews = [[[NSMutableArray alloc] init] autorelease];
+    subviews = [[[NSMutableArray alloc] initWithCapacity:0] autorelease];
     for (UIView *view in self.subviews) {
         if ([view class] == [SCPLabelView class]) {
             [subviews addObject:view];

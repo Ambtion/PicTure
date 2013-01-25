@@ -27,7 +27,7 @@
 
 - (UIImage *)fixOrientation {
     
-    NSLog(@"imageOrientation::%d",self.imageOrientation);
+//    NSLog(@"imageOrientation::%d",self.imageOrientation);
     
     // No-op if the orientation is already correct
     
@@ -157,13 +157,8 @@
     self = [super init];
     if (self) {
         controller = Acontroller;
-//        NSLog(@"initWithUIImage %@ imageOrientation:%d",NSStringFromCGSize(image.size),[image imageOrientation]);
         [self initdataContainer];
         [self compressImage:image];
-//        UIGraphicsBeginImageContext(image.size);
-//        [image drawInRect:(CGRect){0,0,image.size}];
-//        UIImage* N_image = UIGraphicsGetImageFromCurrentImageContext();
-//        UIGraphicsEndImageContext();
         self.originalImage = [image fixOrientation];
         [self addSubViews];
     }

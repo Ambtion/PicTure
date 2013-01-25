@@ -15,8 +15,8 @@
 #import "SCPAlertView_LoginTip.h"
 
 #define MAXIMAGEHEIGTH 320
+#define MAXPICTURE 80
 
-#define MAXPICTURE 160
 @implementation FeedListManager
 
 @synthesize controller = _controller;

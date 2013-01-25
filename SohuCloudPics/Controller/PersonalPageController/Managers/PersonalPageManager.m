@@ -16,7 +16,7 @@
 #import "SCPLoginPridictive.h"
 
 #define MAXIMAGEHEIGTH 320
-#define MAXPICTURE 200
+#define MAXPICTURE 80
 #define PAGEPHOTONUMBER 
 
 static float OFFSET = 0.f;

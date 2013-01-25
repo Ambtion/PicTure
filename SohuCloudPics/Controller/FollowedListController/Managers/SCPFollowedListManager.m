@@ -11,6 +11,7 @@
 
 #import "SCPPersonalPageViewController.h"
 #import "SCPMyHomeViewController.h"
+
 @implementation SCPFollowedListManager
 @synthesize controller = _controller;
 

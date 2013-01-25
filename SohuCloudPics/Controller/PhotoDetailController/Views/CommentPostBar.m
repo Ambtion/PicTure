@@ -21,7 +21,6 @@
 {
     [_backgroundImageView release];
     [_commentTextField release];
-    
     [super dealloc];
 }
 

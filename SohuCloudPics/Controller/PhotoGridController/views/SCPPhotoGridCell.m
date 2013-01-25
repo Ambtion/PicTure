@@ -34,12 +34,12 @@
         self.deleteViewList = [NSMutableArray arrayWithCapacity:0];
         
         int photoCount = 4;
+        
         for (int i = 0; i < photoCount;  i++) {
             /* imageView */
             UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(4 + i * 79, 5, 75, 75)];
-            UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTap:)];
+            UITapGestureRecognizer *gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTap:)] autorelease];
             [imageView addGestureRecognizer:gesture];
-            [gesture release];
             imageView.userInteractionEnabled = YES;
             [imageView setBackgroundColor:[UIColor whiteColor]];
             [_imageViewList addObject:imageView];
@@ -47,21 +47,18 @@
             [imageView release];
             
             /* progressView */
-            UIProgressView *prog = [[UIProgressView alloc] initWithFrame:CGRectMake(i * 79 + 8, 60 + 5, 64, 9)];
+            UIProgressView *prog = [[[UIProgressView alloc] initWithFrame:CGRectMake(i * 79 + 8, 60 + 5, 64, 9)] autorelease];
             [prog setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             [prog setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             prog.progress = 0;
             [_progViewList addObject:prog];
             [self addSubview:prog];
-            [prog release];
             
             /* deleteView */
-            UIImageView * deleteFrameImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_box_select_image.png"]];
+            UIImageView * deleteFrameImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check_box_select_image.png"]] autorelease];
             deleteFrameImageView.frame = imageView.frame;
             [_deleteViewList addObject:deleteFrameImageView];
-            // not added first
             // [self addSubview:deleteFrameImageView];
-            [deleteFrameImageView release];
         }
     }
     return self;
@@ -70,6 +67,7 @@
 {
     self.imageViewList = nil;
     self.progViewList = nil;
+    self.deleteViewList = nil;
     self.delegate = nil;
     [super dealloc];
 }

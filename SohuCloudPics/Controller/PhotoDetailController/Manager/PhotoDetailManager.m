@@ -71,7 +71,7 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-//    NSLog(@"info :: %@",info);
+    //    NSLog(@"info :: %@",info);
     if (_willRefresh){
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
@@ -98,17 +98,17 @@
         [_dataSourceArray addObject:data];
         [data release];
     }
-//    if (_isinit) {
-//        _isinit = NO;
-//        _isLoading = NO;
-//        [self.controller.pullingController moreDoneLoadingTableViewData];
-//        [self.controller.pullingController refreshDoneLoadingTableViewData];
-//        [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
-//        return;
-//    }
-//    if (_willRefresh) {
-        [self refreshDataFinishLoad:nil];
-//    }
+    //    if (_isinit) {
+    //        _isinit = NO;
+    //        _isLoading = NO;
+    //        [self.controller.pullingController moreDoneLoadingTableViewData];
+    //        [self.controller.pullingController refreshDoneLoadingTableViewData];
+    //        [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
+    //        return;
+    //    }
+    //    if (_willRefresh) {
+    [self refreshDataFinishLoad:nil];
+    //    }
 }
 #pragma networkFailed
 - (void)requestFailed:(NSString *)error
@@ -153,7 +153,7 @@
 
 - (void)pullingreloadTableViewDataSource:(id)sender
 {
-//    NSLog(@"dataSourcewithRefresh");
+    //    NSLog(@"dataSourcewithRefresh");
     [self refreshData:nil];
 }
 - (void)refreshDataFinishLoad:(id)sender
@@ -202,11 +202,11 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    if (_isinit) {
-//        [self.controller.pullingController.footView setHidden:NO];
-//    }else{
-//        [self.controller.pullingController.footView setHidden:YES];
-//    }
+    //    if (_isinit) {
+    //        [self.controller.pullingController.footView setHidden:NO];
+    //    }else{
+    //        [self.controller.pullingController.footView setHidden:YES];
+    //    }
     return _dataSourceArray.count;
 }
 
@@ -288,17 +288,20 @@
     rect.origin.y -= Y;
     rect.size.height -= 70;
     [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
+    
 }
+
 - (void)whenViewRemveFromSuperview
 {
-//    NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
+    //    NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
     self.listView  = nil;
 }
 
 #pragma mark - FeedDesDelegate
 - (void)feedDescription:(FeedDescription *)feed_des DesEditClick:(id)sender
 {
-    [self.controller.navigationController pushViewController:[[[SCPDescriptionEditController alloc] initphoto:_photo_ID withDes:[self.infoFromSuper objectForKey:@"photo_desc"]] autorelease] animated:YES];
+    SCPDescriptionEditController * des  = [[[SCPDescriptionEditController alloc] initphoto:_photo_ID withDes:[self.infoFromSuper objectForKey:@"photo_desc"]] autorelease];
+    [self.controller.navigationController pushViewController:des animated:YES];
 }
 #pragma mark -
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
@@ -308,7 +311,6 @@
         [_user_ID isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
         SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
         [nav pushViewController:myhome animated:YES];
-        
     }else{
         SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
         [nav pushViewController:ctrl animated:YES];

@@ -7,11 +7,10 @@
 //
 
 #import "SCPAlbumGridCell.h"
-
 #import <QuartzCore/QuartzCore.h>
-
 #import "UIImageView+WebCache.h"
 #import "SDImageCache.h"
+
 
 #import "UIUtils.h"
 #import "SCPALbum.h"
@@ -34,61 +33,55 @@
 
 - (void)dealloc
 {
+
+    self.coverImageViewList = nil;
     self.frameImageViewList = nil;
     self.progressViewList = nil;
     self.nameLabelList = nil;
     self.countLabelList = nil;
     self.deleteViewList = nil;
-    self.coverImageViewList = nil;
 	self.albumList = nil;
-    
     [super dealloc];
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier photoCount:(int)count
 {
     
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    
     if (self) {
-        
-        _coverImageViewList = [[NSMutableArray alloc] init];
-        _frameImageViewList = [[NSMutableArray alloc] init];
-        _progressViewList = [[NSMutableArray alloc] init];
-        _nameLabelList = [[NSMutableArray alloc] init];
-        _countLabelList = [[NSMutableArray alloc] init];
-        _deleteViewList = [[NSMutableArray alloc] init];
+        _coverImageViewList = [[NSMutableArray alloc] initWithCapacity:0];
+        _frameImageViewList = [[NSMutableArray alloc] initWithCapacity:0];
+        _progressViewList = [[NSMutableArray alloc] initWithCapacity:0];
+        _nameLabelList = [[NSMutableArray alloc] initWithCapacity:0];
+        _countLabelList = [[NSMutableArray alloc] initWithCapacity:0];
+        _deleteViewList = [[NSMutableArray alloc] initWithCapacity:0];
 		_albumList = [[NSMutableArray alloc] initWithCapacity:0];
         _photoCount = count;
+        
         int frameSize = 320 / count;
         self.frame = CGRectMake(0, 0, 320, GRID_CELL_HEIGHT);
         
-        UIImage *background = [UIImage imageNamed:@"150.png"];
+        UIImage * background = [UIImage imageNamed:@"150.png"];
         for (int i = 0; i < _photoCount; i++) {
-            
             /* frame image view */
-            UIImageView * frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 5, 0, 95, 95)];
+            UIImageView * frameImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(i * frameSize + 5, 0, 95, 95)] autorelease];
             [frameImageView setImage:background];
             [frameImageView setUserInteractionEnabled:YES];
             [_frameImageViewList addObject:frameImageView];
             [self.contentView addSubview:frameImageView];
             
             /* cover image view */
-            UIImageView * coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10,10, 75, 75)];
+            UIImageView * coverImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(10,10, 75, 75)] autorelease];
             coverImageView.userInteractionEnabled = YES;            
-            UIGestureRecognizer * gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
+            UIGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)] autorelease];
             [coverImageView addGestureRecognizer:gesture];
-            [gesture release],gesture = nil;
-            gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)];
+            gesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)] autorelease];
             [coverImageView addGestureRecognizer:gesture];
-            [gesture release],gesture = nil;
-            
             [frameImageView addSubview:coverImageView];
             [_coverImageViewList addObject:coverImageView];
-            
-            [frameImageView release];
-            [coverImageView release];
-            
+                        
             /* name label view */
-            UILabel * nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 5, 100, frameSize - 10, 20)];
+            UILabel * nameLabel = [[[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 5, 100, frameSize - 10, 20)] autorelease];
             [UIUtils updateNormalLabel:nameLabel title:nil];
             [nameLabel setTextAlignment:UITextAlignmentCenter];
             [nameLabel setUserInteractionEnabled:YES];
@@ -96,38 +89,31 @@
             [nameLabel addGestureRecognizer:nameTap];
             [_nameLabelList addObject:nameLabel];
             [self.contentView addSubview:nameLabel];
-            [nameLabel release];
             /* count label view */
-            //            UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(i * frameSize + 56, 60, 30, 16)];
-            CountLabel *countLabel = [[CountLabel alloc] initWithFrame:CGRectMake(75 - 30, 75 - 16, 30, 18)];
+            CountLabel *countLabel = [[[CountLabel alloc] initWithFrame:CGRectMake(75 - 30, 75 - 16, 30, 18)] autorelease];
             
             [UIUtils updateAlbumCountLabel:countLabel];
             
-//            [countLabel setTextAlignment:UITextAlignmentCenter];
             [_countLabelList addObject:countLabel];
             [coverImageView addSubview:countLabel];
-            [countLabel release];
             
             /* progress view */
-            UIProgressView * progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 73 , 64, 9)];
+            UIProgressView * progressView = [[[UIProgressView alloc] initWithFrame:CGRectMake(i * frameSize + 20, 73 , 64, 9)] autorelease];
             [progressView setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             [progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             progressView.progress = 0.f;
             
             [_progressViewList addObject:progressView];
             [self.contentView addSubview:progressView];
-            [progressView release];
             
             /* delete ? */
-            UIImageView *deleteView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"album_delete.png"]];
+            UIImageView *deleteView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"album_delete.png"]] autorelease];
             deleteView.frame = CGRectMake(i * frameSize + 5, -2, 29, 29);
 			deleteView.userInteractionEnabled = YES;
-			gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
+			gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)] autorelease];
 			[deleteView addGestureRecognizer:gesture];
-			[gesture release],gesture = nil;
             [_deleteViewList addObject:deleteView];
             [self.contentView addSubview:deleteView];
-            [deleteView release];
         }
     }
     return self;

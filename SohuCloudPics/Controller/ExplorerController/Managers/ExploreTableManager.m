@@ -12,7 +12,7 @@
 #import "SCPPhotoDetailViewController.h"
 #import "SCPAlert_CustomeView.h"
 
-#define MAXPICTURE 400
+#define MAXPICTURE 200
 
 @implementation NSMutableArray (AddWithType_and_Random)
 

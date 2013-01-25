@@ -64,6 +64,7 @@
 {
     
     [super viewDidLoad];
+    
     _pullingController = [[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_album.png"] frame:self.view.bounds];
     _pullingController.tableView.tableFooterView = nil;
     _pullingController.delegate = self;

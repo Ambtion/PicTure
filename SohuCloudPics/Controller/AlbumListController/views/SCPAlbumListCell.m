@@ -49,44 +49,38 @@
     if (self) {
         self.frame = CGRectMake(0, 0, 320, 100);
         /* album frame image view */
-        UIImageView *frameImageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 95, 95)];
+        UIImageView *frameImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 95, 95)] autorelease];
         frameImageView.image = [UIImage imageNamed:@"150.png"];
         [frameImageView setUserInteractionEnabled:YES];
         [self.contentView addSubview:frameImageView];
-        [frameImageView release];
         
         /* photo image view */
         _photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 75, 75)];
         _photoImageView.userInteractionEnabled = YES;
-        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
+        UITapGestureRecognizer *gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)] autorelease];
         [_photoImageView addGestureRecognizer:gesture];
-        [gesture release];
         
-        UILongPressGestureRecognizer*  l_gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)];
+        UILongPressGestureRecognizer *  l_gesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)] autorelease];
         l_gesture.minimumPressDuration = 0.5;
         [_photoImageView addGestureRecognizer:l_gesture];
-        [l_gesture release];
-        l_gesture = nil;
-        
         [frameImageView addSubview:_photoImageView];
 		
         /* progressView */
         
         _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20, 73, 64, 9)];
+        
         [_progressView setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
         [_progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
-
         [self.contentView addSubview:_progressView];
+        
         /* deleteView, not display first */
         _deleteView = [[UIImageView alloc] initWithFrame:CGRectMake(5, -2, 29, 29)];
         _deleteView.image = [UIImage imageNamed:@"album_delete.png"];
 		_deleteView.userInteractionEnabled = YES;
         _deleteView.hidden = YES;
 		
-		UITapGestureRecognizer *d_gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)];
+		UITapGestureRecognizer *d_gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)] autorelease];
 		[_deleteView addGestureRecognizer:d_gesture];
-		[d_gesture release];
-		
         [self.contentView addSubview:_deleteView];
         
         /* photoNum label */

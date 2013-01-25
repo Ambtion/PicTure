@@ -23,7 +23,6 @@
 @property (strong, nonatomic) NSMutableArray *nameLabelList;
 @property (strong, nonatomic) NSMutableArray *countLabelList;
 @property (strong, nonatomic) NSMutableArray *deleteViewList;
-
 @property (strong, nonatomic) NSMutableArray *albumList;
 
 @property (assign, nonatomic) int photoCount;

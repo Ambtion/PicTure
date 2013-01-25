@@ -18,9 +18,9 @@
 #import "SCPAlbumListController.h"
 
 #import "SCPAlertView_LoginTip.h"
-
 #define MAXIMAGEHEIGTH 320
-#define MAXPICTURE 200
+
+#define MAXPICTURE 80
 
 static float OFFSET = 0.f;
 @implementation MyhomeManager

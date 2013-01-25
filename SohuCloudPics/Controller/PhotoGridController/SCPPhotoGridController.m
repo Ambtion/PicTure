@@ -46,10 +46,10 @@
 }
 - (void)dealloc
 {
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_request setDelegate:nil];
     [_request release];
-    
     self.albumData = nil;
     self.photoList = nil;
     self.thumbnailArray = nil;
@@ -509,6 +509,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *identifier = @"albumListCell";
     SCPPhotoGridCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {

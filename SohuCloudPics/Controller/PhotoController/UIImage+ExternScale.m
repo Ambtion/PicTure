@@ -85,6 +85,7 @@
         CGContextClipToRect(myContext, finalRect);
         outputImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
+        
         [array addObject:outputImage];
     }
     return array;

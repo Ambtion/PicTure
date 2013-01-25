@@ -115,7 +115,6 @@ CGSize CGSizeAbsolute(CGSize size) {
     CGContextRestoreGState(ctx);
     
     UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
-    
     image = [[self maskImage:image withMask:[UIImage imageNamed:@"s.png"]] retain];
     UIGraphicsEndImageContext();
     
