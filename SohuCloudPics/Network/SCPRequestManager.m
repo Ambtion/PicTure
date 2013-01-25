@@ -48,7 +48,6 @@
     //    }
     //    [SCPLoginPridictive logout];
     //    return;
-    
     NSString * str = [NSString stringWithFormat:@"%@/oauth2/access_token?grant_type=refresh_token",BASICURL];
     __block  ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
     [request setPostValue:CLIENT_ID forKey:@"client_id"];

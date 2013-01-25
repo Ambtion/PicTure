@@ -100,13 +100,13 @@
     
     NSDictionary * dic = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
     if (!dic) {
-        _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
+        _backgroundImageView.image = [UIImage imageNamed:@"user_bg_plain.png"];
     }else{
         NSString * bgname = [dic objectForKey:@"HomeBackImage"];
         if (bgname) {
             _backgroundImageView.image = [UIImage imageNamed:bgname];
         }else{
-            _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
+            _backgroundImageView.image = [UIImage imageNamed:@"user_bg_plain.png"];
         }
     }
    

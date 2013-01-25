@@ -80,7 +80,7 @@
 {
     //backGroud
     _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 367 - 480, 320, 480)];
-    _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
+    _backgroundImageView.image = [UIImage imageNamed:@"user_bg_plain.png"];
     [self.contentView addSubview:_backgroundImageView];
     
     UIView * portraitbg = [[[UIView alloc] initWithFrame:CGRectMake(118, 109, 85, 85)] autorelease];

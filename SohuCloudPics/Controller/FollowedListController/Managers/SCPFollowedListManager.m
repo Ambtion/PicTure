@@ -74,7 +74,7 @@
         [_dataSource addObject:dataSource];
         [dataSource release];
     }
-    NSLog(@"After refresh::%d",_dataSource.count);
+//    NSLog(@"After refresh::%d",_dataSource.count);
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;

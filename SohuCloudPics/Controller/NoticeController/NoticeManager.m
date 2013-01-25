@@ -134,8 +134,8 @@
 #pragma mark - dataSouce
 - (NSString *)bannerDataSouceLeftLabel
 {
-    if (_dataSource && _dataSource.count && numFollowing)
-        return [NSString stringWithFormat:@"有%d条提醒",_dataSource.count];
+    if (numFollowing)
+        return [NSString stringWithFormat:@"有%d条提醒",numFollowing];
     return @"暂无提醒";
 }
 - (NSString *)bannerDataSouceRightLabel
