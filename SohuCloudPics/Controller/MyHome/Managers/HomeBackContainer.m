@@ -121,10 +121,10 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
     
     NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
     NSString * str = [userinfo objectForKey:@"HomeBackImage"];
-    if (!str || [str isEqualToString:@""])       return 1002;
+    if (!str || [str isEqualToString:@""])       return 1000;
     for (int i = 0; i < 4; i++)
         if([IMAGENAME[i] isEqualToString:str]) return 1000 + i;
-    return 1002;
+    return 1000;
 }
 - (void)show
 {

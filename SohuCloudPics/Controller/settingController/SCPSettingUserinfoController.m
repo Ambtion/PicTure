@@ -205,9 +205,10 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
+    NSLog(@"%s",__FUNCTION__);
     NSDictionary * dic = [notification userInfo];
     CGFloat heigth = [[dic objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    CGRect rect = textView_bg.frame;
+    CGRect rect = CGRectMake(8, 142, 304, 115);
     rect.size.height = self.view.bounds.size.height - heigth - rect.origin.y - 8;
     [UIView animateWithDuration:0.3 animations:^{
         textView_bg.frame = rect;
@@ -248,8 +249,9 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == _nameFiled) {
-        [_nameFiled resignFirstResponder];
         [_description becomeFirstResponder];
+        [_nameFiled resignFirstResponder];
+        return NO;
     }
     return YES;
 }
