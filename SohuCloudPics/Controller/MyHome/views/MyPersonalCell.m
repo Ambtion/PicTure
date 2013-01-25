@@ -99,12 +99,17 @@
 {
     
     NSDictionary * dic = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
-    NSString * bgname = [dic objectForKey:@"HomeBackImage"];
-    if (bgname) {
-        _backgroundImageView.image = [UIImage imageNamed:bgname];
-    }else{
+    if (!dic) {
         _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
+    }else{
+        NSString * bgname = [dic objectForKey:@"HomeBackImage"];
+        if (bgname) {
+            _backgroundImageView.image = [UIImage imageNamed:bgname];
+        }else{
+            _backgroundImageView.image = [UIImage imageNamed:@"user_bg_soul.png"];
+        }
     }
+   
 }
 - (void)changeBack:(UITapGestureRecognizer *)gesture
 {

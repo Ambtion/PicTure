@@ -39,7 +39,6 @@
         _dataSource = [[NSMutableArray alloc] initWithCapacity:0];
         _requestManger  = [[SCPRequestManager alloc] init];
         _requestManger.delegate = self;
-//        [self dataSourcewithRefresh:YES];
     }
     return self;
 }
@@ -47,6 +46,7 @@
 #pragma mark 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
+    
     NSDictionary * userinfo = [info objectForKey:@"userInfo"];
     if (userinfo)
         _maxNum = [[userinfo objectForKey:@"followers"] intValue];
@@ -54,6 +54,7 @@
     hasNext = [[followings  objectForKey:@"has_next"] boolValue];
     curPage = [[followings  objectForKey:@"page"] intValue];
     NSArray * followingsArray = [followings objectForKey:@"followers"];
+    
     if (_willRefresh)
         [_dataSource removeAllObjects];
     for (int i = 0; i < followingsArray.count; i++) {
@@ -73,10 +74,12 @@
         [_dataSource addObject:dataSource];
         [dataSource release];
     }
+    NSLog(@"After refresh::%d",_dataSource.count);
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
-        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+        [self followedRefreshDataFinishLoad];
+        [self followedMoreDataFinishLoad];
     }
     if (_willRefresh) {
         [self followedRefreshDataFinishLoad];
@@ -90,6 +93,7 @@
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
     [self restNetWorkState];
+    
 }
 - (void)restNetWorkState
 {
@@ -103,6 +107,7 @@
 #pragma mark - refresh Data
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
+    if (_isLoading) return;
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataSource.count){
@@ -140,8 +145,8 @@
     _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
-    
 }
+
 #pragma mark more
 //1:下拉刷新 2:刷新结束
 
@@ -169,10 +174,6 @@
 }
 #pragma mark - 
 #pragma mark tableviewDataSouce
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -183,7 +184,6 @@
     }
     return _dataSource.count;
 }
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
@@ -196,7 +196,9 @@
         commoncell = [[[SCPFollowCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"COMMONCELL"] autorelease];
         commoncell.delegate = self;
     }
-    commoncell.dataSource = [_dataSource objectAtIndex:indexPath.row];
+    if (_dataSource.count > indexPath.row)
+        commoncell.dataSource = [_dataSource objectAtIndex:indexPath.row];
+    
     if (_dataSource.count - 1 == indexPath.row)
         [self.controller.pullingController realLoadingMore:nil];
     return commoncell;

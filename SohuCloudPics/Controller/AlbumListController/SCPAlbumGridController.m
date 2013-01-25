@@ -65,6 +65,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *identifier = @"albumCell";
     SCPAlbumGridCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {

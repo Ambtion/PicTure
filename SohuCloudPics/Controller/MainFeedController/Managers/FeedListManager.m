@@ -83,10 +83,11 @@
         [_dataArray addObject:adapter];
         [adapter release];
     }
+    
     if (_isInit) {
         _isInit = NO;
         _isLoading = NO;
-        [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+        [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
         [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
         [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
         return;
@@ -278,7 +279,8 @@
         cell.delegate = self;
         cell.maxImageHeigth = MAXIMAGEHEIGTH;
     }
-    cell.dataSource = [_dataArray objectAtIndex:indexPath.row];
+    if (_dataArray.count > indexPath.row)
+        cell.dataSource = [_dataArray objectAtIndex:indexPath.row];
     
     if (_dataArray.count - 1 == indexPath.row )
         [self.controller.pullingController realLoadingMore:nil];

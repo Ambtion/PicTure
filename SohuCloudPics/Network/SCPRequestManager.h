@@ -39,7 +39,7 @@
 
 @property (nonatomic,assign) id<SCPRequestManagerDelegate> delegate;
 
-
+//explore
 - (void)getExploreFrom:(NSInteger)startIndex maxresult:(NSInteger)maxresult sucess:(void (^)(NSArray * infoArray))success failture:(void (^)(NSString * error))faiture;
 - (void)getPhotoDetailinfoWithUserID:(NSString *)user_id photoID:(NSString *)photo_ID;
 //personal Home
@@ -52,7 +52,6 @@
 //photoList
 - (void)getFolderinfoWihtUserID:(NSString *)user_id WithFolders:(NSString *)folder_id;
 - (void)getPhotosWithUserID:(NSString *)user_id FolderID:(NSString *)folder_id page:(NSInteger)page;
-//token
 
 //Feed
 - (void)getFeedMineInfo;
@@ -67,11 +66,10 @@
 - (void)getNotificationUser;
 - (void)destoryNotificationAndsuccess:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure;
 
-
 #pragma mark Action
 #pragma Follwe_Action
-- (void)destoryFollowing:(NSString *)following_Id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure;
-- (void)friendshipsFollowing:(NSString *)following_Id success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure;
+- (void)destoryFollowing:(NSString *)user_id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure;
+- (void)friendshipsFollowing:(NSString *)user_id success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure;
 - (void)deleteFolderWithUserId:(NSString *)user_id folderId:(NSString *)folder_id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure;
 #pragma  deletaFolders
 - (void)deletePhotosWithUserId:(NSString *)user_id	folderId:(NSString *)folder_id photoIds:(NSArray *)photo_ids success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure;

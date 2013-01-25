@@ -336,7 +336,9 @@ static NSInteger lastNum = -1;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    ExploreViewCellDataSource * dataSource = [_strategyArray objectAtIndex:indexPath.row];
+    ExploreViewCellDataSource * dataSource = nil;
+    if (_strategyArray.count > indexPath.row)
+        dataSource = [_strategyArray objectAtIndex:indexPath.row];
     ExploreViewCell * cell = [tableView dequeueReusableCellWithIdentifier:dataSource.identify];
     if (cell == nil) {
         cell = [[[ExploreViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:dataSource.identify andframe:dataSource.viewRectFrame height:dataSource.heigth] autorelease];

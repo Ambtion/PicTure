@@ -78,7 +78,8 @@
     if (_isinit) {
         _isinit = NO;
         _isLoading = NO;
-        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+        [self followedRefreshDataFinishLoad];
+        [self followedMoreDataFinishLoad];
     }
     if (_willRefresh) {
         [self followedRefreshDataFinishLoad];
@@ -200,7 +201,8 @@
         commoncell = [[[SCPFollowCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"COMMONCELL"] autorelease];
         commoncell.delegate = self;
     }
-    commoncell.dataSource = [_dataSource objectAtIndex:indexPath.row];
+    if (_dataSource.count > indexPath.row)
+        commoncell.dataSource = [_dataSource objectAtIndex:indexPath.row];
     if (_dataSource.count - 1 == indexPath.row)
         [self.controller.pullingController realLoadingMore:nil];
     return commoncell;

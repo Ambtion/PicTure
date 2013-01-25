@@ -58,6 +58,12 @@
         if ([request responseStatusCode] == 200) {
             NSDictionary * dic = [[request responseString] JSONValue];
             [SCPLoginPridictive refreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"access_token"]] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
+            if (failure) {
+                failure(REQUSETFAILERROR);
+            }else{
+                if ([_delegate respondsToSelector:@selector(requestFailed:)])
+                    [_delegate performSelector:@selector(requestFailed:) withObject:REQUSETFAILERROR];
+            }
         }else{
             if (failure) {
                 failure(REFRESHFAILTURE);
@@ -193,15 +199,18 @@
 {
     
     NSString  * str = nil;
-    if ([SCPLoginPridictive currentToken] && [user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
-        str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[SCPLoginPridictive currentToken]];
+    if ([SCPLoginPridictive isLogin]) {
+        if ([user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
+            str = [NSString stringWithFormat:@"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+        }else{
+             str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentToken]]];
+        }
     }else{
-        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
+        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1 ,user_ID];
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
     [request setCompletionBlock:^{
-        
         NSInteger  code = [request responseStatusCode];
         if ([self handlerequsetStatucode:code withblock:failure]) {
             NSString * str = [request responseString];
@@ -224,10 +233,14 @@
 - (void)getUserInfoWithID:(NSString *)user_ID
 {
     NSString  * str = nil;
-    if ([SCPLoginPridictive isLogin] && [user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
-        str = [NSString stringWithFormat:@"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+    if ([SCPLoginPridictive isLogin]) {
+        if ([user_ID isEqualToString:[SCPLoginPridictive currentUserId]]) {
+            str = [NSString stringWithFormat:@"%@/user?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+        }else{
+            str = [NSString stringWithFormat:@"%@/users/%@?access_token=%@",BASICURL_V1,user_ID,[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentToken]]];
+        }
     }else{
-        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1,user_ID];
+        str = [NSString stringWithFormat:@"%@/users/%@",BASICURL_V1 ,user_ID];
     }
     __block ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:str]];
     [request setTimeOutSeconds:TIMEOUT];
@@ -312,7 +325,7 @@
 {
     NSString * str = nil;
     if ([SCPLoginPridictive isLogin] && [user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
-        str = [NSString stringWithFormat:@"%@/folders?&page=%d&access_token=%@",BASICURL_V1,page,[SCPLoginPridictive currentToken]];
+        str = [NSString stringWithFormat:@"%@/folders?page=%d&access_token=%@",BASICURL_V1,page,[SCPLoginPridictive currentToken]];
     }else{
         str = [NSString stringWithFormat:@"%@/folders?owner_id=%@&page=%d",BASICURL_V1,user_id,page];
     }
@@ -347,7 +360,7 @@
 {
     NSString  * str = nil;
     if ([SCPLoginPridictive isLogin] && [user_id isEqualToString:[SCPLoginPridictive currentUserId]]) {
-        str = [NSString stringWithFormat:@"%@/folders/%@?&access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
+        str = [NSString stringWithFormat:@"%@/folders/%@?access_token=%@",BASICURL_V1,folder_id,[SCPLoginPridictive currentToken]];
     }else{
         str = [NSString stringWithFormat:@"%@/folders/%@?owner_id=%@",BASICURL_V1,folder_id,user_id];
     }
@@ -603,7 +616,7 @@
 }
 - (void)destoryNotificationAndsuccess:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
 {
-    NSString * str = [NSString stringWithFormat:@"%@/notifications/deletes?&access_token=%@",BASICURL_V1,
+    NSString * str = [NSString stringWithFormat:@"%@/notifications/deletes?access_token=%@",BASICURL_V1,
                       [SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
 	[request setCompletionBlock:^{
@@ -619,37 +632,43 @@
     [request startAsynchronous];
 }
 #pragma mark - Action Follow
-- (void)destoryFollowing:(NSString *)following_Id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
+- (void)destoryFollowing:(NSString *)user_id success:(void (^) (NSString * response))success  failure:(void (^) (NSString * error))failure
 {
-    
-    NSString * str = [NSString stringWithFormat:@"%@/friendships/destroy?&access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+
+    NSString * str = [NSString stringWithFormat:@"%@/friendships/destroy?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+//    NSLog(@"%@",str);
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];
+    [request setPostValue:[NSNumber numberWithInt:[user_id intValue]] forKey:@"user_id"];
 	[request setCompletionBlock:^{
+//        NSLog(@"sucess %d %@",request.responseStatusCode ,request.responseString);
         NSInteger code = [request responseStatusCode];
         if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
         }
     }];
     [request setFailedBlock:^{
+//        NSLog(@"faiture %d %@",request.responseStatusCode ,request.responseString);
         if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];
     
     [request startAsynchronous];
 }
-- (void)friendshipsFollowing:(NSString *)following_Id success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
+- (void)friendshipsFollowing:(NSString *)user_id success:(void (^) (NSString * response))success failure:(void (^) (NSString * error))failure
 {
-    NSString * str = [NSString stringWithFormat:@"%@/friendships?&access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
+    
+    NSString * str = [NSString stringWithFormat:@"%@/friendships?access_token=%@",BASICURL_V1,[SCPLoginPridictive currentToken]];
     __block ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:str]];
-    [request setPostValue:[NSNumber numberWithInt:[following_Id intValue]] forKey:@"user_id"];
+    [request setPostValue:[NSNumber numberWithInt:[user_id intValue]] forKey:@"user_id"];
 	[request setCompletionBlock:^{
+//        NSLog(@"sucess %d %@",request.responseStatusCode ,request.responseString);
         NSInteger code = [request responseStatusCode];
         if ([self handlerequsetStatucode:code withblock:failure]) {
             success([request responseString]);
         }
     }];
     [request setFailedBlock:^{
+//        NSLog(@"faiture %d %@",request.responseStatusCode ,request.responseString);
         if (![self handlerequsetStatucode:[request responseStatusCode] withblock:failure]) return;
         failure(REQUSETFAILERROR);
     }];

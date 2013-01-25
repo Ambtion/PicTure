@@ -9,6 +9,7 @@
 
 #define DEV 1
 
+
 #ifdef DEV
 
 #define BASICURL @"http://dev.pp.sohu.com"
@@ -30,4 +31,3 @@
 #define QQOAUTHOR2URL  @"https://graph.qq.com/oauth2.0/authorize?scope=get_user_info&response_type=code&redirect_uri=http://pp.sohu.com/users/auth/qq/callback/aHR0cDovL3BwLnNvaHUuY29tLz91c2VySWQ9NDEz&client_id=100319476"
 
 #define RENRENAUTHOR2URL @"https://graph.renren.com/oauth/authorize?response_type=code&redirect_uri=http://pp.sohu.com/users/auth/renren/callback&display=popup&client_id=ed8838c335d146319b6612a3026190ae"
-

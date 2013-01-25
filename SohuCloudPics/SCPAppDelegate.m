@@ -40,7 +40,8 @@
 	/* The following statements are used for umeng statistic */
 	[MobClick startWithAppkey:UM_APP_KEY];
     
-//    [SCPLoginPridictive loginUserId:@"sdffs" withToken:@"sdffs" RefreshToken:@"sdffs"];
+//    [[NSUserDefaults standardUserDefaults] setObject:@"ss" forKey:@"__USER_TOKEN__"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
     
     [UIApplication sharedApplication].statusBarHidden = YES;
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

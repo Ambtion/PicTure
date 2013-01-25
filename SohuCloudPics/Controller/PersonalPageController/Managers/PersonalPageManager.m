@@ -297,14 +297,14 @@ static float OFFSET = 0.f;
         return pageCell;
     }
     else {
-        
         FeedCell * feedCell = [tableView dequeueReusableCellWithIdentifier:@"FEEDCELL"];
         if (feedCell == nil) {
             feedCell = [[[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FEEDCELL"] autorelease];
             feedCell.delegate = self;
             feedCell.maxImageHeigth = MAXIMAGEHEIGTH;
         }
-        feedCell.dataSource = [_dataArray objectAtIndex:row - 1];
+        if (_dataArray.count > row -1)
+            feedCell.dataSource = [_dataArray objectAtIndex:row - 1];
         if (_dataArray.count - 1 == indexPath.row)
             [self loadingMore:nil];
 

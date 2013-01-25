@@ -9,6 +9,8 @@
 #import "NoticeManager.h"
 #import "SCPPersonalPageViewController.h"
 #import "SCPFollowedListViewController.h"
+#import "SCPAlertView_LoginTip.h"
+
 @implementation NoticeManager
 @synthesize controller = _controller;
 
@@ -35,7 +37,7 @@
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-//    NSLog(@"info %@",info);
+    NSLog(@"notication:info %@",info);
     [_dataSource removeAllObjects];
     numFollowing = [[info objectForKey:@"followed"] intValue];
     _isLoading = NO;
@@ -50,9 +52,22 @@
 #pragma Network Failed
 - (void)requestFailed:(NSString *)error
 {
+    [self restNetWorkState];
+    if ([error isEqualToString:REFRESHFAILTURE]) {
+        SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [tip show];
+        [tip release];
+        return;
+    }
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
     [alertView show];
-    [self restNetWorkState];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.controller.navigationController;
+    [menu.menuManager onExplorerClicked:nil];
 }
 - (void)restNetWorkState
 {

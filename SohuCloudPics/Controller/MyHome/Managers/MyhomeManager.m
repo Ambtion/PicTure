@@ -67,9 +67,9 @@ static float OFFSET = 0.f;
 }
 - (void)refreshUserinfo
 {
-    
     if (_isinit || ![SCPLoginPridictive currentUserId]) return;
     [_requestManager getUserInfoWithID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]] asy:YES success:^(NSDictionary *response) {
+        _personalDataSource.isInit = NO;
         _personalDataSource.portrait = [response objectForKey:@"user_icon"];
         _personalDataSource.name = [response objectForKey:@"user_nick"];
         _personalDataSource.desc = [response objectForKey:@"user_desc"];
@@ -99,6 +99,7 @@ static float OFFSET = 0.f;
         _personalDataSource.followedAmount = [[userInfo objectForKey:@"followers"] intValue];
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
     }
+    
     curPage = [[[info objectForKey:@"feedList"]objectForKey:@"page"] intValue];
     hasNextpage = [[[info objectForKey:@"feedList"]objectForKey:@"has_next"] boolValue];
     NSArray * photoList = [[info objectForKey:@"feedList"] objectForKey:@"feed"];
@@ -107,7 +108,6 @@ static float OFFSET = 0.f;
         NSDictionary * photo = [photoList objectAtIndex:i];
         adapter.allInfo = photo;
         adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
-        
         adapter.name = [photo objectForKey:@"user_nick"];
         adapter.update =[photo objectForKey:@"upload_at_desc"];
         adapter.portrailImage = [photo objectForKey:@"user_icon"];
@@ -298,16 +298,15 @@ static float OFFSET = 0.f;
         pageCell.datasource = _personalDataSource;
         return pageCell;
     }
-    
     else {
-        
         FeedCell * feedCell = [tableView dequeueReusableCellWithIdentifier:@"FEEDCELL"];
         if (feedCell == nil) {
             feedCell = [[[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FEEDCELL"] autorelease];
             feedCell.delegate = self;
             feedCell.maxImageHeigth = MAXIMAGEHEIGTH;
         }
-        feedCell.dataSource = [_dataArray objectAtIndex:row - 1];
+        if (_dataArray.count > row -1)
+            feedCell.dataSource = [_dataArray objectAtIndex:row - 1];
         if (_dataArray.count - 1 == indexPath.row)
             [self loadingMore:nil];
         return feedCell;
