@@ -37,7 +37,7 @@
 }
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    NSLog(@"notication:info %@",info);
+//    NSLog(@"notication:info %@",info);
     [_dataSource removeAllObjects];
     numFollowing = [[info objectForKey:@"followed"] intValue];
     _isLoading = NO;
