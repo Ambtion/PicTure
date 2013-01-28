@@ -172,9 +172,11 @@
 
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
 {
+    
     self = [super initWithNibName:nil bundle:nil];
     
     if (self) {
+        
         self.view.backgroundColor = [UIColor blackColor];
         _dataManager = dataManager;
         imageArray = [[NSMutableArray alloc] initWithCapacity:0];
@@ -246,6 +248,7 @@
 }
 - (void)listOrientationChanged:(NSNotification *)notification
 {
+    
     if (isInit) return;
     if ([[self.currentImageView.info objectForKey:@"multi_frames"]boolValue]) return;
     [self.view setUserInteractionEnabled:NO];
@@ -282,13 +285,18 @@
     NSDictionary * photolist = [info objectForKey:@"photoList"];
     if ([folderinfo allKeys]) {
         photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
+        if (!photoNum) {
+            [self requestFailed:nil];
+            return;
+        }
     }
     Pagenum = [[photolist objectForKey:@"page"] intValue];
     hasNextPage = [[photolist objectForKey:@"has_next"] boolValue];
     [imageArray addObjectsFromArray:[photolist objectForKey:@"photos"]];
     curPage =  [self getindexofImages];
     [self.view setUserInteractionEnabled:YES];
-    if (curPage == -1) {
+    
+    if (curPage == -1){
         [self getMoreImage];
     }else{
         [self refreshScrollView];
@@ -306,7 +314,7 @@
         curPage = 0;
     }else{
         if (curPage == -1)
-                curPage = 0;
+            curPage = 0;
     }
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"专辑加载失败,请稍后在试"] autorelease];
     [alertView show];
@@ -694,11 +702,11 @@
     
     [self.scrollView setContentOffset:CGPointZero];
     Imagestate = AtLess;
-
+    
 }
 - (void)refreshScrollviewOnMaxBounds
 {
-//    NSLog(@"%s %d",__FUNCTION__,curPage);
+    //    NSLog(@"%s %d",__FUNCTION__,curPage);
     self.rearImageView.info = [imageArray objectAtIndex:imageArray.count - 1];
     self.currentImageView.info = [imageArray objectAtIndex:imageArray.count - 2];
     self.fontImageView.info = [imageArray objectAtIndex:imageArray.count - 3];
@@ -710,7 +718,7 @@
     
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * 2,0)];
     Imagestate = AtMore;
-
+    
 }
 
 - (void)refreshScrollviewWhenPhotonumLessThree
@@ -736,7 +744,7 @@
 
 - (void)refreshScrollViewNormal
 {
-//    NSLog(@"%s %d",__FUNCTION__,curPage);
+    //    NSLog(@"%s %d",__FUNCTION__,curPage);
     if ([self getDisplayImagesWithCurpage:curPage]) { //read images into curImages
         self.fontImageView.info = [curImages objectAtIndex:0];
         self.currentImageView.info = [curImages objectAtIndex:1];
@@ -782,7 +790,7 @@
     }
     int x = self.scrollView.contentOffset.x;
     if (x == self.scrollView.frame.size.width) {
-//        NSLog(@"%s %d",__FUNCTION__,Imagestate);
+        //        NSLog(@"%s %d",__FUNCTION__,Imagestate);
         if (Imagestate != AtNomal) {
             if (Imagestate == AtLess) curPage++;
             if (Imagestate == AtMore) curPage--;
@@ -790,17 +798,17 @@
             [self refreshScrollView];
         }
         return;
-
-//        if (curPage == 0) {
-//            curPage = 1;
-//            [self refreshScrollView];
-//            return;
-//        }
-//        if (curPage == photoNum - 1) {
-//            curPage = photoNum - 2;
-//            [self refreshScrollView];
-//            return;
-//        }
+        
+        //        if (curPage == 0) {
+        //            curPage = 1;
+        //            [self refreshScrollView];
+        //            return;
+        //        }
+        //        if (curPage == photoNum - 1) {
+        //            curPage = photoNum - 2;
+        //            [self refreshScrollView];
+        //            return;
+        //        }
     }
     
     if(x == (self.scrollView.frame.size.width * 2)) {
