@@ -22,7 +22,6 @@
 }
 
 @end
-
 static CGFloat strategy1(NSMutableArray *frames, NSMutableArray *figures)
 {
     [frames addRect:CGRectMake(5, 0, 205, 200)];
