@@ -14,6 +14,6 @@
 
 @property (strong, nonatomic) SCPHorizontalGestureRecognizer *slideRecognizerL2R;
 
+//switch section with animation
 - (void)switchToindex:(NSInteger)index;
-
 @end

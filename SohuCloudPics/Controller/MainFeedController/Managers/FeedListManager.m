@@ -13,6 +13,7 @@
 #import "SCPPersonalPageViewController.h"
 #import "SCPPhotoDetailViewController.h"
 #import "SCPAlertView_LoginTip.h"
+#import "SCPAlert_CustomeView.h"
 
 #define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 80

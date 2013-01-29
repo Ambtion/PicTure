@@ -6,19 +6,13 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+//  自定义NavigationIteam
+//  左边添加一个自带旋转的刷新按钮
+
 #import "SCPBaseNavigationItem.h"
 
 @implementation SCPBaseNavigationItem
 @synthesize refreshButton = _refreshButton;
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        nav = nil;
-        _refreshButton = nil;
-    }
-    return self;
-}
 
 - (void)dealloc
 {
@@ -33,8 +27,7 @@
     self = [self initWithFrame:CGRectMake(0, 0, 320, 44)];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
-        
-        nav = navigation;
+        _nav = navigation;
         [self addsubViews];
     }
     return self;

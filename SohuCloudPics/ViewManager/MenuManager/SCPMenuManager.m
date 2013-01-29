@@ -18,7 +18,7 @@
 #import "SCPLoginViewController.h"
 #import "SCPMainFeedController.h"
 //下页
-#import "SCPExplorerController.h"
+#import "SCPPlazeController.h"
 #import "CameraViewController.h"
 #import "NoticeViewController.h"
 
@@ -38,10 +38,10 @@ static NSString *menuPress[6] = {
 
 
 @implementation SCPMenuManager
+
 @synthesize homelogin;
 @synthesize notLogin;
 @synthesize uLoadLogin;
-
 @synthesize menuArray;
 @synthesize ribbon;
 @synthesize ribbonFake;
@@ -195,29 +195,17 @@ static NSString *menuPress[6] = {
     [ribbon addSubview:ribbonImg];
 
 }
-- (void)viewDidUnload
-{
-    self.rootView = nil;
-    self.coverView = nil;
-    self.menuArray = nil;
-    self.naviView = nil;
-    self.ribbonFake = nil;
-    self.ribbon = nil;
-}
-
 - (void)resetMenu
 {
     isMoving = FALSE;
     isMenuShowing = FALSE;
 }
 
-
 #pragma mark -
 #pragma Login
 - (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
 {
     [navController dismissModalViewControllerAnimated:YES];
-    
 }
 - (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
@@ -231,7 +219,6 @@ static NSString *menuPress[6] = {
         [self onNoticeClicked:nil];
     }
 }
-
 #pragma mark -
 #pragma mark navigation aniamtion
 - (void)popNavigationList
@@ -240,7 +227,6 @@ static NSString *menuPress[6] = {
     self.navController.delegate = self;
     [self popNavigationInDuration:0.03];
 }
-
 - (void)popNavigationInDuration:(CGFloat)duration
 {
     if (self.navController.childViewControllers.count == 1) {
@@ -252,7 +238,6 @@ static NSString *menuPress[6] = {
     }
     [self.navController popToRootViewControllerAnimated:YES];
 }
-
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     

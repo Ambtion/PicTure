@@ -5,30 +5,29 @@
 //  Created by mysohu on 12-8-17.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
-// 定义手势,定义彩带总是出现(viewDidAppear)
+// 定义手势,定义彩带行为:总是出现(viewDidAppear)
 #import <UIKit/UIKit.h>
 
 #import "SCPLoginPridictive.h"
+#import "SCPAlert_CustomeView.h" //all view show totas
 #import "SCPHorizontalGestureRecognizer.h"
-#import "SCPAlert_CustomeView.h"
-
-
-
-
+#import "SCPBaseNavigationItem.h"
 
 @interface SCPBaseController : UIViewController <UIGestureRecognizerDelegate>
 {
-    float lastOffset;
-    BOOL needHideNavigationBar;
+    float _lastOffset;
+    BOOL _needHideNavigationBar;
 }
 
 @property (strong, nonatomic) UISwipeGestureRecognizer *naviRecognizerDown;
 @property (strong, nonatomic) UISwipeGestureRecognizer *naviRecognizerUp;
 @property (strong, nonatomic) SCPHorizontalGestureRecognizer *slideRecognizerR2L;
 
-- (void)switchNavigationBar:(float)yOffset scrollView:(UIScrollView *)scrollView;
 - (void)showNavigationBar;
 - (void)hideNavigationBar;
 - (void)showCamera:(id)gesture;
+
+//for banner string
 - (NSString *)getTimeString;
+
 @end

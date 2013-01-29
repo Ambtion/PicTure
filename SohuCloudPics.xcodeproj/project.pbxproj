@@ -49,7 +49,7 @@
 		61124E1115DE0BF6002C844F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 61124E1015DE0BF6002C844F /* main.m */; };
 		61124E1515DE0BF6002C844F /* SCPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 61124E1415DE0BF6002C844F /* SCPAppDelegate.m */; };
 		61124E2315DE0C80002C844F /* SCPMainTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61124E2115DE0C80002C844F /* SCPMainTabController.m */; };
-		61124E2D15DE0FB3002C844F /* SCPExplorerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61124E2C15DE0FB3002C844F /* SCPExplorerController.m */; };
+		61124E2D15DE0FB3002C844F /* SCPPlazeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61124E2C15DE0FB3002C844F /* SCPPlazeController.m */; };
 		61124E3015DE0FCE002C844F /* SCPMainFeedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61124E2F15DE0FCE002C844F /* SCPMainFeedController.m */; };
 		61124E4415DE1CD7002C844F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61124E4315DE1CD7002C844F /* QuartzCore.framework */; };
 		6117604B15F5F80800CC1349 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6117604715F5ED3300CC1349 /* libsqlite3.dylib */; };
@@ -66,7 +66,7 @@
 		61EE783215DE34210007C158 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61EE783115DE34210007C158 /* AssetsLibrary.framework */; };
 		B70C477D1652229B006029B8 /* album_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = B70C477C1652229A006029B8 /* album_delete.png */; };
 		B70C96381611D6A400CC455A /* s.png in Resources */ = {isa = PBXBuildFile; fileRef = B70C96371611D6A400CC455A /* s.png */; };
-		B7205D7715EE4293001CE863 /* ExploreTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7205D7615EE4293001CE863 /* ExploreTableManager.m */; };
+		B7205D7715EE4293001CE863 /* PlazeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7205D7615EE4293001CE863 /* PlazeManager.m */; };
 		B7205D8815EE42CD001CE863 /* FeedListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7205D8515EE42CD001CE863 /* FeedListManager.m */; };
 		B7827E2716048169000DD86C /* CommentPostBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B7827E2616048169000DD86C /* CommentPostBar.m */; };
 		B7916E4E1615CAC4007E6EB5 /* pop_btn_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = B7916E4A1615CAC4007E6EB5 /* pop_btn_normal.png */; };
@@ -422,7 +422,7 @@
 		C59B6053169819C4001BC324 /* header_user_back.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B604F169819C4001BC324 /* header_user_back.png */; };
 		C59B6054169819C4001BC324 /* header_user_refresh_press.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B6050169819C4001BC324 /* header_user_refresh_press.png */; };
 		C59B6055169819C4001BC324 /* header_user_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B6051169819C4001BC324 /* header_user_refresh.png */; };
-		C5A0A7EE165B10E1005C80D0 /* ExploreViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A0A7ED165B10E1005C80D0 /* ExploreViewCell.m */; };
+		C5A0A7EE165B10E1005C80D0 /* PlazeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A0A7ED165B10E1005C80D0 /* PlazeViewCell.m */; };
 		C5AADC2B16A2565700166B86 /* SCPReadDealController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5AADC2A16A2565700166B86 /* SCPReadDealController.m */; };
 		C5AADC3616A267A300166B86 /* serviceitem.png in Resources */ = {isa = PBXBuildFile; fileRef = C5AADC3516A267A300166B86 /* serviceitem.png */; };
 		C5AADC3816A27E6600166B86 /* camera_bar5.png in Resources */ = {isa = PBXBuildFile; fileRef = C5AADC3716A27E6600166B86 /* camera_bar5.png */; };
@@ -542,8 +542,8 @@
 		61124E1415DE0BF6002C844F /* SCPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCPAppDelegate.m; sourceTree = "<group>"; };
 		61124E2015DE0C80002C844F /* SCPMainTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPMainTabController.h; path = Controller/MainTabController/SCPMainTabController.h; sourceTree = "<group>"; };
 		61124E2115DE0C80002C844F /* SCPMainTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPMainTabController.m; path = Controller/MainTabController/SCPMainTabController.m; sourceTree = "<group>"; };
-		61124E2B15DE0FB3002C844F /* SCPExplorerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPExplorerController.h; path = Controller/ExplorerController/SCPExplorerController.h; sourceTree = "<group>"; };
-		61124E2C15DE0FB3002C844F /* SCPExplorerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPExplorerController.m; path = Controller/ExplorerController/SCPExplorerController.m; sourceTree = "<group>"; };
+		61124E2B15DE0FB3002C844F /* SCPPlazeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPPlazeController.h; path = Controller/ExplorerController/SCPPlazeController.h; sourceTree = "<group>"; };
+		61124E2C15DE0FB3002C844F /* SCPPlazeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPPlazeController.m; path = Controller/ExplorerController/SCPPlazeController.m; sourceTree = "<group>"; };
 		61124E2E15DE0FCE002C844F /* SCPMainFeedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPMainFeedController.h; path = Controller/MainFeedController/SCPMainFeedController.h; sourceTree = "<group>"; };
 		61124E2F15DE0FCE002C844F /* SCPMainFeedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPMainFeedController.m; path = Controller/MainFeedController/SCPMainFeedController.m; sourceTree = "<group>"; };
 		61124E4315DE1CD7002C844F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -584,8 +584,8 @@
 		61EE783115DE34210007C158 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B70C477C1652229A006029B8 /* album_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = album_delete.png; sourceTree = "<group>"; };
 		B70C96371611D6A400CC455A /* s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = s.png; sourceTree = "<group>"; };
-		B7205D7515EE4293001CE863 /* ExploreTableManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExploreTableManager.h; path = Controller/ExplorerController/Managers/ExploreTableManager.h; sourceTree = "<group>"; };
-		B7205D7615EE4293001CE863 /* ExploreTableManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExploreTableManager.m; path = Controller/ExplorerController/Managers/ExploreTableManager.m; sourceTree = "<group>"; };
+		B7205D7515EE4293001CE863 /* PlazeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlazeManager.h; path = Controller/ExplorerController/Managers/PlazeManager.h; sourceTree = "<group>"; };
+		B7205D7615EE4293001CE863 /* PlazeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlazeManager.m; path = Controller/ExplorerController/Managers/PlazeManager.m; sourceTree = "<group>"; };
 		B7205D8415EE42CD001CE863 /* FeedListManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedListManager.h; path = Controller/MainFeedController/Managers/FeedListManager.h; sourceTree = "<group>"; };
 		B7205D8515EE42CD001CE863 /* FeedListManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedListManager.m; path = Controller/MainFeedController/Managers/FeedListManager.m; sourceTree = "<group>"; };
 		B7827E2516048169000DD86C /* CommentPostBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentPostBar.h; path = Controller/PhotoDetailController/Views/CommentPostBar.h; sourceTree = "<group>"; };
@@ -1047,8 +1047,8 @@
 		C59B604F169819C4001BC324 /* header_user_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header_user_back.png; sourceTree = "<group>"; };
 		C59B6050169819C4001BC324 /* header_user_refresh_press.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header_user_refresh_press.png; sourceTree = "<group>"; };
 		C59B6051169819C4001BC324 /* header_user_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header_user_refresh.png; sourceTree = "<group>"; };
-		C5A0A7EC165B10E1005C80D0 /* ExploreViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExploreViewCell.h; path = Controller/ExplorerController/Views/ExploreViewCell.h; sourceTree = "<group>"; };
-		C5A0A7ED165B10E1005C80D0 /* ExploreViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExploreViewCell.m; path = Controller/ExplorerController/Views/ExploreViewCell.m; sourceTree = "<group>"; };
+		C5A0A7EC165B10E1005C80D0 /* PlazeViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlazeViewCell.h; path = Controller/ExplorerController/Views/PlazeViewCell.h; sourceTree = "<group>"; };
+		C5A0A7ED165B10E1005C80D0 /* PlazeViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlazeViewCell.m; path = Controller/ExplorerController/Views/PlazeViewCell.m; sourceTree = "<group>"; };
 		C5AADC2916A2565700166B86 /* SCPReadDealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPReadDealController.h; sourceTree = "<group>"; };
 		C5AADC2A16A2565700166B86 /* SCPReadDealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPReadDealController.m; sourceTree = "<group>"; };
 		C5AADC3516A267A300166B86 /* serviceitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = serviceitem.png; sourceTree = "<group>"; };
@@ -1338,13 +1338,13 @@
 			children = (
 				C59198E1167F23A20019E947 /* BaseController */,
 				61124E1F15DE0C31002C844F /* MainTabController */,
+				61124E2915DE0F6F002C844F /* PlazeController */,
 				C58950E51654C26F005865EE /* NoticeController */,
 				C58803F4162BEAEC00249D8D /* settingController */,
 				B7CAB5D515FF5289004C8333 /* LoginController */,
 				B7CA5601160014C30015C1BA /* RegisterController */,
 				C58641C71611CE920048DDA6 /* UploadController */,
 				C58FE9161643C76700E8CFB7 /* AlbumListController */,
-				61124E2915DE0F6F002C844F /* ExplorerController */,
 				61124E2A15DE0F81002C844F /* MainFeedController */,
 				B7D83AD615F99FD800569900 /* PhotoDetailController */,
 				DFED89241610431900890069 /* PhotoGridController */,
@@ -1368,15 +1368,15 @@
 			name = MainTabController;
 			sourceTree = "<group>";
 		};
-		61124E2915DE0F6F002C844F /* ExplorerController */ = {
+		61124E2915DE0F6F002C844F /* PlazeController */ = {
 			isa = PBXGroup;
 			children = (
 				B7205D6E15EE4278001CE863 /* Views */,
 				B7205D6C15EE426A001CE863 /* Managers */,
-				61124E2B15DE0FB3002C844F /* SCPExplorerController.h */,
-				61124E2C15DE0FB3002C844F /* SCPExplorerController.m */,
+				61124E2B15DE0FB3002C844F /* SCPPlazeController.h */,
+				61124E2C15DE0FB3002C844F /* SCPPlazeController.m */,
 			);
-			name = ExplorerController;
+			name = PlazeController;
 			sourceTree = "<group>";
 		};
 		61124E2A15DE0F81002C844F /* MainFeedController */ = {
@@ -1564,8 +1564,8 @@
 		B7205D6C15EE426A001CE863 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				B7205D7515EE4293001CE863 /* ExploreTableManager.h */,
-				B7205D7615EE4293001CE863 /* ExploreTableManager.m */,
+				B7205D7515EE4293001CE863 /* PlazeManager.h */,
+				B7205D7615EE4293001CE863 /* PlazeManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -1573,8 +1573,8 @@
 		B7205D6E15EE4278001CE863 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C5A0A7EC165B10E1005C80D0 /* ExploreViewCell.h */,
-				C5A0A7ED165B10E1005C80D0 /* ExploreViewCell.m */,
+				C5A0A7EC165B10E1005C80D0 /* PlazeViewCell.h */,
+				C5A0A7ED165B10E1005C80D0 /* PlazeViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2931,7 +2931,7 @@
 				61124E1115DE0BF6002C844F /* main.m in Sources */,
 				61124E1515DE0BF6002C844F /* SCPAppDelegate.m in Sources */,
 				61124E2315DE0C80002C844F /* SCPMainTabController.m in Sources */,
-				61124E2D15DE0FB3002C844F /* SCPExplorerController.m in Sources */,
+				61124E2D15DE0FB3002C844F /* SCPPlazeController.m in Sources */,
 				61124E3015DE0FCE002C844F /* SCPMainFeedController.m in Sources */,
 				617FDBD215E4CC8A00A7FCBB /* SCPFirstIntroController.m in Sources */,
 				C580230D15EDF2DD0067701E /* EdtingTabbar.m in Sources */,
@@ -2939,7 +2939,7 @@
 				C580230F15EDF2DD0067701E /* ImageEdtingController.m in Sources */,
 				C580231415EDF2F60067701E /* FreeGifMaker.m in Sources */,
 				C580237015EDF73E0067701E /* GiFViewController.m in Sources */,
-				B7205D7715EE4293001CE863 /* ExploreTableManager.m in Sources */,
+				B7205D7715EE4293001CE863 /* PlazeManager.m in Sources */,
 				B7205D8815EE42CD001CE863 /* FeedListManager.m in Sources */,
 				618AA65D15F8355A00CA9D9A /* SCPMenuManager.m in Sources */,
 				B7DF543015F84A8C00D37A4E /* PersonalPageManager.m in Sources */,
@@ -3007,7 +3007,7 @@
 				C53BB13C1654EE410043B7E7 /* SMPageControl.m in Sources */,
 				C586AD2816562B320065ACE9 /* ImageViewForCell.m in Sources */,
 				C594B83A1659C72600DC85AF /* SCPGuideView.m in Sources */,
-				C5A0A7EE165B10E1005C80D0 /* ExploreViewCell.m in Sources */,
+				C5A0A7EE165B10E1005C80D0 /* PlazeViewCell.m in Sources */,
 				4ABF60EC166CE2AE001B0FCB /* SCPHorizontalGestureRecognizer.m in Sources */,
 				4ABF610E166CE4D5001B0FCB /* ASIAuthenticationDialog.m in Sources */,
 				4ABF610F166CE4D5001B0FCB /* ASIDataCompressor.m in Sources */,

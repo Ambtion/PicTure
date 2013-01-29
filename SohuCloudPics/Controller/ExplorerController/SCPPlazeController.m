@@ -6,10 +6,10 @@
 //  Copyright (c) 2012年 sohu.com. All rights reserved.
 //
 
-#import "SCPExplorerController.h"
+#import "SCPPlazeController.h"
 #import "SCPMainFeedController.h"
 
-@implementation SCPExplorerController
+@implementation SCPPlazeController
 
 @synthesize pullingController = _pullingController;
 @synthesize manager = _manager;
@@ -26,13 +26,12 @@
     [super viewDidLoad];
     [self addTableView];
     [self.pullingController realLoadingMore:nil];
-//    [self showGuideView];
 }
 
 - (void)addTableView
 {
-    self.manager = [[[ExploreTableManager alloc] init] autorelease];
-    self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_explore.png"] frame:self.view.bounds] autorelease];
+    _manager = [[PlazeManager alloc] init];
+    _pullingController = [[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_explore.png"] frame:self.view.bounds];
     self.pullingController.view.frame = self.view.bounds;
     self.manager.controller = self;
     
@@ -42,12 +41,6 @@
     self.pullingController.headView.datasouce = self.manager;
     [self.view addSubview:self.pullingController.view];
     
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    self.pullingController = nil;
 }
 - (void)refreshButton:(UIButton *)button
 {
@@ -59,20 +52,17 @@
 }
 
 #pragma mark -
-#pragma mark customerNavigationIteam
-
+#pragma mark NavigationItem customer
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     if (_item == nil) {
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
         [_item addRefreshtarget:self action:@selector(refreshButton:)];
     }
     if (!_item.superview)
         [self.navigationController.navigationBar addSubview:_item];
-    [super viewDidAppear:animated];
-    
 }
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     if (_item.superview) {
@@ -84,5 +74,10 @@
     if (_item.superview) {
         [_item removeFromSuperview];
     }
+}
+- (void)didReceiveMemoryWarning
+{
+    //for memory controller
+    [super didReceiveMemoryWarning];
 }
 @end

@@ -9,8 +9,9 @@
 #import "SCPFollowingListManager.h"
 #import "SCPFollowingListViewController.h"
 #import "SCPMyHomeViewController.h"
-
 #import "SCPPersonalPageViewController.h"
+#import "SCPAlert_CustomeView.h"
+
 
 @implementation SCPFollowingListManager
 

@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "SCPMainFeedController.h"
-#import "SCPExplorerController.h"
+#import "SCPPlazeController.h"
 #import "SCPFirstIntroController.h"
 #import "SCPMenuNavigationController.h"
 
@@ -32,7 +32,7 @@
         
         //注意使用addChildViewController 会引起Two-stage rotation animation is deprecated. This application should use the smoother single-stage animation.
         // Explorer 
-        SCPExplorerController *explorer = [[SCPExplorerController alloc] initWithNibName:nil bundle:nil];
+        SCPPlazeController *explorer = [[SCPPlazeController alloc] initWithNibName:nil bundle:nil];
         // MainFeed
         SCPMainFeedController * mainFeed = [[SCPMainFeedController alloc] initWithNibName:nil bundle:nil];
         self.viewControllers = [NSArray arrayWithObjects:explorer,mainFeed,nil];

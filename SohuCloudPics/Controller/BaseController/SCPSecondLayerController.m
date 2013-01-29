@@ -5,12 +5,11 @@
 //  Created by mysohu on 12-8-27.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
+// 定义后退手势行为
 
 #import "SCPSecondLayerController.h"
-
 #import "SCPMenuNavigationController.h"
 #import "SCPHorizontalGestureRecognizer.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -33,7 +32,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     SCPHorizontalGestureRecognizer *back = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(onBackSwipe:)];
     back.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:back];
@@ -41,19 +39,13 @@
     [self.view setBackgroundColor:[UIColor colorWithRed:244.0/255.0 green:244.0/255.0 blue:244.0/255.0 alpha:1.0]];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 }
 - (void)showCamera:(id)gesture
 {
-    //重载函数,使2级页面失去划出相机的功能;
-//    NSLog(@"重载函数,是2级页面失去划出相机的功能");
+//    NSLog(@"重载函数,2级页面失去划出相机的功能");
 }
 - (void)onBackSwipe:(id)sender
 {

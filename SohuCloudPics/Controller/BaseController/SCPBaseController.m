@@ -9,30 +9,26 @@
 //Describtion add up ,down gesture for hid navigationbar
 
 #import "SCPBaseController.h"
-
 #import "SCPMenuNavigationController.h"
-#import "SCPHorizontalGestureRecognizer.h"
-#import "CameraViewController.h"
-
+#import "CameraViewController.h" //show camera
 
 @implementation SCPBaseController
-@synthesize naviRecognizerDown;
-@synthesize naviRecognizerUp;
-@synthesize slideRecognizerR2L;
+@synthesize naviRecognizerDown = _naviRecognizerDown;
+@synthesize naviRecognizerUp = _naviRecognizerUp;
+@synthesize slideRecognizerR2L = _slideRecognizerR2L;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        naviRecognizerDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showNavigationBar)];
-        naviRecognizerDown.direction = UISwipeGestureRecognizerDirectionDown;
-        naviRecognizerDown.delegate = self;
-        naviRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideNavigationBar)];
-        naviRecognizerUp.direction = UISwipeGestureRecognizerDirectionUp;
-        naviRecognizerUp.delegate = self;
-        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera:)];
-        slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
+        _naviRecognizerDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showNavigationBar)];
+        _naviRecognizerDown.direction = UISwipeGestureRecognizerDirectionDown;
+        _naviRecognizerDown.delegate = self;
+        _naviRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideNavigationBar)];
+        _naviRecognizerUp.direction = UISwipeGestureRecognizerDirectionUp;
+        _naviRecognizerUp.delegate = self;
+        _slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera:)];
+        _slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
     }
     return self;
 }
@@ -48,10 +44,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view addGestureRecognizer:naviRecognizerDown];
-    [self.view addGestureRecognizer:naviRecognizerUp];
-    [self.view addGestureRecognizer:slideRecognizerR2L];
-    needHideNavigationBar = FALSE;
+    [self.view addGestureRecognizer:_naviRecognizerDown];
+    [self.view addGestureRecognizer:_naviRecognizerUp];
+    [self.view addGestureRecognizer:_slideRecognizerR2L];
+    _needHideNavigationBar = FALSE;
     
 }
 - (void)viewWillDisappear:(BOOL)animated
@@ -84,20 +80,7 @@
     [self.navigationController pushViewController:phc animated:YES];
     [phc release];
 }
-#pragma mark -
-#pragma switchNavigationBar
-- (void)switchNavigationBar:(float)yOffset scrollView:(UIScrollView *)scrollView
-{
-    if (yOffset <= 0) {
-        [self showNavigationBar];
-    } else {
-        if (needHideNavigationBar) {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-        }
-        needHideNavigationBar = FALSE;
-    }
-    lastOffset = yOffset;
-}
+#pragma mark - navigationBar action
 
 - (void)showNavigationBar
 {

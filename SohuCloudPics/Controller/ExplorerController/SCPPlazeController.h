@@ -9,18 +9,18 @@
 #import <UIKit/UIKit.h>
 
 #import "PullingRefreshController.h"
-#import "ExploreTableManager.h"
 #import "SCPBaseController.h"
-
 #import "SCPBaseNavigationItem.h"
 #import "SCPMenuNavigationController.h"
 
-@interface SCPExplorerController : SCPBaseController
+#import "PlazeManager.h"
+
+@interface SCPPlazeController : SCPBaseController
 {
     SCPBaseNavigationItem * _item;
 }
 
 @property (strong, nonatomic) PullingRefreshController* pullingController;
-@property (strong, nonatomic) ExploreTableManager* manager;
+@property (strong, nonatomic) PlazeManager* manager;
 @property (strong, nonatomic) SCPBaseNavigationItem*  item;
 @end

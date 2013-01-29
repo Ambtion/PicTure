@@ -6,7 +6,7 @@
 //
 //
 
-#import "ExploreViewCell.h"
+#import "PlazeViewCell.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation ExploreViewCell
+@implementation PlazeViewCell
 @synthesize delegate = _delegate;
 
 - (void)dealloc
@@ -78,8 +78,8 @@
 - (void)handlegesture:(UITapGestureRecognizer *)gesture
 {
     UIImageView * imageview = (UIImageView *)[gesture view];
-    if ([_delegate respondsToSelector:@selector(exploreCell:imageClick:)]) {
-        [_delegate exploreCell:self imageClick:imageview];
+    if ([_delegate respondsToSelector:@selector(PlazeViewCell:imageClick:)]) {
+        [_delegate PlazeViewCell:self imageClick:imageview];
     }
 }
 #pragma mark dataSouce

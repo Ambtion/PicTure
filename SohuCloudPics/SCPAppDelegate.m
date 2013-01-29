@@ -14,10 +14,11 @@
 #import "SCPNavigationController.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPLoginViewController.h"
-#import "SCPExplorerController.h"
+#import "SCPPlazeController.h"
 #import "SCPAlert_DetailView.h"
 #import "FunctionguideScroll.h"
 #import "SCPGuideView.h"
+#import "SCPGuideViewExchange.h"
 
 #import "AccountSystemRequset.h"
 
@@ -40,14 +41,14 @@
 	/* The following statements are used for umeng statistic */
 	[MobClick startWithAppkey:UM_APP_KEY];
     
-//    [[NSUserDefaults standardUserDefaults] setObject:@"ss" forKey:@"__USER_TOKEN__"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     [UIApplication sharedApplication].statusBarHidden = YES;
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
+    
+    
     SCPMainTabController *mainTab = [[SCPMainTabController alloc] initWithNibName:nil bundle:NULL];
     SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
+    
     _window.rootViewController = nav;
     [_window makeKeyAndVisible];
     [mainTab release];

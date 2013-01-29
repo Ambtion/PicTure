@@ -6,9 +6,9 @@
 //  Copyright (c) 2012年 sohu.com. All rights reserved.
 //
 
-#import "ExploreTableManager.h"
+#import "PlazeManager.h"
 
-#import "SCPExplorerController.h"
+#import "SCPPlazeController.h"
 #import "SCPPhotoDetailViewController.h"
 #import "SCPAlert_CustomeView.h"
 
@@ -104,10 +104,12 @@ static CGFloat (*strategys[])(NSMutableArray *, NSMutableArray *) = {
 
 static NSInteger lastNum = -1;
 
-@implementation ExploreTableManager
+
+@implementation PlazeManager
 
 @synthesize controller = _controller;
 @synthesize isLoading = _isLoading;
+
 - (NSInteger)randomNum
 {
     int i;
@@ -133,7 +135,6 @@ static NSInteger lastNum = -1;
     if (self) {
         _strategyArray = [[NSMutableArray alloc] init];
         _requestManager = [[SCPRequestManager alloc] init];
-        //        _requestManager.delegate = self;
         _isLoading = NO;
         _willRefresh = YES;
         _isinit = YES;
@@ -141,10 +142,9 @@ static NSInteger lastNum = -1;
     }
     return self;
 }
-
+#pragma mark viewForCellDataSource
 - (NSArray *)urlArray:(NSArray *)frames info:(NSArray *)info
 {
-    
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < frames.count; i++) {
         NSDictionary * dic = [info objectAtIndex:[self offsetOfDataSouce] - _lastCount + i];
@@ -152,13 +152,10 @@ static NSInteger lastNum = -1;
     }
     return array;
 }
-
 - (NSUInteger)offsetOfDataSouce
 {
     
-    if (!_strategyArray.count) {
-        return 0;
-    }
+    if (!_strategyArray.count)  return 0;
     long long i = 0;
     for (ExploreViewCellDataSource * data in _strategyArray) {
         i = i + data.viewRectFrame.count;
@@ -168,16 +165,13 @@ static NSInteger lastNum = -1;
 
 - (NSArray *)getImageViewFrameWithInfoArray:(NSArray *)infoArray : (NSArray *) viewFrame
 {
-    //需要c_*配合显示
+    
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < viewFrame.count; i++) {
-        
         CGRect superRect = [[viewFrame objectAtIndex:i] CGRectValue];
-        
         NSDictionary * dic = [infoArray objectAtIndex:i];
         CGFloat heigth = 205;
         CGFloat wigth = 205;
-        
         if (!dic ||!heigth || !wigth) {
             [array addObject:[NSValue valueWithCGRect:CGRectMake(0, 0, superRect.size.width, superRect.size.height)]];
             break;
@@ -192,7 +186,7 @@ static NSInteger lastNum = -1;
     return array;
 }
 
-#pragma mark -
+#pragma mark - 
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
     _isLoading = YES;
@@ -258,14 +252,14 @@ static NSInteger lastNum = -1;
     _willRefresh = YES;
     _isLoading = NO;
 }
-#pragma mark - Top
+#pragma mark - 
 - (void)pullingreloadPushToTop:(id)sender
 {
     [self.controller showNavigationBar];
 }
 #pragma mark refresh
-//1:下拉刷新 2:刷新结束
 
+//1:下拉刷新 2:刷新结束
 - (void)refreshData:(id)sender
 {
     if (_isLoading)  return;
@@ -283,7 +277,7 @@ static NSInteger lastNum = -1;
     [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
     _isLoading = NO;
 }
-//更多
+
 #pragma mark more
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
@@ -291,9 +285,9 @@ static NSInteger lastNum = -1;
 }
 - (void)moreDataFinishLoad
 {
+    _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-    _isLoading = NO;
 }
 
 #pragma mark -
@@ -302,11 +296,6 @@ static NSInteger lastNum = -1;
 - (NSString*)bannerDataSouceLeftLabel
 {
     return [NSString stringWithFormat:@"有%d张图片",[self offsetOfDataSouce]];
-}
-- (NSString*)bannerDataSouceRightLabel
-{
-    //    return [self.controller getTimeString];
-    return nil;
 }
 
 #pragma mark -
@@ -338,9 +327,9 @@ static NSInteger lastNum = -1;
     ExploreViewCellDataSource * dataSource = nil;
     if (_strategyArray.count > indexPath.row)
         dataSource = [_strategyArray objectAtIndex:indexPath.row];
-    ExploreViewCell * cell = [tableView dequeueReusableCellWithIdentifier:dataSource.identify];
+    PlazeViewCell * cell = [tableView dequeueReusableCellWithIdentifier:dataSource.identify];
     if (cell == nil) {
-        cell = [[[ExploreViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:dataSource.identify andframe:dataSource.viewRectFrame height:dataSource.heigth] autorelease];
+        cell = [[[PlazeViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:dataSource.identify andframe:dataSource.viewRectFrame height:dataSource.heigth] autorelease];
         cell.delegate = self;
     }
     cell.dataSource = dataSource;
@@ -351,10 +340,11 @@ static NSInteger lastNum = -1;
 
 #pragma mark -
 #pragma mark imageView Method
-- (void)exploreCell:(ExploreViewCell *)cell imageClick:(UIImageView *)imageView
+
+- (void)PlazeViewCell:(PlazeViewCell *)cell imageClick:(UIImageView *)imageView
 {
     SCPPhotoDetailViewController * pho_detail = [[[SCPPhotoDetailViewController alloc] initWithinfo:[cell.dataSource.infoArray objectAtIndex:imageView.tag]] autorelease];
-    SCPExplorerController *exp = (SCPExplorerController *)_controller;
+    SCPPlazeController *exp = (SCPPlazeController *)_controller;
     [exp.navigationController pushViewController:pho_detail animated:YES];
 }
 

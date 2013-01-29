@@ -18,13 +18,13 @@
 @end
 
 
-@class ExploreViewCell;
+@class PlazeViewCell;
 @protocol ExploreCellDelegate <NSObject>
 @required
-- (void)exploreCell:(ExploreViewCell *)cell imageClick:(UIImageView * )imageView;
+- (void)PlazeViewCell:(PlazeViewCell *)cell imageClick:(UIImageView * )imageView;
 @end
 
-@interface ExploreViewCell : UITableViewCell
+@interface PlazeViewCell : UITableViewCell
 {
     ExploreViewCellDataSource * _dataSource;
     NSMutableArray * _imageViewArray;

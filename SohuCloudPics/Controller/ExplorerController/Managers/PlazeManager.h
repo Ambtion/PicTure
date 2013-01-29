@@ -9,24 +9,24 @@
 #import <Foundation/Foundation.h>
 
 #import "PullingRefreshController.h"
-#import "ExploreViewCell.h"
+#import "PlazeViewCell.h"
 
 #import "SCPRequestManager.h"
 
-@class SCPExplorerController;
+@class SCPPlazeController;
 
-@interface ExploreTableManager : NSObject <UITableViewDataSource, PullingRefreshDelegate, BannerDataSoure,ExploreCellDelegate>
+@interface PlazeManager : NSObject <UITableViewDataSource, PullingRefreshDelegate, BannerDataSoure,ExploreCellDelegate>
 {
+    
     SCPRequestManager * _requestManager;
-    NSMutableArray *_strategyArray;
+    NSMutableArray * _strategyArray;
     BOOL _isLoading;
     BOOL _willRefresh;
     BOOL _isinit;
     NSUInteger _lastCount;
 }
-
 @property (assign) BOOL isLoading;
-@property (assign) SCPExplorerController *controller;
+@property (assign) SCPPlazeController *controller;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
 - (void)refreshData:(id)sender;
 @end
