@@ -157,7 +157,7 @@ static NSInteger lastNum = -1;
     
     if (!_strategyArray.count)  return 0;
     long long i = 0;
-    for (ExploreViewCellDataSource * data in _strategyArray) {
+    for (PlazeViewCellDataSource * data in _strategyArray) {
         i = i + data.viewRectFrame.count;
     }
     return i;
@@ -185,7 +185,6 @@ static NSInteger lastNum = -1;
     }
     return array;
 }
-
 #pragma mark - 
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
@@ -210,7 +209,7 @@ static NSInteger lastNum = -1;
         if (startIndex == 0)
             [_strategyArray removeAllObjects];
         for (int i = 0; i < infoArray.count / 4 ; i++) {
-            ExploreViewCellDataSource * dataSouce = [[ExploreViewCellDataSource alloc] init];
+            PlazeViewCellDataSource * dataSouce = [[PlazeViewCellDataSource alloc] init];
             NSInteger num_strategy = [self randomNum];
             NSMutableArray * frames = [[NSMutableArray alloc] init];
             dataSouce.heigth = strategys[num_strategy](frames,nil);
@@ -317,14 +316,14 @@ static NSInteger lastNum = -1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ExploreViewCellDataSource * dataSource = [_strategyArray objectAtIndex:indexPath.row];
+    PlazeViewCellDataSource * dataSource = [_strategyArray objectAtIndex:indexPath.row];
     return dataSource.heigth;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    ExploreViewCellDataSource * dataSource = nil;
+    PlazeViewCellDataSource * dataSource = nil;
     if (_strategyArray.count > indexPath.row)
         dataSource = [_strategyArray objectAtIndex:indexPath.row];
     PlazeViewCell * cell = [tableView dequeueReusableCellWithIdentifier:dataSource.identify];

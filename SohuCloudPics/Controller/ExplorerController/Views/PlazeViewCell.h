@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ExploreViewCellDataSource : NSObject
+@interface PlazeViewCellDataSource : NSObject
 @property (nonatomic,retain) NSArray * viewRectFrame;
 @property (nonatomic,retain) NSArray * imageFrame;
 @property (nonatomic,retain) NSArray * infoArray;
 @property (nonatomic,assign) CGFloat heigth;
 @property (nonatomic,retain) NSString * identify;
-@end
 
+@end
 
 @class PlazeViewCell;
 @protocol ExploreCellDelegate <NSObject>
@@ -26,11 +26,11 @@
 
 @interface PlazeViewCell : UITableViewCell
 {
-    ExploreViewCellDataSource * _dataSource;
+    PlazeViewCellDataSource * _dataSource;
     NSMutableArray * _imageViewArray;
     id<ExploreCellDelegate> _delegate;
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andframe:(NSArray *)frames height:(CGFloat)height;
-@property (nonatomic,retain) ExploreViewCellDataSource * dataSource;
+@property (nonatomic,retain) PlazeViewCellDataSource * dataSource;
 @property (nonatomic,assign) id<ExploreCellDelegate> delegate;
 @end

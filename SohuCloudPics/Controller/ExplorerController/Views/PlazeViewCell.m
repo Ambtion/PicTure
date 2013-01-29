@@ -10,7 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 
-@implementation ExploreViewCellDataSource
+@implementation PlazeViewCellDataSource
 @synthesize viewRectFrame = _viewRectFrame;
 @synthesize imageFrame = _imageFrame;
 @synthesize infoArray = _infoArray;
@@ -83,11 +83,11 @@
     }
 }
 #pragma mark dataSouce
-- (ExploreViewCellDataSource * )dataSource
+- (PlazeViewCellDataSource * )dataSource
 {
     return _dataSource;
 }
-- (void)setDataSource:(ExploreViewCellDataSource *)dataSource
+- (void)setDataSource:(PlazeViewCellDataSource *)dataSource
 {
     
     if (_dataSource != dataSource) {
