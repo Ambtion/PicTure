@@ -11,114 +11,15 @@
 #import "SCPPlazeController.h"
 #import "SCPPhotoDetailViewController.h"
 #import "SCPAlert_CustomeView.h"
+#import "PlazeDataAdapter.h"
 
 #define MAXPICTURE 200
-
-@implementation NSMutableArray (AddWithType_and_Random)
-
-- (void)addRect:(CGRect)rect
-{
-    [self addObject:[NSValue valueWithCGRect:rect]];
-}
-
-@end
-static CGFloat strategy1(NSMutableArray *frames, NSMutableArray *figures)
-{
-    [frames addRect:CGRectMake(5, 0, 205, 200)];
-    
-    [frames addRect:CGRectMake(215, 0, 100, 100)];
-    
-    [frames addRect:CGRectMake(5, 205, 205, 100)];
-    
-    [frames addRect:CGRectMake(215, 105, 100, 200)];
-    
-    return 310;
-}
-
-static CGFloat strategy2(NSMutableArray *frames, NSMutableArray *figures)
-{
-    [frames addRect:CGRectMake(5, 0, 100, 100)];
-    
-    [frames addRect:CGRectMake(5, 105, 100, 100)];
-    
-    [frames addRect:CGRectMake(110, 0, 205, 205)];
-    
-    return 210;
-}
-
-static CGFloat strategy3(NSMutableArray *frames, NSMutableArray *figures)
-{
-    [frames addRect:CGRectMake(5, 0, 205, 205)];
-    
-    [frames addRect:CGRectMake(215, 0, 100, 100)];
-    
-    [frames addRect:CGRectMake(215, 105, 100, 100)];
-    
-    return 210;
-}
-
-static CGFloat strategy4(NSMutableArray *frames, NSMutableArray *figures)
-{
-    [frames addRect:CGRectMake(5, 0, 100, 205)];
-    
-    [frames addRect:CGRectMake(110, 0, 205, 205)];
-    
-    return 210;
-}
-
-static CGFloat strategy5(NSMutableArray *frames, NSMutableArray *figures)
-{
-    [frames addRect:CGRectMake(5, 0, 100, 100)];
-    
-    [frames addRect:CGRectMake(110, 0, 205, 100)];
-    
-    return 105;
-}
-
-static CGFloat strategy6(NSMutableArray *frames, NSMutableArray *figures)
-{
-    [frames addRect:CGRectMake(5, 0, 100, 100)];
-    
-    [frames addRect:CGRectMake(110, 0, 100, 100)];
-    
-    [frames addRect:CGRectMake(215, 0, 100, 100)];
-    
-    return 105;
-    
-}
-
-static CGFloat strategy7(NSMutableArray *frames, NSMutableArray *figures)
-{
-    [frames addRect:CGRectMake(5, 0, 205, 105)];
-    
-    [frames addRect:CGRectMake(215, 0, 100, 105)];
-    
-    return 110;
-}
-
-static CGFloat (*strategys[])(NSMutableArray *, NSMutableArray *) = {
-    strategy1, strategy2, strategy3, strategy4,
-    strategy5, strategy6, strategy7
-};
-
-
-static NSInteger lastNum = -1;
-
+#define PICTURECOUNT 20 * MAXFRAMECOUNTLIMIT
 
 @implementation PlazeManager
 
 @synthesize controller = _controller;
 @synthesize isLoading = _isLoading;
-
-- (NSInteger)randomNum
-{
-    int i;
-    while ((i = (random() >> 16) % 6) == lastNum) {
-        // empty
-    }
-    lastNum = i;
-    return lastNum;
-}
 
 - (void)dealloc
 {
@@ -138,99 +39,57 @@ static NSInteger lastNum = -1;
         _isLoading = NO;
         _willRefresh = YES;
         _isinit = YES;
-        _lastCount = 0;
+        _startoffset = 0;
     }
     return self;
 }
-#pragma mark viewForCellDataSource
-- (NSArray *)urlArray:(NSArray *)frames info:(NSArray *)info
-{
-    NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
-    for (int i = 0; i < frames.count; i++) {
-        NSDictionary * dic = [info objectAtIndex:[self offsetOfDataSouce] - _lastCount + i];
-        [array addObject:dic];
-    }
-    return array;
-}
-- (NSUInteger)offsetOfDataSouce
-{
-    
-    if (!_strategyArray.count)  return 0;
-    long long i = 0;
-    for (PlazeViewCellDataSource * data in _strategyArray) {
-        i = i + data.viewRectFrame.count;
-    }
-    return i;
-}
 
-- (NSArray *)getImageViewFrameWithInfoArray:(NSArray *)infoArray : (NSArray *) viewFrame
-{
-    
-    NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
-    for (int i = 0; i < viewFrame.count; i++) {
-        CGRect superRect = [[viewFrame objectAtIndex:i] CGRectValue];
-        NSDictionary * dic = [infoArray objectAtIndex:i];
-        CGFloat heigth = 205;
-        CGFloat wigth = 205;
-        if (!dic ||!heigth || !wigth) {
-            [array addObject:[NSValue valueWithCGRect:CGRectMake(0, 0, superRect.size.width, superRect.size.height)]];
-            break;
-        }
-        CGFloat scale = MIN(heigth/superRect.size.height, wigth/superRect.size.width);
-        CGRect frame = CGRectMake(0, 0, wigth/scale, heigth/scale);
-        frame.origin.x = (superRect.size.width - frame.size.width)/2.f;
-        frame.origin.y = (superRect.size.height - frame.size.height)/2.f;
-        [array addObject:[NSValue valueWithCGRect:frame]];
-        
-    }
-    return array;
-}
-#pragma mark - 
+#pragma mark -
+
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(isRefresh || !_strategyArray.count){
-        _lastCount = 0;
-        [self getExploreFrom:0 count:80];
+        _startoffset = 0;
+        [self getPlazeFrom:0 count:PICTURECOUNT];
     }else{
-        if ((MAXPICTURE <= [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
+        if((MAXPICTURE <= [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
             _isLoading = NO;
             [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
             return;
         }
-        [self getExploreFrom:[self offsetOfDataSouce] count:80];
+        _startoffset += PICTURECOUNT;
+        [self getPlazeFrom:_startoffset count:PICTURECOUNT];
     }
 }
 
-- (void)getExploreFrom:(NSInteger)startIndex count:(NSInteger)count
+- (PlazeViewCellDataSource *)getSourceWithinfoArray:(NSArray *)infoArray  andIndex:(NSInteger)index
 {
-    [_requestManager getExploreFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
+    PlazeViewCellDataSource * dataSouce = [[[PlazeViewCellDataSource alloc] init] autorelease];
+    NSDictionary * dic = [PlazeDataAdapter getViewFrameForRandom];
+    NSArray * frames = [dic objectForKey:@"viewFrame"];
+    dataSouce.viewRectFrame = frames;
+    dataSouce.higth = [[dic objectForKey:@"hight"] floatValue];
+    dataSouce.infoArray = [PlazeDataAdapter getURLArrayByImageFrames:frames FrominfoSource:[infoArray subarrayWithRange:(NSRange ){index * MAXFRAMECOUNTLIMIT,MAXFRAMECOUNTLIMIT}]];
+    dataSouce.imageFrame = [PlazeDataAdapter getBorderViewOfImageViewByImageViewFrame:frames];
+    dataSouce.identify = [NSString stringWithFormat:@"startegy%d", [[dic objectForKey:@"strategy_num"] integerValue]];
+    return dataSouce;
+}
+- (void)getPlazeFrom:(NSInteger)startIndex count:(NSInteger)count
+{
+    
+    [_requestManager getPlazeFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
         if (startIndex == 0)
             [_strategyArray removeAllObjects];
-        for (int i = 0; i < infoArray.count / 4 ; i++) {
-            PlazeViewCellDataSource * dataSouce = [[PlazeViewCellDataSource alloc] init];
-            NSInteger num_strategy = [self randomNum];
-            NSMutableArray * frames = [[NSMutableArray alloc] init];
-            dataSouce.heigth = strategys[num_strategy](frames,nil);
-            dataSouce.viewRectFrame = frames;
-            dataSouce.infoArray = [self urlArray:frames info:infoArray];
-            dataSouce.imageFrame =[self getImageViewFrameWithInfoArray:dataSouce.infoArray :frames];
-            dataSouce.identify = [NSString stringWithFormat:@"startegy%d", num_strategy];
-            [_strategyArray addObject:dataSouce];
-            [frames release];
-            [dataSouce release];
-        }
-        _lastCount = [self offsetOfDataSouce];
+        
+        for (int i = 0; i < infoArray.count / MAXFRAMECOUNTLIMIT; i++)
+            [_strategyArray addObject:[self getSourceWithinfoArray:infoArray andIndex:i]];
         if (_isinit) {
-            _isinit = NO;
-            _isLoading = NO;
-            [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-            [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-            [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+            [self initRefresh];
             return ;
         }
-        if (startIndex == 0 ) {
+        if (startIndex == 0) {
             [self refreshDataFinishLoad];
         }else{
             [self moreDataFinishLoad];
@@ -240,6 +99,15 @@ static NSInteger lastNum = -1;
         [alertView show];
         [self restNetWorkState];
     }];
+}
+- (void)initRefresh
+{
+    _isinit = NO;
+    _isLoading = NO;
+    [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+    [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+    [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+    
 }
 - (void)restNetWorkState
 {
@@ -251,7 +119,7 @@ static NSInteger lastNum = -1;
     _willRefresh = YES;
     _isLoading = NO;
 }
-#pragma mark - 
+#pragma mark -
 - (void)pullingreloadPushToTop:(id)sender
 {
     [self.controller showNavigationBar];
@@ -292,6 +160,15 @@ static NSInteger lastNum = -1;
 #pragma mark -
 #pragma mark bannerDatasouce
 
+- (NSUInteger)offsetOfDataSouce
+{
+    if (!_strategyArray.count)  return 0;
+    long long i = 0;
+    for (PlazeViewCellDataSource * data in _strategyArray) {
+        i = i + data.viewRectFrame.count;
+    }
+    return i;
+}
 - (NSString*)bannerDataSouceLeftLabel
 {
     return [NSString stringWithFormat:@"有%d张图片",[self offsetOfDataSouce]];
@@ -317,7 +194,7 @@ static NSInteger lastNum = -1;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PlazeViewCellDataSource * dataSource = [_strategyArray objectAtIndex:indexPath.row];
-    return dataSource.heigth;
+    return dataSource.higth;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -328,7 +205,7 @@ static NSInteger lastNum = -1;
         dataSource = [_strategyArray objectAtIndex:indexPath.row];
     PlazeViewCell * cell = [tableView dequeueReusableCellWithIdentifier:dataSource.identify];
     if (cell == nil) {
-        cell = [[[PlazeViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:dataSource.identify andframe:dataSource.viewRectFrame height:dataSource.heigth] autorelease];
+        cell = [[[PlazeViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:dataSource.identify andframe:dataSource.viewRectFrame height:dataSource.higth] autorelease];
         cell.delegate = self;
     }
     cell.dataSource = dataSource;

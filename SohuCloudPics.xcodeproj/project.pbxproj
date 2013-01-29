@@ -335,6 +335,7 @@
 		C58B5EB016AF887A00D7E4FE /* album_nb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58B5EAF16AF887A00D7E4FE /* album_nb@2x.png */; };
 		C58B5EB516AF8B4A00D7E4FE /* CountLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C58B5EB416AF8B4A00D7E4FE /* CountLabel.m */; };
 		C58B5EEF16AFE0E700D7E4FE /* aboutv1.0.0.png in Resources */ = {isa = PBXBuildFile; fileRef = C58B5EEE16AFE0E700D7E4FE /* aboutv1.0.0.png */; };
+		C58BA24C16B7AB7C00338CE4 /* PlazeDataAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58BA24B16B7AB7C00338CE4 /* PlazeDataAdapter.m */; };
 		C58BD83E166E01B700BEBA9E /* end_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C58BD83D166E01B700BEBA9E /* end_bg.png */; };
 		C58BEF25168951A1004946B1 /* explore_up_page_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C58BEF24168951A1004946B1 /* explore_up_page_icon.png */; };
 		C58D865C1612CB9F006FE9EF /* SCPLoginPridictive.m in Sources */ = {isa = PBXBuildFile; fileRef = C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */; };
@@ -939,6 +940,8 @@
 		C58B5EB316AF8B4A00D7E4FE /* CountLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CountLabel.h; path = View/CountLabel.h; sourceTree = "<group>"; };
 		C58B5EB416AF8B4A00D7E4FE /* CountLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CountLabel.m; path = View/CountLabel.m; sourceTree = "<group>"; };
 		C58B5EEE16AFE0E700D7E4FE /* aboutv1.0.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aboutv1.0.0.png; sourceTree = "<group>"; };
+		C58BA24A16B7AB7C00338CE4 /* PlazeDataAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlazeDataAdapter.h; path = Controller/ExplorerController/Managers/PlazeDataAdapter.h; sourceTree = "<group>"; };
+		C58BA24B16B7AB7C00338CE4 /* PlazeDataAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlazeDataAdapter.m; path = Controller/ExplorerController/Managers/PlazeDataAdapter.m; sourceTree = "<group>"; };
 		C58BD83D166E01B700BEBA9E /* end_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = end_bg.png; sourceTree = "<group>"; };
 		C58BEF24168951A1004946B1 /* explore_up_page_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explore_up_page_icon.png; sourceTree = "<group>"; };
 		C58D865A1612CB9F006FE9EF /* SCPLoginPridictive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPLoginPridictive.h; sourceTree = "<group>"; };
@@ -1566,6 +1569,8 @@
 			children = (
 				B7205D7515EE4293001CE863 /* PlazeManager.h */,
 				B7205D7615EE4293001CE863 /* PlazeManager.m */,
+				C58BA24A16B7AB7C00338CE4 /* PlazeDataAdapter.h */,
+				C58BA24B16B7AB7C00338CE4 /* PlazeDataAdapter.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -3075,6 +3080,7 @@
 				C595934A16A79D320020B800 /* SCPGuideViewExchange.m in Sources */,
 				C593BFA516AD0BBD0015CE50 /* SCPNewFoldersCell.m in Sources */,
 				C58B5EB516AF8B4A00D7E4FE /* CountLabel.m in Sources */,
+				C58BA24C16B7AB7C00338CE4 /* PlazeDataAdapter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

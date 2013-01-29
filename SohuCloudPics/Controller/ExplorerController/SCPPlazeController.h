@@ -1,5 +1,5 @@
 //
-//  ExploreViewController.h
+//  PlazeViewController.h
 //  sohu_yuntu
 //
 //  Created by Zhong Sheng on 12-8-21.

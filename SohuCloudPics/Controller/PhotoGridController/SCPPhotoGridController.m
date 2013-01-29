@@ -613,7 +613,7 @@
 {
     if ([alertView message]&&[alertView.message isEqualToString:REFRESHFAILTURE]) {
         SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.navigationController;
-        [menu.menuManager onExplorerClicked:nil];
+        [menu.menuManager onPlazeClicked:nil];
         return;
     }
     if (buttonIndex) {

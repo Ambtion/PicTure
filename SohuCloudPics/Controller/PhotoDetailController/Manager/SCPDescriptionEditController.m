@@ -120,7 +120,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.navigationController;
-    [menu.menuManager onExplorerClicked:nil];
+    [menu.menuManager onPlazeClicked:nil];
 }
 - (BOOL)stringContainsEmoji:(NSString *)string {
     __block BOOL returnValue = NO;

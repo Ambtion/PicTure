@@ -31,12 +31,12 @@
         self.delegate = self;
         
         //注意使用addChildViewController 会引起Two-stage rotation animation is deprecated. This application should use the smoother single-stage animation.
-        // Explorer 
-        SCPPlazeController *explorer = [[SCPPlazeController alloc] initWithNibName:nil bundle:nil];
+        //Plaze
+        SCPPlazeController * plaze= [[SCPPlazeController alloc] initWithNibName:nil bundle:nil];
         // MainFeed
         SCPMainFeedController * mainFeed = [[SCPMainFeedController alloc] initWithNibName:nil bundle:nil];
-        self.viewControllers = [NSArray arrayWithObjects:explorer,mainFeed,nil];
-        [explorer release];
+        self.viewControllers = [NSArray arrayWithObjects:plaze,mainFeed,nil];
+        [plaze release];
         [mainFeed release];
     }
     return self;

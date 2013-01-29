@@ -141,7 +141,7 @@ static NSString *menuPress[6] = {
     menuBar.layer.shadowColor = [[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0] CGColor];
     menuBar.layer.shadowOpacity = 0.4;
     
-    // explorer
+    // Plaze
     idle = [UIImage imageNamed:@"menu_explore.png"];
     click = [UIImage imageNamed:@"menu_explore_press.png"];
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -150,7 +150,7 @@ static NSString *menuPress[6] = {
     
     [btn setImage:idle forState:UIControlStateNormal];
     [btn setImage:click forState:UIControlStateHighlighted];
-    [btn addTarget:self action:@selector(onExplorerClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(onPlazeClicked:) forControlEvents:UIControlEventTouchUpInside];
     [menuBar addSubview:btn];
     
     // camera
@@ -306,7 +306,7 @@ static NSString *menuPress[6] = {
 
 }
 #pragma mark Page Down
-- (void)onExplorerClicked:(id)sender
+- (void)onPlazeClicked:(id)sender
 {
     SCPMainTabController *tabCtrl = [navController.childViewControllers objectAtIndex:0];
     if (tabCtrl.selectedIndex == 0 && self.navController.viewControllers.count == 1) {

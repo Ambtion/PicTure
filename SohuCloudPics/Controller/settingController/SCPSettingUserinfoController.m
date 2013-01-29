@@ -75,7 +75,7 @@
 {
     SCPMenuNavigationController * menu = (SCPMenuNavigationController *)controller;
     [menu dismissModalViewControllerAnimated:NO];
-    [menu.menuManager onExplorerClicked:nil];
+    [menu.menuManager onPlazeClicked:nil];
 }
 
 - (BOOL)stringContainsEmoji:(NSString *)string {

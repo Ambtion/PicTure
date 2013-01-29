@@ -148,7 +148,7 @@ static float OFFSET = 0.f;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.controller.navigationController;
-    [menu.menuManager onExplorerClicked:nil];
+    [menu.menuManager onPlazeClicked:nil];
 }
 - (void)restNetWorkState
 {

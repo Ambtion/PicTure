@@ -1,5 +1,4 @@
 //
-//  ExploreCell2.m
 //  SohuCloudPics
 //
 //  Created by sohu on 12-11-16.
@@ -15,7 +14,7 @@
 @synthesize imageFrame = _imageFrame;
 @synthesize infoArray = _infoArray;
 @synthesize identify = _identify;
-@synthesize heigth = _heigth;
+@synthesize higth = _higth;
 - (void)dealloc
 {
     [_viewRectFrame release];
@@ -36,6 +35,7 @@
     [_imageViewArray release];
     [super dealloc];
 }
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andframe:(NSArray *)frames height:(CGFloat)height
 {
     
@@ -57,7 +57,6 @@
         view = [[UIView alloc] initWithFrame:[(NSValue *)[frames objectAtIndex:i] CGRectValue]];
         view.backgroundColor = [UIColor clearColor];
         view.clipsToBounds = YES;
-    
         imageView = [[UIImageView alloc] initWithFrame:view.bounds];
         imageView.tag = i;
         imageView.image = [UIImage imageNamed:@"default_cell.png"];
@@ -68,7 +67,6 @@
         [view addSubview:imageView];
         [self.contentView addSubview:view];
         [_imageViewArray addObject:imageView];
-        
         [gesture release];
         [imageView release];
         [view release];
