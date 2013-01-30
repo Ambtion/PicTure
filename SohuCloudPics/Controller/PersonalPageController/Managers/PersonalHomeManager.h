@@ -17,8 +17,8 @@
 #import "SCPLoginViewController.h"
 #import "SCPAlert_WaitView.h"
 
-@class SCPPersonalPageViewController;
-@interface PersonalPageManager : NSObject <UITableViewDataSource, PullingRefreshTableViewDelegate, FeedCellDelegate, PersonalPageCellDelegate, SCPRequestManagerDelegate, UIAlertViewDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate>
+@class SCPPersonalHomeController;
+@interface PersonalHomeManager : NSObject <UITableViewDataSource, PullingRefreshTableViewDelegate, FeedCellDelegate, PersonalPageCellDelegate, SCPRequestManagerDelegate, UIAlertViewDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate>
 {
     NSMutableArray* _dataArray;
     SCPRequestManager  * _requestManager;
@@ -34,9 +34,9 @@
     NSInteger curPage;
 }
 
-@property (assign, nonatomic) SCPPersonalPageViewController *controller;
+@property (assign, nonatomic) SCPPersonalHomeController *controller;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
-- (id)initWithController:(SCPPersonalPageViewController *)ctrl useID:(NSString *)useID;
+- (id)initWithController:(SCPPersonalHomeController *)ctrl useID:(NSString *)useID;
 - (void)loadingMore:(id)sender;
 - (void)showLoadingMore;
 @end

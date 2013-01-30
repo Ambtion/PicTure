@@ -9,7 +9,7 @@
 #import "SCPFollowingListManager.h"
 #import "SCPFollowingListViewController.h"
 #import "SCPMyHomeController.h"
-#import "SCPPersonalPageViewController.h"
+#import "SCPPersonalHomeController.h"
 #import "SCPAlert_CustomeView.h"
 
 
@@ -35,7 +35,7 @@
         _isLoading = NO;
         _isinit = YES;
         _willRefresh = YES;
-        hasNext = YES;
+        _hasNext = YES;
         curPage = 1;
         _controller = ctrl;
         _dataSource = [[NSMutableArray alloc] initWithCapacity:0];
@@ -54,7 +54,7 @@
     if (userinfo)
         _maxNum = [[userinfo objectForKey:@"followings"] intValue];
     NSDictionary  * followings = [info objectForKey:@"Followings"];
-    hasNext = [[followings  objectForKey:@"has_next"] boolValue];
+    _hasNext = [[followings  objectForKey:@"has_next"] boolValue];
     curPage = [[followings  objectForKey:@"page"] intValue];
     NSArray * followingsArray = [followings objectForKey:@"followings"];
     if (_willRefresh)
@@ -114,7 +114,7 @@
         [_requestManger getFollowingInfoWithUserID:_user_ID];
         
     }else{
-        if (!hasNext && !_isinit){
+        if (!_hasNext && !_isinit){
             _isLoading = NO;
             [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
             return;
@@ -174,6 +174,7 @@
 }
 #pragma mark -
 #pragma tableviewdataSouce
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -181,7 +182,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (!hasNext && !_isinit ) {
+    if (!_hasNext && !_isinit ) {
         self.controller.pullingController.footView.hidden = YES;
     }else{
         self.controller.pullingController.footView.hidden = NO;
@@ -268,7 +269,7 @@
         [_controller.navigationController pushViewController:myhome animated:YES];
         
     }else{
-        SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:cell.dataSource.user_id] autorelease];
+        SCPPersonalHomeController * scp = [[[SCPPersonalHomeController alloc] initWithNibName:Nil bundle:Nil useID:cell.dataSource.user_id] autorelease];
         [_controller.navigationController pushViewController:scp animated:YES];
     }
 }

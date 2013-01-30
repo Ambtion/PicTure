@@ -18,8 +18,8 @@
     RefreshButton* _refreshButton;
 }
 
-@property (strong, nonatomic) PullingRefreshController *pullingController;
-@property (strong, nonatomic) SCPFollowingListManager *manager;
+@property (strong, nonatomic) PullingRefreshController * pullingController;
+@property (strong, nonatomic) SCPFollowingListManager * manager;
 @property (strong, nonatomic) RefreshButton * refreshButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil useID:(NSString *) use_ID;
 @end

@@ -99,7 +99,7 @@
 		B7D3ACCF1622F18E00026BA1 /* menu_upload_press.png in Resources */ = {isa = PBXBuildFile; fileRef = B7D3ACC31622F18E00026BA1 /* menu_upload_press.png */; };
 		B7D3ACD01622F18E00026BA1 /* menu_upload.png in Resources */ = {isa = PBXBuildFile; fileRef = B7D3ACC41622F18E00026BA1 /* menu_upload.png */; };
 		B7D72A8916420D270018ED30 /* SCPPhotoGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D72A8816420D270018ED30 /* SCPPhotoGridCell.m */; };
-		B7D83AD415F99FCB00569900 /* SCPPersonalPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AD315F99FCB00569900 /* SCPPersonalPageViewController.m */; };
+		B7D83AD415F99FCB00569900 /* SCPPersonalHomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AD315F99FCB00569900 /* SCPPersonalHomeController.m */; };
 		B7D83AD915F99FEA00569900 /* SCPPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AD815F99FEA00569900 /* SCPPhotoDetailViewController.m */; };
 		B7D83AE315F9A00900569900 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AE015F9A00900569900 /* CommentCell.m */; };
 		B7D83AE715F9A02600569900 /* SCPFollowingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AE615F9A02600569900 /* SCPFollowingListViewController.m */; };
@@ -108,7 +108,7 @@
 		B7DAFD6C1648E78100E57B6F /* check_box_select_image.png in Resources */ = {isa = PBXBuildFile; fileRef = B7DAFD6B1648E78100E57B6F /* check_box_select_image.png */; };
 		B7DC2D5B161153E1001E881A /* drewer_btn_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = B7DC2D59161153E1001E881A /* drewer_btn_normal.png */; };
 		B7DC2D5C161153E1001E881A /* drewer_btn_press.png in Resources */ = {isa = PBXBuildFile; fileRef = B7DC2D5A161153E1001E881A /* drewer_btn_press.png */; };
-		B7DF543015F84A8C00D37A4E /* PersonalPageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DF542F15F84A8C00D37A4E /* PersonalPageManager.m */; };
+		B7DF543015F84A8C00D37A4E /* PersonalHomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DF542F15F84A8C00D37A4E /* PersonalHomeManager.m */; };
 		B7DF543815F84F7200D37A4E /* SCPFollowedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DF543715F84F7200D37A4E /* SCPFollowedListViewController.m */; };
 		B7DF543C15F8504600D37A4E /* FeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DF543B15F8504600D37A4E /* FeedCell.m */; };
 		B7E40F7D161303040086320C /* share_pic_comments.png in Resources */ = {isa = PBXBuildFile; fileRef = B7E40F7B161303040086320C /* share_pic_comments.png */; };
@@ -300,7 +300,6 @@
 		C587AD3A169E705B00F2C16F /* SCPAlert_AlbumProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = C587AD39169E705B00F2C16F /* SCPAlert_AlbumProperty.m */; };
 		C58803DA162BB74B00249D8D /* drewer_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C58803D9162BB74B00249D8D /* drewer_bg.png */; };
 		C58803DF162BC16D00249D8D /* SCPMyHomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803DE162BC16C00249D8D /* SCPMyHomeController.m */; };
-		C58803E7162BC28A00249D8D /* MyhomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803E6162BC28A00249D8D /* MyhomeManager.m */; };
 		C58803EA162BDCA800249D8D /* MyPersonalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803E9162BDCA800249D8D /* MyPersonalCell.m */; };
 		C58803F7162BEB1100249D8D /* SCPSetttingController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803F6162BEB1100249D8D /* SCPSetttingController.m */; };
 		C58803FA162BEB5E00249D8D /* SCPSettingRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803F9162BEB5E00249D8D /* SCPSettingRootViewController.m */; };
@@ -442,6 +441,7 @@
 		C5D47C80168AD54E00C522E3 /* SCPSettingUserinfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D47C7F168AD54E00C522E3 /* SCPSettingUserinfoController.m */; };
 		C5D47C8E168AFCFB00C522E3 /* SCPAlert_FeedBack.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D47C8D168AFCFB00C522E3 /* SCPAlert_FeedBack.m */; };
 		C5D9A7DD1637DF3E004BD68D /* ImageToolBox.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9A7DC1637DF3E004BD68D /* ImageToolBox.m */; };
+		C5D9E03116B916CC00B2A442 /* MyHomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9E03016B916CC00B2A442 /* MyHomeManager.m */; };
 		C5E2908A16229EB70085EBE9 /* Filterlibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E2908916229EB70085EBE9 /* Filterlibrary.m */; };
 		C5ECD34516106E70000AE4F9 /* PersonalPageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ECD34416106E70000AE4F9 /* PersonalPageCell.m */; };
 		C5ECD35416106F59000AE4F9 /* FeedDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ECD35316106F59000AE4F9 /* FeedDescription.m */; };
@@ -628,8 +628,8 @@
 		B7D3ACC41622F18E00026BA1 /* menu_upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_upload.png; sourceTree = "<group>"; };
 		B7D72A8716420D270018ED30 /* SCPPhotoGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPPhotoGridCell.h; sourceTree = "<group>"; };
 		B7D72A8816420D270018ED30 /* SCPPhotoGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPhotoGridCell.m; sourceTree = "<group>"; };
-		B7D83AD215F99FCB00569900 /* SCPPersonalPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPPersonalPageViewController.h; path = Controller/PersonalPageController/SCPPersonalPageViewController.h; sourceTree = "<group>"; };
-		B7D83AD315F99FCB00569900 /* SCPPersonalPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPPersonalPageViewController.m; path = Controller/PersonalPageController/SCPPersonalPageViewController.m; sourceTree = "<group>"; };
+		B7D83AD215F99FCB00569900 /* SCPPersonalHomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPPersonalHomeController.h; path = Controller/PersonalPageController/SCPPersonalHomeController.h; sourceTree = "<group>"; };
+		B7D83AD315F99FCB00569900 /* SCPPersonalHomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPPersonalHomeController.m; path = Controller/PersonalPageController/SCPPersonalHomeController.m; sourceTree = "<group>"; };
 		B7D83AD715F99FEA00569900 /* SCPPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPPhotoDetailViewController.h; path = Controller/PhotoDetailController/SCPPhotoDetailViewController.h; sourceTree = "<group>"; };
 		B7D83AD815F99FEA00569900 /* SCPPhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPPhotoDetailViewController.m; path = Controller/PhotoDetailController/SCPPhotoDetailViewController.m; sourceTree = "<group>"; };
 		B7D83ADF15F9A00900569900 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentCell.h; path = Controller/PhotoDetailController/Views/CommentCell.h; sourceTree = "<group>"; };
@@ -643,8 +643,7 @@
 		B7DAFD6B1648E78100E57B6F /* check_box_select_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check_box_select_image.png; sourceTree = "<group>"; };
 		B7DC2D59161153E1001E881A /* drewer_btn_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drewer_btn_normal.png; sourceTree = "<group>"; };
 		B7DC2D5A161153E1001E881A /* drewer_btn_press.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drewer_btn_press.png; sourceTree = "<group>"; };
-		B7DF542E15F84A8C00D37A4E /* PersonalPageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonalPageManager.h; path = Controller/PersonalPageController/Managers/PersonalPageManager.h; sourceTree = "<group>"; };
-		B7DF542F15F84A8C00D37A4E /* PersonalPageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonalPageManager.m; path = Controller/PersonalPageController/Managers/PersonalPageManager.m; sourceTree = "<group>"; };
+		B7DF542F15F84A8C00D37A4E /* PersonalHomeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonalHomeManager.m; path = Controller/PersonalPageController/Managers/PersonalHomeManager.m; sourceTree = "<group>"; };
 		B7DF543615F84F7200D37A4E /* SCPFollowedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPFollowedListViewController.h; path = Controller/FollowedListController/SCPFollowedListViewController.h; sourceTree = "<group>"; };
 		B7DF543715F84F7200D37A4E /* SCPFollowedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPFollowedListViewController.m; path = Controller/FollowedListController/SCPFollowedListViewController.m; sourceTree = "<group>"; };
 		B7DF543A15F8504600D37A4E /* FeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedCell.h; path = View/FeedCell/FeedCell.h; sourceTree = "<group>"; };
@@ -884,8 +883,7 @@
 		C58803D9162BB74B00249D8D /* drewer_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drewer_bg.png; sourceTree = "<group>"; };
 		C58803DD162BC16C00249D8D /* SCPMyHomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPMyHomeController.h; sourceTree = "<group>"; };
 		C58803DE162BC16C00249D8D /* SCPMyHomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPMyHomeController.m; sourceTree = "<group>"; };
-		C58803E5162BC28A00249D8D /* MyhomeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyhomeManager.h; sourceTree = "<group>"; };
-		C58803E6162BC28A00249D8D /* MyhomeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyhomeManager.m; sourceTree = "<group>"; };
+		C58803E5162BC28A00249D8D /* MyHomeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHomeManager.h; sourceTree = "<group>"; };
 		C58803E8162BDCA800249D8D /* MyPersonalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPersonalCell.h; sourceTree = "<group>"; };
 		C58803E9162BDCA800249D8D /* MyPersonalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPersonalCell.m; sourceTree = "<group>"; };
 		C58803F5162BEB1100249D8D /* SCPSetttingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPSetttingController.h; sourceTree = "<group>"; };
@@ -1074,6 +1072,8 @@
 		C5D47C8D168AFCFB00C522E3 /* SCPAlert_FeedBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlert_FeedBack.m; sourceTree = "<group>"; };
 		C5D9A7DB1637DF3E004BD68D /* ImageToolBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageToolBox.h; sourceTree = "<group>"; };
 		C5D9A7DC1637DF3E004BD68D /* ImageToolBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageToolBox.m; sourceTree = "<group>"; };
+		C5D9E03016B916CC00B2A442 /* MyHomeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHomeManager.m; sourceTree = "<group>"; };
+		C5D9E03216B9186100B2A442 /* PersonalHomeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonalHomeManager.h; path = Controller/PersonalPageController/Managers/PersonalHomeManager.h; sourceTree = "<group>"; };
 		C5E2908816229EB70085EBE9 /* Filterlibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filterlibrary.h; sourceTree = "<group>"; };
 		C5E2908916229EB70085EBE9 /* Filterlibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Filterlibrary.m; sourceTree = "<group>"; };
 		C5ECD34316106E70000AE4F9 /* PersonalPageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonalPageCell.h; path = Controller/PersonalPageController/Views/PersonalPageCell.h; sourceTree = "<group>"; };
@@ -1351,7 +1351,7 @@
 				C58FE9161643C76700E8CFB7 /* AlbumListController */,
 				B7D83AD615F99FD800569900 /* PhotoDetailController */,
 				DFED89241610431900890069 /* PhotoGridController */,
-				B7DF542815F83F8600D37A4E /* PersonalPageController */,
+				B7DF542815F83F8600D37A4E /* PersonalHomeController */,
 				C58803DC162BC14F00249D8D /* MyHome */,
 				61EE77EC15DE321C0007C158 /* ELCImagePicker */,
 				B7DF543415F84D5B00D37A4E /* FollowedListController */,
@@ -1823,15 +1823,15 @@
 			path = Resource/image/albumOnline;
 			sourceTree = "<group>";
 		};
-		B7DF542815F83F8600D37A4E /* PersonalPageController */ = {
+		B7DF542815F83F8600D37A4E /* PersonalHomeController */ = {
 			isa = PBXGroup;
 			children = (
 				B7DF542915F84A1300D37A4E /* Views */,
 				B7DF542A15F84A1900D37A4E /* Managers */,
-				B7D83AD215F99FCB00569900 /* SCPPersonalPageViewController.h */,
-				B7D83AD315F99FCB00569900 /* SCPPersonalPageViewController.m */,
+				B7D83AD215F99FCB00569900 /* SCPPersonalHomeController.h */,
+				B7D83AD315F99FCB00569900 /* SCPPersonalHomeController.m */,
 			);
-			name = PersonalPageController;
+			name = PersonalHomeController;
 			sourceTree = "<group>";
 		};
 		B7DF542915F84A1300D37A4E /* Views */ = {
@@ -1848,8 +1848,8 @@
 		B7DF542A15F84A1900D37A4E /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				B7DF542E15F84A8C00D37A4E /* PersonalPageManager.h */,
-				B7DF542F15F84A8C00D37A4E /* PersonalPageManager.m */,
+				C5D9E03216B9186100B2A442 /* PersonalHomeManager.h */,
+				B7DF542F15F84A8C00D37A4E /* PersonalHomeManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -2308,8 +2308,8 @@
 		C58803E0162BC1E500249D8D /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				C58803E5162BC28A00249D8D /* MyhomeManager.h */,
-				C58803E6162BC28A00249D8D /* MyhomeManager.m */,
+				C58803E5162BC28A00249D8D /* MyHomeManager.h */,
+				C5D9E03016B916CC00B2A442 /* MyHomeManager.m */,
 				C508A6BD16845BEB006D86B9 /* HomeBackContainer.h */,
 				C508A6BE16845BEB006D86B9 /* HomeBackContainer.m */,
 			);
@@ -2947,11 +2947,11 @@
 				B7205D7715EE4293001CE863 /* PlazeManager.m in Sources */,
 				B7205D8815EE42CD001CE863 /* FeedManager.m in Sources */,
 				618AA65D15F8355A00CA9D9A /* SCPMenuManager.m in Sources */,
-				B7DF543015F84A8C00D37A4E /* PersonalPageManager.m in Sources */,
+				B7DF543015F84A8C00D37A4E /* PersonalHomeManager.m in Sources */,
 				B7DF543815F84F7200D37A4E /* SCPFollowedListViewController.m in Sources */,
 				B7DF543C15F8504600D37A4E /* FeedCell.m in Sources */,
 				C589F45A15F98ACA00FAC5B1 /* GifDetail.m in Sources */,
-				B7D83AD415F99FCB00569900 /* SCPPersonalPageViewController.m in Sources */,
+				B7D83AD415F99FCB00569900 /* SCPPersonalHomeController.m in Sources */,
 				B7D83AD915F99FEA00569900 /* SCPPhotoDetailViewController.m in Sources */,
 				B7D83AE315F9A00900569900 /* CommentCell.m in Sources */,
 				B7D83AE715F9A02600569900 /* SCPFollowingListViewController.m in Sources */,
@@ -2984,7 +2984,6 @@
 				B7CFD39C1615868300F348DE /* SCPAlert_LoginView.m in Sources */,
 				C5E2908A16229EB70085EBE9 /* Filterlibrary.m in Sources */,
 				C58803DF162BC16D00249D8D /* SCPMyHomeController.m in Sources */,
-				C58803E7162BC28A00249D8D /* MyhomeManager.m in Sources */,
 				C58803EA162BDCA800249D8D /* MyPersonalCell.m in Sources */,
 				C58803F7162BEB1100249D8D /* SCPSetttingController.m in Sources */,
 				C58803FA162BEB5E00249D8D /* SCPSettingRootViewController.m in Sources */,
@@ -3081,6 +3080,7 @@
 				C593BFA516AD0BBD0015CE50 /* SCPNewFoldersCell.m in Sources */,
 				C58B5EB516AF8B4A00D7E4FE /* CountLabel.m in Sources */,
 				C58BA24C16B7AB7C00338CE4 /* PlazeDataAdapter.m in Sources */,
+				C5D9E03116B916CC00B2A442 /* MyHomeManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

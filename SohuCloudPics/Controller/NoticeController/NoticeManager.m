@@ -7,7 +7,7 @@
 //
 
 #import "NoticeManager.h"
-#import "SCPPersonalPageViewController.h"
+#import "SCPPersonalHomeController.h"
 #import "SCPFollowedListViewController.h"
 #import "SCPAlertView_LoginTip.h"
 

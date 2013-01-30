@@ -9,7 +9,7 @@
 #import "SCPFollowedListManager.h"
 #import "SCPFollowedListViewController.h"
 
-#import "SCPPersonalPageViewController.h"
+#import "SCPPersonalHomeController.h"
 #import "SCPMyHomeController.h"
 
 @implementation SCPFollowedListManager
@@ -266,7 +266,7 @@
         [_controller.navigationController pushViewController:myhome animated:YES];
 
     }else{
-        SCPPersonalPageViewController * scp = [[[SCPPersonalPageViewController alloc] initWithNibName:Nil bundle:Nil useID:cell.dataSource.user_id] autorelease];
+        SCPPersonalHomeController * scp = [[[SCPPersonalHomeController alloc] initWithNibName:Nil bundle:Nil useID:cell.dataSource.user_id] autorelease];
         [_controller.navigationController pushViewController:scp animated:YES];
     }
 }

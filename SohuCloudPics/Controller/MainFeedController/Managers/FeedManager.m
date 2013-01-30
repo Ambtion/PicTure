@@ -10,7 +10,7 @@
 
 
 #import "SCPFeedController.h"
-#import "SCPPersonalPageViewController.h"
+#import "SCPPersonalHomeController.h"
 #import "SCPPhotoDetailViewController.h"
 #import "SCPAlertView_LoginTip.h"
 #import "SCPAlert_CustomeView.h"
@@ -285,7 +285,7 @@
 {
     // do nothing for it mainfeedPage
     NSString * user_id = [NSString stringWithFormat:@"%@",[cell.dataSource.allInfo objectForKey:@"user_id"]];
-    SCPPersonalPageViewController *controller = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:nil useID:user_id];
+    SCPPersonalHomeController *controller = [[SCPPersonalHomeController alloc] initWithNibName:nil bundle:nil useID:user_id];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];
     

@@ -8,7 +8,7 @@
 
 #import "FeedCell.h"
 #import "UIImageView+WebCache.h"
-#import "SCPPersonalPageViewController.h"
+#import "SCPPersonalHomeController.h"
 
 #define OFFSETY 2
 

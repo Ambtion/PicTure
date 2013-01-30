@@ -10,7 +10,7 @@
 
 #import "SCPPhotoDetailViewController.h"
 #import "SCPMyHomeController.h"
-#import "SCPPersonalPageViewController.h"
+#import "SCPPersonalHomeController.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPLoginPridictive.h"
 #import "SCPDescriptionEditController.h"
@@ -282,7 +282,7 @@
         SCPMyHomeController * myhome = [[[SCPMyHomeController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
         [nav pushViewController:myhome animated:YES];
     }else{
-        SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
+        SCPPersonalHomeController *ctrl = [[SCPPersonalHomeController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];
         [nav pushViewController:ctrl animated:YES];
         [ctrl release];
     }

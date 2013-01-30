@@ -15,21 +15,21 @@
 
 @class SCPMyHomeController;
 
-@interface MyhomeManager : NSObject
-<UITableViewDataSource,MyPersonalCellDelegate,FeedCellDelegate,UITableViewDelegate,SCPRequestManagerDelegate,UIAlertViewDelegate>
+@interface MyHomeManager : NSObject<UITableViewDataSource,MyPersonalCellDelegate,
+                            FeedCellDelegate,UITableViewDelegate,SCPRequestManagerDelegate,UIAlertViewDelegate>
 {
     NSMutableArray* _dataArray;
     SCPRequestManager  * _requestManager;
     MyPersonalCelldataSource * _personalDataSource;
     NSString * _user_ID;
-    SCPAlert_WaitView * wait;
+    SCPAlert_WaitView * _wait;
     
-    NSInteger curPage;
+    NSInteger _curPage;
     BOOL _isLoading;
     BOOL _willRefresh;
     BOOL _isinit;
     BOOL _loadingMore;
-    BOOL hasNextpage;
+    BOOL _hasNextpage;
 }
 
 @property (assign, nonatomic) SCPMyHomeController *controller;

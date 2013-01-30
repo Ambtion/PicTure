@@ -9,16 +9,17 @@
 #import <UIKit/UIKit.h>
 
 #import "SCPSecondLayerController.h"
-#import "PersonalPageManager.h"
+#import "PersonalHomeManager.h"
 
-@interface SCPPersonalPageViewController : SCPSecondLayerController
+@interface SCPPersonalHomeController : SCPSecondLayerController
 {
     UIView *_footView;
 }
-@property (strong, nonatomic) PersonalPageManager *manager;
+@property (strong, nonatomic) PersonalHomeManager *manager;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) UIView * footView;
 @property (strong, nonatomic) UIButton * topButton;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil useID:(NSString *) use_ID;
 
 @end

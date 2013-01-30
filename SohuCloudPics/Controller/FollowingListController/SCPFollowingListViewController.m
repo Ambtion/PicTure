@@ -39,13 +39,11 @@
     [super viewDidLoad];
     
     self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_follow.png"] frame:self.view.bounds] autorelease];
-    //customer for  scrollview
     self.pullingController.headView.bannerName.frame = CGRectMake(110, 38, 100, 24);
     self.pullingController.delegate = self.manager;
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
     [self.view addSubview:self.pullingController.view];
-//    [self.manager dataSourcewithRefresh:YES];
     [self.pullingController realLoadingMore:nil];
     
 }

@@ -6,21 +6,22 @@
 //  Copyright (c) 2012年 sohu.com. All rights reserved.
 //
 
-#import "SCPPersonalPageViewController.h"
+#import "SCPPersonalHomeController.h"
 
 #import "SCPMenuNavigationController.h"
 #import "SCPFollowedListViewController.h"
 #import "SCPFollowingListViewController.h"
 
-@interface SCPPersonalPageViewController ()
+@interface SCPPersonalHomeController ()
 - (void)personalTopButtonHandle:(id)sender;
 @end
 
-@implementation SCPPersonalPageViewController
+@implementation SCPPersonalHomeController
 @synthesize manager = _manager;
 @synthesize footView = _footView;
 @synthesize tableView = _tableView;
 @synthesize topButton = _topButton;
+
 
 - (void)dealloc
 {
@@ -35,7 +36,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _manager = [[PersonalPageManager alloc] initWithController:self useID:useID];
+        _manager = [[PersonalHomeManager alloc] initWithController:self useID:useID];
     }
     return self;
 }

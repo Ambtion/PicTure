@@ -32,7 +32,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _manager = [[MyhomeManager alloc] initWithController:self useID:use_ID];
+        _manager = [[MyHomeManager alloc] initWithController:self useID:use_ID];
     }
     return self;
 }
