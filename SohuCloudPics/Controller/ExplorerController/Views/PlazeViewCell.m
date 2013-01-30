@@ -57,6 +57,7 @@
         view = [[UIView alloc] initWithFrame:[(NSValue *)[frames objectAtIndex:i] CGRectValue]];
         view.backgroundColor = [UIColor clearColor];
         view.clipsToBounds = YES;
+        
         imageView = [[UIImageView alloc] initWithFrame:view.bounds];
         imageView.tag = i;
         imageView.image = [UIImage imageNamed:@"default_cell.png"];
@@ -64,6 +65,7 @@
         UITapGestureRecognizer * gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlegesture:)];
         [imageView addGestureRecognizer:gesture];
         [imageView setUserInteractionEnabled:YES];
+        
         [view addSubview:imageView];
         [self.contentView addSubview:view];
         [_imageViewArray addObject:imageView];
