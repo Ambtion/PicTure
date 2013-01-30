@@ -8,7 +8,6 @@
 
 #import "FeedCell.h"
 #import "UIImageView+WebCache.h"
-
 #import "SCPPersonalPageViewController.h"
 
 #define OFFSETY 2
@@ -17,11 +16,21 @@
 
 @synthesize photoImage = _photoImage, portrailImage = _portrailImage, name = _name,
 update = _update;
-//@synthesize favourtecount = _favourtecount;
 @synthesize isGif = _isGif;
-//@synthesize allInfo = _allInfo;
-@synthesize heigth = _heigth;
-
+@synthesize offset = _offset;
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.offset = 10;
+    }
+    return self;
+}
+- (CGFloat)getHeight
+{
+    //imageHeigth + portraitHeigth + offset
+    return 320 + 70 + self.offset;
+}
 - (void)dealloc
 {
     self.photoImage = nil;
@@ -31,7 +40,6 @@ update = _update;
     self.allInfo = nil;
     [super dealloc];
 }
-
 @end
 
 enum {
@@ -41,9 +49,9 @@ enum {
 
 @implementation FeedCell
 @synthesize delegate = _delegate;
-@synthesize maxImageHeigth = _maxImageHeigth;
 @synthesize photoImageView = _photoImageView;
 @synthesize gifPlayButton = _gifPlayButton;
+
 - (void)dealloc
 {
     [_photoImageView release];
@@ -51,8 +59,6 @@ enum {
     [_portraitView release];
     [_nameLabel release];
     [_positionTimeLabel release];
-    //    [_favorButton release];
-    //    [_commentButton release];
     [_dataSource release];
     [_gifPlayButton release];
     [super dealloc];
@@ -63,12 +69,10 @@ enum {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         [self addsubViews];
     }
     return self;
 }
-
 - (void)addsubViews
 {
     [self addPhotoImageView];
@@ -77,6 +81,7 @@ enum {
 
 - (void)addPhotoImageView
 {
+    
     UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)] autorelease];
     view.backgroundColor = [UIColor colorWithRed:250.f/255 green:250.f/255 blue:250.f/255 alpha:1];
     view.clipsToBounds = YES;
@@ -88,6 +93,7 @@ enum {
     [self.contentView addSubview:view];
     _photoImageView.frame = CGRectMake(0, 0, 320, 320);
     _photoImageView.center = CGPointMake(160, 160);
+    
 }
 - (void)addtailer
 {
@@ -120,15 +126,7 @@ enum {
     _positionTimeLabel.textColor = [UIColor colorWithRed:97.0/255 green:120.0/255 blue:137.0/255 alpha:1];
     _positionTimeLabel.backgroundColor = [UIColor clearColor];
     [tailerView addSubview:_positionTimeLabel];
-    
-    //    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(205 - 7, 5 + OFFSETY, 51, 18)];
-    //    _favorButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
-    //    [_favorButton addtarget:self action:@selector(favorButtonClicked)];
-    //    [tailerView addSubview:_favorButton];
-    //    _commentButton = [[MyFavouriteView alloc] initWithFrame:CGRectMake(266 - 7, 5 + OFFSETY, 51, 18)];
-    //    [_commentButton addtarget:self action:@selector(commentButtonClicked)];
-    //    _commentButton.imageView.image = [UIImage imageNamed:@"comments.png"];
-    //    [tailerView addSubview:_commentButton];
+
     [self.contentView addSubview:tailerView];
 }
 
@@ -153,13 +151,11 @@ enum {
 }
 - (void)updataData
 {
-    
-  
+    self.contentView.frame = CGRectMake(0, 0, 320, [_dataSource getHeight]);
     [_photoImageView cancelCurrentImageLoad];
     NSString * str = [NSString stringWithFormat:@"%@_c640",_dataSource.photoImage];
     [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     [self showGifButton];
-    
     if (!_dataSource ||![_dataSource.name isKindOfClass:[NSString class]] || [_dataSource.name isEqualToString:@""]) {
         _nameLabel.text = @"佚名";
     }else{

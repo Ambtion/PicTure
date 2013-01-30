@@ -77,7 +77,7 @@
         self.infoFromSuper = info;
         FeedCellDataSource *fAdapter = [[FeedCellDataSource alloc] init];
         fAdapter.allInfo = self.infoFromSuper;
-        fAdapter.heigth = [self getHeightofImage:[[self.infoFromSuper objectForKey:@"height"] floatValue] :[[self.infoFromSuper   objectForKey:@"width"] floatValue]];
+        fAdapter.offset = 0;
         fAdapter.name = [self.infoFromSuper objectForKey:@"user_nick"];
         fAdapter.portrailImage = [self.infoFromSuper objectForKey:@"user_icon"];
         
@@ -98,17 +98,7 @@
         [_dataSourceArray addObject:data];
         [data release];
     }
-    //    if (_isinit) {
-    //        _isinit = NO;
-    //        _isLoading = NO;
-    //        [self.controller.pullingController moreDoneLoadingTableViewData];
-    //        [self.controller.pullingController refreshDoneLoadingTableViewData];
-    //        [self.controller.pullingController reloadDataSourceWithAniamtion:YES];
-    //        return;
-    //    }
-    //    if (_willRefresh) {
     [self refreshDataFinishLoad:nil];
-    //    }
 }
 #pragma networkFailed
 - (void)requestFailed:(NSString *)error
@@ -153,7 +143,6 @@
 
 - (void)pullingreloadTableViewDataSource:(id)sender
 {
-    //    NSLog(@"dataSourcewithRefresh");
     [self refreshData:nil];
 }
 - (void)refreshDataFinishLoad:(id)sender
@@ -163,6 +152,7 @@
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
 }
 #pragma mark More Action
+
 //1:下拉刷新 2:刷新结束
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
@@ -202,11 +192,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //    if (_isinit) {
-    //        [self.controller.pullingController.footView setHidden:NO];
-    //    }else{
-    //        [self.controller.pullingController.footView setHidden:YES];
-    //    }
     return _dataSourceArray.count;
 }
 
@@ -214,16 +199,11 @@
 {
     int i = indexPath.row;
     if (i == 0) {
-        CGFloat height = ((FeedCellDataSource *)[_dataSourceArray objectAtIndex:0]).heigth;
-        if (height < 320) {
-            return 320 + 70;
-        }else if(height > MAXIMAGEHEIGTH){
-            return MAXIMAGEHEIGTH + 70;
-        }else{
-            return height + 70;
-        }
+        FeedCellDataSource * dataSource = ((FeedCellDataSource *)[_dataSourceArray objectAtIndex:0]);
+        return [dataSource getHeight];
     }
     if (i == 1){
+        
         FeedDescriptionSource * data = [_dataSourceArray objectAtIndex:1];
         NSString * str = data.describtion;
         CGSize size = CGSizeZero;
@@ -242,12 +222,11 @@
 {
     int row = indexPath.row;
     if (row == 0) {
-        //./ -> View ->FeedCell(Myfavorite)
+        
         FeedCell * picture = [tableView dequeueReusableCellWithIdentifier:@"Picture"];
         if (picture == nil){
             picture = [[[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Picture"] autorelease];
             picture.delegate = self;
-            picture.maxImageHeigth = MAXIMAGEHEIGTH;
         }
         picture.dataSource = [_dataSourceArray objectAtIndex:row];
         return picture;

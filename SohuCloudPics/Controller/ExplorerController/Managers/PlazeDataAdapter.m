@@ -113,9 +113,9 @@ static NSInteger lastNum = -1;
 {
     NSInteger num_strategy = [self randomNum];
     NSMutableArray * frames = [[[NSMutableArray alloc] init] autorelease];
-    CGFloat hight = strategys[num_strategy](frames,nil);
+    CGFloat height = strategys[num_strategy](frames,nil);
     NSDictionary * dic = [NSDictionary dictionaryWithObjectsAndKeys:
-                          [NSNumber numberWithFloat:hight],@"hight",frames,@"viewFrame",[NSNumber numberWithInt:num_strategy],@"strategy_num",nil];
+                          [NSNumber numberWithFloat:height],@"height",frames,@"viewFrame",[NSNumber numberWithInt:num_strategy],@"strategy_num",nil];
     return dic;
 }
 + (NSArray *)getURLArrayByImageFrames:(NSArray *)frames FrominfoSource:(NSArray *)infoSource

@@ -115,7 +115,7 @@ static float OFFSET = 0.f;
         FeedCellDataSource *adapter = [[FeedCellDataSource alloc] init];
         NSDictionary * photo = [photoList objectAtIndex:i];
         adapter.allInfo = photo;
-        adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
+//        adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
         adapter.name = [photo objectForKey:@"user_nick"];
         adapter.update =[photo objectForKey:@"upload_at_desc"];
         adapter.portrailImage = [photo objectForKey:@"user_icon"];
@@ -134,7 +134,6 @@ static float OFFSET = 0.f;
         [self loadingMoreFinished];
     }
 }
-
 #pragma mark - Network Failed
 - (void)requestFailed:(NSString *)error
 {
@@ -225,13 +224,11 @@ static float OFFSET = 0.f;
 }
 - (void)showLoadingMore
 {
-    
     UIView * view  = _controller.tableView.tableFooterView;
     UILabel * label = (UILabel *)[view viewWithTag:100];
     UIActivityIndicatorView * acv  = (UIActivityIndicatorView *)[view viewWithTag:200];
     label.text = @"加载中...";
     [acv startAnimating];
-
 }
 - (void)loadingMore:(id)sender
 {
@@ -270,17 +267,11 @@ static float OFFSET = 0.f;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger i = indexPath.row;
-    if (i == 0) {
+     if (i == 0) {
         return 367 + 60 + 10;
     }
-    CGFloat height = ((FeedCellDataSource *)[_dataArray objectAtIndex:i - 1]).heigth;
-    if (height < 320) {
-        return 320 + 70 + 10;
-    }else if(height > MAXIMAGEHEIGTH){
-        return MAXIMAGEHEIGTH + 70 + 10;
-    }else{
-        return height + 70 + 10;
-    }
+    FeedCellDataSource * dataSource = ((FeedCellDataSource *)[_dataArray objectAtIndex:i - 1]);
+    return [dataSource getHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -301,7 +292,6 @@ static float OFFSET = 0.f;
         if (feedCell == nil) {
             feedCell = [[[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FEEDCELL"] autorelease];
             feedCell.delegate = self;
-            feedCell.maxImageHeigth = MAXIMAGEHEIGTH;
         }
         if (_dataArray.count > row -1)
             feedCell.dataSource = [_dataArray objectAtIndex:row - 1];

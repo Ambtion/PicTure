@@ -10,20 +10,19 @@
 
 
 #import "PullingRefreshController.h"
-#import "FeedListManager.h"
+#import "FeedManager.h"
 #import "SCPBaseController.h"
-
-
 #import "SCPBaseNavigationItem.h"
 #import "SCPMenuNavigationController.h"
 #import "BannerForHeadView.h"
 
-@class FeedListManager;
-@interface SCPMainFeedController : SCPBaseController
+
+@class FeedManager;
+@interface SCPFeedController : SCPBaseController
 {
     SCPBaseNavigationItem * _item;
 }
-@property (strong, nonatomic) PullingRefreshController *pullingController;
-@property (strong, nonatomic) FeedListManager *manager;
+@property (strong, nonatomic) PullingRefreshController * pullingController;
+@property (strong, nonatomic) FeedManager * manager;
 @property (strong, nonatomic) SCPBaseNavigationItem * item;
 @end

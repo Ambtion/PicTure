@@ -6,24 +6,23 @@
 //  Copyright (c) 2012年 sohu.com. All rights reserved.
 //
 
-#import "FeedListManager.h"
+#import "FeedManager.h"
 
 
-#import "SCPMainFeedController.h"
+#import "SCPFeedController.h"
 #import "SCPPersonalPageViewController.h"
 #import "SCPPhotoDetailViewController.h"
 #import "SCPAlertView_LoginTip.h"
 #import "SCPAlert_CustomeView.h"
 
-#define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 80
 
-@implementation FeedListManager
+@implementation FeedManager
+
 
 @synthesize controller = _controller;
 @synthesize isLoading = _isLoading;
 @synthesize dataArray = _dataArray;
-
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -33,7 +32,7 @@
     [_LoginTip release];
     [super dealloc];
 }
--(id)initWithController:(SCPMainFeedController *)controller
+-(id)initWithController:(SCPFeedController *)controller
 {
     self = [super init];
     if (self) {
@@ -50,15 +49,7 @@
 }
 
 #pragma mark - requestFinished
-- (CGFloat)getHeightofImage:(CGFloat)O_height :(CGFloat) O_width
-{
-    CGFloat finalHeigth = 0.f;
-    finalHeigth = O_height * (320.f / O_width);
-    if (!finalHeigth) {
-        finalHeigth = 320;
-    }
-    return finalHeigth;
-}
+
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     if (_willRefresh)
@@ -66,7 +57,7 @@
     
     NSDictionary * creator = [info objectForKey:@"userInfo"];
     if (creator) {
-        allFollowed = [[creator objectForKey:@"followings"] intValue];
+        _allFollowed = [[creator objectForKey:@"followings"] intValue];
     }
     NSArray * photoList = [[info objectForKey:@"feedList"] objectForKey:@"feed"];
     hasNextPage = [[[info objectForKey:@"feedList"] objectForKey:@"has_next"] boolValue];
@@ -76,7 +67,6 @@
         FeedCellDataSource *adapter = [[FeedCellDataSource alloc] init];
         NSDictionary * photo = [photoList objectAtIndex:i];
         adapter.allInfo = photo;
-        adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
         adapter.name = [photo objectForKey:@"user_nick"];
         adapter.update = [photo objectForKey:@"upload_at_desc"];
         adapter.portrailImage = [photo objectForKey:@"user_icon"];
@@ -84,13 +74,8 @@
         [_dataArray addObject:adapter];
         [adapter release];
     }
-    
     if (_isInit) {
-        _isInit = NO;
-        _isLoading = NO;
-        [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
-        [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
-        [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+        [self reloadWhenInit];
         return;
     }
     if (_willRefresh ) {
@@ -99,7 +84,14 @@
         [self feedMoreDataFinishLoad];
     }
 }
-
+- (void)reloadWhenInit
+{
+    _isInit = NO;
+    _isLoading = NO;
+    [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
+    [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
+    [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
+}
 #pragma Network Failed
 - (void)requestFailed:(NSString *)error
 {
@@ -217,7 +209,6 @@
 {
     
     [self dismissLogin];
-    //for temp  remove data
     [_controller dismissModalViewControllerAnimated:YES];
 }
 
@@ -231,15 +222,8 @@
 
 - (NSString*)bannerDataSouceLeftLabel
 {
-    if (![SCPLoginPridictive isLogin]) {
-        return nil;
-    }
-    return [NSString stringWithFormat:@"关注了%d人",allFollowed];
-}
-- (NSString*)bannerDataSouceRightLabel
-{
-    //    return [self.controller getTimeString];
-    return nil;
+    if (![SCPLoginPridictive isLogin]) return nil;
+    return [NSString stringWithFormat:@"关注了%d人",_allFollowed];
 }
 #pragma mark -
 
@@ -261,25 +245,20 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger i = indexPath.row;
-    CGFloat height = ((FeedCellDataSource *)[_dataArray objectAtIndex:i]).heigth;
-    if (height < 320) {
-        return 320 + 70 + 10;
-    }else if(height > MAXIMAGEHEIGTH){
-        return MAXIMAGEHEIGTH + 70 + 10;
-    }else{
-        return height + 70 + 10;
-    }
+    FeedCellDataSource * dataSource = ((FeedCellDataSource *)[_dataArray objectAtIndex:i]);
+    return [dataSource getHeight];
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    FeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"FeedListCell"];
+    FeedCell * cell = [tableView dequeueReusableCellWithIdentifier:@"FeedListCell"];
     if (!cell) {
         cell = [[[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FeedListCell"] autorelease];
         cell.delegate = self;
-        cell.maxImageHeigth = MAXIMAGEHEIGTH;
     }
+    
     if (_dataArray.count > indexPath.row)
         cell.dataSource = [_dataArray objectAtIndex:indexPath.row];
     

@@ -16,7 +16,7 @@
 #import "SCPSetttingController.h"
 #import "SCPLoginPridictive.h"
 #import "SCPLoginViewController.h"
-#import "SCPMainFeedController.h"
+#import "SCPFeedController.h"
 //下页
 #import "SCPPlazeController.h"
 #import "CameraViewController.h"

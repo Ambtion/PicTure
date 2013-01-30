@@ -63,14 +63,13 @@
         [self getPlazeFrom:_startoffset count:PICTURECOUNT];
     }
 }
-
 - (PlazeViewCellDataSource *)getSourceWithinfoArray:(NSArray *)infoArray  andIndex:(NSInteger)index
 {
     PlazeViewCellDataSource * dataSouce = [[[PlazeViewCellDataSource alloc] init] autorelease];
     NSDictionary * dic = [PlazeDataAdapter getViewFrameForRandom];
     NSArray * frames = [dic objectForKey:@"viewFrame"];
     dataSouce.viewRectFrame = frames;
-    dataSouce.higth = [[dic objectForKey:@"hight"] floatValue];
+    dataSouce.higth = [[dic objectForKey:@"height"] floatValue];
     dataSouce.infoArray = [PlazeDataAdapter getURLArrayByImageFrames:frames FrominfoSource:[infoArray subarrayWithRange:(NSRange ){index * MAXFRAMECOUNTLIMIT,MAXFRAMECOUNTLIMIT}]];
     dataSouce.imageFrame = [PlazeDataAdapter getBorderViewOfImageViewByImageViewFrame:frames];
     dataSouce.identify = [NSString stringWithFormat:@"startegy%d", [[dic objectForKey:@"strategy_num"] integerValue]];

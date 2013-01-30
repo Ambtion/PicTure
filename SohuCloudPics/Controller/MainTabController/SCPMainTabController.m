@@ -10,7 +10,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "SCPMainFeedController.h"
+#import "SCPFeedController.h"
 #import "SCPPlazeController.h"
 #import "SCPFirstIntroController.h"
 #import "SCPMenuNavigationController.h"
@@ -34,7 +34,7 @@
         //Plaze
         SCPPlazeController * plaze= [[SCPPlazeController alloc] initWithNibName:nil bundle:nil];
         // MainFeed
-        SCPMainFeedController * mainFeed = [[SCPMainFeedController alloc] initWithNibName:nil bundle:nil];
+        SCPFeedController * mainFeed = [[SCPFeedController alloc] initWithNibName:nil bundle:nil];
         self.viewControllers = [NSArray arrayWithObjects:plaze,mainFeed,nil];
         [plaze release];
         [mainFeed release];

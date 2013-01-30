@@ -7,7 +7,7 @@
 //
 
 #import "SCPPlazeController.h"
-#import "SCPMainFeedController.h"
+#import "SCPFeedController.h"
 
 @implementation SCPPlazeController
 

@@ -6,13 +6,13 @@
 //  Copyright (c) 2012年 sohu.com. All rights reserved.
 //
 
-#import "SCPMainFeedController.h"
+#import "SCPFeedController.h"
 
 #import "SCPNavigationController.h"
 #import "PullingRefreshTableView.h"
 
 
-@implementation SCPMainFeedController
+@implementation SCPFeedController
 
 @synthesize manager = _manager;
 @synthesize pullingController = _pullingController;
@@ -28,27 +28,27 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.manager = [[[FeedListManager alloc] initWithController:self] autorelease];
+        _manager = [[FeedManager alloc] initWithController:self];
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
     
-    self.pullingController = [[[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_feed.png"]frame:self.view.bounds] autorelease];
+    [super viewDidLoad];
+    _pullingController = [[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_feed.png"]frame:self.view.bounds];
     //customer for  scrollview
     self.pullingController.delegate = self.manager;
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
     [self.pullingController setFootViewoffsetY:-10];
     [self.view addSubview:self.pullingController.view];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataWhenLoginStateChange:) name:@"LoginStateChange" object:nil];
     [self.pullingController realLoadingMore:nil];
     
 }
-
 - (void)handleDataWhenLoginStateChange:(NSNotification *)notifition
 {
     if ([[[notifition userInfo] objectForKey:@"LogState"] isEqualToString:@"Logout"]) {
