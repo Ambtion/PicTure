@@ -6,14 +6,14 @@
 //
 //
 
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 #import "SCPMenuNavigationController.h"
 
-@interface SCPMyHomeViewController ()
+@interface SCPMyHomeController ()
 
 @end
 
-@implementation SCPMyHomeViewController
+@implementation SCPMyHomeController
 @synthesize manager = _manager;
 @synthesize homeTable = _homeTable;
 @synthesize topButton = _topButton;

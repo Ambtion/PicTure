@@ -13,7 +13,8 @@
 #import "SCPRequestManager.h"
 #import "SCPAlert_WaitView.h"
 
-@class SCPMyHomeViewController;
+@class SCPMyHomeController;
+
 @interface MyhomeManager : NSObject
 <UITableViewDataSource,MyPersonalCellDelegate,FeedCellDelegate,UITableViewDelegate,SCPRequestManagerDelegate,UIAlertViewDelegate>
 {
@@ -30,8 +31,9 @@
     BOOL _loadingMore;
     BOOL hasNextpage;
 }
-@property (assign, nonatomic) SCPMyHomeViewController *controller;
-- (id)initWithController:(SCPMyHomeViewController *)ctrl useID:(NSString *)useID;
+
+@property (assign, nonatomic) SCPMyHomeController *controller;
+- (id)initWithController:(SCPMyHomeController *)ctrl useID:(NSString *)useID;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
 - (void)loadingMore:(id)sender;
 - (void)refreshUserinfo;

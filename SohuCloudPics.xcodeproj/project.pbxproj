@@ -299,7 +299,7 @@
 		C586E39E16A028D0000091C6 /* sohu-2013.png in Resources */ = {isa = PBXBuildFile; fileRef = C586E39D16A028D0000091C6 /* sohu-2013.png */; };
 		C587AD3A169E705B00F2C16F /* SCPAlert_AlbumProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = C587AD39169E705B00F2C16F /* SCPAlert_AlbumProperty.m */; };
 		C58803DA162BB74B00249D8D /* drewer_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C58803D9162BB74B00249D8D /* drewer_bg.png */; };
-		C58803DF162BC16D00249D8D /* SCPMyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803DE162BC16C00249D8D /* SCPMyHomeViewController.m */; };
+		C58803DF162BC16D00249D8D /* SCPMyHomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803DE162BC16C00249D8D /* SCPMyHomeController.m */; };
 		C58803E7162BC28A00249D8D /* MyhomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803E6162BC28A00249D8D /* MyhomeManager.m */; };
 		C58803EA162BDCA800249D8D /* MyPersonalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803E9162BDCA800249D8D /* MyPersonalCell.m */; };
 		C58803F7162BEB1100249D8D /* SCPSetttingController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58803F6162BEB1100249D8D /* SCPSetttingController.m */; };
@@ -882,8 +882,8 @@
 		C587AD38169E705A00F2C16F /* SCPAlert_AlbumProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAlert_AlbumProperty.h; sourceTree = "<group>"; };
 		C587AD39169E705B00F2C16F /* SCPAlert_AlbumProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlert_AlbumProperty.m; sourceTree = "<group>"; };
 		C58803D9162BB74B00249D8D /* drewer_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drewer_bg.png; sourceTree = "<group>"; };
-		C58803DD162BC16C00249D8D /* SCPMyHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPMyHomeViewController.h; sourceTree = "<group>"; };
-		C58803DE162BC16C00249D8D /* SCPMyHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPMyHomeViewController.m; sourceTree = "<group>"; };
+		C58803DD162BC16C00249D8D /* SCPMyHomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPMyHomeController.h; sourceTree = "<group>"; };
+		C58803DE162BC16C00249D8D /* SCPMyHomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPMyHomeController.m; sourceTree = "<group>"; };
 		C58803E5162BC28A00249D8D /* MyhomeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyhomeManager.h; sourceTree = "<group>"; };
 		C58803E6162BC28A00249D8D /* MyhomeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyhomeManager.m; sourceTree = "<group>"; };
 		C58803E8162BDCA800249D8D /* MyPersonalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPersonalCell.h; sourceTree = "<group>"; };
@@ -2298,8 +2298,8 @@
 			children = (
 				C58803E0162BC1E500249D8D /* Managers */,
 				C58803E1162BC1E500249D8D /* views */,
-				C58803DD162BC16C00249D8D /* SCPMyHomeViewController.h */,
-				C58803DE162BC16C00249D8D /* SCPMyHomeViewController.m */,
+				C58803DD162BC16C00249D8D /* SCPMyHomeController.h */,
+				C58803DE162BC16C00249D8D /* SCPMyHomeController.m */,
 			);
 			name = MyHome;
 			path = Controller/MyHome;
@@ -2983,7 +2983,7 @@
 				C5ED1E08161404B800C112B6 /* UIImage+ExternScale.m in Sources */,
 				B7CFD39C1615868300F348DE /* SCPAlert_LoginView.m in Sources */,
 				C5E2908A16229EB70085EBE9 /* Filterlibrary.m in Sources */,
-				C58803DF162BC16D00249D8D /* SCPMyHomeViewController.m in Sources */,
+				C58803DF162BC16D00249D8D /* SCPMyHomeController.m in Sources */,
 				C58803E7162BC28A00249D8D /* MyhomeManager.m in Sources */,
 				C58803EA162BDCA800249D8D /* MyPersonalCell.m in Sources */,
 				C58803F7162BEB1100249D8D /* SCPSetttingController.m in Sources */,

@@ -8,7 +8,7 @@
 
 #import "MyhomeManager.h"
 
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 
 #import "SCPAlbumGridController.h"
 #import "SCPPhotoDetailViewController.h"
@@ -40,7 +40,7 @@ static float OFFSET = 0.f;
     [_user_ID release];
     [super dealloc];
 }
-- (id)initWithController:(SCPMyHomeViewController *)ctrl useID:(NSString *)useID
+- (id)initWithController:(SCPMyHomeController *)ctrl useID:(NSString *)useID
 {
     self = [super init];
     if (self) {
@@ -56,15 +56,6 @@ static float OFFSET = 0.f;
     return self;
 }
 
-- (CGFloat)getHeightofImage:(CGFloat)O_height :(CGFloat) O_width
-{
-    CGFloat finalHeigth = 0.f;
-    finalHeigth = O_height * (320.f / O_width);
-    if (!finalHeigth) {
-        finalHeigth = 320;
-    }
-    return finalHeigth;
-}
 - (void)refreshUserinfo
 {
     if (_isinit || ![SCPLoginPridictive currentUserId]) return;
@@ -274,10 +265,9 @@ static float OFFSET = 0.f;
 {
     NSInteger i = indexPath.row;
     if (i == 0) 
-        return 367 + 60 + 10;//for PersonalPageCell
+        return [_personalDataSource getheitgth];
     FeedCellDataSource * dataSource = ((FeedCellDataSource *)[_dataArray objectAtIndex:i - 1]);
     return [dataSource getHeight];
-
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

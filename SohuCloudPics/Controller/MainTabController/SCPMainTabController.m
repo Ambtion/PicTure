@@ -15,7 +15,7 @@
 #import "SCPFirstIntroController.h"
 #import "SCPMenuNavigationController.h"
 
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 
 @implementation SCPMainTabController
 
@@ -29,7 +29,6 @@
         slideRecognizerL2R.direction = UISwipeGestureRecognizerDirectionRight;
         [self.view addGestureRecognizer:slideRecognizerL2R];
         self.delegate = self;
-        
         //注意使用addChildViewController 会引起Two-stage rotation animation is deprecated. This application should use the smoother single-stage animation.
         //Plaze
         SCPPlazeController * plaze= [[SCPPlazeController alloc] initWithNibName:nil bundle:nil];

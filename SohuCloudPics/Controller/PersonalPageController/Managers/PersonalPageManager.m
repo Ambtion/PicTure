@@ -17,7 +17,7 @@
 
 #define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 80
-#define PAGEPHOTONUMBER 
+#define PAGEPHOTONUMBER
 
 static float OFFSET = 0.f;
 @implementation PersonalPageManager
@@ -26,7 +26,7 @@ static float OFFSET = 0.f;
 
 - (void)dealloc
 {
-//    NSLog(@"%s",__FUNCTION__);
+    //    NSLog(@"%s",__FUNCTION__);
     if (wait) {
         [wait dismissWithClickedButtonIndex:0 animated:YES];
         [wait release],wait = nil;
@@ -104,7 +104,7 @@ static float OFFSET = 0.f;
         _personalDataSource.followingAmount = [[userInfo objectForKey:@"followings"] intValue];
         _personalDataSource.isFollowByMe = [[userInfo objectForKey:@"is_following"] boolValue];
         _personalDataSource.isMe = NO;
-
+        
     }
     NSDictionary * feedinfo = [info objectForKey:@"feedList"];
     hasNextpage = [[feedinfo objectForKey:@"has_next"] boolValue];
@@ -115,7 +115,7 @@ static float OFFSET = 0.f;
         FeedCellDataSource *adapter = [[FeedCellDataSource alloc] init];
         NSDictionary * photo = [photoList objectAtIndex:i];
         adapter.allInfo = photo;
-//        adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
+        //        adapter.heigth = [self getHeightofImage:[[photo objectForKey:@"height"] floatValue] :[[photo objectForKey:@"width"] floatValue]];
         adapter.name = [photo objectForKey:@"user_nick"];
         adapter.update =[photo objectForKey:@"upload_at_desc"];
         adapter.portrailImage = [photo objectForKey:@"user_icon"];
@@ -151,7 +151,7 @@ static float OFFSET = 0.f;
         [self refreshFinished];
     }else{
         [self loadingMoreFinished];
-    }    
+    }
 }
 #pragma mark Data Source
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
@@ -159,7 +159,7 @@ static float OFFSET = 0.f;
     if (_isinit) {
         wait = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"加载中..." withView:_controller.view];
         [wait show];
-     }
+    }
     _isLoading = YES;
     _willRefresh = isRefresh;
     if(_willRefresh | !_dataArray.count){
@@ -187,7 +187,7 @@ static float OFFSET = 0.f;
         [self showLoadingMore];
         _loadingMore = YES;
     }
-
+    
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -207,7 +207,7 @@ static float OFFSET = 0.f;
         [_controller.topButton setHidden:YES];
     }
     OFFSET = scrollView.contentOffset.y;
-
+    
 }
 - (void)personalPageCell:(PersonalPageCell *)personal refreshClick:(id)sender
 {
@@ -247,8 +247,8 @@ static float OFFSET = 0.f;
     UIActivityIndicatorView * act = (UIActivityIndicatorView *)[view viewWithTag:200];
     [act stopAnimating];
     [self.controller.tableView reloadData];
+    
 }
-
 #pragma mark TableView Deleagte
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -267,9 +267,8 @@ static float OFFSET = 0.f;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger i = indexPath.row;
-     if (i == 0) {
-        return 367 + 60 + 10;
-    }
+    if(i == 0)
+        return [_personalDataSource getheitgth];
     FeedCellDataSource * dataSource = ((FeedCellDataSource *)[_dataArray objectAtIndex:i - 1]);
     return [dataSource getHeight];
 }
@@ -297,7 +296,6 @@ static float OFFSET = 0.f;
             feedCell.dataSource = [_dataArray objectAtIndex:row - 1];
         if (_dataArray.count - 1 == indexPath.row)
             [self loadingMore:nil];
-
         return feedCell;
     }
 }
@@ -328,9 +326,8 @@ static float OFFSET = 0.f;
             [self requestFailed:error];
             return ;
         }];
-    }    
+    }
 }
-
 #pragma mark Login
 - (void)alertViewOKClicked:(SCPAlert_LoginView *)view
 {
@@ -354,7 +351,7 @@ static float OFFSET = 0.f;
 
 #pragma mark -
 #pragma mark CELL - Method
-#pragma feedCell Method
+
 -(void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
     UINavigationController *nav = _controller.navigationController;
@@ -366,13 +363,13 @@ static float OFFSET = 0.f;
 -(void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     // do nothing, cause it's personal page 个人页面所有的头像都是自己
-//    NSLog(@"clickedAtPortraitView");
+    //    NSLog(@"clickedAtPortraitView");
 }
 
 - (void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object
 {
     // do something 暂时不支持评论
-//    NSLog(@"clickedAtFavorButton");
+    //    NSLog(@"clickedAtFavorButton");
 }
 
 -(void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx
@@ -389,7 +386,7 @@ static float OFFSET = 0.f;
 }
 -(void)personalPageCell:(PersonalPageCell *)personal favoriteClicked:(id)sender
 {
-//    NSLog(@"favoriteClicked");
+    //    NSLog(@"favoriteClicked");
 }
 - (void)personalPageCell:(PersonalPageCell *)personal followingButtonClicked:(id)sender
 {

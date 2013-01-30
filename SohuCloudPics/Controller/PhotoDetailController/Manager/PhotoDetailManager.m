@@ -9,7 +9,7 @@
 #import "PhotoDetailManager.h"
 
 #import "SCPPhotoDetailViewController.h"
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 #import "SCPPersonalPageViewController.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPLoginPridictive.h"
@@ -203,17 +203,8 @@
         return [dataSource getHeight];
     }
     if (i == 1){
-        
         FeedDescriptionSource * data = [_dataSourceArray objectAtIndex:1];
-        NSString * str = data.describtion;
-        CGSize size = CGSizeZero;
-        if (data.isMe) {
-            size = [str sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(280, 1000) lineBreakMode:UILineBreakModeWordWrap];
-        }else{
-            size = [str sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:UILineBreakModeWordWrap];
-        }
-        CGFloat heigth = MAX((size.height  + 10), 30);
-        return heigth;//for desc
+        return [data getHeigth];
     }
     return 0;
 }
@@ -288,7 +279,7 @@
     UINavigationController * nav = _controller.navigationController;
     if ([SCPLoginPridictive currentUserId] &&
         [_user_ID isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
-        SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
+        SCPMyHomeController * myhome = [[[SCPMyHomeController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
         [nav pushViewController:myhome animated:YES];
     }else{
         SCPPersonalPageViewController *ctrl = [[SCPPersonalPageViewController alloc] initWithNibName:nil bundle:NULL useID:[NSString stringWithFormat:@"%@",[self.infoFromSuper objectForKey:@"user_id"]]];

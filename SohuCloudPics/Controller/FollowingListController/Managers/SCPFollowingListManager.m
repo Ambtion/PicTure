@@ -8,7 +8,7 @@
 
 #import "SCPFollowingListManager.h"
 #import "SCPFollowingListViewController.h"
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 #import "SCPPersonalPageViewController.h"
 #import "SCPAlert_CustomeView.h"
 
@@ -264,7 +264,7 @@
     if ([SCPLoginPridictive currentUserId] &&
         [cell.dataSource.user_id isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
         
-        SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
+        SCPMyHomeController * myhome = [[[SCPMyHomeController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
         [_controller.navigationController pushViewController:myhome animated:YES];
         
     }else{

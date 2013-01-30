@@ -8,7 +8,11 @@
 
 
 #import "FeedDescription.h"
+
+#define FONT [UIFont systemFontOfSize:13]
+#define LINEBREAKMODE UILineBreakModeWordWrap
 static NSString * EDITIMAGE[2] = {@"",@"description_icon.png"};
+
 @implementation FeedDescriptionSource
 @synthesize describtion = _describtion;
 @synthesize isMe = _isMe;
@@ -23,6 +27,17 @@ static NSString * EDITIMAGE[2] = {@"",@"description_icon.png"};
 {
     self.describtion = nil;
     [super dealloc];
+}
+- (CGFloat)getHeigth
+{
+    CGSize size = CGSizeZero;
+    if (self.isMe) {
+        size = [self.describtion sizeWithFont:FONT constrainedToSize:CGSizeMake(280, 1000) lineBreakMode:LINEBREAKMODE];
+    }else{
+        size = [self.describtion sizeWithFont:FONT constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:LINEBREAKMODE];
+    }
+    CGFloat heigth = MAX((size.height  + 10), 30);
+    return heigth;
 }
 @end
 
@@ -47,14 +62,12 @@ static NSString * EDITIMAGE[2] = {@"",@"description_icon.png"};
         _editButton.backgroundColor = [UIColor clearColor];
         [_editButton setImage:[UIImage imageNamed:@"description_icon_press.png"] forState:UIControlStateHighlighted];
         [_editButton addTarget:self action:@selector(handleClick:) forControlEvents:UIControlEventTouchUpInside];
-        
         [_editButton setUserInteractionEnabled:NO];
         [self.contentView addSubview:_editButton];
-        
         _describLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 11, 270, 15)];
         _describLabel.textAlignment = UITextAlignmentLeft;
-        _describLabel.font = [UIFont systemFontOfSize:13];
-        _describLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _describLabel.font = FONT;
+        _describLabel.lineBreakMode = LINEBREAKMODE;
         _describLabel.numberOfLines = 0;
         _describLabel.textColor = [UIColor colorWithRed:138/255.f green:157/255.f blue:181/255.f alpha:1];
         _describLabel.backgroundColor = [UIColor clearColor];
@@ -70,6 +83,7 @@ static NSString * EDITIMAGE[2] = {@"",@"description_icon.png"};
 }
 -(void)setDataScoure:(FeedDescriptionSource *)dataScoure
 {
+    
     if (_dataSource != dataScoure) {
         [_dataSource release];
         _dataSource = [dataScoure retain];
@@ -78,12 +92,13 @@ static NSString * EDITIMAGE[2] = {@"",@"description_icon.png"};
 }
 -(void)updataSource
 {
-    
+    self.contentView.frame = CGRectMake(0, 0, 320, [_dataSource getHeigth]);
     if (!_dataSource.describtion ||![_dataSource.describtion isKindOfClass:[NSString class]]||[_dataSource.describtion isEqualToString:@""]) {
         _describLabel.text = @"暂无描述";
     }else{
         _describLabel.text = _dataSource.describtion;
     }
+    
     if (_dataSource.isMe) {
         CGSize size = [_describLabel.text sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(280, 1000) lineBreakMode:UILineBreakModeWordWrap];
         _describLabel.frame = CGRectMake(30, 11, size.width, size.height);

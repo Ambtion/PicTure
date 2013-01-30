@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MyhomeManager.h"
+#import "MyHomeManager.h"
 #import "SCPSecondLayerController.h"
 #import "SCPBaseNavigationItem.h"
 
-@interface SCPMyHomeViewController : SCPSecondLayerController
+@interface SCPMyHomeController : SCPSecondLayerController
 {
     UIView *_footView;
 }

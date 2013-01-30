@@ -12,7 +12,7 @@
 //上页
 #import "SCPMainTabController.h"
 #import "AlbumControllerManager.h"
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 #import "SCPSetttingController.h"
 #import "SCPLoginPridictive.h"
 #import "SCPLoginViewController.h"
@@ -285,10 +285,10 @@ static NSString *menuPress[6] = {
         [nav release];
         return;
     }
-    if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeViewController class]]) {
+    if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeController class]]) {
         return;
     }
-    SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
+    SCPMyHomeController * myhome = [[[SCPMyHomeController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
     [self.navController pushViewController:myhome animated:YES];
     [self restIcon:1];
 

@@ -16,12 +16,10 @@
 @synthesize isInit = _isInit;
 @synthesize portrait = _portrait;
 @synthesize name = _name;
-//@synthesize position = _position;
 @synthesize desc = _desc;
 
 @synthesize isFollowByMe = _isFollowByMe;
 @synthesize albumAmount = _albumAmount;
-//@synthesize favouriteAmount = _favouriteAmount;
 @synthesize followedAmount = _followedAmount;
 @synthesize followingAmount = _followingAmount;
 @synthesize isMe = _isMe;
@@ -32,11 +30,14 @@
     }
     return self;
 }
+- (CGFloat)getheitgth
+{
+    return 367 + 60 + 10;//for PersonalPageCell
+}
 - (void)dealloc
 {
     self.portrait = nil;
     self.name = nil;
-//    self.allInfo = nil;
     self.desc = nil;
     [super dealloc];
 }

@@ -10,7 +10,7 @@
 #import "SCPFollowedListViewController.h"
 
 #import "SCPPersonalPageViewController.h"
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 
 @implementation SCPFollowedListManager
 @synthesize controller = _controller;
@@ -262,7 +262,7 @@
     if ([SCPLoginPridictive currentUserId] &&
         [cell.dataSource.user_id isEqualToString:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]]) {
         
-        SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
+        SCPMyHomeController * myhome = [[[SCPMyHomeController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
         [_controller.navigationController pushViewController:myhome animated:YES];
 
     }else{

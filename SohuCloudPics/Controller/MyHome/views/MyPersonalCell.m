@@ -32,6 +32,7 @@
     self.desc = nil;
     [super dealloc];
 }
+
 - (id)init
 {
     if (self = [super init]) {
@@ -39,6 +40,11 @@
     }
     return self;
 }
+- (CGFloat)getheitgth
+{
+    return 367 + 60 + 10;//for PersonalPageCell
+}
+
 @end
 
 @implementation MyPersonalCell
@@ -46,6 +52,7 @@
 @synthesize datasource = _dataSource;
 - (void)dealloc
 {
+    
     [_dataSource release];
     [_backgroundImageView release];
     [_portraitImageView release];
@@ -56,19 +63,16 @@
     [bgCircleView release];
     [_followingButton release];
     [_followedButton release];
-    
     [super dealloc];
+    
 }
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     if (self) {
+        
         //set cell height
-        CGRect rect = self.frame;
-        rect.size.height = 367 + 60;
-        self.frame = rect;
         [self addUesrphotoView];
         [self addUserPhotoLabel];
         [self addMenuView];
@@ -77,6 +81,7 @@
 }
 -(void)addUesrphotoView
 {
+    
     //backGroud
     _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 367 - 480, 320, 480)];
     [self.contentView addSubview:_backgroundImageView];
@@ -211,6 +216,7 @@
 }
 - (void)updataData
 {
+    self.contentView.frame = CGRectMake(0, 0, 320, [_dataSource getheitgth]);
     [_portraitImageView setImageWithURL:[NSURL URLWithString:_dataSource.portrait] placeholderImage:[UIImage imageNamed:@"user_bg_photo_defout.png"] success:^(UIImage *image) {
         CGSize size = [self getRectofProtrait:image];
         
