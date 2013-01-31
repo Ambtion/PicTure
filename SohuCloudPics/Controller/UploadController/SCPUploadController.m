@@ -12,16 +12,14 @@
 #import "SCPMenuNavigationController.h"
 #import "SCPAlert_CustomeView.h"
 #import "SCPAlertView_LoginTip.h"
-
+#import "EmojiUnit.h"
 #import "SCPUploadTaskManager.h"
 
 @implementation SCPUploadController
 
 @synthesize keyboardHeight = _keyboardHeight;
-
 @synthesize curAlbumID = _curAlbumID;
 @synthesize albumList = _albumList;
-
 @synthesize uploadHeader = _uploadHeader;
 @synthesize uploadTableView = _uploadTableView;
 @synthesize labelChooser = _labelChooser;
@@ -29,7 +27,6 @@
 
 - (void)dealloc
 {
-//    NSLog(@"%s",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_requsetManager setDelegate:nil];
     [_requsetManager release];
@@ -157,15 +154,15 @@
         return;
     }
     for(SCPUploadCell * cell in _cells) {
-        if ([self stringContainsEmoji:cell.descTextView.text]) {
+        if ([EmojiUnit stringContainsEmoji:cell.descTextView.text]) {
             SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:@"图片描述包含非法字符,请重新输入" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
             [tip show];
             [tip release];
             return;
         }
     }
-    [self.view setUserInteractionEnabled:NO];
     
+    [self.view setUserInteractionEnabled:NO];
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < _imageList.count; i++) {
         SCPTaskUnit * unit = [[SCPTaskUnit alloc] init];
@@ -187,46 +184,6 @@
     [[SCPUploadTaskManager currentManager] addTaskList:album];
     [controller performSelector:@selector(dismissModalViewControllerAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:1.5f];
 }
-- (BOOL)stringContainsEmoji:(NSString *)string {
-    __block BOOL returnValue = NO;
-    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
-     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
-         
-         const unichar hs = [substring characterAtIndex:0];
-         // surrogate pair
-         if (0xd800 <= hs && hs <= 0xdbff) {
-             if (substring.length > 1) {
-                 const unichar ls = [substring characterAtIndex:1];
-                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
-                 if (0x1d000 <= uc && uc <= 0x1f77f) {
-                     returnValue = YES;
-                 }
-             }
-         } else if (substring.length > 1) {
-             const unichar ls = [substring characterAtIndex:1];
-             if (ls == 0x20e3) {
-                 returnValue = YES;
-             }
-             
-         } else {
-             // non surrogate
-             if (0x2100 <= hs && hs <= 0x27ff) {
-                 returnValue = YES;
-             } else if (0x2B05 <= hs && hs <= 0x2b07) {
-                 returnValue = YES;
-             } else if (0x2934 <= hs && hs <= 0x2935) {
-                 returnValue = YES;
-             } else if (0x3297 <= hs && hs <= 0x3299) {
-                 returnValue = YES;
-             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
-                 returnValue = YES;
-             }
-         }
-     }];
-    
-    return returnValue;
-}
-
 #pragma mark Back
 - (void)backTotop:(UIButton*)button
 {
@@ -242,7 +199,7 @@
         [_selectButton setUserInteractionEnabled:NO];
         return;
     }
-        self.curAlbumID = albumID;
+    self.curAlbumID = albumID;
     [_selectButton setAlpha:1.f];
     [_selectButton setUserInteractionEnabled:YES];
 }
@@ -282,20 +239,12 @@
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     _uploadTableView.frame = self.view.bounds;
-
-//    NSLog(@"%@",NSStringFromCGPoint(_uploadTableView.contentOffset));
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         [_uploadTableView setContentOffset:offset animated:NO];
-
+        
     } completion:^(BOOL finished) {
         
     }];
-//    SCPUploadCell * cell = [self getCellOfFirstResponder];
-//    if (cell) {
-//        NSLog(@"%s",__FUNCTION__);
-//        NSIndexPath * path = [_uploadTableView indexPathForCell:cell];
-//        [_uploadTableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-//    }
 }
 #pragma mark -
 #pragma mark tableViewDelegate & datasource
@@ -303,7 +252,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = indexPath.row;
-    
     switch (row) {
         case 0:
             return _uploadHeader;
@@ -330,7 +278,7 @@
     switch (row) {
         case 0:
             return 170;
-            case 1:
+        case 1:
             return _descCell.frame.size.height + 8;
         default:
             return ((SCPUploadCell *) [_cells objectAtIndex:row - 2]).frame.size.height + 20;

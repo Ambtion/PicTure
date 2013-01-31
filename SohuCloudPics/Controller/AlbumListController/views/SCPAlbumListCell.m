@@ -155,6 +155,7 @@
 	/* state label */
 	_updatedAtDescLabel.frame = UPDATEDESC_RECT;
 	[_updatedAtDescLabel setText:self.album.updatedAtDesc];
+    
 }
 
 @end

@@ -68,7 +68,6 @@
 		B70C96381611D6A400CC455A /* s.png in Resources */ = {isa = PBXBuildFile; fileRef = B70C96371611D6A400CC455A /* s.png */; };
 		B7205D7715EE4293001CE863 /* PlazeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7205D7615EE4293001CE863 /* PlazeManager.m */; };
 		B7205D8815EE42CD001CE863 /* FeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7205D8515EE42CD001CE863 /* FeedManager.m */; };
-		B7827E2716048169000DD86C /* CommentPostBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B7827E2616048169000DD86C /* CommentPostBar.m */; };
 		B7916E4E1615CAC4007E6EB5 /* pop_btn_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = B7916E4A1615CAC4007E6EB5 /* pop_btn_normal.png */; };
 		B7916E4F1615CAC4007E6EB5 /* pop_btn_press.png in Resources */ = {isa = PBXBuildFile; fileRef = B7916E4B1615CAC4007E6EB5 /* pop_btn_press.png */; };
 		B7916E501615CAC4007E6EB5 /* pop_up_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = B7916E4C1615CAC4007E6EB5 /* pop_up_bg.png */; };
@@ -100,8 +99,7 @@
 		B7D3ACD01622F18E00026BA1 /* menu_upload.png in Resources */ = {isa = PBXBuildFile; fileRef = B7D3ACC41622F18E00026BA1 /* menu_upload.png */; };
 		B7D72A8916420D270018ED30 /* SCPPhotoGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D72A8816420D270018ED30 /* SCPPhotoGridCell.m */; };
 		B7D83AD415F99FCB00569900 /* SCPPersonalHomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AD315F99FCB00569900 /* SCPPersonalHomeController.m */; };
-		B7D83AD915F99FEA00569900 /* SCPPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AD815F99FEA00569900 /* SCPPhotoDetailViewController.m */; };
-		B7D83AE315F9A00900569900 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AE015F9A00900569900 /* CommentCell.m */; };
+		B7D83AD915F99FEA00569900 /* SCPPhotoDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AD815F99FEA00569900 /* SCPPhotoDetailController.m */; };
 		B7D83AE715F9A02600569900 /* SCPFollowingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AE615F9A02600569900 /* SCPFollowingListViewController.m */; };
 		B7D83AEC15F9A03900569900 /* SCPFollowingListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AEB15F9A03900569900 /* SCPFollowingListManager.m */; };
 		B7D83AF715F9A05800569900 /* SCPFollowedListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D83AF615F9A05800569900 /* SCPFollowedListManager.m */; };
@@ -118,6 +116,7 @@
 		B7FFF1A41634EFC800301A04 /* drewer_white_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = B7FFF1A31634EFC700301A04 /* drewer_white_bg.png */; };
 		C5016D8D168C2F6300A9BE1C /* pop_alert.png in Resources */ = {isa = PBXBuildFile; fileRef = C5016D8B168C2F6300A9BE1C /* pop_alert.png */; };
 		C5016D8E168C2F6300A9BE1C /* pop_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C5016D8C168C2F6300A9BE1C /* pop_bg.png */; };
+		C50538DA16BA0881003EB7AA /* EmojiUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = C50538D916BA0881003EB7AA /* EmojiUnit.m */; };
 		C507357C168E803A006DDBEF /* ImageQualitySwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = C507357B168E803A006DDBEF /* ImageQualitySwitch.m */; };
 		C507358A168E9FBA006DDBEF /* cameraios63.png in Resources */ = {isa = PBXBuildFile; fileRef = C5073586168E9FB9006DDBEF /* cameraios63.png */; };
 		C507358D168E9FBA006DDBEF /* welcome-guid-ios61.png in Resources */ = {isa = PBXBuildFile; fileRef = C5073589168E9FB9006DDBEF /* welcome-guid-ios61.png */; };
@@ -311,7 +310,7 @@
 		C5880407162BF58400249D8D /* settings_user.png in Resources */ = {isa = PBXBuildFile; fileRef = C5880401162BF58400249D8D /* settings_user.png */; };
 		C588040C162C045600249D8D /* MySettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C588040B162C045500249D8D /* MySettingCell.m */; };
 		C588040E162C120900249D8D /* settings_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C588040D162C120900249D8D /* settings_arrow.png */; };
-		C58873FE16A5290800C21AC4 /* SCPDescriptionEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58873FD16A5290800C21AC4 /* SCPDescriptionEditController.m */; };
+		C58873FE16A5290800C21AC4 /* PhotoDesEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58873FD16A5290800C21AC4 /* PhotoDesEditController.m */; };
 		C588740916A52CC500C21AC4 /* description_icon_press.png in Resources */ = {isa = PBXBuildFile; fileRef = C588740616A52CC500C21AC4 /* description_icon_press.png */; };
 		C588740A16A52CC500C21AC4 /* description_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C588740716A52CC500C21AC4 /* description_icon.png */; };
 		C588740E16A530F700C21AC4 /* title_description.png in Resources */ = {isa = PBXBuildFile; fileRef = C588740D16A530F700C21AC4 /* title_description.png */; };
@@ -589,8 +588,6 @@
 		B7205D7615EE4293001CE863 /* PlazeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlazeManager.m; path = Controller/ExplorerController/Managers/PlazeManager.m; sourceTree = "<group>"; };
 		B7205D8415EE42CD001CE863 /* FeedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedManager.h; path = Controller/MainFeedController/Managers/FeedManager.h; sourceTree = "<group>"; };
 		B7205D8515EE42CD001CE863 /* FeedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedManager.m; path = Controller/MainFeedController/Managers/FeedManager.m; sourceTree = "<group>"; };
-		B7827E2516048169000DD86C /* CommentPostBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentPostBar.h; path = Controller/PhotoDetailController/Views/CommentPostBar.h; sourceTree = "<group>"; };
-		B7827E2616048169000DD86C /* CommentPostBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommentPostBar.m; path = Controller/PhotoDetailController/Views/CommentPostBar.m; sourceTree = "<group>"; };
 		B7916E4A1615CAC4007E6EB5 /* pop_btn_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_btn_normal.png; sourceTree = "<group>"; };
 		B7916E4B1615CAC4007E6EB5 /* pop_btn_press.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_btn_press.png; sourceTree = "<group>"; };
 		B7916E4C1615CAC4007E6EB5 /* pop_up_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_up_bg.png; sourceTree = "<group>"; };
@@ -630,10 +627,8 @@
 		B7D72A8816420D270018ED30 /* SCPPhotoGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPhotoGridCell.m; sourceTree = "<group>"; };
 		B7D83AD215F99FCB00569900 /* SCPPersonalHomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPPersonalHomeController.h; path = Controller/PersonalPageController/SCPPersonalHomeController.h; sourceTree = "<group>"; };
 		B7D83AD315F99FCB00569900 /* SCPPersonalHomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPPersonalHomeController.m; path = Controller/PersonalPageController/SCPPersonalHomeController.m; sourceTree = "<group>"; };
-		B7D83AD715F99FEA00569900 /* SCPPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPPhotoDetailViewController.h; path = Controller/PhotoDetailController/SCPPhotoDetailViewController.h; sourceTree = "<group>"; };
-		B7D83AD815F99FEA00569900 /* SCPPhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPPhotoDetailViewController.m; path = Controller/PhotoDetailController/SCPPhotoDetailViewController.m; sourceTree = "<group>"; };
-		B7D83ADF15F9A00900569900 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentCell.h; path = Controller/PhotoDetailController/Views/CommentCell.h; sourceTree = "<group>"; };
-		B7D83AE015F9A00900569900 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommentCell.m; path = Controller/PhotoDetailController/Views/CommentCell.m; sourceTree = "<group>"; };
+		B7D83AD715F99FEA00569900 /* SCPPhotoDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPPhotoDetailController.h; path = Controller/PhotoDetailController/SCPPhotoDetailController.h; sourceTree = "<group>"; };
+		B7D83AD815F99FEA00569900 /* SCPPhotoDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPPhotoDetailController.m; path = Controller/PhotoDetailController/SCPPhotoDetailController.m; sourceTree = "<group>"; };
 		B7D83AE515F9A02600569900 /* SCPFollowingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPFollowingListViewController.h; path = Controller/FollowingListController/SCPFollowingListViewController.h; sourceTree = "<group>"; };
 		B7D83AE615F9A02600569900 /* SCPFollowingListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPFollowingListViewController.m; path = Controller/FollowingListController/SCPFollowingListViewController.m; sourceTree = "<group>"; };
 		B7D83AEA15F9A03900569900 /* SCPFollowingListManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPFollowingListManager.h; path = Controller/FollowingListController/Managers/SCPFollowingListManager.h; sourceTree = "<group>"; };
@@ -661,6 +656,8 @@
 		C501610A1640BFDF00875B12 /* AlbumControllerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlbumControllerManager.m; path = External/ELCImagePicker/AlbumControllerManager.m; sourceTree = "<group>"; };
 		C5016D8B168C2F6300A9BE1C /* pop_alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_alert.png; sourceTree = "<group>"; };
 		C5016D8C168C2F6300A9BE1C /* pop_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_bg.png; sourceTree = "<group>"; };
+		C50538D816BA0881003EB7AA /* EmojiUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmojiUnit.h; path = View/EmojiUnit.h; sourceTree = "<group>"; };
+		C50538D916BA0881003EB7AA /* EmojiUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EmojiUnit.m; path = View/EmojiUnit.m; sourceTree = "<group>"; };
 		C507357A168E8039006DDBEF /* ImageQualitySwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageQualitySwitch.h; sourceTree = "<group>"; };
 		C507357B168E803A006DDBEF /* ImageQualitySwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageQualitySwitch.m; sourceTree = "<group>"; };
 		C5073586168E9FB9006DDBEF /* cameraios63.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cameraios63.png; sourceTree = "<group>"; };
@@ -899,8 +896,8 @@
 		C588040A162C045500249D8D /* MySettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingCell.h; sourceTree = "<group>"; };
 		C588040B162C045500249D8D /* MySettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingCell.m; sourceTree = "<group>"; };
 		C588040D162C120900249D8D /* settings_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_arrow.png; sourceTree = "<group>"; };
-		C58873FC16A5290800C21AC4 /* SCPDescriptionEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPDescriptionEditController.h; sourceTree = "<group>"; };
-		C58873FD16A5290800C21AC4 /* SCPDescriptionEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPDescriptionEditController.m; sourceTree = "<group>"; };
+		C58873FC16A5290800C21AC4 /* PhotoDesEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDesEditController.h; sourceTree = "<group>"; };
+		C58873FD16A5290800C21AC4 /* PhotoDesEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDesEditController.m; sourceTree = "<group>"; };
 		C588740616A52CC500C21AC4 /* description_icon_press.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = description_icon_press.png; sourceTree = "<group>"; };
 		C588740716A52CC500C21AC4 /* description_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = description_icon.png; sourceTree = "<group>"; };
 		C588740D16A530F700C21AC4 /* title_description.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_description.png; sourceTree = "<group>"; };
@@ -1421,6 +1418,7 @@
 		617FCF2C15F73AEA003968FE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C50538D716BA07C8003EB7AA /* ContailEmoji */,
 				C58B5EB216AF8B2900D7E4FE /* CountViewLabel */,
 				B7EF8832163A85BC0071C26A /* SCPHGestureRecognizer */,
 				C53BB11C1654D9F10043B7E7 /* RefreshButton */,
@@ -1769,8 +1767,8 @@
 			children = (
 				C59198F1167F2DA50019E947 /* Manager */,
 				B7D83ADA15F99FF400569900 /* Views */,
-				B7D83AD715F99FEA00569900 /* SCPPhotoDetailViewController.h */,
-				B7D83AD815F99FEA00569900 /* SCPPhotoDetailViewController.m */,
+				B7D83AD715F99FEA00569900 /* SCPPhotoDetailController.h */,
+				B7D83AD815F99FEA00569900 /* SCPPhotoDetailController.m */,
 			);
 			name = PhotoDetailController;
 			sourceTree = "<group>";
@@ -1778,12 +1776,8 @@
 		B7D83ADA15F99FF400569900 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B7827E2516048169000DD86C /* CommentPostBar.h */,
-				B7827E2616048169000DD86C /* CommentPostBar.m */,
 				C5ECD35216106F59000AE4F9 /* FeedDescription.h */,
 				C5ECD35316106F59000AE4F9 /* FeedDescription.m */,
-				B7D83ADF15F9A00900569900 /* CommentCell.h */,
-				B7D83AE015F9A00900569900 /* CommentCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1917,6 +1911,15 @@
 			);
 			name = share;
 			path = Resource/image/share;
+			sourceTree = "<group>";
+		};
+		C50538D716BA07C8003EB7AA /* ContailEmoji */ = {
+			isa = PBXGroup;
+			children = (
+				C50538D816BA0881003EB7AA /* EmojiUnit.h */,
+				C50538D916BA0881003EB7AA /* EmojiUnit.m */,
+			);
+			name = ContailEmoji;
 			sourceTree = "<group>";
 		};
 		C508A6A016845377006D86B9 /* Personal */ = {
@@ -2505,12 +2508,12 @@
 		C59198F1167F2DA50019E947 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				C593B614168012FF0076FBC6 /* SCPPhotoListController.h */,
-				C593B615168012FF0076FBC6 /* SCPPhotoListController.m */,
 				C59198F2167F2DA60019E947 /* PhotoDetailManager.h */,
 				C59198F3167F2DA60019E947 /* PhotoDetailManager.m */,
-				C58873FC16A5290800C21AC4 /* SCPDescriptionEditController.h */,
-				C58873FD16A5290800C21AC4 /* SCPDescriptionEditController.m */,
+				C593B614168012FF0076FBC6 /* SCPPhotoListController.h */,
+				C593B615168012FF0076FBC6 /* SCPPhotoListController.m */,
+				C58873FC16A5290800C21AC4 /* PhotoDesEditController.h */,
+				C58873FD16A5290800C21AC4 /* PhotoDesEditController.m */,
 			);
 			name = Manager;
 			path = Controller/PhotoDetailController/Manager;
@@ -2952,8 +2955,7 @@
 				B7DF543C15F8504600D37A4E /* FeedCell.m in Sources */,
 				C589F45A15F98ACA00FAC5B1 /* GifDetail.m in Sources */,
 				B7D83AD415F99FCB00569900 /* SCPPersonalHomeController.m in Sources */,
-				B7D83AD915F99FEA00569900 /* SCPPhotoDetailViewController.m in Sources */,
-				B7D83AE315F9A00900569900 /* CommentCell.m in Sources */,
+				B7D83AD915F99FEA00569900 /* SCPPhotoDetailController.m in Sources */,
 				B7D83AE715F9A02600569900 /* SCPFollowingListViewController.m in Sources */,
 				B7D83AEC15F9A03900569900 /* SCPFollowingListManager.m in Sources */,
 				B7D83AF715F9A05800569900 /* SCPFollowedListManager.m in Sources */,
@@ -2961,7 +2963,6 @@
 				B7CAB56E15FEDC47004C8333 /* EmailTextField.m in Sources */,
 				B7CAB5D815FF5289004C8333 /* SCPLoginViewController.m in Sources */,
 				B7CA5605160014F00015C1BA /* SCPRegisterViewController.m in Sources */,
-				B7827E2716048169000DD86C /* CommentPostBar.m in Sources */,
 				C57B2905160812A800FAB228 /* ImageUtil.m in Sources */,
 				DFED892B1610438900890069 /* SCPPhotoGridController.m in Sources */,
 				C5ECD34516106E70000AE4F9 /* PersonalPageCell.m in Sources */,
@@ -3074,13 +3075,14 @@
 				C50BF49D169C138B00B36B96 /* SCPAuthorizeViewController.m in Sources */,
 				C587AD3A169E705B00F2C16F /* SCPAlert_AlbumProperty.m in Sources */,
 				C5AADC2B16A2565700166B86 /* SCPReadDealController.m in Sources */,
-				C58873FE16A5290800C21AC4 /* SCPDescriptionEditController.m in Sources */,
+				C58873FE16A5290800C21AC4 /* PhotoDesEditController.m in Sources */,
 				C5246CF916A6D58E004E32DF /* SCPCacheManager.m in Sources */,
 				C595934A16A79D320020B800 /* SCPGuideViewExchange.m in Sources */,
 				C593BFA516AD0BBD0015CE50 /* SCPNewFoldersCell.m in Sources */,
 				C58B5EB516AF8B4A00D7E4FE /* CountLabel.m in Sources */,
 				C58BA24C16B7AB7C00338CE4 /* PlazeDataAdapter.m in Sources */,
 				C5D9E03116B916CC00B2A442 /* MyHomeManager.m in Sources */,
+				C50538DA16BA0881003EB7AA /* EmojiUnit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

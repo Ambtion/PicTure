@@ -4,26 +4,26 @@
 //
 //  Created by sohu on 13-1-15.
 //
-//
+//修改图片描述
 
-#import "SCPDescriptionEditController.h"
+#import "PhotoDesEditController.h"
 #import "SCPFeedBackController.h"
 #import "SCPAlertView_LoginTip.h"
 #import "SCPAlert_CustomeView.h"
-#import <QuartzCore/QuartzCore.h>
 #import "SCPMenuNavigationController.h"
-#import "SCPPhotoDetailViewController.h"
+#import "SCPPhotoDetailController.h"
 #import "PhotoDetailManager.h"
+#import "EmojiUnit.h"
 
 #define DESC_COUNT_LIMIT 300
-
 #define PLACEHOLDER  @"添加描述"
 #define TITLE_DES @"300字以内"
 
 
-@implementation SCPDescriptionEditController
+@implementation PhotoDesEditController
 @synthesize photo_id = _photo_id;
-@synthesize tmpDes = _tmpDes;
+@synthesize originalDes = _originalDes;
+
 - (void)dealloc
 {
     
@@ -33,14 +33,14 @@
     [_placeHolder release];
     [_saveButton release];
     [_textView_bg release];
-    self.tmpDes = nil;
-    self.photo_id = nil;
+    [_originalDes release];
+    [_photo_id release];
     [super dealloc];
 }
 - (id)initphoto:(NSString *)photo_id withDes:(NSString * )des
 {
     if (self = [super init]) {
-        self.tmpDes = des;
+        self.originalDes = des;
         self.photo_id = photo_id;
     }
     return self;
@@ -94,7 +94,7 @@
 - (void)saveButton:(UIButton *)button
 {
     
-    if ([self stringContainsEmoji:_textView.text]) {
+    if ([EmojiUnit stringContainsEmoji:_textView.text]) {
         SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:@"图片描述不能包含特殊字符或表情" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [tip show];
         [tip release];
@@ -122,46 +122,6 @@
     SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.navigationController;
     [menu.menuManager onPlazeClicked:nil];
 }
-- (BOOL)stringContainsEmoji:(NSString *)string {
-    __block BOOL returnValue = NO;
-    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
-     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
-         
-         const unichar hs = [substring characterAtIndex:0];
-         // surrogate pair
-         if (0xd800 <= hs && hs <= 0xdbff) {
-             if (substring.length > 1) {
-                 const unichar ls = [substring characterAtIndex:1];
-                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
-                 if (0x1d000 <= uc && uc <= 0x1f77f) {
-                     returnValue = YES;
-                 }
-             }
-         } else if (substring.length > 1) {
-             const unichar ls = [substring characterAtIndex:1];
-             if (ls == 0x20e3) {
-                 returnValue = YES;
-             }
-             
-         } else {
-             // non surrogate
-             if (0x2100 <= hs && hs <= 0x27ff) {
-                 returnValue = YES;
-             } else if (0x2B05 <= hs && hs <= 0x2b07) {
-                 returnValue = YES;
-             } else if (0x2934 <= hs && hs <= 0x2935) {
-                 returnValue = YES;
-             } else if (0x3297 <= hs && hs <= 0x3299) {
-                 returnValue = YES;
-             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
-                 returnValue = YES;
-             }
-         }
-     }];
-    
-    return returnValue;
-}
-
 
 - (void)addSubviews
 {
@@ -193,7 +153,7 @@
     _textView.font =  [UIFont fontWithName:@"STHeitiTC-Medium" size:16];
     _textView.returnKeyType = UIReturnKeyDefault;
     _textView.delegate = self;
-    _textView.text = _tmpDes;
+    _textView.text = _originalDes;
     [_textView becomeFirstResponder];
     _textView.textColor = [UIColor colorWithRed:102.f/255 green:102.f/255 blue:102.f/255 alpha:1];
     

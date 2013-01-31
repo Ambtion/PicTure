@@ -11,7 +11,7 @@
 
 #import "SCPFeedController.h"
 #import "SCPPersonalHomeController.h"
-#import "SCPPhotoDetailViewController.h"
+#import "SCPPhotoDetailController.h"
 #import "SCPAlertView_LoginTip.h"
 #import "SCPAlert_CustomeView.h"
 
@@ -276,8 +276,8 @@
 
 - (void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
-    //    NSLog(@"feedCell: %@",cell.dataSource.allInfo);
-    SCPPhotoDetailViewController *controller = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
+    SCPPhotoDetailController * controller = [[SCPPhotoDetailController alloc] initWithuseId:
+                                            [NSString stringWithFormat:@"%@",[[cell.dataSource allInfo] objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[[cell.dataSource allInfo] objectForKey:@"photo_id"]]];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];
 }

@@ -39,6 +39,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	/* The following statements are used for umeng statistic */
+    
 	[MobClick startWithAppkey:UM_APP_KEY];
     
     [UIApplication sharedApplication].statusBarHidden = YES;
@@ -55,9 +56,13 @@
     [nav release];
 	[self showGuideView];
     [self showfunctionGuide];
+    [self getURLwith];
     return YES;
 }
-
+- (void)getURLwith
+{
+    
+}
 - (void)showfunctionGuide
 {
     NSNumber * num  = [[NSUserDefaults standardUserDefaults] objectForKey:@"FunctionShowed"];

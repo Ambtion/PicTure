@@ -13,9 +13,10 @@
 #import "SCPMenuNavigationController.h"
 #import "SCPPhotoGridCell.h"
 #import "SCPPhoto.h"
-#import "SCPPhotoDetailViewController.h"
+#import "SCPPhotoDetailController.h"
 #import "SCPUploadTaskManager.h"
 #import "SCPAlertView_LoginTip.h"
+#import "EmojiUnit.h"
 
 
 @implementation SCPPhotoGridController
@@ -24,7 +25,6 @@
 @synthesize photoList = _photoList;
 @synthesize uploadTaskList = _uploadTaskList;
 @synthesize thumbnailArray = _thumbnailArray;
-
 @synthesize bannerLeftString = _bannerLeftString;
 @synthesize bannerRightString = _bannerRightString;
 @synthesize pullingController = _pullingController;
@@ -267,7 +267,7 @@
 - (void)albumProperty:(SCPAlert_AlbumProperty *)view OKClicked:(UITextField *)textField ispublic:(BOOL)isPublic
 {
     NSString * str = textField.text;
-    if ([self stringContainsEmoji:str]) {
+    if ([EmojiUnit stringContainsEmoji:str]) {
         SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:@"专辑名称不能包含特殊字符或表情" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [tip show];
         [tip release];
@@ -287,46 +287,6 @@
         }
         [self requestFailed:error];
     }];
-}
-
-- (BOOL)stringContainsEmoji:(NSString *)string {
-    __block BOOL returnValue = NO;
-    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
-     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
-         
-         const unichar hs = [substring characterAtIndex:0];
-         // surrogate pair
-         if (0xd800 <= hs && hs <= 0xdbff) {
-             if (substring.length > 1) {
-                 const unichar ls = [substring characterAtIndex:1];
-                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
-                 if (0x1d000 <= uc && uc <= 0x1f77f) {
-                     returnValue = YES;
-                 }
-             }
-         } else if (substring.length > 1) {
-             const unichar ls = [substring characterAtIndex:1];
-             if (ls == 0x20e3) {
-                 returnValue = YES;
-             }
-             
-         } else {
-             // non surrogate
-             if (0x2100 <= hs && hs <= 0x27ff) {
-                 returnValue = YES;
-             } else if (0x2B05 <= hs && hs <= 0x2b07) {
-                 returnValue = YES;
-             } else if (0x2934 <= hs && hs <= 0x2935) {
-                 returnValue = YES;
-             } else if (0x3297 <= hs && hs <= 0x3299) {
-                 returnValue = YES;
-             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
-                 returnValue = YES;
-             }
-         }
-     }];
-    
-    return returnValue;
 }
 #pragma mark  - trash
 - (void)onTrashClicked:(id)sender
@@ -576,7 +536,7 @@
 				SCPPhoto *photo = [self.photoList objectAtIndex:tag.intValue];
 				NSString * photoId = photo.photoID;
 				NSString * user_id = self.albumData.creatorId;
-                SCPPhotoDetailViewController * spd = [[[SCPPhotoDetailViewController alloc] initWithuseId:user_id photoId:photoId] autorelease];
+                SCPPhotoDetailController * spd = [[[SCPPhotoDetailController alloc] initWithuseId:user_id photoId:photoId] autorelease];
                 [self.navigationController pushViewController:spd animated:YES];
 			}
             break;

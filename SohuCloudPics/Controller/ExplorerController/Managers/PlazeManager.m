@@ -9,7 +9,7 @@
 #import "PlazeManager.h"
 
 #import "SCPPlazeController.h"
-#import "SCPPhotoDetailViewController.h"
+#import "SCPPhotoDetailController.h"
 #import "SCPAlert_CustomeView.h"
 #import "PlazeDataAdapter.h"
 
@@ -214,11 +214,12 @@
 }
 
 #pragma mark -
-#pragma mark imageView Method
+#pragma mark Action 
 
 - (void)PlazeViewCell:(PlazeViewCell *)cell imageClick:(UIImageView *)imageView
 {
-    SCPPhotoDetailViewController * pho_detail = [[[SCPPhotoDetailViewController alloc] initWithinfo:[cell.dataSource.infoArray objectAtIndex:imageView.tag]] autorelease];
+    NSDictionary * dic = [cell.dataSource.infoArray objectAtIndex:imageView.tag];
+    SCPPhotoDetailController * pho_detail = [[[SCPPhotoDetailController alloc] initWithuseId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"photo_id"]] ] autorelease];
     SCPPlazeController *exp = (SCPPlazeController *)_controller;
     [exp.navigationController pushViewController:pho_detail animated:YES];
 }

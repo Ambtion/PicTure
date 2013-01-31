@@ -11,7 +11,7 @@
 #import "SCPMyHomeController.h"
 
 #import "SCPAlbumGridController.h"
-#import "SCPPhotoDetailViewController.h"
+#import "SCPPhotoDetailController.h"
 #import "SCPFollowingListViewController.h"
 #import "SCPFollowedListViewController.h"
 #import "SCPSetttingController.h"
@@ -303,10 +303,10 @@ static float OFFSET = 0.f;
 #pragma feedCell Method
 -(void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
-    UINavigationController * nav = _controller.navigationController;
-    SCPPhotoDetailViewController *ctrl = [[SCPPhotoDetailViewController alloc] initWithinfo:cell.dataSource.allInfo];
-    [nav pushViewController:ctrl animated:YES];
-    [ctrl release];
+    SCPPhotoDetailController * controller = [[SCPPhotoDetailController alloc] initWithuseId:
+                                             [NSString stringWithFormat:@"%@",[[cell.dataSource allInfo] objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[[cell.dataSource allInfo] objectForKey:@"photo_id"]]];
+    [_controller.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 -(void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object

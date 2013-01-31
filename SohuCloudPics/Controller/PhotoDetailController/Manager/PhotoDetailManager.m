@@ -8,24 +8,21 @@
 
 #import "PhotoDetailManager.h"
 
-#import "SCPPhotoDetailViewController.h"
+#import "SCPPhotoDetailController.h"
 #import "SCPMyHomeController.h"
 #import "SCPPersonalHomeController.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPLoginPridictive.h"
-#import "SCPDescriptionEditController.h"
+#import "PhotoDesEditController.h"
 
-#define N 20
-#define MAXIMAGEHEIGTH 320
 @implementation PhotoDetailManager
-
 @synthesize controller = _controller;
 @synthesize infoFromSuper = _infoFromSuper;
 @synthesize photo_ID = _photo_ID;
 @synthesize listView =  _listView;
+
 - (void)dealloc
 {
-    
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_requestManger setDelegate:nil];
     [_requestManger release];
@@ -35,10 +32,9 @@
     [_user_ID release];
     [_listView release];
     [super dealloc];
-    
 }
 
-- (id)initWithController:(SCPPhotoDetailViewController *)ctrl useId:(NSString*) useId photoId:(NSString*)photoId
+- (id)initWithController:(SCPPhotoDetailController *)ctrl useId:(NSString*) useId photoId:(NSString*)photoId
 {
     if (self = [super init]) {
         _controller = ctrl;
@@ -53,25 +49,10 @@
     return self;
 }
 
-- (id)initWithController:(SCPPhotoDetailViewController *)ctrl info:(NSDictionary*)info
-{
-    return [self initWithController:ctrl useId:[NSString stringWithFormat:@"%@",[info objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[info objectForKey:@"photo_id"]]];
-}
-
 #pragma mark  Request Finished
-- (CGFloat)getHeightofImage:(CGFloat)O_height :(CGFloat) O_width
-{
-    CGFloat finalHeigth = 0.f;
-    finalHeigth = O_height * (320.f / O_width);
-    if (!finalHeigth) {
-        finalHeigth = 320;
-    }
-    return finalHeigth;
-}
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-    //    NSLog(@"info :: %@",info);
     if (_willRefresh){
         [_dataSourceArray removeAllObjects];
         self.infoFromSuper = info;
@@ -100,7 +81,8 @@
     }
     [self refreshDataFinishLoad:nil];
 }
-#pragma networkFailed
+
+#pragma Request failed
 - (void)requestFailed:(NSString *)error
 {
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
@@ -122,15 +104,16 @@
 {
     _isLoading = YES;
     _willRefresh = isRefresh | _dataSourceArray.count;
-    if (isRefresh || _dataSourceArray.count == 0){
+    if (isRefresh || _dataSourceArray.count == 0)
         [_requestManger getPhotoDetailinfoWithUserID:_user_ID photoID:_photo_ID];
-    }
 }
+
 #pragma mark Top
 - (void)pullingreloadPushToTop:(id)sender
 {
     [self.controller showNavigationBar];
 }
+
 #pragma mark Refresh Action
 //1 点击 2 下拉 3 结束
 - (void)refreshData:(id)sender
@@ -156,7 +139,6 @@
 //1:下拉刷新 2:刷新结束
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
-    //目前仅仅是为了初始化时候的圈圈
     [self dataSourcewithRefresh:NO];
 }
 - (void)moreDataFinishLoad:(id)sender
@@ -165,12 +147,8 @@
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
-#pragma mark -
-#pragma mark Banner Datasouce
-- (BOOL)isNULL:(id)str
-{
-    return !str || [str isKindOfClass:[NSNull class]] || [str isEqual:@""];
-}
+
+#pragma mark - Banner Datasouce
 - (NSString*)bannerDataSouceLeftLabel
 {
     if (self.infoFromSuper) {
@@ -184,12 +162,13 @@
 {
     return [NSString stringWithFormat:@"浏览数:%d",numCount];
 }
-#pragma mark -
-#pragma mark Tableview DataSource
+
+#pragma mark - Tableview DataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _dataSourceArray.count;
@@ -213,7 +192,6 @@
 {
     int row = indexPath.row;
     if (row == 0) {
-        
         FeedCell * picture = [tableView dequeueReusableCellWithIdentifier:@"Picture"];
         if (picture == nil){
             picture = [[[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Picture"] autorelease];
@@ -230,50 +208,45 @@
     }
     des.dataScoure = [_dataSourceArray objectAtIndex:row];
     return des;
-    
 }
 
-#pragma mark -
-#pragma mark TableViewDelegate
+#pragma mark - TableViewDelegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
 }
-#pragma mark -
-#pragma mark FeedCell Method
+
+#pragma mark - FeedCell Method
 - (void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
     if ((!self.controller.navigationController.navigationBarHidden))
         [self.controller.navigationController setNavigationBarHidden:YES animated:YES];
-    
     self.listView = [[[SCPPhotoListController alloc] initWithUseInfo:self.infoFromSuper :self] autorelease];
-    self.listView.delegate = self;
-    
+    self.listView.delegate = self;    
     CGRect rect = cell.frame;
-    CGFloat Y = ((SCPPhotoDetailViewController *)self.controller).pullingController.tableView.contentOffset.y;
+    CGFloat Y = ((SCPPhotoDetailController *)self.controller).pullingController.tableView.contentOffset.y;
     cell.photoImageView.image = nil;
-    
     if (cell.gifPlayButton.superview)
         [cell.gifPlayButton removeFromSuperview];
     rect.origin.y -= Y;
     rect.size.height -= 70;
     [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
-    
 }
 
 - (void)whenViewRemveFromSuperview
 {
-    //    NSLog(@"%s %d",__FUNCTION__,[_listView retainCount]);
+    //when list remove from supview
     self.listView  = nil;
 }
 
 #pragma mark - FeedDesDelegate
 - (void)feedDescription:(FeedDescription *)feed_des DesEditClick:(id)sender
 {
-    SCPDescriptionEditController * des  = [[[SCPDescriptionEditController alloc] initphoto:_photo_ID withDes:[self.infoFromSuper objectForKey:@"photo_desc"]] autorelease];
+    PhotoDesEditController * des  = [[[PhotoDesEditController alloc] initphoto:_photo_ID withDes:[self.infoFromSuper objectForKey:@"photo_desc"]] autorelease];
     [self.controller.navigationController pushViewController:des animated:YES];
 }
-#pragma mark -
+
+#pragma mark - FeedClick
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
     UINavigationController * nav = _controller.navigationController;
@@ -290,7 +263,6 @@
 
 - (void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object
 {
-    
     if (![SCPLoginPridictive isLogin]) {
         SCPAlert_LoginView *alert = [[[SCPAlert_LoginView alloc] initWithMessage:LOGIN_HINT delegate:self] autorelease];
         [alert show];
@@ -298,23 +270,11 @@
     }
 }
 
-- (void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx
-{
-    
-}
-
-#pragma mark Comment Method
-- (void)commentCell:(CommentCell *)cell portraitViewClickedWith:(id)object
-{
-    
-}
-
 #pragma mark SCPAlertView Delegate
 - (void)alertViewOKClicked:(SCPAlert_LoginView *)view
 {
     SCPLoginViewController *loginCtrl = [[SCPLoginViewController alloc] init];
     loginCtrl.delegate = self;
-    
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginCtrl];
     [self.controller presentModalViewController:nav animated:YES];
     [loginCtrl release];

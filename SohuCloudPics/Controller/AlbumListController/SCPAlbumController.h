@@ -12,7 +12,6 @@
 #import "SCPAlbumCell.h"
 #import "PullingRefreshController.h"
 #import "SCPRequestManager.h"
-
 #import "SCPUploadTaskManager.h"
 
 typedef enum {
@@ -22,16 +21,13 @@ typedef enum {
 
 @interface SCPAlbumController : SCPSecondLayerController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPAlbumCellDelegate, SCPRequestManagerDelegate,UIAlertViewDelegate>
 {
-    SCPAlbumControllerState _state;
-    
     UIButton *_backButton;
-    
     UIView *_rightBarView;
     UIButton *_switchButton;
     UIButton *_uploadButton;
     UIButton *_okButton;
-	
 	SCPRequestManager *_request;
+    SCPAlbumControllerState _state;
 	BOOL _hasNextPage;
 	int _currentPage;
 	int _loadedPage;
@@ -39,7 +35,6 @@ typedef enum {
     BOOL isSwitch;
     id tempRibbon;
 }
-
 /* Data */
 @property (strong, nonatomic) NSString * user_id;
 @property (strong, nonatomic) NSMutableArray *albumList;

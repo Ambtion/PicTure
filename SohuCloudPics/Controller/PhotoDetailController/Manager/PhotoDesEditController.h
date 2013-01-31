@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCPRequestManager.h"
 
-@interface SCPDescriptionEditController : UIViewController<UITextViewDelegate,UIAlertViewDelegate>
+@interface PhotoDesEditController : UIViewController<UITextViewDelegate,UIAlertViewDelegate>
 {
     UITextView * _textView;
     UITextField * _placeHolder;
@@ -18,6 +18,7 @@
     UIView * _textView_bg;
 }
 @property(nonatomic,retain)NSString * photo_id;
-@property(nonatomic,retain)NSString * tmpDes;
+//图片原有的描述
+@property(nonatomic,retain)NSString * originalDes;
 - (id)initphoto:(NSString *)photo_id withDes:(NSString * )des ;
 @end

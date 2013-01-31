@@ -14,6 +14,7 @@
 @synthesize pullingController = _pullingController;
 @synthesize manager = _manager;
 @synthesize item = _item;
+
 - (void)dealloc
 {
     [_item release];

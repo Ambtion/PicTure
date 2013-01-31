@@ -8,7 +8,7 @@
 
 #import "SCPPhotoListController.h"
 #import "SCPAppDelegate.h"
-#import "SCPPhotoDetailViewController.h"
+#import "SCPPhotoDetailController.h"
 #import "SCPMenuNavigationController.h"
 
 #define OFFSET 20
@@ -468,7 +468,7 @@
         *photoRect = CGRectMake(0, 0, 320,320);
         *tempRect = CGRectMake(0, 0, 320, 320);
     }
-    CGFloat Y = ((SCPPhotoDetailViewController *)_dataManager.controller).pullingController.tableView.contentOffset.y;
+    CGFloat Y = ((SCPPhotoDetailController *)_dataManager.controller).pullingController.tableView.contentOffset.y;
     (*tempRect).origin.y -= (Y - 100);
 }
 - (CGFloat)getHeightofImage:(CGFloat)O_height :(CGFloat) O_width

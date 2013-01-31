@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "UIImageView+WebCache.h"
 #import "SCPRequestManager.h"
-#import  <QuartzCore/QuartzCore.h>
 #import "ASIHTTPRequest.h"
 
 @class PhotoDetailManager;
@@ -24,7 +23,6 @@
 @end
 
 @class SCPPhotoListController;
-
 @protocol SCPPhotoListControllerDeletate <NSObject>
 - (void)whenViewRemveFromSuperview;
 @end

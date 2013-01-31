@@ -13,8 +13,7 @@
 @class FeedCell;
 @protocol FeedCellDelegate <NSObject>
 
-@required
-
+@optional
 - (void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object;
 - (void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object;
 - (void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object;
