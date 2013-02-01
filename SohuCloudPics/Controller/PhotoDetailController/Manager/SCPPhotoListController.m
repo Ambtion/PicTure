@@ -204,6 +204,7 @@
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications])
