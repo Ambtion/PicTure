@@ -381,7 +381,6 @@
     if (buttonIndex == 0) return;
     SCPAlbum *album = [[_albumList objectAtIndex:alertView.tag] retain];
     [_albumList removeObjectAtIndex:alertView.tag];
-    
     // TODO
     [[SCPUploadTaskManager currentManager] cancelOperationWithAlbumID:album.albumId];
     // delete album

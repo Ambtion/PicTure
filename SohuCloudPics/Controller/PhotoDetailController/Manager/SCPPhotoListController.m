@@ -16,7 +16,6 @@
 @class SCPPhotoListController;
 
 @implementation InfoImageView
-
 @synthesize info;
 @synthesize actV;
 @synthesize webView;
@@ -109,7 +108,6 @@
 
 - (void)resetGigView
 {
-    
     [self.requset clearDelegatesAndCancel];
     [self.requset cancel];
     self.requset = nil;
@@ -119,7 +117,6 @@
 }
 - (void)dealloc
 {
-    
     [self cancelCurrentImageLoad];
     [self resetGigView];
     self.info = nil;
@@ -196,24 +193,23 @@
         self.folder_id = [NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]];
         self.user_id = [NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]];
         [_requestManger getFolderinfoWihtUserID:self.user_id WithFolders:self.folder_id];
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(listOrientationChanged:)
-                                                     name:UIDeviceOrientationDidChangeNotification
-                                                   object:nil];
     }
     return self;
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(listOrientationChanged:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
 }
-- (void)viewWillDisappear:(BOOL)animated
-{
-    if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications])
-        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    
-}
+
 #pragma mark Ratation
 - (CGAffineTransform )getTransfrom
 {
