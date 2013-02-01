@@ -194,6 +194,7 @@
     }
     return self;
 }
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -285,7 +286,7 @@
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolist = [info objectForKey:@"photoList"];
-    if ([folderinfo allKeys]) {
+    if ([folderinfo allKeys]){
         photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
         if (!photoNum) {
             [self requestFailed:nil];
@@ -316,7 +317,7 @@
         curPage = 0;
     }else{
         if (curPage == -1)
-            curPage = 0;
+                curPage = 0;
     }
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"专辑加载失败,请稍后在试"] autorelease];
     [alertView show];
