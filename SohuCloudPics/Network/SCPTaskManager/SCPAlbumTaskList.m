@@ -121,7 +121,6 @@
         return;
     }
     NSDictionary * dic = [[request responseString] JSONValue];
-    NSLog(@"%@",dic);
     NSInteger code = [[dic objectForKey:@"code"] intValue];
     if (![self handleCode:code]) return;
     
@@ -185,7 +184,7 @@
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+//    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
     NSDictionary * dic = [request userInfo];
@@ -209,7 +208,6 @@
         }
     }
 }
-
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
     NSString * str = [NSString stringWithFormat:@"%@/upload/api?folder_id=%@&access_token=%@",BASICURL,self.albumId,[SCPLoginPridictive currentToken]];

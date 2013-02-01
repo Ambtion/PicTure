@@ -14,7 +14,7 @@
 #import "UMFeedback.h"
 
 
-#define TIMEOUT 10.f
+#define TIMEOUT 10.fg
 #define STRINGENCODING NSUTF8StringEncoding
 #define REQUSETFAILERROR @"当前网络不给力,请稍后重试"
 #define REFRESHFAILTURE @"登录过期,请重新登录"
