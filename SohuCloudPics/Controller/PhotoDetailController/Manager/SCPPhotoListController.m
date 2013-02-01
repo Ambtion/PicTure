@@ -168,10 +168,8 @@
 }
 
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
-{
-    
+{    
     self = [super initWithNibName:nil bundle:nil];
-    
     if (self) {
         
         self.view.backgroundColor = [UIColor blackColor];
@@ -196,15 +194,16 @@
     }
     return self;
 }
-- (void)viewDidLoad
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewDidAppear:animated];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(listOrientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
 }
+g
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
@@ -222,6 +221,7 @@
         return CGAffineTransformRotate(CGAffineTransformIdentity, M_PI_2);
     return CGAffineTransformIdentity;
 }
+
 - (CGSize)getIdentifyImageSizeWithImageView:(InfoImageView *)imageView isPortraitorientation:(BOOL)isPortrait
 {
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
@@ -242,6 +242,7 @@
     }
     return rect.size;
 }
+
 - (void)listOrientationChanged:(NSNotification *)notification
 {
     
