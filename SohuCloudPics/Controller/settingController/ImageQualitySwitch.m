@@ -44,8 +44,10 @@ static BOOL store = YES;
     UISwipeGestureRecognizer * gesutre = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(buttonDrag:)] autorelease];
     gesutre.direction = UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight;
     [_button addGestureRecognizer:gesutre];
-    [_button addTarget:self action:@selector(buttonDrag:) forControlEvents:UIControlEventTouchUpInside];
+    UITapGestureRecognizer * tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(buttonDrag:)] autorelease];
+    [self addGestureRecognizer:tap];
     [self addSubview:_button];
+    
     if (store) {
         self.image = [UIImage imageNamed:@"switch_btn.png"];
         NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
@@ -58,7 +60,7 @@ static BOOL store = YES;
             originalImage = 0;
             _button.frame = (CGRect) {40,0, 51, 27};
         }
-
+        
     }else{
         self.image = [UIImage imageNamed:@"alubm_switch_btn.png"];
         if (self.originalImage) {
@@ -100,7 +102,7 @@ static BOOL store = YES;
     [userinfo setObject:[NSNumber numberWithBool:isTure] forKey:@"JPEG"];
     [userDefault setObject:userinfo forKey:[SCPLoginPridictive currentUserId]];
     [userDefault synchronize];
-
+    
 }
 -(void)buttonDrag:(UISwipeGestureRecognizer *)gesture
 {

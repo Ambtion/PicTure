@@ -16,7 +16,6 @@
 @class SCPPhotoListController;
 
 @implementation InfoImageView
-
 @synthesize info;
 @synthesize actV;
 @synthesize webView;
@@ -109,7 +108,6 @@
 
 - (void)resetGigView
 {
-    
     [self.requset clearDelegatesAndCancel];
     [self.requset cancel];
     self.requset = nil;
@@ -119,7 +117,6 @@
 }
 - (void)dealloc
 {
-    
     [self cancelCurrentImageLoad];
     [self resetGigView];
     self.info = nil;
@@ -171,10 +168,8 @@
 }
 
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
-{
-    
+{    
     self = [super initWithNibName:nil bundle:nil];
-    
     if (self) {
         
         self.view.backgroundColor = [UIColor blackColor];
@@ -196,17 +191,18 @@
         self.folder_id = [NSString stringWithFormat:@"%@",[info objectForKey:@"folder_id"]];
         self.user_id = [NSString stringWithFormat:@"%@",[self.info objectForKey:@"user_id"]];
         [_requestManger getFolderinfoWihtUserID:self.user_id WithFolders:self.folder_id];
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(listOrientationChanged:)
-                                                     name:UIDeviceOrientationDidChangeNotification
-                                                   object:nil];
     }
     return self;
 }
-- (void)viewWillAppear:(BOOL)animated
+
+- (void)viewDidAppear:(BOOL)animated
 {
-    self.navigationItem.hidesBackButton = YES;
+    [super viewDidAppear:animated];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(listOrientationChanged:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -214,6 +210,11 @@
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationItem.hidesBackButton = YES;
+}
+
 #pragma mark Ratation
 - (CGAffineTransform )getTransfrom
 {
@@ -226,6 +227,7 @@
         return CGAffineTransformRotate(CGAffineTransformIdentity, M_PI_2);
     return CGAffineTransformIdentity;
 }
+
 - (CGSize)getIdentifyImageSizeWithImageView:(InfoImageView *)imageView isPortraitorientation:(BOOL)isPortrait
 {
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
@@ -246,6 +248,7 @@
     }
     return rect.size;
 }
+
 - (void)listOrientationChanged:(NSNotification *)notification
 {
     
@@ -283,7 +286,7 @@
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolist = [info objectForKey:@"photoList"];
-    if ([folderinfo allKeys]) {
+    if ([folderinfo allKeys]){
         photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
         if (!photoNum) {
             [self requestFailed:nil];
@@ -314,7 +317,7 @@
         curPage = 0;
     }else{
         if (curPage == -1)
-            curPage = 0;
+                curPage = 0;
     }
     SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:@"专辑加载失败,请稍后在试"] autorelease];
     [alertView show];

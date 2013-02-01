@@ -17,7 +17,11 @@
 
 
 @implementation SCPAlbumListController
-
+- (void)dealloc
+{
+    self.curProgreeeView = nil;
+    [super dealloc];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil useID: (NSString *)use_ID
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

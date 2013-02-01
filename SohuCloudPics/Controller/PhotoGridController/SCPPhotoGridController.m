@@ -34,6 +34,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if (self) {
+        
         _tasksToDel = [[NSMutableSet alloc] init];
         _imagesToDel = [[NSMutableSet alloc] init];
 		_request = [[SCPRequestManager alloc] init];
@@ -50,6 +51,7 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [_request setDelegate:nil];
     [_request release];
+    [[[SCPUploadTaskManager currentManager] curTask] clearProgreessView];
     self.albumData = nil;
     self.photoList = nil;
     self.thumbnailArray = nil;
@@ -66,8 +68,8 @@
     [_okButton release];
     [_cancelButton release];
     [super dealloc];
+    
 }
-
 - (void)viewDidLoad
 {
     
@@ -695,7 +697,6 @@
         [self refresh];
         return;
     }
-    
     NSDictionary * requsetInfo = [[[notification userInfo] objectForKey:@"RequsetInfo"] objectForKey:@"data"];
     if (requsetInfo) self.albumData.photoNum++;
     SCPPhoto * photo = [_photoList objectAtIndex:self.uploadTaskList.taskList.count];

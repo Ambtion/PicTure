@@ -61,7 +61,6 @@ static BOOL isIphone5 = NO;
     [_button addGestureRecognizer:gesutre];
     [_button addTarget:self action:@selector(buttonDrag:) forControlEvents:UIControlEventTouchDragExit];
     [_button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
     [self addSubview:_button];
     [self setbuttinImage];
 }

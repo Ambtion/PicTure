@@ -12,7 +12,7 @@
 #import "SCPLoginPridictive.h"
 #import "SCPAlert_CustomeView.h"
 
-#define UPTIMEOUT 10.f
+#define UPTIMEOUT 30.f
 #define UPLOADIMAGESIZE 1024 * 1024 * 10  // 图片最大10MB
 
 
@@ -91,9 +91,6 @@
 }
 - (void)cancelupLoadWithTag:(NSArray *)unitArray
 {
-    //    NSLog(@"requset cancel %d",_taskList.count);
-    //    for (SCPTaskUnit * unit in _taskList)
-    //        NSLog(@"original::unit ::%@",unit.thumbnail);
     for (SCPTaskUnit * unit in unitArray) {
         if ([self.currentTask isEqual:unit]) {
             [self.currentTask.request cancel];
@@ -106,8 +103,6 @@
             if ([tss isEqual:unit]) [self.taskList removeObject:tss];
         }
     }
-    //    for (SCPTaskUnit * unit in _taskList)
-    //        NSLog(@"after Remove::unit ::%@",unit.thumbnail);
 }
 
 - (void)clearProgreessView
@@ -126,7 +121,6 @@
         return;
     }
     NSDictionary * dic = [[request responseString] JSONValue];
-    NSLog(@"%@",dic);
     NSInteger code = [[dic objectForKey:@"code"] intValue];
     if (![self handleCode:code]) return;
     
@@ -180,7 +174,6 @@
 }
 - (void)requestClearCurTask:(NSString *)reason
 {
-    
     [self.taskList removeAllObjects];
     self.currentTask = nil;
     SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:reason] autorelease];
@@ -191,7 +184,7 @@
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
+//    NSLog(@"requestFailed:NNNN::%s, %d, %@",__FUNCTION__,[request responseStatusCode],[request error]);
     [request cancel];
     [request clearDelegatesAndCancel];
     NSDictionary * dic = [request userInfo];
@@ -210,17 +203,14 @@
     if (self.taskList.count) {
         [self goNextTask];
     }else{
-        //        NSLog(@"Task Finished");
         if ([_delegate respondsToSelector:@selector(albumTaskQueneFinished:)]) {
             [_delegate performSelector:@selector(albumTaskQueneFinished:) withObject:self];
         }
     }
-    
 }
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
     NSString * str = [NSString stringWithFormat:@"%@/upload/api?folder_id=%@&access_token=%@",BASICURL,self.albumId,[SCPLoginPridictive currentToken]];
-    //    NSLog(@"UploadRequestURL:: %@",str);
     NSURL * url  = [NSURL URLWithString:str];
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
     [request setStringEncoding:NSUTF8StringEncoding];
@@ -228,8 +218,11 @@
     [request setDelegate:self];
     [request setTimeOutSeconds:UPTIMEOUT];
     [request setShowAccurateProgress:YES];
+    [request setShouldAttemptPersistentConnection:NO];
+    [request setNumberOfTimesToRetryOnTimeout:5];
+#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
     [request setShouldContinueWhenAppEntersBackground:YES];
-    //#endif
+#endif
     return request;
 }
 

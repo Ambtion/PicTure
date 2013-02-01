@@ -19,9 +19,11 @@
 
 @synthesize photoCount = _photoCount;
 @synthesize currlabel;
+
 - (void)dealloc
 {
     self.currlabel = nil;
+    self.curProgreeeView = nil;
     [super dealloc];
 }
 

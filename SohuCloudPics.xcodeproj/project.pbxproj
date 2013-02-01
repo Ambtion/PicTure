@@ -3135,8 +3135,13 @@
 		61124E1915DE0BF6002C844F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+<<<<<<< HEAD
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+=======
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 科 屈 (NSB8AC8Y32)";
+>>>>>>> debug
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SohuCloudPics/SohuCloudPics-Prefix.pch";
 				INFOPLIST_FILE = "SohuCloudPics/SohuCloudPics-Info.plist";
@@ -3147,7 +3152,11 @@
 					"\"$(SRCROOT)/SohuCloudPics/External/Umeng\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "";
+=======
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9032D180-607D-403E-B123-4E20CFC7F35A";
+>>>>>>> debug
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -572,8 +572,9 @@
                 return;
             }
             [_library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+                if (!asset) return ;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
+                    NSMutableDictionary * workingDictionary = [[NSMutableDictionary alloc] init];
                     [workingDictionary setObject:[asset valueForProperty:ALAssetPropertyType] forKey:@"UIImagePickerControllerMediaType"];
                     [workingDictionary setObject:asset.defaultRepresentation.url forKey:@"UIImagePickerControllerRepresentationURL"];
                     [workingDictionary setObject:[UIImage imageWithCGImage:[asset aspectRatioThumbnail] ]forKey:@"UIImagePickerControllerThumbnail"];
