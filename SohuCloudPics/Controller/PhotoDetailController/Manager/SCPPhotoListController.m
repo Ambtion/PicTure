@@ -210,6 +210,7 @@
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
