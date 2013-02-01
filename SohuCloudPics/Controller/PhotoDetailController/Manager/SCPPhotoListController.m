@@ -214,6 +214,7 @@
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     
 }
+
 #pragma mark Ratation
 - (CGAffineTransform )getTransfrom
 {

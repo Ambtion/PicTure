@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MyHomeManager.h"
-#import "SCPSecondLayerController.h"
-#import "SCPBaseNavigationItem.h"
+#import "SCPSecondController.h"
+#import "SCPBaseNavigationItemView.h"
 
-@interface SCPMyHomeController : SCPSecondLayerController
+@interface SCPMyHomeController : SCPSecondController
 {
     UIView *_footView;
 }

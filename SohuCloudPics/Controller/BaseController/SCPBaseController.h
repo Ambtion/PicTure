@@ -7,18 +7,15 @@
 //
 // 定义手势,定义彩带行为:总是出现(viewDidAppear)
 #import <UIKit/UIKit.h>
-
 #import "SCPLoginPridictive.h"
 #import "SCPAlert_CustomeView.h" //all view show totas
 #import "SCPHorizontalGestureRecognizer.h"
-#import "SCPBaseNavigationItem.h"
+#import "SCPBaseNavigationItemView.h"
 
 @interface SCPBaseController : UIViewController <UIGestureRecognizerDelegate>
 {
     float _lastOffset;
-    BOOL _needHideNavigationBar;
 }
-
 @property (strong, nonatomic) UISwipeGestureRecognizer *naviRecognizerDown;
 @property (strong, nonatomic) UISwipeGestureRecognizer *naviRecognizerUp;
 @property (strong, nonatomic) SCPHorizontalGestureRecognizer *slideRecognizerR2L;
@@ -28,6 +25,5 @@
 - (void)showCamera:(id)gesture;
 
 //for banner string
-- (NSString *)getTimeString;
-
+- (NSString *)timeString;
 @end

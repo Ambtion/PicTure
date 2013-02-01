@@ -7,10 +7,7 @@
 //
 
 #import "SCPFeedController.h"
-
-#import "SCPNavigationController.h"
 #import "PullingRefreshTableView.h"
-
 
 @implementation SCPFeedController
 
@@ -24,6 +21,7 @@
     [_manager release];
     [super dealloc];
 }
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -72,8 +70,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     if (_item == nil) {
-        _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
-        [_item addRefreshtarget:self action:@selector(refreshButton:)];
+        _item = [[SCPBaseNavigationItemView alloc] initWithNavigationController:self.navigationController];
+        [_item refreshButtonAddtarget:self action:@selector(refreshButton:)];
     }
     if (!_item.superview)
         [self.navigationController.navigationBar addSubview:_item];
@@ -85,6 +83,7 @@
     if (_item.superview)
         [_item removeFromSuperview];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

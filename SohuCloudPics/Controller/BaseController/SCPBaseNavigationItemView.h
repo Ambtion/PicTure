@@ -11,12 +11,13 @@
 
 #import "RefreshButton.h"
 
-@interface SCPBaseNavigationItem : UIView
+@interface SCPBaseNavigationItemView : UIView
 {
-    UINavigationController * _nav;
-    RefreshButton *_refreshButton;
+    UINavigationController * _navControleler;
+    RefreshButton * _refreshButton;
 }
-- (id)initWithNavigationController:(UINavigationController*)navigation;
-- (void)addRefreshtarget:(id)target action:(SEL)action;
 @property(nonatomic,readonly) RefreshButton * refreshButton;
+
+- (id)initWithNavigationController:(UINavigationController*)anNavController;
+- (void)refreshButtonAddtarget:(id)target action:(SEL)action;
 @end

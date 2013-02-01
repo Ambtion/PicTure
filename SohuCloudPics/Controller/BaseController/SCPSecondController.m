@@ -7,27 +7,12 @@
 //
 // 定义后退手势行为
 
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPHorizontalGestureRecognizer.h"
 #import <QuartzCore/QuartzCore.h>
 
-
-@implementation SCPSecondLayerController
-
-- (void)dealloc
-{
-    [super dealloc];
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@implementation SCPSecondController
 
 - (void)viewDidLoad
 {
@@ -43,10 +28,12 @@
 {
     [super viewWillAppear:animated];
 }
+
 - (void)showCamera:(id)gesture
 {
-//    NSLog(@"重载函数,2级页面失去划出相机的功能");
+    //重载函数,二级页面失去右滑手势
 }
+
 - (void)onBackSwipe:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];

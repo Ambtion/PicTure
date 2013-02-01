@@ -12,30 +12,26 @@
 
 #import <UIKit/UIKit.h>
 #import "SCPMenuManager.h"
-#import "SCPNavigationController.h"
 
 @class SCPMenuManager;
-@interface SCPMenuNavigationController : SCPNavigationController
+@interface SCPMenuNavigationController : UINavigationController
 {
     BOOL  _disableRibbon;
 }
 
-@property (strong, nonatomic) UIView *myNavigationBar;
 @property (strong, nonatomic) SCPMenuManager *menuManager;
+@property (strong, nonatomic) UIView *myNavigationBar;
 @property (strong, nonatomic) UIView * menuView;
 @property (strong, nonatomic) UIView *ribbonView;
-
 @property (assign, nonatomic) BOOL needShow;
 @property (assign, nonatomic) BOOL needHide;
 @property (assign, nonatomic) BOOL disableMenu;
 @property (assign, nonatomic) BOOL disableRibbon;
 
 - (void)setDisableMenu:(BOOL)disable;
-
 // delegate call
 - (void)showMenu;
 - (void)hideMenu;
-
 // animationDelegate
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag;
 - (void)resetMenu;

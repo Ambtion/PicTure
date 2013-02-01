@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 #import "SCPAlbumCell.h"
 #import "PullingRefreshController.h"
 #import "SCPRequestManager.h"
@@ -19,7 +19,7 @@ typedef enum {
     SCPAlbumControllerStateDelete = 1,
 } SCPAlbumControllerState;
 
-@interface SCPAlbumController : SCPSecondLayerController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPAlbumCellDelegate, SCPRequestManagerDelegate,UIAlertViewDelegate>
+@interface SCPAlbumController : SCPSecondController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPAlbumCellDelegate, SCPRequestManagerDelegate,UIAlertViewDelegate>
 {
     UIButton *_backButton;
     UIView *_rightBarView;

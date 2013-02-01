@@ -133,7 +133,7 @@
 }
 - (void)pullingreloadTableViewDataSource:(id)sender
 {
-    SCPBaseNavigationItem * item = self.controller.item;
+    SCPBaseNavigationItemView * item = self.controller.item;
     [item.refreshButton rotateButton];
     [self refreshData:nil];
 }

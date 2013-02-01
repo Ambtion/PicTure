@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 
-@interface SCPAboutController : SCPSecondLayerController
+@interface SCPAboutController : SCPSecondController
 
 @end

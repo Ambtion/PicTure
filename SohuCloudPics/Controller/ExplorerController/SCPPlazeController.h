@@ -10,17 +10,17 @@
 
 #import "PullingRefreshController.h"
 #import "SCPBaseController.h"
-#import "SCPBaseNavigationItem.h"
+#import "SCPBaseNavigationItemView.h"
 #import "SCPMenuNavigationController.h"
 
 #import "PlazeManager.h"
 
 @interface SCPPlazeController : SCPBaseController
 {
-    SCPBaseNavigationItem * _item;
+    SCPBaseNavigationItemView * _item;
 }
 
 @property (strong, nonatomic) PullingRefreshController* pullingController;
 @property (strong, nonatomic) PlazeManager* manager;
-@property (strong, nonatomic) SCPBaseNavigationItem*  item;
+@property (strong, nonatomic) SCPBaseNavigationItemView*  item;
 @end

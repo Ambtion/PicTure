@@ -9,7 +9,6 @@
 //menuMangeger视图的显示载体
 
 #import "SCPMenuNavigationController.h"
-
 #import <QuartzCore/QuartzCore.h>
 #import "SCPMainTabController.h"
 
@@ -27,9 +26,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
 @synthesize menuManager = _menuManager;
 @synthesize menuView = _menuView;
 @synthesize ribbonView = _ribbonView;
-//@synthesize ribbonViewFake;
 @synthesize myNavigationBar;
-
 @synthesize needHide;
 @synthesize needShow;
 
@@ -68,16 +65,15 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [self.navigationBar setTranslucent:YES];
 }
 
-#pragma mark -
-#pragma initview
+#pragma mark - initView
 
 - (void)initMenu
 {
-    // add 3DLayer
     [_menuManager prepareView];
     [self configMenuManager];
     [self addGestureOnRibbon];
 }
+
 - (void)configMenuManager
 {
     _menuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
@@ -86,6 +82,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     _menuManager.naviView = self.view;
     [_menuView setHidden:YES];
     [self.view addSubview:_menuView];
+    
     // add menu
     NSMutableArray *views = _menuManager.menuArray;
     int i = 0;
@@ -101,10 +98,12 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
         i++;
     }
     _menuManager.rootView = _menuView;
+    
     // add ribbon
     self.ribbonView = _menuManager.ribbon;
     [self.view addSubview:_ribbonView];
 }
+
 - (void)addGestureOnRibbon
 {
     // add gsetrure up ,down ,tap
@@ -185,15 +184,18 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     }
     [super setNavigationBarHidden:hidden animated:animated];
 }
+
 - (void)restMenuViewLayer:(id)sendre
 {
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
 }
+
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     [self.menuManager hideMenuWithRibbon:NO];
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
 }
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     [self resetMenu];
@@ -208,6 +210,7 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
     return vc;
 }
+
 - (NSArray *)popToRootViewControllerAnimated:(BOOL)animated
 {
     NSArray * vcArray  = [super popToRootViewControllerAnimated:animated];
@@ -229,12 +232,12 @@ static CATransform3D CATransform3DMakePerspective(CGFloat z)
         default:
             break;
     }
-} 
+}
+
 - (void)resetMenu
 {
     if ([self.menuManager isMenuShowing]) [self hideMenu];
     [self.view insertSubview:self.navigationBar belowSubview:self.menuView];
     [self.menuManager resetMenu];
 }
-
 @end

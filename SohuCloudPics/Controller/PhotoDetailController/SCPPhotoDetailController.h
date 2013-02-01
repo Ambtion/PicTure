@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #import "PullingRefreshController.h"
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 #import "PhotoDetailManager.h"
 
 @class PhotoDetailManager;
-@interface SCPPhotoDetailController : SCPSecondLayerController
+@interface SCPPhotoDetailController : SCPSecondController
 
 @property (strong, nonatomic) PhotoDetailManager *manager;
 @property (strong, nonatomic) PullingRefreshController *pullingController;

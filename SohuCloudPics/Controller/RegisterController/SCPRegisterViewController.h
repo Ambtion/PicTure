@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 #import "EmailTextField.h"
 #import "SCPAlert_WaitView.h" 
 
-@interface SCPRegisterViewController : SCPSecondLayerController<UITextFieldDelegate>
+@interface SCPRegisterViewController : SCPSecondController<UITextFieldDelegate>
 {
     UIImage *_checked, *_noChecked;
     SCPAlert_WaitView * _alterView;

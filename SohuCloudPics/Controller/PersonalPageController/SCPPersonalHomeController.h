@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 #import "PersonalHomeManager.h"
 
-@interface SCPPersonalHomeController : SCPSecondLayerController
+@interface SCPPersonalHomeController : SCPSecondController
 {
     UIView *_footView;
 }

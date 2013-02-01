@@ -8,6 +8,6 @@
 
 #import "SCPBaseController.h"
 
-@interface SCPSecondLayerController : SCPBaseController
+@interface SCPSecondController : SCPBaseController
 
 @end

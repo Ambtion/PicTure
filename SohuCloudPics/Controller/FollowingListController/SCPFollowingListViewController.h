@@ -10,10 +10,10 @@
 
 #import "PullingRefreshController.h"
 #import "SCPFollowingListManager.h"
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 #import "RefreshButton.h"
 
-@interface SCPFollowingListViewController : SCPSecondLayerController
+@interface SCPFollowingListViewController : SCPSecondController
 {
     RefreshButton* _refreshButton;
 }

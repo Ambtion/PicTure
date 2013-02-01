@@ -21,9 +21,9 @@
 
 @synthesize slideRecognizerL2R;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initAndSetAllChildContrllers
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super init];
     if (self) {
         slideRecognizerL2R = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(switchTab)];
         slideRecognizerL2R.direction = UISwipeGestureRecognizerDirectionRight;

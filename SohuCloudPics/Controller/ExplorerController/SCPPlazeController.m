@@ -58,8 +58,8 @@
 {
     [super viewDidAppear:animated];
     if (_item == nil) {
-        _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
-        [_item addRefreshtarget:self action:@selector(refreshButton:)];
+        _item = [[SCPBaseNavigationItemView alloc] initWithNavigationController:self.navigationController];
+        [_item refreshButtonAddtarget:self action:@selector(refreshButton:)];
     }
     if (!_item.superview)
         [self.navigationController.navigationBar addSubview:_item];

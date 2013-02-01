@@ -10,12 +10,12 @@
 
 #import "PullingRefreshController.h"
 #import "SCPMenuNavigationController.h"
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 
 #import "NoticeManager.h"
 
 @class NoticeManager;
-@interface NoticeViewController : SCPSecondLayerController
+@interface NoticeViewController : SCPSecondController
 
 @property (strong, nonatomic) PullingRefreshController *pullingController;
 @property (strong, nonatomic) NoticeManager * manager;
