@@ -30,26 +30,18 @@
 	
 	UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)] autorelease];
 	[self.navigationItem setRightBarButtonItem:doneButtonItem];
-//	[self.navigationItem setTitle:@"Loading..."];
-
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
-    // Show partial while full list loads
-//	[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5];    
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     CGRect rect = self.view.frame;
-//    NSLog(@"NSS ^^^^^^^^ %@",NSStringFromCGRect(rect));
     rect.size.height = self.view.frame.size.height - 121;
     self.view.frame = rect;
-
 }
 -(void)preparePhotos {
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-//	NSLog(@"%@",self.parentViewController.parentViewController);
-//    NSLog(@"enumerating photos");
     [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop)
      {         
          if(result == nil){
@@ -69,8 +61,8 @@
          elcAsset.toggleDelegate = self.delController;
          [self.elcAssets addObject:elcAsset];
          if (index == [self.assetGroup numberOfAssets] - 1) {
-//             NSLog(@"done enumerating photos");
              dispatch_async(dispatch_get_main_queue(), ^{
+                 self.elcAssets = [self revertObjectArray:self.elcAssets];
                  [self.tableView reloadData];
              });
          }
@@ -78,7 +70,13 @@
     [pool release];
 
 }
-
+- (NSMutableArray *)revertObjectArray:(NSMutableArray *)array
+{
+    NSMutableArray * finalArray = [NSMutableArray arrayWithCapacity:0];
+    for (int i = array.count - 1; i >= 0; i--)
+        [finalArray addObject:[array objectAtIndex:i]];
+    return finalArray;
+}
 - (void) doneAction:(id)sender {
 	
 	NSMutableArray *selectedAssetsImages = [[[NSMutableArray alloc] init] autorelease];
@@ -97,7 +95,6 @@
     // Return the number of sections.
     return 1;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return ceil([self.assetGroup numberOfAssets] / 4.0);

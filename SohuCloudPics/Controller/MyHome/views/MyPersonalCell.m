@@ -11,6 +11,7 @@
 #import "SCPAppDelegate.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPLoginPridictive.h"
+#import "SCPPerfrenceStoreManager.h"
 
 @implementation MyPersonalCelldataSource
 
@@ -102,7 +103,7 @@
     if (!dic) {
         _backgroundImageView.image = [UIImage imageNamed:@"user_bg_plain.png"];
     }else{
-        NSString * bgname = [dic objectForKey:@"HomeBackImage"];
+        NSString * bgname = [SCPPerfrenceStoreManager homeBackGroundImageName];
         if (bgname) {
             _backgroundImageView.image = [UIImage imageNamed:bgname];
         }else{
@@ -126,7 +127,6 @@
 }
 - (void)homeBackContainerSeleced:(UIImage *)image
 {
-//    NSLog(@"%s",__FUNCTION__);
     _backgroundImageView.image = image;
 }
 -(void)addUserPhotoLabel

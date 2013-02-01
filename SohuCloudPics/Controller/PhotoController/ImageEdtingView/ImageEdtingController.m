@@ -14,12 +14,11 @@
 #import "SCPMenuNavigationController.h"
 #import "Filterlibrary.h"
 #import "SCPUploadController.h"
-
-
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ImageToolBox.h"
 #import "SCPLoginPridictive.h"
 
+#import "SCPAlertView_LoginTip.h"
 
 #define IMAGE_OUTPATH [[[NSString alloc] initWithFormat:@"%@/Documents/%@",NSHomeDirectory(), @"originalImage.jpeg"]autorelease]
 
@@ -522,7 +521,7 @@
             [self modifImage];
         });
     } failureBlock:^(NSError *error) {
-//        NSLog(@"error %@",error);
+        NSLog(@"error %@",error);
     }];
     
 }
@@ -559,7 +558,7 @@
 
     [_library writeImageToSavedPhotosAlbum:self.originalImage.CGImage orientation:(ALAssetOrientation)[self.originalImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
-//            NSLog(@"error%@",error);
+            [self showTipForSecretImageSetting];
             return ;
         }
         if (![SCPLoginPridictive isLogin]) {
@@ -583,14 +582,20 @@
                     [self.navigationController pushViewController:ctrl animated:YES];
                     [workingDictionary release];
                 });
-                
             } failureBlock:^(NSError *error) {
-                
+//                NSLog(@"%@",error);
             }];
         });
     }];
 }
+- (void)showTipForSecretImageSetting
+{
+    [self stopWait];
+    SCPAlertView_LoginTip * tip = [[[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:@"请确认已在设置->隐私->照片中打开定位服务" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] autorelease];
+    [tip show];
+}
 #pragma mark-
+
 -(void)waitForMomentsWithTitle:(NSString*)str
 {
     _alterView = [[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:str withView:self.view];

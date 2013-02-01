@@ -156,6 +156,7 @@
 		C51BB06C16A6DD77004BAD32 /* alubm_switch_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = C51BB06B16A6DD77004BAD32 /* alubm_switch_btn.png */; };
 		C5246CF916A6D58E004E32DF /* SCPCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5246CF816A6D58E004E32DF /* SCPCacheManager.m */; };
 		C526524416A560B600AC1662 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = C526524316A560B600AC1662 /* ground.png */; };
+		C527025016BBBF5F008A1559 /* SCPPerfrenceStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C527024F16BBBF5F008A1559 /* SCPPerfrenceStoreManager.m */; };
 		C52F3F3E168C853F009858C0 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F2D168C853F009858C0 /* SDImageCache.m */; };
 		C52F3F3F168C853F009858C0 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F31168C853F009858C0 /* SDWebImageDecoder.m */; };
 		C52F3F40168C853F009858C0 /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F33168C853F009858C0 /* SDWebImageDownloader.m */; };
@@ -706,6 +707,8 @@
 		C5246CF716A6D58E004E32DF /* SCPCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPCacheManager.h; sourceTree = "<group>"; };
 		C5246CF816A6D58E004E32DF /* SCPCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPCacheManager.m; sourceTree = "<group>"; };
 		C526524316A560B600AC1662 /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
+		C527024E16BBBF5F008A1559 /* SCPPerfrenceStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPPerfrenceStoreManager.h; sourceTree = "<group>"; };
+		C527024F16BBBF5F008A1559 /* SCPPerfrenceStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPerfrenceStoreManager.m; sourceTree = "<group>"; };
 		C52F3F2C168C853F009858C0 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		C52F3F2D168C853F009858C0 /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
 		C52F3F2E168C853F009858C0 /* SDImageCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCacheDelegate.h; sourceTree = "<group>"; };
@@ -1311,7 +1314,7 @@
 				61124E1415DE0BF6002C844F /* SCPAppDelegate.m */,
 				C588DE36168559DF008744D1 /* Network */,
 				C53BB10A1654D8C00043B7E7 /* Guide */,
-				C58D86591612CB78006FE9EF /* LoginPridictive */,
+				C58D86591612CB78006FE9EF /* storeCache */,
 				61124E1B15DE0BFF002C844F /* Controller */,
 				61907A5A15EB8CFB00324A6B /* Resourse */,
 				61124E0B15DE0BF6002C844F /* Supporting Files */,
@@ -2418,7 +2421,7 @@
 			name = CountViewLabel;
 			sourceTree = "<group>";
 		};
-		C58D86591612CB78006FE9EF /* LoginPridictive */ = {
+		C58D86591612CB78006FE9EF /* storeCache */ = {
 			isa = PBXGroup;
 			children = (
 				C5246CF416A6D1C5004E32DF /* SCPStoreLibaray.h */,
@@ -2426,7 +2429,10 @@
 				C5246CF816A6D58E004E32DF /* SCPCacheManager.m */,
 				C58D865A1612CB9F006FE9EF /* SCPLoginPridictive.h */,
 				C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */,
+				C527024E16BBBF5F008A1559 /* SCPPerfrenceStoreManager.h */,
+				C527024F16BBBF5F008A1559 /* SCPPerfrenceStoreManager.m */,
 			);
+			name = storeCache;
 			path = LoginPridictive;
 			sourceTree = "<group>";
 		};
@@ -3075,6 +3081,7 @@
 				C595934A16A79D320020B800 /* SCPGuideViewExchange.m in Sources */,
 				C593BFA516AD0BBD0015CE50 /* SCPNewFoldersCell.m in Sources */,
 				C58B5EB516AF8B4A00D7E4FE /* CountLabel.m in Sources */,
+				C527025016BBBF5F008A1559 /* SCPPerfrenceStoreManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

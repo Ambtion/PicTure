@@ -14,6 +14,8 @@
 #import "SCPPhotoGridController.h"
 #import "SCPAlertView_LoginTip.h"
 #import "SCPLoginPridictive.h"
+#import "SCPPerfrenceStoreManager.h"
+#import "SCPAlbumGridController.h"
 
 @implementation SCPAlbumController
 
@@ -181,6 +183,11 @@
     
     isSwitch = YES;
     SCPAlbumController *ctrl = [self switchController];
+    if ([ctrl isKindOfClass:[SCPAlbumGridController class]]) {
+        [SCPPerfrenceStoreManager setIsShowingGridView:YES];
+    }else{
+        [SCPPerfrenceStoreManager setIsShowingGridView:NO];
+    }
 	ctrl.user_id = self.user_id;
     ctrl.albumList = [NSMutableArray arrayWithArray:self.albumList];
 	ctrl.bannerLeftString = self.bannerLeftString;
