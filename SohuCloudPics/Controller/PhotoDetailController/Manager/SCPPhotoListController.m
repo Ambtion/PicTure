@@ -801,17 +801,6 @@
             [self refreshScrollView];
         }
         return;
-        
-        //        if (curPage == 0) {
-        //            curPage = 1;
-        //            [self refreshScrollView];
-        //            return;
-        //        }
-        //        if (curPage == photoNum - 1) {
-        //            curPage = photoNum - 2;
-        //            [self refreshScrollView];
-        //            return;
-        //        }
     }
     
     if(x == (self.scrollView.frame.size.width * 2)) {

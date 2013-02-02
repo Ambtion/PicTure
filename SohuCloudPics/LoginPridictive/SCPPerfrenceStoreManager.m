@@ -17,16 +17,19 @@
 
 + (NSDictionary *)valueForUserinfo
 {
+    if (![SCPLoginPridictive isLogin]) return nil;
     return [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
 }
 
 + (id)valueForKey:(NSString *)key inUserinfo:(NSDictionary *)userinfo
 {
+    
     return [userinfo objectForKey:key];
 }
 
 + (void)userDefoultStoreValue:(id)value forKey:(id)key
 {
+    if (![SCPLoginPridictive isLogin]) return;
     NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary * userinfo = [NSMutableDictionary dictionaryWithDictionary:[self valueForUserinfo]];
     if (!userinfo) userinfo = [NSMutableDictionary dictionaryWithCapacity:0];
@@ -37,12 +40,14 @@
 
 + (NSString *)homeBackGroundImageName
 {
+    
     NSDictionary * userinfo = [self valueForUserinfo];
     return [self valueForKey:HOMEBACKGROUND inUserinfo:userinfo];
 }
 
 + (void)resetHomeBackGroudImageName:(NSString *)newName
 {
+    if (![SCPLoginPridictive isLogin]) return;
     [self userDefoultStoreValue:newName forKey:HOMEBACKGROUND];
 }
 
@@ -53,6 +58,7 @@
 }
 + (void)setIsUploadJPEGImage:(BOOL)ture
 {
+    if (![SCPLoginPridictive isLogin]) return;
     [self userDefoultStoreValue:[NSNumber numberWithBool:ture] forKey:HOMEBACKGROUND];
 }
 
@@ -64,6 +70,8 @@
 
 + (void)setIsShowingGridView:(BOOL)ture
 {
+    if (![SCPLoginPridictive isLogin]) return;
     [self userDefoultStoreValue:[NSNumber numberWithBool:ture] forKey:ISSHOWINGGRIDVIEW];
 }
+
 @end

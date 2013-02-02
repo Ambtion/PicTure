@@ -395,7 +395,7 @@ static float OFFSET = 0.f;
 - (void)personalPageCell:(PersonalPageCell *)personal photoBookClicked:(id)sender
 {
     NSNumber * isShowingGrid = [SCPPerfrenceStoreManager isShowingGridView];
-    if (isShowingGrid && [isShowingGrid boolValue]) {
+    if (!isShowingGrid ||  [isShowingGrid boolValue]) {
         SCPAlbumGridController *gird = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:_user_ID];
         [gird refresh];
         [_controller.navigationController pushViewController:gird animated:YES];

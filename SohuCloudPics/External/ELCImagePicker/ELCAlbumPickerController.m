@@ -20,10 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self customizeNavigation];
-    [self readAlbum];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
-
 - (void) customizeNavigation
 {
     UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
@@ -34,6 +32,7 @@
     [cancelButtonItem release];
     [self.navigationItem setTitle:@"相册"];
 }
+
 - (void)customizeNavigationWhenALbumCannotRead
 {
     UIImageView * imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 64, 320, [[UIScreen mainScreen] bounds].size.height - 64)] autorelease];
@@ -59,8 +58,20 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+  
+    [self readAlbum];
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    [self readAlbum];
+}
 - (void) readAlbum
 {
+    if (_isReading) return;
+    _isReading = YES;
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
 	self.assetGroups = tempArray;
     [tempArray release];
@@ -78,12 +89,13 @@
                            }
                            [self.assetGroups addObject:group];
                            // Reload albums
+                           _isReading = NO;
                            [self performSelectorOnMainThread:@selector(reloadTableView) withObject:nil waitUntilDone:YES];
                        };
                        // Group Enumerator Failure Block
                        void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
                            [self customizeNavigationWhenALbumCannotRead];
-//                           NSLog(@"A problem occured %@", [error description]);
+                           //                           NSLog(@"A problem occured %@", [error description]);
                        };
                        // Enumerate Albums
                        [library enumerateGroupsWithTypes:ALAssetsGroupAll
@@ -140,14 +152,14 @@
     }
     
     // Get count
-    ALAssetsGroup *g = (ALAssetsGroup*)[assetGroups objectAtIndex:indexPath.row];
-    [g setAssetsFilter:[ALAssetsFilter allPhotos]];
-    NSInteger gCount = [g numberOfAssets];
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)",[g valueForProperty:ALAssetsGroupPropertyName], gCount];
-    [cell.imageView setImage:[UIImage imageWithCGImage:[(ALAssetsGroup*)[assetGroups objectAtIndex:indexPath.row] posterImage]]];
-	[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-	
+    if (assetGroups.count > indexPath.row) {
+        ALAssetsGroup * g = (ALAssetsGroup*)[assetGroups objectAtIndex:indexPath.row];
+        [g setAssetsFilter:[ALAssetsFilter allPhotos]];
+        NSInteger gCount = [g numberOfAssets];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)",[g valueForProperty:ALAssetsGroupPropertyName], gCount];
+        [cell.imageView setImage:[UIImage imageWithCGImage:[(ALAssetsGroup*)[assetGroups objectAtIndex:indexPath.row] posterImage]]];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
     return cell;
 }
 #pragma mark -
@@ -159,7 +171,7 @@
 	picker.parent = self;
     
     // Move me
-    picker.assetGroup = [assetGroups objectAtIndex:indexPath.row];
+        picker.assetGroup = [assetGroups objectAtIndex:indexPath.row];
     [picker.assetGroup setAssetsFilter:[ALAssetsFilter allPhotos]];
     picker.delController = self.delController;
     self.delController.Grouptitle  = [picker.assetGroup valueForProperty:ALAssetsGroupPropertyName];
@@ -172,7 +184,6 @@
 	
 	return 57;
 }
-
 #pragma mark -
 #pragma mark Memory management
 
@@ -188,9 +199,9 @@
     // For example: self.myOutlet = nil;
 }
 
-
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.delController = nil;
     [assetGroups release];
     [library release];

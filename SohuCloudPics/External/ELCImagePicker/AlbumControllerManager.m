@@ -31,7 +31,6 @@
         self.navigationBar.tintColor = [UIColor clearColor];
         [self.navigationBar setHidden:YES];
     }
-    
     return self;
 }
 

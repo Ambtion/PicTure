@@ -36,8 +36,11 @@
 {
     //1.创建会话层
     self.session = [[[AVCaptureSession alloc] init] autorelease];
-    [self.session setSessionPreset:AVCaptureSessionPresetPhoto];
-
+    if ([self.session canSetSessionPreset:AVCaptureSessionPresetPhoto]) {
+        [self.session setSessionPreset:AVCaptureSessionPresetPhoto];
+    }else{
+        return;
+    }
     //2.创建、配置输入设备
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 	NSError *error = nil;
@@ -220,12 +223,12 @@
 }
 -(void)switchCameraPosition
 {
-//    NSLog(@"switchCameraPosition start %@",imageCaptureconnection);
-    [session beginConfiguration];
     // Remove an existing capture device.
     // Add a new capture device.
     // Reset the preset.
-    NSArray* devices = [AVCaptureDevice devices];
+    
+    [session beginConfiguration];
+    NSArray * devices = [AVCaptureDevice devices];
     AVCaptureDevice* front = nil;
     AVCaptureDevice* back = nil;
     AVCaptureDevice* willaddDevic = nil;
@@ -244,18 +247,14 @@
     if ([[input device] isEqual:front]) {
         willaddDevic = back;
     }
+    if (!willaddDevic) return;
+    AVCaptureDeviceInput * captureInput = [AVCaptureDeviceInput deviceInputWithDevice:willaddDevic error:nil];
     [session removeInput:input];
-    AVCaptureDeviceInput *captureInput = [AVCaptureDeviceInput deviceInputWithDevice:willaddDevic error:nil];
     [session addInput:captureInput];
     [session commitConfiguration];
-    
     imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
     movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
-    
     [self initconfigurationInput];
-    
-    //  [self ConfigurationOutput];
-//    NSLog(@"switchCameraPosition end %@",imageCaptureconnection);
     
 }
 #pragma chang outPut
@@ -267,21 +266,23 @@
         movieConnection.enabled = NO;
     if (!imageCaptureconnection.isEnabled)
         imageCaptureconnection.enabled = YES;
-    session.sessionPreset = AVCaptureSessionPresetPhoto;
+    if ([self.session canSetSessionPreset:AVCaptureSessionPresetPhoto]) {
+        [self.session setSessionPreset:AVCaptureSessionPresetPhoto] ;
+    }
 //    NSLog(@"movieConnection %d,imageCaptureconnection: %d",movieConnection.isEnabled,imageCaptureconnection.isEnabled);
-    
 }
 -(void)changeOutPutToMoveFile
 {
     imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
     movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
-    session.sessionPreset = AVCaptureSessionPresetMedium;
     if (!movieConnection.isEnabled)
         movieConnection.enabled = YES;
     if (imageCaptureconnection.isEnabled)
         imageCaptureconnection.enabled = NO;
+    if ([self.session canSetSessionPreset:AVCaptureSessionPresetMedium]) {
+        [self.session setSessionPreset:AVCaptureSessionPresetMedium];
+    }
 //    NSLog(@"movieConnection %d,imageCaptureconnection: %d",movieConnection.isEnabled,imageCaptureconnection.isEnabled);
-    
 }
 #pragma mark -
 #pragma mark recording

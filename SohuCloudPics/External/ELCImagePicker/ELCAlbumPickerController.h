@@ -14,8 +14,8 @@
 	NSMutableArray *assetGroups;
 	NSOperationQueue *queue;
 	id parent;
-    
     ALAssetsLibrary *library;
+    BOOL _isReading;
 }
 @property (strong,nonatomic) DeleteController *delController;
 @property (nonatomic, assign) id parent;

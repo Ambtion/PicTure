@@ -351,7 +351,7 @@ static float OFFSET = 0.f;
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender
 {
     NSNumber * isShowingGrid = [SCPPerfrenceStoreManager isShowingGridView];
-    if (isShowingGrid && [isShowingGrid boolValue]) {
+    if (!isShowingGrid || [isShowingGrid boolValue]) {
         SCPAlbumGridController * grid = [[[SCPAlbumGridController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]] autorelease];
         [grid refresh];
         [_controller.navigationController pushViewController:grid animated:YES];
@@ -367,7 +367,7 @@ static float OFFSET = 0.f;
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell followingButtonClicked:(id)sender
 {
-g    UINavigationController *nav = _controller.navigationController;
+    UINavigationController *nav = _controller.navigationController;
     SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [nav pushViewController:ctrl animated:YES];
     [ctrl release];

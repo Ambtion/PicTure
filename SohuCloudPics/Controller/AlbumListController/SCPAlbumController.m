@@ -249,6 +249,7 @@
         if (_albumList.count)
             [_albumList removeAllObjects];
     }
+    
 	NSArray *folderList = [folderinfo  objectForKey:@"folders"];
 	for (int i = 0; i < folderList.count; ++i) {
 		NSDictionary *Afolder = [folderList objectAtIndex:i];
