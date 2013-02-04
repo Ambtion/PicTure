@@ -29,6 +29,7 @@
 - (void)cancelupLoadWithAlbumID:(NSString *)albumId WithUnit:(NSArray *)unitArray;
 
 - (void)cancelAllOperation;
+
 #pragma mark view
 //管理相册列表上传进度
 

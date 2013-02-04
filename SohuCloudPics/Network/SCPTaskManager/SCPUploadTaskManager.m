@@ -61,7 +61,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 }
 - (void)go
 {
-    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     SCPAlbumTaskList * task = [_taskList objectAtIndex:0];
     if (self.curTask == task) {
 //        NSLog(@"There is Task going");
@@ -205,7 +205,7 @@ static SCPUploadTaskManager * sharedTaskManager = nil;
 #pragma mark AlbumProgress
 - (void)albumTaskQueneFinished:(SCPAlbumTaskList *)albumTaskList
 {
-//    NSLog(@"Finished one Operation");
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     if (!albumTaskList) return;
     [_taskList removeObjectAtIndex:0];
     [self removeAlbunInfo:self.curTask.albumId];

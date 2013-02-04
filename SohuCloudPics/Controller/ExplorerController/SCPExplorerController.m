@@ -63,6 +63,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+//    NSLog(@"%d MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",[[UIApplication sharedApplication] isIdleTimerDisabled]);
     if (_item == nil) {
         _item = [[SCPBaseNavigationItem alloc] initWithNavigationController:self.navigationController];
         [_item addRefreshtarget:self action:@selector(refreshButton:)];
