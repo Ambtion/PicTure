@@ -7,15 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#define DEBUG 1
-#define DEBUGFILE [NSHomeDirectory() stringByAppendingPathComponent:@"Debug"]
+#import "FunctionGuideController.h"
 
-@class FunctionguideScroll;
+@class FunctionGuideController;
 
-@interface SCPAppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate,UIWebViewDelegate>
+@interface SCPAppDelegate : UIResponder <UIApplicationDelegate, UINavigationControllerDelegate,UIWebViewDelegate,FunctionGuideControllerDelegate>
 {
-    FunctionguideScroll * _fgc;
+    FunctionGuideController * _functionGuideController;
 }
 @property (strong, nonatomic) UIWindow *window;
-- (void)removeFromWindows;
+
 @end

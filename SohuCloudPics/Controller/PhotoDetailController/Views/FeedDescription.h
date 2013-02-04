@@ -13,12 +13,14 @@
 
 @property(nonatomic,retain)NSString * describtion;
 @property(nonatomic,assign)BOOL isMe;
-
+- (CGFloat)getHeigth;
 @end
+
 @class FeedDescription;
 @protocol FeedDescriptionDelgate <NSObject>
 - (void)feedDescription:(FeedDescription *)feed_des DesEditClick:(id)sender;
 @end
+
 @interface FeedDescription : UITableViewCell
 {
     FeedDescriptionSource * _dataSource;

@@ -23,9 +23,10 @@
 @property(nonatomic,retain)NSString* desc;
 
 @property(nonatomic,assign)NSInteger albumAmount;
-//@property(nonatomic,assign)NSInteger favouriteAmount;
 @property(nonatomic,assign)NSInteger followedAmount;
 @property(nonatomic,assign)NSInteger followingAmount;
+
+- (CGFloat)getheitgth;
 @end
 
 @protocol MyPersonalCellDelegate <NSObject>

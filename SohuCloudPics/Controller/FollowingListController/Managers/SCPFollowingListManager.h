@@ -15,17 +15,17 @@
 #import "SCPLoginViewController.h"
 
 @class SCPFollowingListViewController;
+
 @interface SCPFollowingListManager : NSObject<PullingRefreshDelegate,BannerDataSoure,UITableViewDataSource,SCPFollowCommonCellDelegate,SCPRequestManagerDelegate,SCPAlertLoginViewDelegate,SCPLoginViewDelegate,UIAlertViewDelegate>
 {
     NSMutableArray * _dataSource;
     SCPRequestManager * _requestManger;
-    
     BOOL _isLoading;
     BOOL _isinit;
     BOOL _willRefresh;
     NSString * _user_ID;
     NSInteger _maxNum;
-    BOOL hasNext;
+    BOOL _hasNext;
     NSInteger curPage;
 }
 

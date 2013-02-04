@@ -12,6 +12,7 @@
 @class BannerForHeadView;
 
 @protocol BannerDataSoure <NSObject>
+@optional
 - (NSString *)bannerDataSouceLeftLabel;
 - (NSString *)bannerDataSouceRightLabel;
 @end

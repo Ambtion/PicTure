@@ -10,37 +10,43 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "SCPMainFeedController.h"
-#import "SCPExplorerController.h"
+#import "SCPFeedController.h"
+#import "SCPPlazeController.h"
 #import "SCPFirstIntroController.h"
 #import "SCPMenuNavigationController.h"
 
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 
 @implementation SCPMainTabController
 
 @synthesize slideRecognizerL2R;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)dealloc
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self.slideRecognizerL2R = nil;
+    [super dealloc];
+}
+
+- (id)initThenSetAllChildContrllers
+{
+    self = [super init];
     if (self) {
         slideRecognizerL2R = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(switchTab)];
         slideRecognizerL2R.direction = UISwipeGestureRecognizerDirectionRight;
         [self.view addGestureRecognizer:slideRecognizerL2R];
         self.delegate = self;
-        
         //注意使用addChildViewController 会引起Two-stage rotation animation is deprecated. This application should use the smoother single-stage animation.
-        // Explorer 
-        SCPExplorerController *explorer = [[SCPExplorerController alloc] initWithNibName:nil bundle:nil];
+        //Plaze
+        SCPPlazeController * plaze= [[SCPPlazeController alloc] initWithNibName:nil bundle:nil];
         // MainFeed
-        SCPMainFeedController * mainFeed = [[SCPMainFeedController alloc] initWithNibName:nil bundle:nil];
-        self.viewControllers = [NSArray arrayWithObjects:explorer,mainFeed,nil];
-        [explorer release];
+        SCPFeedController * mainFeed = [[SCPFeedController alloc] initWithNibName:nil bundle:nil];
+        self.viewControllers = [NSArray arrayWithObjects:plaze,mainFeed,nil];
+        [plaze release];
         [mainFeed release];
     }
     return self;
 }
+
 - (void)makeTabBarHidden:(BOOL)hide
 {
     if ( [self.view.subviews count] < 2 )
@@ -64,19 +70,14 @@
     
     self.tabBar.hidden = hide;  
 }
-- (void)dealloc
-{
-    self.slideRecognizerL2R = nil;
-    [super dealloc];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self makeTabBarHidden:YES];
 }
-#pragma mark -
-#pragma mark TabDelegate
+
+#pragma mark -  TabDelegate
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     CATransition *anime = [CATransition animation];
@@ -87,8 +88,7 @@
     return YES;
 }
 
-#pragma mark -
-#pragma show&hide tabbar with animation
+#pragma mark - Show&hide tabbar with animation
 - (void)hideTabBar:(UITabBarController *)tabbarcontroller
 {
     [UIView beginAnimations:nil context:nil];
@@ -117,17 +117,15 @@
     [UIView commitAnimations];
 }
 
-#pragma mark -
-#pragma gesture recognizer
-
+#pragma mark - Gesture recognizer
 - (void)switchTab
 {
     NSInteger index = (self.selectedIndex + 1) % [self.childViewControllers count];
     [self switchToindex:index];
 }
+
 - (void)switchToindex:(NSInteger)index
 {
-    
     SCPMenuManager *menu = ((SCPMenuNavigationController *) self.navigationController).menuManager;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];

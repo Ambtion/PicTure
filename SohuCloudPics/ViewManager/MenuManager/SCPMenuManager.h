@@ -4,7 +4,8 @@
 //
 //  Created by mysohu on 12-9-6.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-//
+
+//管理彩带菜单的各种行为;
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -45,7 +46,6 @@
 @property (strong, nonatomic) UIView *naviView;
 
 - (void)prepareView;
-- (void)viewDidUnload;
 
 - (void)showMenuWithRibbon;
 - (void)hideMenuWithRibbon:(BOOL)hideRibbon;
@@ -64,5 +64,5 @@
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag;
 - (void)onAccountClicked:(id)sender;
-- (void)onExplorerClicked:(id)sender;
+- (void)onPlazeClicked:(id)sender;
 @end

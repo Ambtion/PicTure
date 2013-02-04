@@ -19,9 +19,9 @@
 @property(nonatomic,assign)BOOL isFollowByMe;
 @property(nonatomic,assign)BOOL isMe;
 @property(nonatomic,assign)NSInteger albumAmount;
-//@property(nonatomic,assign)NSInteger favouriteAmount;
 @property(nonatomic,assign)NSInteger followedAmount;
 @property(nonatomic,assign)NSInteger followingAmount;
+- (CGFloat)getheitgth;
 @end
 
 @protocol PersonalPageCellDelegate <NSObject>

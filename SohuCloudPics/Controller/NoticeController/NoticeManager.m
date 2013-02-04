@@ -7,7 +7,7 @@
 //
 
 #import "NoticeManager.h"
-#import "SCPPersonalPageViewController.h"
+#import "SCPPersonalHomeController.h"
 #import "SCPFollowedListViewController.h"
 #import "SCPAlertView_LoginTip.h"
 
@@ -67,7 +67,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     SCPMenuNavigationController * menu = (SCPMenuNavigationController *)self.controller.navigationController;
-    [menu.menuManager onExplorerClicked:nil];
+    [menu.menuManager onPlazeClicked:nil];
 }
 - (void)restNetWorkState
 {

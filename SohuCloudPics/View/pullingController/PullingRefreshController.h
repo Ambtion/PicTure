@@ -11,14 +11,15 @@
 #import "EGORefreshTableHeaderView.h"
 
 @class PullingRefreshController;
+
 @protocol PullingRefreshDelegate <NSObject, UITableViewDelegate>
 @optional
--(void)pullingreloadTableViewDataSource:(id)sender;
 -(void)pullingreloadMoreTableViewData:(id)sender;
 -(void)pullingreloadPushToTop:(id)sender;
+@required
+-(void)pullingreloadTableViewDataSource:(id)sender;
 
 @end
-
 
 @interface DelegateManager : NSObject <EGORefreshTableHeaderDelegate, UITableViewDelegate>
 {
@@ -31,6 +32,7 @@
     BOOL _shutDown;
     BOOL _loadingMore;
 }
+
 @property(nonatomic,assign)id<PullingRefreshDelegate> delegate;
 - (void)managerRefreshDoneLoadingTableViewData;
 - (void)managerMoreDoneLoadingTableViewData;
@@ -49,6 +51,7 @@
     UIView * _footView;
     BOOL _shutDown;
 }
+
 @property(nonatomic,assign)id<PullingRefreshDelegate> delegate;
 @property(nonatomic,retain)UITableView* tableView;
 @property(nonatomic,retain)UIScrollView * scrollView;
@@ -56,6 +59,7 @@
 @property(nonatomic,retain)UIView * footView;
 @property(nonatomic,readonly)DelegateManager * manager;
 @property(nonatomic,retain)UIButton * topbutton;
+
 - (id)initWithImageName:(UIImage*)image frame:(CGRect )frame;
 - (id)initWithLabelName:(NSString *)name frame:(CGRect )frame;
 - (void)reloadDataSourceWithAniamtion:(BOOL)animation;
@@ -63,7 +67,6 @@
 - (void)showLoadingMore;
 - (void)realLoadingMore:(id)sender;
 - (void)moreDoneLoadingTableViewData;
-
 - (void)refreshDoneLoadingTableViewData;
 
 - (void)shutDataChangeFunction;

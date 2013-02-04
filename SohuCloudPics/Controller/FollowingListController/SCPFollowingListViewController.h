@@ -10,16 +10,16 @@
 
 #import "PullingRefreshController.h"
 #import "SCPFollowingListManager.h"
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 #import "RefreshButton.h"
 
-@interface SCPFollowingListViewController : SCPSecondLayerController
+@interface SCPFollowingListViewController : SCPSecondController
 {
     RefreshButton* _refreshButton;
 }
 
-@property (strong, nonatomic) PullingRefreshController *pullingController;
-@property (strong, nonatomic) SCPFollowingListManager *manager;
+@property (strong, nonatomic) PullingRefreshController * pullingController;
+@property (strong, nonatomic) SCPFollowingListManager * manager;
 @property (strong, nonatomic) RefreshButton * refreshButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil useID:(NSString *) use_ID;
 @end

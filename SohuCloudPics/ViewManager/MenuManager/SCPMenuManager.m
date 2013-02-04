@@ -12,13 +12,13 @@
 //上页
 #import "SCPMainTabController.h"
 #import "AlbumControllerManager.h"
-#import "SCPMyHomeViewController.h"
+#import "SCPMyHomeController.h"
 #import "SCPSetttingController.h"
 #import "SCPLoginPridictive.h"
 #import "SCPLoginViewController.h"
-#import "SCPMainFeedController.h"
+#import "SCPFeedController.h"
 //下页
-#import "SCPExplorerController.h"
+#import "SCPPlazeController.h"
 #import "CameraViewController.h"
 #import "NoticeViewController.h"
 
@@ -37,10 +37,10 @@ static NSString *menuPress[6] = {
 
 
 @implementation SCPMenuManager
+
 @synthesize homelogin;
 @synthesize notLogin;
 @synthesize uLoadLogin;
-
 @synthesize menuArray;
 @synthesize ribbon;
 @synthesize ribbonFake;
@@ -140,7 +140,7 @@ static NSString *menuPress[6] = {
     menuBar.layer.shadowColor = [[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0] CGColor];
     menuBar.layer.shadowOpacity = 0.4;
     
-    // explorer
+    // Plaze
     idle = [UIImage imageNamed:@"menu_explore.png"];
     click = [UIImage imageNamed:@"menu_explore_press.png"];
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -149,7 +149,7 @@ static NSString *menuPress[6] = {
     
     [btn setImage:idle forState:UIControlStateNormal];
     [btn setImage:click forState:UIControlStateHighlighted];
-    [btn addTarget:self action:@selector(onExplorerClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(onPlazeClicked:) forControlEvents:UIControlEventTouchUpInside];
     [menuBar addSubview:btn];
     
     // camera
@@ -194,29 +194,17 @@ static NSString *menuPress[6] = {
     [ribbon addSubview:ribbonImg];
 
 }
-- (void)viewDidUnload
-{
-    self.rootView = nil;
-    self.coverView = nil;
-    self.menuArray = nil;
-    self.naviView = nil;
-    self.ribbonFake = nil;
-    self.ribbon = nil;
-}
-
 - (void)resetMenu
 {
     isMoving = FALSE;
     isMenuShowing = FALSE;
 }
 
-
 #pragma mark -
 #pragma Login
 - (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
 {
     [navController dismissModalViewControllerAnimated:YES];
-    
 }
 - (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
@@ -230,7 +218,6 @@ static NSString *menuPress[6] = {
         [self onNoticeClicked:nil];
     }
 }
-
 #pragma mark -
 #pragma mark navigation aniamtion
 - (void)popNavigationList
@@ -239,7 +226,6 @@ static NSString *menuPress[6] = {
     self.navController.delegate = self;
     [self popNavigationInDuration:0.03];
 }
-
 - (void)popNavigationInDuration:(CGFloat)duration
 {
     if (self.navController.childViewControllers.count == 1) {
@@ -251,7 +237,6 @@ static NSString *menuPress[6] = {
     }
     [self.navController popToRootViewControllerAnimated:YES];
 }
-
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     
@@ -299,10 +284,10 @@ static NSString *menuPress[6] = {
         [nav release];
         return;
     }
-    if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeViewController class]]) {
+    if ([[self.navController.viewControllers lastObject] isKindOfClass:[SCPMyHomeController class]]) {
         return;
     }
-    SCPMyHomeViewController * myhome = [[[SCPMyHomeViewController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
+    SCPMyHomeController * myhome = [[[SCPMyHomeController alloc]initWithNibName:nil bundle:nil useID:[SCPLoginPridictive currentUserId]]autorelease];
     [self.navController pushViewController:myhome animated:YES];
     [self restIcon:1];
 
@@ -320,7 +305,7 @@ static NSString *menuPress[6] = {
 
 }
 #pragma mark Page Down
-- (void)onExplorerClicked:(id)sender
+- (void)onPlazeClicked:(id)sender
 {
     SCPMainTabController *tabCtrl = [navController.childViewControllers objectAtIndex:0];
     if (tabCtrl.selectedIndex == 0 && self.navController.viewControllers.count == 1) {

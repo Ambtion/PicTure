@@ -91,9 +91,7 @@
             [self.contentView addSubview:nameLabel];
             /* count label view */
             CountLabel *countLabel = [[[CountLabel alloc] initWithFrame:CGRectMake(75 - 30, 75 - 16, 30, 18)] autorelease];
-            
             [UIUtils updateAlbumCountLabel:countLabel];
-            
             [_countLabelList addObject:countLabel];
             [coverImageView addSubview:countLabel];
             
@@ -102,7 +100,6 @@
             [progressView setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             [progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
             progressView.progress = 0.f;
-            
             [_progressViewList addObject:progressView];
             [self.contentView addSubview:progressView];
             

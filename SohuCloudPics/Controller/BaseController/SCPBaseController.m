@@ -9,33 +9,13 @@
 //Describtion add up ,down gesture for hid navigationbar
 
 #import "SCPBaseController.h"
-
 #import "SCPMenuNavigationController.h"
-#import "SCPHorizontalGestureRecognizer.h"
-#import "CameraViewController.h"
-
+#import "CameraViewController.h" //show camera
 
 @implementation SCPBaseController
-@synthesize naviRecognizerDown;
-@synthesize naviRecognizerUp;
-@synthesize slideRecognizerR2L;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        naviRecognizerDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showNavigationBar)];
-        naviRecognizerDown.direction = UISwipeGestureRecognizerDirectionDown;
-        naviRecognizerDown.delegate = self;
-        naviRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideNavigationBar)];
-        naviRecognizerUp.direction = UISwipeGestureRecognizerDirectionUp;
-        naviRecognizerUp.delegate = self;
-        slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera:)];
-        slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
-    }
-    return self;
-}
+@synthesize naviRecognizerDown = _naviRecognizerDown;
+@synthesize naviRecognizerUp = _naviRecognizerUp;
+@synthesize slideRecognizerR2L = _slideRecognizerR2L;
 
 - (void)dealloc
 {
@@ -45,38 +25,47 @@
     [super dealloc];
 }
 
-- (void)viewDidLoad
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    [super viewDidLoad];
-    [self.view addGestureRecognizer:naviRecognizerDown];
-    [self.view addGestureRecognizer:naviRecognizerUp];
-    [self.view addGestureRecognizer:slideRecognizerR2L];
-    needHideNavigationBar = FALSE;
-    
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        _naviRecognizerDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showNavigationBar)];
+        _naviRecognizerDown.direction = UISwipeGestureRecognizerDirectionDown;
+        _naviRecognizerDown.delegate = self;
+        _naviRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideNavigationBar)];
+        _naviRecognizerUp.direction = UISwipeGestureRecognizerDirectionUp;
+        _naviRecognizerUp.delegate = self;
+        _slideRecognizerR2L = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(showCamera:)];
+        _slideRecognizerR2L.direction = UISwipeGestureRecognizerDirectionLeft;
+    }
+    return self;
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self showNavigationBar];
 }
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self showNavigationBar];
 }
+
 - (void)onBackBtnClicked:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (NSString *)getTimeString
+
+- (NSString *)timeString
 {
     NSDate *date = [NSDate date];
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setDateFormat:@"MM-dd H:mm"];
     return   [dateFormatter stringFromDate:date];
 }
-#pragma mark -
-#pragma mark delegate
+
 - (void)showCamera:(id)gesture
 {
     CameraViewController *phc = [[CameraViewController alloc] init];
@@ -84,20 +73,8 @@
     [self.navigationController pushViewController:phc animated:YES];
     [phc release];
 }
-#pragma mark -
-#pragma switchNavigationBar
-- (void)switchNavigationBar:(float)yOffset scrollView:(UIScrollView *)scrollView
-{
-    if (yOffset <= 0) {
-        [self showNavigationBar];
-    } else {
-        if (needHideNavigationBar) {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-        }
-        needHideNavigationBar = FALSE;
-    }
-    lastOffset = yOffset;
-}
+
+#pragma mark - navigationBar action
 
 - (void)showNavigationBar
 {
@@ -106,20 +83,17 @@
     if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
         [((SCPMenuNavigationController *)self.navigationController) resetMenu];
 }
+
 - (void)hideNavigationBar {
     if (!self.navigationController.navigationBarHidden && [self.navigationController isKindOfClass:[SCPMenuNavigationController class]]) 
         [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
-#pragma mark -
-#pragma UIGestureDelegate
+#pragma mark - UIGestureDelegate
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
 }
 
-//- (BOOL)shouldAutorotate
-//{
-//    return NO;
-//}
 @end

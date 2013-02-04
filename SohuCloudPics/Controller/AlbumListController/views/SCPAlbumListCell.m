@@ -59,16 +59,13 @@
         _photoImageView.userInteractionEnabled = YES;
         UITapGestureRecognizer *gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTapped:)] autorelease];
         [_photoImageView addGestureRecognizer:gesture];
-        
         UILongPressGestureRecognizer *  l_gesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewLongPressed:)] autorelease];
         l_gesture.minimumPressDuration = 0.5;
         [_photoImageView addGestureRecognizer:l_gesture];
         [frameImageView addSubview:_photoImageView];
 		
         /* progressView */
-        
         _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20, 73, 64, 9)];
-        
         [_progressView setProgressImage:[[UIImage imageNamed:@"prog_done.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
         [_progressView setTrackImage:[[UIImage imageNamed:@"prog_wait.png"]resizableImageWithCapInsets:UIEdgeInsetsMake(4.5, 4.5, 4.5, 4.5)]];
         [self.contentView addSubview:_progressView];
@@ -128,7 +125,6 @@
 #pragma mark - public method
 - (void)updateViewWithAlbum:(SCPAlbum *)album preToDel:(BOOL)deleting
 {
-    
 	self.album = album;
 	/* set photo image */
     NSString * coverUrl  =[NSString stringWithFormat:@"%@_c150",_album.coverURL];
@@ -155,12 +151,11 @@
     }else{
         str = [NSString stringWithFormat:@"私密专辑  %d次浏览",self.album.viewCount];
     }
-    
 	[_viewCountLabel setText:str];
 	/* state label */
 	_updatedAtDescLabel.frame = UPDATEDESC_RECT;
-	// TODO
 	[_updatedAtDescLabel setText:self.album.updatedAtDesc];
+    
 }
 
 @end

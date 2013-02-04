@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 Sohu.com. All rights reserved.
 //
 
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 #import "SCPAlbum.h"
 #import "PullingRefreshController.h"
 #import "SCPPhotoGridCell.h"
@@ -23,7 +23,7 @@ typedef enum {
 } PhotoGridState;
 
 
-@interface SCPPhotoGridController : SCPSecondLayerController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPPhotoGridCellDelegate, SCPRequestManagerDelegate,SCPAlertDeletViewDelegate,SCPAlert_AlbumPropertyDelegate,SCPAlert_DetailViewDelegate,UIAlertViewDelegate>
+@interface SCPPhotoGridController : SCPSecondController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPPhotoGridCellDelegate, SCPRequestManagerDelegate,SCPAlertDeletViewDelegate,SCPAlert_AlbumPropertyDelegate,SCPAlert_DetailViewDelegate,UIAlertViewDelegate>
 {
     
     PhotoGridState _state;

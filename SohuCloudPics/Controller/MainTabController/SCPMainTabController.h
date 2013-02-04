@@ -14,6 +14,9 @@
 
 @property (strong, nonatomic) SCPHorizontalGestureRecognizer *slideRecognizerL2R;
 
-- (void)switchToindex:(NSInteger)index;
+//return tabContoller with childContollers: PlazeController and FeedController
+- (id)initThenSetAllChildContrllers;
 
+//switch section with animation
+- (void)switchToindex:(NSInteger)index;
 @end

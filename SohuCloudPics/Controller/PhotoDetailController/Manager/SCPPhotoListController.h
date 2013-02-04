@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "UIImageView+WebCache.h"
 #import "SCPRequestManager.h"
-#import  <QuartzCore/QuartzCore.h>
 #import "ASIHTTPRequest.h"
 
 @class PhotoDetailManager;
@@ -24,7 +23,6 @@
 @end
 
 @class SCPPhotoListController;
-
 @protocol SCPPhotoListControllerDeletate <NSObject>
 - (void)whenViewRemveFromSuperview;
 @end
@@ -44,10 +42,8 @@ typedef enum _imageStatePosition
     SCPRequestManager * _requestManger;
     InfoImageView * _fontImageView;
     UIScrollView * _fontScrollview;
-    
     InfoImageView * _currentImageView;
     UIScrollView * _curscrollView;
-    
     InfoImageView * _rearImageView;
     UIScrollView * _rearScrollview;
     
@@ -61,7 +57,7 @@ typedef enum _imageStatePosition
     BOOL hasNextPage;
     imageStatePosition Imagestate;
     //for animation
-    BOOL animation;
+    BOOL isAnimating;
     BOOL isLoading;
 }
 @property (nonatomic, assign)id<SCPPhotoListControllerDeletate> delegate;

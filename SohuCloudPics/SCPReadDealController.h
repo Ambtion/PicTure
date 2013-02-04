@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCPSecondLayerController.h"
+#import "SCPSecondController.h"
 
-@interface SCPReadDealController : SCPSecondLayerController
+@interface SCPReadDealController : SCPSecondController
 {
     UIButton * _backbutton;
 }

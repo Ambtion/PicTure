@@ -48,11 +48,6 @@
     self.accessoryImage.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.accessoryImage];
     
-    //    NSLog(@"%s, start",__FUNCTION__);
-    //    self.imageSwitch = [[ImageQualitySwitch alloc] initWithFrame:CGRectMake(320 - 90 - 5, (55 - 27)/2, 0, 0)];
-//    [self.contentView addSubview:self.imageSwitch];
-//    NSLog(@"%s, end",__FUNCTION__);
-    
     UIImageView * lineView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
     lineView.frame = CGRectMake(0, 54, 320, 1);
     [self.contentView addSubview:lineView];

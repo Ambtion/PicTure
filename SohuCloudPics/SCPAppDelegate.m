@@ -7,70 +7,57 @@
 //
 
 #import "SCPAppDelegate.h"
-
 #import <QuartzCore/QuartzCore.h>
 #import "SCPMainTabController.h"
 #import "SCPFirstIntroController.h"
-#import "SCPNavigationController.h"
 #import "SCPMenuNavigationController.h"
 #import "SCPLoginViewController.h"
-#import "SCPExplorerController.h"
+#import "SCPPlazeController.h"
 #import "SCPAlert_DetailView.h"
-#import "FunctionguideScroll.h"
+#import "FunctionGuideController.h"
 #import "SCPGuideView.h"
-
+#import "SCPGuideViewExchange.h"
 #import "AccountSystemRequset.h"
-
 #import "MobClick.h"
 #import "UMAppKey.h"
 
-
 @implementation SCPAppDelegate
+
 @synthesize window = _window;
 
 - (void)dealloc
 {
+    [_functionGuideController release];
     [_window release];
-    [_fgc release];
     [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	/* The following statements are used for umeng statistic */
-	[MobClick startWithAppkey:UM_APP_KEY];
     
-//    [[NSUserDefaults standardUserDefaults] setObject:@"ss" forKey:@"__USER_TOKEN__"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
+	[MobClick startWithAppkey:UM_APP_KEY];
     
     [UIApplication sharedApplication].statusBarHidden = YES;
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
-    SCPMainTabController *mainTab = [[SCPMainTabController alloc] initWithNibName:nil bundle:NULL];
-    SCPMenuNavigationController *nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
+    
+    SCPMainTabController * mainTab = [[SCPMainTabController alloc] initThenSetAllChildContrllers];
+    SCPMenuNavigationController * nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
     _window.rootViewController = nav;
     [_window makeKeyAndVisible];
     [mainTab release];
     [nav release];
-	[self showGuideView];
-    [self showfunctionGuide];
+    
+	[self showPalzaGuideView];
+    [self showFunctionGuideView];
     return YES;
 }
 
-- (void)showfunctionGuide
+- (void)showPalzaGuideView
 {
-    NSNumber * num  = [[NSUserDefaults standardUserDefaults] objectForKey:@"FunctionShowed"];
-    if (!num ||![num boolValue]) {
-        _fgc = [[FunctionguideScroll alloc] init];
-        [_window addSubview:_fgc.view];
-        [SCPGuideViewExchange exchageViewForwindow];
-    }
-}
-- (void)showGuideView
-{
-    
-    NSNumber * num = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
-    if (!num || ![num boolValue]) {
+    NSNumber * isShowed = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuideViewShowed"];
+    if (!isShowed || ![isShowed boolValue]) {
         SCPGuideView * view = [[[SCPGuideView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
         if ([[UIScreen mainScreen] bounds].size.height > 480) {
             view.image = [UIImage imageNamed:@"exporeGuideIos6_2.png"];
@@ -80,21 +67,44 @@
         [view show];
     }
 }
-- (void)removeFromWindows
+
+#pragma mark  - functionGuideView
+
+- (void)showFunctionGuideView
+{
+    NSNumber * isShowed  = [[NSUserDefaults standardUserDefaults] objectForKey:FUNCTIONSHOWED];
+    if (!isShowed ||![isShowed boolValue]) {
+        _functionGuideController = [[FunctionGuideController alloc] init];
+        _functionGuideController.delegate = self;
+        [_window addSubview:_functionGuideController.view];
+        [SCPGuideViewExchange exchageViewForwindow];
+    }
+}
+
+#pragma mark functionDelegate
+
+- (void)functionGuideController:(FunctionGuideController *)anController clickUserButton:(UIButton *)button
+{
+    [self removeSubViews:anController.view];
+    [anController release];
+}
+
+- (void)removeSubViews:(UIView *)subViews
 {
     CATransition * animation = [CATransition animation];
     animation.type = kCATransitionFade;
     animation.duration = 1.0;
     animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    [_fgc.view removeFromSuperview];
+    [subViews removeFromSuperview];
     animation.delegate = self;
-    [self.window.layer addAnimation:animation forKey:@"KO"];
-    [_fgc release];
+    [self.window.layer addAnimation:animation forKey:@"FadeAnimation"];
 }
+
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    [self.window.layer removeAnimationForKey:@"KO"];
+    [self.window.layer removeAnimationForKey:@"FadeAnimation"];
 }
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
