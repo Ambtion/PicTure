@@ -41,7 +41,6 @@
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
     [self.view addSubview:self.pullingController.view];
-    
 }
 
 - (void)viewDidUnload
@@ -49,6 +48,7 @@
     [super viewDidUnload];
     self.pullingController = nil;
 }
+
 - (void)refreshButton:(UIButton *)button
 {
     if (self.manager.isLoading) return;
@@ -71,7 +71,6 @@
     if (!_item.superview)
         [self.navigationController.navigationBar addSubview:_item];
     [super viewDidAppear:animated];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -80,6 +79,7 @@
         [_item removeFromSuperview];
     }
 }
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     if (_item.superview) {
