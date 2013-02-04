@@ -197,7 +197,7 @@
 - (void)cancelLogin:(UIButton *)button
 {
     if ([_delegate respondsToSelector:@selector(SCPLogin:cancelLogin:)]) {
-        [_delegate SCPLogin:self cancelLogin:button];
+        [_delegate login:self cancelLogin:button];
     }
 }
 - (void)loginButtonClicked:(UIButton*)button
@@ -222,8 +222,8 @@
     NSString * passWord = [NSString stringWithFormat:@"%@",_passwordTextField.text];
     [AccountSystemRequset sohuLoginWithuseName:useName password:passWord sucessBlock:^(NSDictionary *response) {
         [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[response objectForKey:@"user_id"]] withToken:[response objectForKey:@"access_token"]RefreshToken:[NSString stringWithFormat:@"%@",[response objectForKey:@"refresh_token"]]];
-        if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
-            [_delegate SCPLogin:self doLogin:button];
+        if ([_delegate respondsToSelector:@selector(login:doLogin:)])
+            [_delegate login:self doLogin:button];
         [waitView dismissWithClickedButtonIndex:0 animated:YES];
         
     } failtureSucess:^(NSString *error) {
@@ -262,9 +262,10 @@
 - (void)loginSucessInfo:(NSDictionary *)dic
 {
     [SCPLoginPridictive loginUserId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]] withToken:[dic objectForKey:@"access_token"] RefreshToken:[NSString stringWithFormat:@"%@",[dic objectForKey:@"refresh_token"]]];
-    if ([_delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
-        [_delegate SCPLogin:self doLogin:nil];
+    if ([_delegate respondsToSelector:@selector(login:doLogin:)])
+        [_delegate login:self doLogin:nil];
 }
+
 - (void)loginFailture:(NSString *)error
 {
     SCPAlertView_LoginTip * alterView = [[[SCPAlertView_LoginTip alloc] initWithTitle:error message:nil delegate:nil cancelButtonTitle:@"重新输入" otherButtonTitles: nil] autorelease];

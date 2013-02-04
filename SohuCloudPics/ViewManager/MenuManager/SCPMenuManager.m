@@ -202,11 +202,11 @@ static NSString *menuPress[6] = {
 
 #pragma mark -
 #pragma Login
-- (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
+- (void)login:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
 {
     [navController dismissModalViewControllerAnimated:YES];
 }
-- (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
+- (void)login:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
     [navController dismissModalViewControllerAnimated:NO];
     if (self.homelogin == LoginController) {

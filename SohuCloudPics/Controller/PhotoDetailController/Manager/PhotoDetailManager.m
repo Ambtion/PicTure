@@ -231,10 +231,10 @@
         [cell.gifPlayButton removeFromSuperview];
     rect.origin.y -= Y;
     rect.size.height -= 70;
-    [self.listView showWithPushController:self.controller.navigationController fromRect:rect image:cell.photoImageView.image ImgaeRect:cell.photoImageView.frame];
+    [self.listView showPhotoListScreen];
 }
 
-- (void)whenViewRemveFromSuperview
+- (void)photoListController:(SCPPhotoListController *)listController viewdidRemoveFromSuperView:(UIView *)view
 {
     //when list remove from supview
     self.listView  = nil;
@@ -271,7 +271,7 @@
     }
 }
 
-#pragma mark SCPAlertView Delegate
+#pragma mark -  SCPAlertView Delegate
 - (void)alertViewOKClicked:(SCPAlert_LoginView *)view
 {
     SCPLoginViewController *loginCtrl = [[SCPLoginViewController alloc] init];
@@ -282,12 +282,12 @@
     [nav release];
 }
 
-- (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
+- (void)login:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
 {
     [self.controller dismissModalViewControllerAnimated:YES];
 }
 
-- (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
+- (void)login:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
     [self.controller dismissModalViewControllerAnimated:YES];
     [self feedCell:nil clickedAtFavorButton:nil];

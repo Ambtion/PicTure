@@ -205,14 +205,14 @@
     UINavigationController * nav = [[[UINavigationController alloc] initWithRootViewController:lvc] autorelease];
     [_controller presentModalViewController:nav animated:YES];
 }
-- (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
+- (void)login:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
     
     [self dismissLogin];
     [_controller dismissModalViewControllerAnimated:YES];
 }
 
-- (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
+- (void)login:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
 {
     [_controller dismissModalViewControllerAnimated:YES];
 }
@@ -266,6 +266,7 @@
         [self.controller.pullingController realLoadingMore:nil];
     return cell;
 }
+
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = [UIColor colorWithRed:244.f/255 green:244.f/255 blue:244.f/255 alpha:1];

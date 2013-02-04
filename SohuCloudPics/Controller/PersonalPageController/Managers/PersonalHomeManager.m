@@ -341,12 +341,12 @@ static float OFFSET = 0.f;
     [nav release];
 }
 
-- (void)SCPLogin:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
+- (void)login:(SCPLoginViewController *)LoginController cancelLogin:(UIButton *)button
 {
     [self.controller dismissModalViewControllerAnimated:YES];
 }
 
-- (void)SCPLogin:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
+- (void)login:(SCPLoginViewController *)LoginController doLogin:(UIButton *)button
 {
     [self.controller dismissModalViewControllerAnimated:YES];
 }

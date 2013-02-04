@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "PullingRefreshController.h"
 #import "FeedCell.h"
 #import "FeedDescription.h"
@@ -15,7 +14,6 @@
 #import "SCPLoginViewController.h"
 #import "SCPRequestManager.h"
 #import "SCPPhotoListController.h"
-
 
 @class SCPPhotoDetailController;
 

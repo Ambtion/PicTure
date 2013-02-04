@@ -19,8 +19,8 @@
 #define PLACEHOLDER  @"添加描述"
 #define TITLE_DES @"300字以内"
 
-
 @implementation PhotoDesEditController
+
 @synthesize photo_id = _photo_id;
 @synthesize originalDes = _originalDes;
 
@@ -37,6 +37,7 @@
     [_photo_id release];
     [super dealloc];
 }
+
 - (id)initphoto:(NSString *)photo_id withDes:(NSString * )des
 {
     if (self = [super init]) {
@@ -45,7 +46,8 @@
     }
     return self;
 }
-#pragma mark - view
+
+#pragma mark - ViewLoad 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -56,10 +58,12 @@
     [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [self addSubviews];
 }
+
 - (void)barButtonBack:(UIButton*)button
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)customerNavigationbar
 {
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -79,12 +83,14 @@
     UIBarButtonItem * item = [[[UIBarButtonItem alloc] initWithCustomView:_saveButton] autorelease];
     self.navigationItem.rightBarButtonItem = item;
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [((SCPMenuNavigationController *) self.navigationController).menuView setHidden:YES];
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -164,6 +170,8 @@
     [_textView addSubview:_placeHolder];
     [self textViewDidChange:_textView];
 }
+
+#pragma mark keyBoard show/hide
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     NSDictionary * dic = [notification userInfo];
@@ -184,24 +192,13 @@
     }];
 }
 
+#pragma mark TextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSUInteger newLength = [textView.text length] + [text length] - range.length;
     return (newLength > DESC_COUNT_LIMIT) ? NO : YES;
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-    CGPoint point = [touch locationInView:self.view];
-    if ([touch.view isKindOfClass:[UIButton class]] || CGRectContainsPoint(CGRectMake(10, 105, 300, 150), point))
-        return NO;
-    return YES;
-}
-
-- (void)handleGuesture:(UITapGestureRecognizer *)gesture
-{
-    //    [_textView resignFirstResponder];
-}
 -(void)textViewDidChange:(UITextView *)textView
 {
     if (textView.text && ![textView.text isEqualToString:@""]) {
@@ -215,5 +212,19 @@
         if (_placeHolder.hidden)
             [_placeHolder setHidden:NO];
     }
+}
+
+#pragma mark GestureDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    CGPoint point = [touch locationInView:self.view];
+    if ([touch.view isKindOfClass:[UIButton class]] || CGRectContainsPoint(CGRectMake(10, 105, 300, 150), point))
+        return NO;
+    return YES;
+}
+
+- (void)handleGuesture:(UITapGestureRecognizer *)gesture
+{
+    //    [_textView resignFirstResponder];
 }
 @end

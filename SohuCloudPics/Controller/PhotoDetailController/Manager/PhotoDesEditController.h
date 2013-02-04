@@ -18,7 +18,7 @@
     UIView * _textView_bg;
 }
 @property(nonatomic,retain)NSString * photo_id;
-//图片原有的描述
-@property(nonatomic,retain)NSString * originalDes;
+@property(nonatomic,retain)NSString * originalDes; //图片原有的描述
+
 - (id)initphoto:(NSString *)photo_id withDes:(NSString * )des ;
 @end

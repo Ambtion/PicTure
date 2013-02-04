@@ -16,8 +16,8 @@
 
 @protocol SCPLoginViewDelegate <NSObject>
 
--(void)SCPLogin:(SCPLoginViewController * )LoginController cancelLogin:(UIButton*)button;
--(void)SCPLogin:(SCPLoginViewController * )LoginController doLogin:(UIButton*)button;
+-(void)login:(SCPLoginViewController * )LoginController cancelLogin:(UIButton*)button;
+-(void)login:(SCPLoginViewController * )LoginController doLogin:(UIButton*)button;
 
 @end
 
