@@ -22,22 +22,21 @@
 @interface PhotoDetailManager : NSObject <PullingRefreshDelegate, UITableViewDataSource,BannerDataSoure, FeedCellDelegate, SCPAlertLoginViewDelegate, SCPLoginViewDelegate,SCPRequestManagerDelegate,SCPPhotoListControllerDeletate,FeedDescriptionDelgate>
 {
     NSMutableArray * _dataSourceArray;
-    NSDictionary * _infoFromSuper;
+    NSDictionary * _imageInfo;
     NSString * _photo_ID;
     NSString * _user_ID;
     SCPRequestManager * _requestManger;
-    
     BOOL _isinit;
     BOOL _isLoading;
-    BOOL _willRefresh;
+    BOOL _isRefeshing;
     NSInteger numCount;
 }
 
 @property (assign, nonatomic) SCPPhotoDetailController *controller;
-@property (retain, nonatomic) NSDictionary * infoFromSuper;
+@property (retain, nonatomic) NSDictionary * imageInfo;
 @property (nonatomic, retain) NSString * photo_ID;
 @property (nonatomic, retain)SCPPhotoListController * listView;
 
-- (id)initWithController:(SCPPhotoDetailController *)ctrl useId:(NSString*) useId photoId:(NSString*)photoId;
+- (id)initWithController:(SCPPhotoDetailController *)ctrl UserId:(NSString*) userId PhotoId:(NSString*)photoId;
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
 @end

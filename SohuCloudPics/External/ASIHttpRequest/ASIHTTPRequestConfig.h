@@ -29,7 +29,7 @@
 
 // When set to 1, ASIHTTPRequests will print information about bandwidth throttling to the console
 #ifndef DEBUG_THROTTLING
-	#define DEBUG_THROTTLING01
+	#define DEBUG_THROTTLING 0
 #endif
 
 // When set to 1, ASIHTTPRequests will print information about persistent connections to the console

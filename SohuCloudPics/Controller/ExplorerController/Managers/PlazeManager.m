@@ -37,33 +37,57 @@
         _strategyArray = [[NSMutableArray alloc] init];
         _requestManager = [[SCPRequestManager alloc] init];
         _isLoading = NO;
-        _willRefresh = YES;
-        _isinit = YES;
-        _startoffset = 0;
+        _isRefreshing = YES;
+        _isiniting = YES;
+        _startoffsetForRequset = 0;
     }
     return self;
 }
 
-#pragma mark -
-
+#pragma mark - GetSourceFromNetWork
 - (void)dataSourcewithRefresh:(BOOL)isRefresh
 {
     _isLoading = YES;
-    _willRefresh = isRefresh;
+    _isRefreshing = isRefresh;
     if(isRefresh || !_strategyArray.count){
-        _startoffset = 0;
+        _startoffsetForRequset = 0;
         [self getPlazeFrom:0 count:PICTURECOUNT];
     }else{
-        if((MAXPICTURE <= [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
+        if((MAXPICTURE <= [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isiniting) {
             _isLoading = NO;
             [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
             return;
         }
-        _startoffset += PICTURECOUNT;
-        [self getPlazeFrom:_startoffset count:PICTURECOUNT];
+        _startoffsetForRequset += PICTURECOUNT;
+        [self getPlazeFrom:_startoffsetForRequset count:PICTURECOUNT];
     }
 }
-- (PlazeViewCellDataSource *)getSourceWithinfoArray:(NSArray *)infoArray  andIndex:(NSInteger)index
+
+- (void)getPlazeFrom:(NSInteger)startIndex count:(NSInteger)count
+{
+    [_requestManager getPlazeFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
+        if (startIndex == 0)
+            [_strategyArray removeAllObjects];
+        
+        for (int i = 0; i < infoArray.count / MAXFRAMECOUNTLIMIT; i++)
+            [_strategyArray addObject:[self getCellDataSourceWithInfoArray:infoArray FromIndex:i]];
+        if (_isiniting) {
+            [self refreshWhenInit];
+            return ;
+        }
+        if (startIndex == 0) {
+            [self refreshDataFinishLoad];
+        }else{
+            [self moreDataFinishLoad];
+        }
+    } failture:^(NSString *error) {
+        SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
+        [alertView show];
+        [self resetNetWorkState];
+    }];
+}
+
+- (PlazeViewCellDataSource *)getCellDataSourceWithInfoArray:(NSArray *)infoArray  FromIndex:(NSInteger)index
 {
     PlazeViewCellDataSource * dataSouce = [[[PlazeViewCellDataSource alloc] init] autorelease];
     NSDictionary * dic = [PlazeDataAdapter getViewFrameForRandom];
@@ -75,68 +99,47 @@
     dataSouce.identify = [NSString stringWithFormat:@"startegy%d", [[dic objectForKey:@"strategy_num"] integerValue]];
     return dataSouce;
 }
-- (void)getPlazeFrom:(NSInteger)startIndex count:(NSInteger)count
+
+- (void)refreshWhenInit
 {
-    
-    [_requestManager getPlazeFrom:startIndex maxresult:count sucess:^(NSArray * infoArray) {
-        if (startIndex == 0)
-            [_strategyArray removeAllObjects];
-        
-        for (int i = 0; i < infoArray.count / MAXFRAMECOUNTLIMIT; i++)
-            [_strategyArray addObject:[self getSourceWithinfoArray:infoArray andIndex:i]];
-        if (_isinit) {
-            [self initRefresh];
-            return ;
-        }
-        if (startIndex == 0) {
-            [self refreshDataFinishLoad];
-        }else{
-            [self moreDataFinishLoad];
-        }
-    } failture:^(NSString *error) {
-        SCPAlert_CustomeView * alertView = [[[SCPAlert_CustomeView alloc] initWithTitle:error] autorelease];
-        [alertView show];
-        [self restNetWorkState];
-    }];
-}
-- (void)initRefresh
-{
-    _isinit = NO;
+    _isiniting = NO;
     _isLoading = NO;
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
     [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
-    
 }
-- (void)restNetWorkState
+
+- (void)resetNetWorkState
 {
-    if (_willRefresh) {
+    if (_isRefreshing) {
         [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
     }else{
         [(PullingRefreshController *)_controller.pullingController moreDoneLoadingTableViewData];
     }
-    _willRefresh = YES;
+    _isRefreshing = YES;
     _isLoading = NO;
 }
-#pragma mark -
+
+#pragma mark - Refresh/More Action
 - (void)pullingreloadPushToTop:(id)sender
 {
     [self.controller showNavigationBar];
 }
-#pragma mark refresh
 
-//1:下拉刷新 2:刷新结束
+#pragma mark Refresh
 - (void)refreshData:(id)sender
 {
     if (_isLoading)  return;
     [self dataSourcewithRefresh:YES];
 }
+
 - (void)pullingreloadTableViewDataSource:(id)sender
 {
-    SCPBaseNavigationItemView * item = self.controller.item;
-    [item.refreshButton rotateButton];
+    SCPBaseNavigationItemView * refreshItem = self.controller.refreshItem;
+    [refreshItem.refreshButton rotateButton];
     [self refreshData:nil];
 }
+
 - (void)refreshDataFinishLoad
 {
     [(PullingRefreshController *)_controller.pullingController refreshDoneLoadingTableViewData];
@@ -144,11 +147,12 @@
     _isLoading = NO;
 }
 
-#pragma mark more
+#pragma mark More
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
     [self dataSourcewithRefresh:NO];
 }
+
 - (void)moreDataFinishLoad
 {
     _isLoading = NO;
@@ -156,9 +160,7 @@
     [self.controller.pullingController reloadDataSourceWithAniamtion:NO];
 }
 
-#pragma mark -
-#pragma mark bannerDatasouce
-
+#pragma mark - BannerDatasouce
 - (NSUInteger)offsetOfDataSouce
 {
     if (!_strategyArray.count)  return 0;
@@ -168,13 +170,13 @@
     }
     return i;
 }
+
 - (NSString*)bannerDataSouceLeftLabel
 {
     return [NSString stringWithFormat:@"有%d张图片",[self offsetOfDataSouce]];
 }
 
-#pragma mark -
-#pragma mark dataSource
+#pragma mark TableView dataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -182,7 +184,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ((MAXPICTURE <= [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isinit) {
+    if ((MAXPICTURE <= [self offsetOfDataSouce] || ![self offsetOfDataSouce]) && !_isiniting) {
         [self.controller.pullingController.footView setHidden:YES];
     }else{
         [self.controller.pullingController.footView setHidden:NO];
@@ -198,7 +200,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     PlazeViewCellDataSource * dataSource = nil;
     if (_strategyArray.count > indexPath.row)
         dataSource = [_strategyArray objectAtIndex:indexPath.row];
@@ -213,13 +214,11 @@
     return cell;
 }
 
-#pragma mark -
-#pragma mark Action 
-
-- (void)PlazeViewCell:(PlazeViewCell *)cell imageClick:(UIImageView *)imageView
+#pragma mark Cell Delegate 
+- (void)plazeViewCell:(PlazeViewCell *)cell imageClick:(UIImageView *)imageView
 {
     NSDictionary * dic = [cell.dataSource.infoArray objectAtIndex:imageView.tag];
-    SCPPhotoDetailController * pho_detail = [[[SCPPhotoDetailController alloc] initWithuseId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"photo_id"]] ] autorelease];
+    SCPPhotoDetailController * pho_detail = [[[SCPPhotoDetailController alloc] initWithUserId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[dic objectForKey:@"photo_id"]] ] autorelease];
     SCPPlazeController *exp = (SCPPlazeController *)_controller;
     [exp.navigationController pushViewController:pho_detail animated:YES];
 }
@@ -228,5 +227,4 @@
 {
     cell.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
 }
-
 @end

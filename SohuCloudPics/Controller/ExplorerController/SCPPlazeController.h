@@ -7,20 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "PullingRefreshController.h"
+#import "PlazeManager.h"
 #import "SCPBaseController.h"
 #import "SCPBaseNavigationItemView.h"
 #import "SCPMenuNavigationController.h"
 
-#import "PlazeManager.h"
-
 @interface SCPPlazeController : SCPBaseController
 {
-    SCPBaseNavigationItemView * _item;
+    SCPBaseNavigationItemView * _refreshItem;
 }
 
 @property (strong, nonatomic) PullingRefreshController* pullingController;
 @property (strong, nonatomic) PlazeManager* manager;
-@property (strong, nonatomic) SCPBaseNavigationItemView*  item;
+@property (strong, nonatomic) SCPBaseNavigationItemView*  refreshItem;
 @end

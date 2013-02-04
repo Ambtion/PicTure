@@ -42,7 +42,7 @@
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
     
-    SCPMainTabController * mainTab = [[SCPMainTabController alloc] initAndSetAllChildContrllers];
+    SCPMainTabController * mainTab = [[SCPMainTabController alloc] initThenSetAllChildContrllers];
     SCPMenuNavigationController * nav = [[SCPMenuNavigationController alloc] initWithRootViewController:mainTab];
     _window.rootViewController = nav;
     [_window makeKeyAndVisible];

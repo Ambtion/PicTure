@@ -21,7 +21,13 @@
 
 @synthesize slideRecognizerL2R;
 
-- (id)initAndSetAllChildContrllers
+- (void)dealloc
+{
+    self.slideRecognizerL2R = nil;
+    [super dealloc];
+}
+
+- (id)initThenSetAllChildContrllers
 {
     self = [super init];
     if (self) {
@@ -40,6 +46,7 @@
     }
     return self;
 }
+
 - (void)makeTabBarHidden:(BOOL)hide
 {
     if ( [self.view.subviews count] < 2 )
@@ -63,19 +70,14 @@
     
     self.tabBar.hidden = hide;  
 }
-- (void)dealloc
-{
-    self.slideRecognizerL2R = nil;
-    [super dealloc];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self makeTabBarHidden:YES];
 }
-#pragma mark -
-#pragma mark TabDelegate
+
+#pragma mark -  TabDelegate
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     CATransition *anime = [CATransition animation];
@@ -86,8 +88,7 @@
     return YES;
 }
 
-#pragma mark -
-#pragma show&hide tabbar with animation
+#pragma mark - Show&hide tabbar with animation
 - (void)hideTabBar:(UITabBarController *)tabbarcontroller
 {
     [UIView beginAnimations:nil context:nil];
@@ -116,17 +117,15 @@
     [UIView commitAnimations];
 }
 
-#pragma mark -
-#pragma gesture recognizer
-
+#pragma mark - Gesture recognizer
 - (void)switchTab
 {
     NSInteger index = (self.selectedIndex + 1) % [self.childViewControllers count];
     [self switchToindex:index];
 }
+
 - (void)switchToindex:(NSInteger)index
 {
-    
     SCPMenuManager *menu = ((SCPMenuNavigationController *) self.navigationController).menuManager;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];

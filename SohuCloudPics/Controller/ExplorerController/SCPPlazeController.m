@@ -13,15 +13,16 @@
 
 @synthesize pullingController = _pullingController;
 @synthesize manager = _manager;
-@synthesize item = _item;
+@synthesize refreshItem = _refreshItem;
 
 - (void)dealloc
 {
-    [_item release];
+    [_refreshItem release];
     [_pullingController release];
     [_manager release];
     [super dealloc];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -32,50 +33,50 @@
 - (void)addTableView
 {
     _manager = [[PlazeManager alloc] init];
+    self.manager.controller = self;
+
     _pullingController = [[PullingRefreshController alloc] initWithImageName:[UIImage imageNamed:@"title_explore.png"] frame:self.view.bounds];
     self.pullingController.view.frame = self.view.bounds;
-    self.manager.controller = self;
-    
-    //customer for  scrollview
     self.pullingController.delegate = self.manager;
     self.pullingController.tableView.dataSource = self.manager;
     self.pullingController.headView.datasouce = self.manager;
     [self.view addSubview:self.pullingController.view];
-    
 }
+
 - (void)refreshButton:(UIButton *)button
 {
     if (self.manager.isLoading) return;
-    if ([self.pullingController.tableView numberOfSections]){
+    if ([self.pullingController.tableView numberOfSections])
         [self.pullingController.tableView setContentOffset:CGPointZero];
-    }
     [self.manager refreshData:nil];
 }
 
-#pragma mark -
-#pragma mark NavigationItem customer
+#pragma mark  - RefreshItem customer
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (_item == nil) {
-        _item = [[SCPBaseNavigationItemView alloc] initWithNavigationController:self.navigationController];
-        [_item refreshButtonAddtarget:self action:@selector(refreshButton:)];
+    if (_refreshItem == nil) {
+        _refreshItem = [[SCPBaseNavigationItemView alloc] initWithNavigationController:self.navigationController];
+        [_refreshItem refreshButtonAddtarget:self action:@selector(refreshButton:)];
     }
-    if (!_item.superview)
-        [self.navigationController.navigationBar addSubview:_item];
+    if (!_refreshItem.superview)
+        [self.navigationController.navigationBar addSubview:_refreshItem];
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
-    if (_item.superview) {
-        [_item removeFromSuperview];
+    if (_refreshItem.superview) {
+        [_refreshItem removeFromSuperview];
     }
 }
+
 - (void)viewDidDisappear:(BOOL)animated
 {
-    if (_item.superview) {
-        [_item removeFromSuperview];
+    if (_refreshItem.superview) {
+        [_refreshItem removeFromSuperview];
     }
 }
+
 - (void)didReceiveMemoryWarning
 {
     //for memory controller

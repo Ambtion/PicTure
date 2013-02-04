@@ -536,7 +536,7 @@
 				SCPPhoto *photo = [self.photoList objectAtIndex:tag.intValue];
 				NSString * photoId = photo.photoID;
 				NSString * user_id = self.albumData.creatorId;
-                SCPPhotoDetailController * spd = [[[SCPPhotoDetailController alloc] initWithuseId:user_id photoId:photoId] autorelease];
+                SCPPhotoDetailController * spd = [[[SCPPhotoDetailController alloc] initWithUserId:user_id photoId:photoId] autorelease];
                 [self.navigationController pushViewController:spd animated:YES];
 			}
             break;

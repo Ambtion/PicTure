@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#define MAXFRAMECOUNTLIMIT 4
-@interface PlazeDataAdapter : NSObject
 
+#define MAXFRAMECOUNTLIMIT 4
+
+@interface PlazeDataAdapter : NSObject
 
 //获取随机的图片视图
 + (NSDictionary *)getViewFrameForRandom;
@@ -17,5 +18,4 @@
 + (NSArray *)getURLArrayByImageFrames:(NSArray *)frames FrominfoSource:(NSArray *)infoSource;
 //获取frames对应的viewframe
 + (NSArray *)getBorderViewOfImageViewByImageViewFrame:(NSArray *) viewFrame;
-
 @end

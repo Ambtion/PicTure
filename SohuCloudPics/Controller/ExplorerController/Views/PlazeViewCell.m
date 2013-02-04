@@ -38,7 +38,6 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andframe:(NSArray *)frames height:(CGFloat)height
 {
-    
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     if (self) {
@@ -48,45 +47,45 @@
     }
     return self;
 }
+
 - (void)addSubviewsWith:(NSArray *)frames
 {
-    
     UIImageView * imageView = nil;
     UIView * view  = nil;
     for (int i = 0; i < frames.count; i++) {
-        view = [[UIView alloc] initWithFrame:[(NSValue *)[frames objectAtIndex:i] CGRectValue]];
+        view = [[[UIView alloc] initWithFrame:[(NSValue *)[frames objectAtIndex:i] CGRectValue]] autorelease];
         view.backgroundColor = [UIColor clearColor];
         view.clipsToBounds = YES;
         
-        imageView = [[UIImageView alloc] initWithFrame:view.bounds];
+        imageView = [[[UIImageView alloc] initWithFrame:view.bounds] autorelease];
         imageView.tag = i;
         imageView.image = [UIImage imageNamed:@"default_cell.png"];
         imageView.backgroundColor = [UIColor whiteColor];
-        UITapGestureRecognizer * gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlegesture:)];
+        UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlegesture:)] autorelease];
         [imageView addGestureRecognizer:gesture];
         [imageView setUserInteractionEnabled:YES];
-        
+        [_imageViewArray addObject:imageView];
+
         [view addSubview:imageView];
         [self.contentView addSubview:view];
-        [_imageViewArray addObject:imageView];
-        [gesture release];
-        [imageView release];
-        [view release];
     }
     
 }
+
 - (void)handlegesture:(UITapGestureRecognizer *)gesture
 {
     UIImageView * imageview = (UIImageView *)[gesture view];
-    if ([_delegate respondsToSelector:@selector(PlazeViewCell:imageClick:)]) {
-        [_delegate PlazeViewCell:self imageClick:imageview];
+    if ([_delegate respondsToSelector:@selector(plazeViewCell:imageClick:)]) {
+        [_delegate plazeViewCell:self imageClick:imageview];
     }
 }
-#pragma mark dataSouce
+
+#pragma mark - DataSouce
 - (PlazeViewCellDataSource * )dataSource
 {
     return _dataSource;
 }
+
 - (void)setDataSource:(PlazeViewCellDataSource *)dataSource
 {
     
@@ -96,12 +95,14 @@
         [self updateImageView];
     }
 }
+
 - (void)updateImageView
 {
     for (int i = 0; i < _dataSource.infoArray.count; i++) {
         NSDictionary * dic = [_dataSource.infoArray objectAtIndex:i];
         UIImageView * imageView = [_imageViewArray objectAtIndex:i];
         imageView.frame = [[_dataSource.imageFrame objectAtIndex:i] CGRectValue];
+        
         //现在取图c410
         NSString * imageUrl = [NSString stringWithFormat:@"%@_c410",[dic objectForKey:@"photo_url"]];
         NSURL * url = [NSURL URLWithString:imageUrl];

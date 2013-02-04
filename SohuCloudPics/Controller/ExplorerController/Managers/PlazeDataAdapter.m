@@ -16,7 +16,6 @@
 {
     [self addObject:[NSValue valueWithCGRect:rect]];
 }
-
 @end
 
 static CGFloat strategy1(NSMutableArray *frames, NSMutableArray *figures)
@@ -97,6 +96,7 @@ static CGFloat (*strategys[])(NSMutableArray *, NSMutableArray *) = {
     strategy1, strategy2, strategy3, strategy4,
     strategy5, strategy6, strategy7
 };
+
 static NSInteger lastNum = -1;
 @implementation PlazeDataAdapter
 
@@ -109,6 +109,7 @@ static NSInteger lastNum = -1;
     lastNum = i;
     return lastNum;
 }
+
 + (NSDictionary *)getViewFrameForRandom
 {
     NSInteger num_strategy = [self randomNum];
@@ -118,6 +119,7 @@ static NSInteger lastNum = -1;
                           [NSNumber numberWithFloat:height],@"height",frames,@"viewFrame",[NSNumber numberWithInt:num_strategy],@"strategy_num",nil];
     return dic;
 }
+
 + (NSArray *)getURLArrayByImageFrames:(NSArray *)frames FrominfoSource:(NSArray *)infoSource
 
 {
@@ -128,16 +130,7 @@ static NSInteger lastNum = -1;
     }
     return array;
 }
-//+ (NSUInteger)offsetOfDataSouceWithstrategy:(NSArray *)strategyArray
-//{
-//    
-//    if (!strategyArray.count)  return 0;
-//    long long i = 0;
-//    for (PlazeViewCellDataSource * data in strategyArray) {
-//        i = i + data.viewRectFrame.count;
-//    }
-//    return i;
-//}
+
 + (NSArray *)getBorderViewOfImageViewByImageViewFrame:(NSArray *) viewFrame
 {
     

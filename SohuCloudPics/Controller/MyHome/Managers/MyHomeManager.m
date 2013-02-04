@@ -303,7 +303,7 @@ static float OFFSET = 0.f;
 #pragma feedCell Method
 -(void)feedCell:(FeedCell *)cell clickedAtPhoto:(id)object
 {
-    SCPPhotoDetailController * controller = [[SCPPhotoDetailController alloc] initWithuseId:
+    SCPPhotoDetailController * controller = [[SCPPhotoDetailController alloc] initWithUserId:
                                              [NSString stringWithFormat:@"%@",[[cell.dataSource allInfo] objectForKey:@"user_id"]] photoId:[NSString stringWithFormat:@"%@",[[cell.dataSource allInfo] objectForKey:@"photo_id"]]];
     [_controller.navigationController pushViewController:controller animated:YES];
     [controller release];

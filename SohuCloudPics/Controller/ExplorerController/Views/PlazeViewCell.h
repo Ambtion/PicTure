@@ -22,7 +22,7 @@
 
 @protocol PlazeViewCellDelegate <NSObject>
 @required
-- (void)PlazeViewCell:(PlazeViewCell *)cell imageClick:(UIImageView * )imageView;
+- (void)plazeViewCell:(PlazeViewCell *)cell imageClick:(UIImageView * )imageView;
 @end
 
 @interface PlazeViewCell : UITableViewCell
@@ -31,7 +31,9 @@
     NSMutableArray * _imageViewArray;
     id<PlazeViewCellDelegate> _delegate;
 }
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andframe:(NSArray *)frames height:(CGFloat)height;
-@property (nonatomic,retain) PlazeViewCellDataSource * dataSource;
 @property (nonatomic,assign) id<PlazeViewCellDelegate> delegate;
+@property (nonatomic,retain) PlazeViewCellDataSource * dataSource;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier andframe:(NSArray *)frames height:(CGFloat)height;
+
 @end

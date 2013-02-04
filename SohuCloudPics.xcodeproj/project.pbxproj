@@ -1308,7 +1308,7 @@
 				61124E1415DE0BF6002C844F /* SCPAppDelegate.m */,
 				C588DE36168559DF008744D1 /* Network */,
 				C53BB10A1654D8C00043B7E7 /* Guide */,
-				C58D86591612CB78006FE9EF /* LoginPridictive */,
+				C58D86591612CB78006FE9EF /* LoginAndCacheManger */,
 				61124E1B15DE0BFF002C844F /* Controller */,
 				61907A5A15EB8CFB00324A6B /* Resourse */,
 				61124E0B15DE0BF6002C844F /* Supporting Files */,
@@ -2423,7 +2423,7 @@
 			name = CountViewLabel;
 			sourceTree = "<group>";
 		};
-		C58D86591612CB78006FE9EF /* LoginPridictive */ = {
+		C58D86591612CB78006FE9EF /* LoginAndCacheManger */ = {
 			isa = PBXGroup;
 			children = (
 				C5246CF416A6D1C5004E32DF /* SCPStoreLibaray.h */,
@@ -2432,6 +2432,7 @@
 				C58D865A1612CB9F006FE9EF /* SCPLoginPridictive.h */,
 				C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */,
 			);
+			name = LoginAndCacheManger;
 			path = LoginPridictive;
 			sourceTree = "<group>";
 		};

@@ -42,10 +42,8 @@ typedef enum _imageStatePosition
     SCPRequestManager * _requestManger;
     InfoImageView * _fontImageView;
     UIScrollView * _fontScrollview;
-    
     InfoImageView * _currentImageView;
     UIScrollView * _curscrollView;
-    
     InfoImageView * _rearImageView;
     UIScrollView * _rearScrollview;
     
@@ -59,7 +57,7 @@ typedef enum _imageStatePosition
     BOOL hasNextPage;
     imageStatePosition Imagestate;
     //for animation
-    BOOL animation;
+    BOOL isAnimating;
     BOOL isLoading;
 }
 @property (nonatomic, assign)id<SCPPhotoListControllerDeletate> delegate;

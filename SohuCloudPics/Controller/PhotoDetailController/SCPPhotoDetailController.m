@@ -20,16 +20,17 @@
     [_manager release];
     [_pullingController release];
     [super dealloc];
-
 }
-- (id)initWithuseId:(NSString*) useId photoId:(NSString*)photoId
+
+- (id)initWithUserId:(NSString*) userId photoId:(NSString*)photoId
 {
     self = [super init];
     if (self) {
-        _manager = [[PhotoDetailManager alloc] initWithController:self useId:useId photoId:photoId];
+        _manager = [[PhotoDetailManager alloc] initWithController:self UserId:userId PhotoId:photoId];
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,10 +41,10 @@
     [self.pullingController.footView setHidden:YES];
     [self.view addSubview:self.pullingController.view];
 }
+
 #pragma mark customer Navigationiteam
 - (void)viewWillAppear:(BOOL)animated
 {
-    
     [super viewWillAppear:animated];
     self.navigationItem.hidesBackButton = YES;
     
@@ -62,5 +63,4 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
 @end

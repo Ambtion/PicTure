@@ -17,16 +17,17 @@
 
 @interface PlazeManager : NSObject <UITableViewDataSource, PullingRefreshDelegate, BannerDataSoure,PlazeViewCellDelegate>
 {
-    
     SCPRequestManager * _requestManager;
     NSMutableArray * _strategyArray;
     BOOL _isLoading;
-    BOOL _willRefresh;
-    BOOL _isinit;
-    NSUInteger _startoffset;
+    BOOL _isRefreshing;
+    BOOL _isiniting;
+    NSUInteger _startoffsetForRequset;
 }
+
 @property (assign) BOOL isLoading;
 @property (assign) SCPPlazeController *controller;
+
 - (void)dataSourcewithRefresh:(BOOL)isRefresh;
 - (void)refreshData:(id)sender;
 @end

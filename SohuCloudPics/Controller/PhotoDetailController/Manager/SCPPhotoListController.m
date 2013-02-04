@@ -183,7 +183,7 @@
         curImages = [[NSMutableArray alloc] initWithCapacity:0];
         curPage = 0;
         Pagenum = 1;
-        animation = NO;
+        isAnimating = NO;
         hasNextPage = YES;
         self.info = info;
         isInit = YES;
@@ -253,7 +253,7 @@
     if (isInit) return;
     if ([[self.currentImageView.info objectForKey:@"multi_frames"]boolValue]) return;
     [self.view setUserInteractionEnabled:NO];
-    animation = YES;
+    isAnimating = YES;
     CGFloat scale = 1.0;
     CGAffineTransform transform = CGAffineTransformIdentity;
     if (CGAffineTransformEqualToTransform([self getTransfrom], CGAffineTransformIdentity)) {
@@ -272,7 +272,7 @@
         self.view.transform = [self getTransfrom];
         if (CGAffineTransformEqualToTransform(self.view.transform, CGAffineTransformIdentity))
             self.view.frame = [UIScreen mainScreen].bounds;
-        animation = NO;
+        isAnimating = NO;
         [self initSubViews];
         [self.view setUserInteractionEnabled:YES];
     }];
@@ -440,7 +440,7 @@
     [self.view setUserInteractionEnabled:NO];
     _dataManager.photo_ID = [NSString stringWithFormat:@"%@",[self.info objectForKey:@"photo_id"]];
     [_dataManager dataSourcewithRefresh:YES];
-    animation = YES;
+    isAnimating = YES;
     [_dataManager.controller showNavigationBar];
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionTransitionCrossDissolve animations:^{
         [[[gesture view].subviews objectAtIndex:0] setAlpha:0];
@@ -448,7 +448,7 @@
         [self.view removeFromSuperview];
         [self.view setUserInteractionEnabled:YES];
         [self.tempView removeFromSuperview];
-        animation = NO;
+        isAnimating = NO;
         
         if ([_delegate respondsToSelector:@selector(whenViewRemveFromSuperview)]) {
             [_delegate performSelector:@selector(whenViewRemveFromSuperview)];
@@ -495,7 +495,7 @@
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     [[[[UIApplication sharedApplication] delegate] window] addSubview:self.view];
-    animation = NO;
+    isAnimating = NO;
     [self.view setUserInteractionEnabled:YES];
 }
 - (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect
@@ -504,7 +504,7 @@
     self.tempView = [[[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.tempView.backgroundColor = [UIColor blackColor];
     [self.view setUserInteractionEnabled:NO];
-    animation = YES;
+    isAnimating = YES;
     
     CATransition * startAnimations = [CATransition animation];
     startAnimations.type = kCATransitionFade;
@@ -588,7 +588,7 @@
     }
 }
 
-- (void)resetImageScale:(InfoImageView *)imageView
+- (void)resetImageRect:(InfoImageView *)imageView
 {
     
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
@@ -621,6 +621,7 @@
         }
     }
 }
+
 - (void)resetImageFrame:(InfoImageView*)imageView
 {
     if (!imageView.info) {
@@ -666,7 +667,7 @@
     [imageView cancelCurrentImageLoad];
     [imageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options: 0 success:^(UIImage *image) {
         [imageView.actV stopAnimating];
-        [self resetImageScale:imageView];
+        [self resetImageRect:imageView];
         if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
             [self setModelForGif:imageView];
             [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
@@ -679,19 +680,21 @@
         }
     }];
 }
+
 - (void)setModelForGif:(InfoImageView *)imageView
 {
     ((UIScrollView *)imageView.superview).scrollEnabled = NO;
     ((UIScrollView *)imageView.superview).maximumZoomScale = 1.f;
 }
+
 - (void)resetModel:(InfoImageView *)imageView
 {
     ((UIScrollView *)imageView.superview).scrollEnabled = YES;
     ((UIScrollView *)imageView.superview).maximumZoomScale = 1.f;
 }
+
 - (void)refreshScrollviewOnMinBounds
 {
-    
     self.fontImageView.info = [imageArray objectAtIndex:0];
     self.currentImageView.info = [imageArray objectAtIndex:1];
     self.rearImageView.info = [imageArray objectAtIndex:2];
@@ -705,6 +708,7 @@
     Imagestate = AtLess;
     
 }
+
 - (void)refreshScrollviewOnMaxBounds
 {
     //    NSLog(@"%s %d",__FUNCTION__,curPage);
@@ -761,7 +765,6 @@
 
 - (void)refreshScrollView
 {
-    
     if (!imageArray || imageArray.count == 0) return;
     [self.view setUserInteractionEnabled:NO];
     if (photoNum <= 3) {
@@ -777,11 +780,9 @@
 }
 
 #pragma mark scrollView  Delegate
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
-    if (isLoading || animation)  return;
+    if (isLoading || isAnimating)  return;
     if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging])      return;
     
     if (photoNum <= 3) {
@@ -789,9 +790,9 @@
         self.info = [imageArray objectAtIndex:curPage];
         return;
     }
+    
     int x = self.scrollView.contentOffset.x;
     if (x == self.scrollView.frame.size.width) {
-        //        NSLog(@"%s %d",__FUNCTION__,Imagestate);
         if (Imagestate != AtNomal) {
             if (Imagestate == AtLess) curPage++;
             if (Imagestate == AtMore) curPage--;
@@ -799,17 +800,6 @@
             [self refreshScrollView];
         }
         return;
-        
-        //        if (curPage == 0) {
-        //            curPage = 1;
-        //            [self refreshScrollView];
-        //            return;
-        //        }
-        //        if (curPage == photoNum - 1) {
-        //            curPage = photoNum - 2;
-        //            [self refreshScrollView];
-        //            return;
-        //        }
     }
     
     if(x == (self.scrollView.frame.size.width * 2)) {
@@ -823,8 +813,8 @@
         curPage = [self validPageValue:curPage - 1];
         [self refreshScrollView];
     }
-    
 }
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     if ([scrollView isEqual:self.curscrollView]) {
@@ -838,21 +828,24 @@
     }
     return nil;
 }
+
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
     [self resetImagetView:scrollView];
 }
+
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
     [self resetImagetView:scrollView];
 }
+
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
     [self resetImagetView:scrollView];
 }
+
 - (void)resetImagetView:(UIScrollView *)scrollView
 {
-    
     UIImageView * view = [self getCurrentImageView];
     CGFloat offsetX = 0;
     CGFloat offsetY = 0;

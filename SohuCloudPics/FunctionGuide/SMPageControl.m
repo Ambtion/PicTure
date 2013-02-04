@@ -20,6 +20,7 @@
 	NSMutableDictionary	*_pageImages;
 	NSMutableDictionary	*_currentPageImages;
 }
+
 - (void)dealloc
 {
     [_pageImages release];
