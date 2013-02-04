@@ -175,6 +175,7 @@
         _textView.frame = CGRectMake(2, 2, _textView_bg.frame.size.width - 4, _textView_bg.frame.size.height - 4);
     }];
 }
+
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     [UIView animateWithDuration:0.3 animations:^{
@@ -182,11 +183,13 @@
         _textView.frame = CGRectMake(2, 2, _textView_bg.frame.size.width - 4, _textView_bg.frame.size.height - 4);
     }];
 }
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSUInteger newLength = [textView.text length] + [text length] - range.length;
     return (newLength > DESC_COUNT_LIMIT) ? NO : YES;
 }
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     CGPoint point = [touch locationInView:self.view];
@@ -194,6 +197,7 @@
         return NO;
     return YES;
 }
+
 - (void)handleGuesture:(UITapGestureRecognizer *)gesture
 {
     //    [_textView resignFirstResponder];
