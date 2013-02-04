@@ -4555,7 +4555,7 @@ static NSOperationQueue *sharedQueue = nil;
 		}
 	}
 	#if DEBUG_THROTTLING
-	ASI_DEBUG_LOG(@"[THROTTLING] ===Used: %u bytes of bandwidth in last measurement period===",bandwidthUsedInLastSecond);
+	ASI_DEBUG_LOG(@"[THROTTLING] ===Used: %lu bytes of bandwidth in last measurement period===",bandwidthUsedInLastSecond);
 	#endif
 	[bandwidthUsageTracker addObject:[NSNumber numberWithUnsignedLong:bandwidthUsedInLastSecond]];
 	[bandwidthMeasurementDate release];

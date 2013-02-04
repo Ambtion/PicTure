@@ -23,7 +23,6 @@
 #import "NoticeViewController.h"
 
 
-
 #define DEGREES_TO_RADIANS(d) (d * M_PI / 180)
 
 static NSString *menuNormal[6] = {

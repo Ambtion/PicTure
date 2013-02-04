@@ -10,10 +10,12 @@
 
 #import "SCPPersonalPageViewController.h"
 #import "SCPAlbumListController.h"
+#import "SCPAlbumGridController.h"
 #import "SCPPhotoDetailViewController.h"
 #import "SCPFollowingListViewController.h"
 #import "SCPFollowedListViewController.h"
 #import "SCPLoginPridictive.h"
+#import "SCPPerfrenceStoreManager.h"
 
 #define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 80
@@ -392,10 +394,18 @@ static float OFFSET = 0.f;
 #pragma mark menu Delegate
 - (void)personalPageCell:(PersonalPageCell *)personal photoBookClicked:(id)sender
 {
-    SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:_user_ID];
-    [alb refresh];
-    [_controller.navigationController pushViewController:alb animated:YES];
-    [alb release];
+    NSNumber * isShowingGrid = [SCPPerfrenceStoreManager isShowingGridView];
+    if (!isShowingGrid ||  [isShowingGrid boolValue]) {
+        SCPAlbumGridController *gird = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:_user_ID];
+        [gird refresh];
+        [_controller.navigationController pushViewController:gird animated:YES];
+        [gird release];
+    }else{
+        SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:_user_ID];
+        [alb refresh];
+        [_controller.navigationController pushViewController:alb animated:YES];
+        [alb release];
+    }
 }
 -(void)personalPageCell:(PersonalPageCell *)personal favoriteClicked:(id)sender
 {

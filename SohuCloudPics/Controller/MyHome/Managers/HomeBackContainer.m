@@ -9,18 +9,22 @@
 #import "HomeBackContainer.h"
 #import "SCPAppDelegate.h"
 #import "SCPLoginPridictive.h"
+#import "SCPPerfrenceStoreManager.h"
 
 static NSString * IMAGENAME[4]  = {@"user_bg_plain.png",
     @"user_bg_sea.png",
     @"user_bg_soul.png",@"user_bg_stra.png"};
 static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_icon_soul.png",@"user_icon_stra.png"};
+
 @implementation HomeBackContainer
 @synthesize delegate;
+
 - (void)dealloc
 {
     [_boxViews release];
     [super dealloc];
 }
+
 - (id)initWithDelegate:(id<HomeBackContainerDelegate>) Adelegete
 {
     if (self = [super init]) {
@@ -34,6 +38,7 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
     }
     return self;
 }
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     if ([touch.view isKindOfClass:[UIButton class]]) return NO;
@@ -105,23 +110,21 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
 
 - (void)memoryBackImageWithName:(NSString *)name
 {
-    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-    if ([name isEqualToString:@""]) {
-        
-    }else{
-        NSMutableDictionary * userinfo = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:[SCPLoginPridictive currentUserId]]];
-        if (!userinfo) userinfo = [NSMutableDictionary dictionaryWithCapacity:0];
-        [userinfo setValue:name forKey:@"HomeBackImage"];
-        [userDefault setObject:userinfo forKey:[SCPLoginPridictive currentUserId]];
-    }
-    [userDefault synchronize];
+    [SCPPerfrenceStoreManager resetHomeBackGroudImageName:name];
+    
+//    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+//    NSMutableDictionary * userinfo = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:[SCPLoginPridictive currentUserId]]];
+//    if (!userinfo) userinfo = [NSMutableDictionary dictionaryWithCapacity:0];
+//    [userinfo setValue:name forKey:@"HomeBackImage"];
+//    [userDefault setObject:userinfo forKey:[SCPLoginPridictive currentUserId]];
+//    [userDefault synchronize];
 }
 - (NSInteger)getSelectedImage
 {
     
-    NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
-    NSString * str = [userinfo objectForKey:@"HomeBackImage"];
-    if (!str || [str isEqualToString:@""])       return 1000;
+//    NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
+    NSString * str = [SCPPerfrenceStoreManager homeBackGroundImageName];
+    if (!str)       return 1000;
     for (int i = 0; i < 4; i++)
         if([IMAGENAME[i] isEqualToString:str]) return 1000 + i;
     return 1000;

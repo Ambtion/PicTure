@@ -173,7 +173,6 @@ static NSInteger lastNum = -1;
     for (int i = 0; i < viewFrame.count; i++) {
         
         CGRect superRect = [[viewFrame objectAtIndex:i] CGRectValue];
-        
         NSDictionary * dic = [infoArray objectAtIndex:i];
         CGFloat heigth = 205;
         CGFloat wigth = 205;

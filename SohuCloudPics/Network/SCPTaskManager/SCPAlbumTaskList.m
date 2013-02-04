@@ -51,12 +51,41 @@
 }
 - (void)addTaskUnitToQuene
 {
-    
+    if (!self.currentTask) self.currentTask = [self.taskList objectAtIndex:0];
+    self.currentTask.request = [self getUploadRequest:nil];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit * unit) {
+            if ([imageData length] > UPLOADIMAGESIZE) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+                
+                    [self.currentTask.request setUserInfo:[NSDictionary dictionaryWithObject:@"图片太大,无法上传" forKey:@"FAILTURE"]];
+                    [self requestFailed:self.currentTask.request];
+                    return ;
+//                });
+                
+            }else{
+                [self.currentTask.request setData:imageData withFileName:@"fromIOS" andContentType:@"image/*" forKey:@"file"];
+            }
+            if (unit.description && ![unit.description isEqualToString:@""])
+                [self.currentTask.request setPostValue:unit.description forKey:@"desc"];
+            if (!self.currentTask.request.isCancelled)
+                [self.currentTask.request startAsynchronous];
+        } failture:^(NSError *error, SCPTaskUnit *unit) {
+            //            NSLog(@"%s, %@",__FUNCTION__,error);
+            unit.taskState = UPLoadStatusFailedUpload;
+            [self goNextTask];
+            SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
+            [cus show];
+        }];
+//    });
+    return;
+}
+- (void)startTaskUnit
+{
     if (!self.currentTask) self.currentTask = [self.taskList objectAtIndex:0];
     self.currentTask.request = [self getUploadRequest:nil];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self.currentTask getImageSucess:^(NSData *imageData, SCPTaskUnit * unit) {
-            
             if ([imageData length] > UPLOADIMAGESIZE) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
@@ -73,21 +102,19 @@
             if (!self.currentTask.request.isCancelled)
                 [self.currentTask.request startAsynchronous];
         } failture:^(NSError *error, SCPTaskUnit *unit) {
-            //            NSLog(@"%s, %@",__FUNCTION__,error);
             unit.taskState = UPLoadStatusFailedUpload;
             [self goNextTask];
             SCPAlert_CustomeView * cus = [[[SCPAlert_CustomeView alloc] initWithTitle:@"图片上传失败"] autorelease];
             [cus show];
-            
         }];
     });
     return;
 }
-
 - (void)go
 {
+    [self startTaskUnit];
     //    NSLog(@"%s",__FUNCTION__);
-    [self addTaskUnitToQuene];
+//    [self addTaskUnitToQuene];
 }
 - (void)cancelupLoadWithTag:(NSArray *)unitArray
 {
@@ -116,6 +143,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    
     if ([request responseStatusCode] != 200) {
         [self requestFailed:request];
         return;
@@ -123,7 +151,7 @@
     NSDictionary * dic = [[request responseString] JSONValue];
     NSInteger code = [[dic objectForKey:@"code"] intValue];
     if (![self handleCode:code]) return;
-    
+//    NSLog(@"%@",gi[request responseString]);
     [request cancel];
     [request clearDelegatesAndCancel];
     if (self.taskList.count)

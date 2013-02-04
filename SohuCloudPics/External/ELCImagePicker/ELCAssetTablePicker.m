@@ -23,33 +23,36 @@
 	[self.tableView setSeparatorColor:[UIColor clearColor]];
 	[self.tableView setAllowsSelection:NO];
     [self.navigationItem setTitle:@"图片"];
-
+    
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     self.elcAssets = tempArray;
     [tempArray release];
 	
 	UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)] autorelease];
 	[self.navigationItem setRightBarButtonItem:doneButtonItem];
-//	[self.navigationItem setTitle:@"Loading..."];
-
-	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
-    // Show partial while full list loads
-//	[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5];    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self preparePhotos];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     CGRect rect = self.view.frame;
-//    NSLog(@"NSS ^^^^^^^^ %@",NSStringFromCGRect(rect));
     rect.size.height = self.view.frame.size.height - 121;
     self.view.frame = rect;
-
 }
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification
+{
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
 -(void)preparePhotos {
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-//	NSLog(@"%@",self.parentViewController.parentViewController);
-//    NSLog(@"enumerating photos");
     [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop)
      {         
          if(result == nil){
@@ -69,16 +72,21 @@
          elcAsset.toggleDelegate = self.delController;
          [self.elcAssets addObject:elcAsset];
          if (index == [self.assetGroup numberOfAssets] - 1) {
-//             NSLog(@"done enumerating photos");
              dispatch_async(dispatch_get_main_queue(), ^{
+                 self.elcAssets = [self revertObjectArray:self.elcAssets];
                  [self.tableView reloadData];
              });
          }
      }];
     [pool release];
-
 }
-
+- (NSMutableArray *)revertObjectArray:(NSMutableArray *)array
+{
+    NSMutableArray * finalArray = [NSMutableArray arrayWithCapacity:0];
+    for (int i = array.count - 1; i >= 0; i--)
+        [finalArray addObject:[array objectAtIndex:i]];
+    return finalArray;
+}
 - (void) doneAction:(id)sender {
 	
 	NSMutableArray *selectedAssetsImages = [[[NSMutableArray alloc] init] autorelease];
@@ -97,7 +105,6 @@
     // Return the number of sections.
     return 1;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return ceil([self.assetGroup numberOfAssets] / 4.0);
@@ -138,7 +145,6 @@
         
 		return [NSArray arrayWithObject:[self.elcAssets objectAtIndex:index]];
 	}
-    
 	return nil;
 }
 
@@ -161,18 +167,14 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
-//    if(indexPath.row >= ([self.elcAssets count] - 1)/4) 
-//        return 112;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	return 79;
 }
 
-- (int)totalSelectedAssets {
-    
+- (int)totalSelectedAssets
+{
     int count = 0;
-    
     for(ELCAsset *asset in self.elcAssets) 
     {
 		if([asset selected]) 
@@ -186,6 +188,7 @@
 
 - (void)dealloc 
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     for (ELCAsset *asset in self.elcAssets) {
         asset.parent = nil;
     }

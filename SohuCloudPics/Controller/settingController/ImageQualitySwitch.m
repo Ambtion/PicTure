@@ -8,6 +8,8 @@
 
 #import "ImageQualitySwitch.h"
 #import "SCPLoginPridictive.h"
+#import "SCPPerfrenceStoreManager.h"
+
 static BOOL store = YES;
 
 @implementation ImageQualitySwitch
@@ -50,10 +52,8 @@ static BOOL store = YES;
     
     if (store) {
         self.image = [UIImage imageNamed:@"switch_btn.png"];
-        NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
-        id imageInfo = [userinfo objectForKey:@"JPEG"];
-        
-        if (!imageInfo ||![imageInfo boolValue]) {
+        NSNumber * isuplaodJPEG = [SCPPerfrenceStoreManager isUploadJPEGImage];
+        if (!isuplaodJPEG ||![isuplaodJPEG boolValue]) {
             originalImage = 1;
             _button.frame = (CGRect) {0, 0, 51, 27};
         }else{
@@ -74,10 +74,11 @@ static BOOL store = YES;
 -(void)setbuttinImage
 {
     if (originalImage) {
+        
         if (store) {
             [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateNormal];
             [_button setBackgroundImage:[UIImage imageNamed:@"real_size_btn.png"] forState:UIControlStateHighlighted];
-            [self resetJpegWithSetting:NO];
+            [self isUploadJPEGImage:NO];
         }else{
             [_button setBackgroundImage:[UIImage imageNamed:@"personal_album_btn.png"] forState:UIControlStateNormal];
             [_button setBackgroundImage:[UIImage imageNamed:@"personal_album_btn.png"] forState:UIControlStateHighlighted];
@@ -86,23 +87,16 @@ static BOOL store = YES;
         if (store) {
             [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateNormal];
             [_button setBackgroundImage:[UIImage imageNamed:@"resize_btn.png"] forState:UIControlStateHighlighted];
-            [self resetJpegWithSetting:YES];
+            [self isUploadJPEGImage:YES];
         }else{
             [_button setBackgroundImage:[UIImage imageNamed:@"social_album_btn.png"] forState:UIControlStateNormal];
             [_button setBackgroundImage:[UIImage imageNamed:@"social_album_btn.png"] forState:UIControlStateHighlighted];
         }
     }
-    
 }
-- (void)resetJpegWithSetting:(BOOL)isTure
+- (void)isUploadJPEGImage:(BOOL)ture
 {
-    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary * userinfo = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:[SCPLoginPridictive currentUserId]]];
-    if (!userinfo) userinfo = [NSMutableDictionary dictionaryWithCapacity:0];
-    [userinfo setObject:[NSNumber numberWithBool:isTure] forKey:@"JPEG"];
-    [userDefault setObject:userinfo forKey:[SCPLoginPridictive currentUserId]];
-    [userDefault synchronize];
-    
+    [SCPPerfrenceStoreManager setIsUploadJPEGImage:ture];
 }
 -(void)buttonDrag:(UISwipeGestureRecognizer *)gesture
 {

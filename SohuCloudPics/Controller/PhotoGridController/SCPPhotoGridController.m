@@ -233,7 +233,6 @@
 
 - (void)updateUploadPhotoList
 {
-    
     taskTotal = 0;
     self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:self.albumData.albumId];
     if (!self.uploadTaskList) return;
@@ -248,7 +247,6 @@
         [_photoList addObject:photo];
         [photo release];
     }
-    
 }
 #pragma mark - inner method
 

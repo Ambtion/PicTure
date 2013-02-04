@@ -16,10 +16,10 @@
 #import "SCPFollowedListViewController.h"
 #import "SCPSetttingController.h"
 #import "SCPAlbumListController.h"
-
+#import "SCPPerfrenceStoreManager.h"
 #import "SCPAlertView_LoginTip.h"
-#define MAXIMAGEHEIGTH 320
 
+#define MAXIMAGEHEIGTH 320
 #define MAXPICTURE 80
 
 static float OFFSET = 0.f;
@@ -81,6 +81,7 @@ static float OFFSET = 0.f;
         [self requestFailed:error];
     }];
 }
+
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     if (wait) {
@@ -328,24 +329,17 @@ static float OFFSET = 0.f;
 
 -(void)feedCell:(FeedCell *)cell clickedAtPortraitView:(id)object
 {
-    // do nothing, cause it's personal page
-//    NSLog(@"clickedAtPortraitView");
     
 }
 
 -(void)feedCell:(FeedCell *)cell clickedAtFavorButton:(id)object
 {
-    // do something
-//    NSLog(@"clickedAtFavorButton");
+    
 }
 
 -(void)feedCell:(FeedCell *)cell clickedAtCommentButton:(id)objectx
 {
-    //    UINavigationController * nav = _controller.navigationController;
-    //    SCPPhotoDetailViewController *ctrl = [[SCPPhotoDetailViewController alloc] init];
-    //    [nav pushViewController:ctrl animated:YES];
-    //
-    //    [ctrl release];
+    
 }
 
 #pragma mark CELL - Method
@@ -356,10 +350,16 @@ static float OFFSET = 0.f;
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell photoBookClicked:(id)sender
 {
-    SCPAlbumListController *alb = [[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
-    [alb refresh];
-    [_controller.navigationController pushViewController:alb animated:YES];
-    [alb release];
+    NSNumber * isShowingGrid = [SCPPerfrenceStoreManager isShowingGridView];
+    if (!isShowingGrid || [isShowingGrid boolValue]) {
+        SCPAlbumGridController * grid = [[[SCPAlbumGridController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]] autorelease];
+        [grid refresh];
+        [_controller.navigationController pushViewController:grid animated:YES];
+    }else{
+        SCPAlbumListController *alb = [[[SCPAlbumListController  alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]] autorelease];
+        [alb refresh];
+        [_controller.navigationController pushViewController:alb animated:YES];
+    }
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell favoriteClicked:(id)sender
 {
@@ -367,7 +367,6 @@ static float OFFSET = 0.f;
 }
 - (void)MyPersonalCell:(MyPersonalCell *)cell followingButtonClicked:(id)sender
 {
-//    NSLog(@"%s",__FUNCTION__);
     UINavigationController *nav = _controller.navigationController;
     SCPFollowingListViewController *ctrl = [[SCPFollowingListViewController alloc] initWithNibName:nil bundle:nil useID:[NSString stringWithFormat:@"%@",[SCPLoginPridictive currentUserId]]];
     [nav pushViewController:ctrl animated:YES];

@@ -8,6 +8,7 @@
 
 #import "SCPTaskUnit.h"
 #import "SCPLoginPridictive.h"
+#import "SCPPerfrenceStoreManager.h"
 
 @implementation UIImage (fixOrientation)
 
@@ -148,17 +149,15 @@
         UIImage * image = [UIImage imageWithCGImage:[defaultRep fullResolutionImage]
                                               scale:[defaultRep scale] orientation:(UIImageOrientation)[defaultRep orientation]];
         image = [image fixOrientation];
-        NSNumber * num = nil;
+        NSNumber * isUploadJPEGImage = nil;
         if ([SCPLoginPridictive currentUserId]){
-            NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
-            num = [userinfo objectForKey:@"JPEG"];
+            isUploadJPEGImage = [SCPPerfrenceStoreManager isUploadJPEGImage];
         }else{
             resultBlock(nil,self);
             return;
         }
         NSData * data = nil;
-        if (!num || ![num boolValue]) {
-//            NSLog(@"%s JPEG",__FUNCTION__ );
+        if (!isUploadJPEGImage || !isUploadJPEGImage) {
             //PNG
             data = UIImageJPEGRepresentation(image, 1.f);
         }else{
