@@ -259,8 +259,8 @@
 {
     [self stopWait];
     SCPLoginViewController * vc = [[self.navigationController childViewControllers] objectAtIndex:0];
-    if ([vc.delegate respondsToSelector:@selector(SCPLogin:doLogin:)])
-                        [vc.delegate  SCPLogin:vc doLogin:nil];
+    if ([vc.delegate respondsToSelector:@selector(login:doLogin:)])
+                        [vc.delegate login:vc doLogin:nil];
     
 }
 

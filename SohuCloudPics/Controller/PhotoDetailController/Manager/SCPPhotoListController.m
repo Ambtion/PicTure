@@ -132,6 +132,7 @@
 @end
 
 @implementation SCPPhotoListController
+
 @synthesize delegate = _delegate;
 @synthesize tempView;
 @synthesize info = _info;
@@ -149,7 +150,7 @@
 - (void)dealloc
 {
     if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications])
-        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+            [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [_requestManger setDelegate:nil];
     [_requestManger release];
     self.tempView = nil;
@@ -172,11 +173,8 @@
 
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
 {
-    
     self = [super initWithNibName:nil bundle:nil];
-    
     if (self) {
-        
         self.view.backgroundColor = [UIColor blackColor];
         _dataManager = dataManager;
         imageArray = [[NSMutableArray alloc] initWithCapacity:0];
@@ -204,18 +202,19 @@
     }
     return self;
 }
+#pragma mark - View Appear
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications])
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    
 }
 
-#pragma mark Ratation
+#pragma mark - Ratation
 - (CGAffineTransform )getTransfrom
 {
     UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
@@ -227,6 +226,7 @@
         return CGAffineTransformRotate(CGAffineTransformIdentity, M_PI_2);
     return CGAffineTransformIdentity;
 }
+
 - (CGSize)getIdentifyImageSizeWithImageView:(InfoImageView *)imageView isPortraitorientation:(BOOL)isPortrait
 {
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
@@ -247,9 +247,9 @@
     }
     return rect.size;
 }
+
 - (void)listOrientationChanged:(NSNotification *)notification
 {
-    
     if (isInit) return;
     if ([[self.currentImageView.info objectForKey:@"multi_frames"]boolValue]) return;
     [self.view setUserInteractionEnabled:NO];
@@ -278,7 +278,7 @@
     }];
 }
 
-#pragma mark - Delegate
+#pragma mark - Requset Delegate
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     isLoading = NO;
@@ -347,8 +347,8 @@
     [self.view setUserInteractionEnabled:NO];
     [_requestManger getPhotosWithUserID :self.user_id FolderID:self.folder_id page:Pagenum + 1];
 }
-#pragma mark - InitSubView
 
+#pragma mark - InitAllSubView
 - (void)initSubViews
 {
     CGRect rect = self.view.frame;
@@ -369,8 +369,8 @@
     
     [self setScrollViewProperty];
     [self refreshScrollView];
-    
 }
+
 - (void)addFontScrollView
 {
     self.fontScrollview = [[[UIScrollView alloc] initWithFrame:CGRectMake(OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.bounds.size.height)] autorelease];
@@ -386,8 +386,8 @@
     [self.fontScrollview  addSubview:self.fontImageView];
     self.curscrollView.showsHorizontalScrollIndicator = NO;
     self.curscrollView.showsVerticalScrollIndicator = NO;
-    
 }
+
 - (void)addCurScrollView
 {
     self.curscrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width + OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.frame.size.height)] autorelease];
@@ -405,9 +405,9 @@
     [self resetImageFrame:self.currentImageView];
     [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width, 0)];
 }
+
 - (void)addrearScrollView
 {
-    
     self.rearScrollview = [[[UIScrollView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width * 2 + OFFSET, 0, self.scrollView.frame.size.width - OFFSET * 2, self.scrollView.frame.size.height)] autorelease];
     self.rearScrollview.delegate = self;
     self.rearScrollview.minimumZoomScale = 1.f;
@@ -419,6 +419,7 @@
     self.curscrollView.showsVerticalScrollIndicator = NO;
     [self.scrollView addSubview:self.rearScrollview];
 }
+
 - (void)addGestureRecognizeronView:(UIView *)view
 {
     [view setUserInteractionEnabled:YES];
@@ -430,11 +431,9 @@
     [gesture1 requireGestureRecognizerToFail:gesture];
     [view addGestureRecognizer:gesture1];
     [view addGestureRecognizer:gesture];
-    
 }
 
-#pragma mark TapGesture
-
+#pragma mark - TapGesture
 - (void)handlesignalGesture:(UITapGestureRecognizer *)gesture
 {
     [self.view setUserInteractionEnabled:NO];
@@ -449,38 +448,11 @@
         [self.view setUserInteractionEnabled:YES];
         [self.tempView removeFromSuperview];
         isAnimating = NO;
-        
-        if ([_delegate respondsToSelector:@selector(whenViewRemveFromSuperview)]) {
-            [_delegate performSelector:@selector(whenViewRemveFromSuperview)];
-        }
+        if ([_delegate respondsToSelector:@selector(photoListController:viewdidRemoveFromSuperView:)]) 
+            [_delegate performSelector:@selector(photoListController:viewdidRemoveFromSuperView:) withObject:self withObject:self.view];
     }];
 }
-- (void)setTempRect:(CGRect *)tempRect PhotoRect:(CGRect *)photoRect with:(CGFloat)heigth
-{
-    if (heigth < 320) {
-        CGFloat width = 320.f * (320.f / heigth);
-        *photoRect  = CGRectMake((320 - width)/2.f, 0, width, 320);
-        *tempRect = CGRectMake(0, 0, 320, 320);
-    }else if(heigth > 320){
-        *photoRect = CGRectMake(0, 0, 320, heigth);
-        *tempRect = CGRectMake(0, 0, 320, 320);
-        
-    }else{
-        *photoRect = CGRectMake(0, 0, 320,320);
-        *tempRect = CGRectMake(0, 0, 320, 320);
-    }
-    CGFloat Y = ((SCPPhotoDetailController *)_dataManager.controller).pullingController.tableView.contentOffset.y;
-    (*tempRect).origin.y -= (Y - 100);
-}
-- (CGFloat)getHeightofImage:(CGFloat)O_height :(CGFloat) O_width
-{
-    CGFloat finalHeigth = 0.f;
-    finalHeigth = O_height * (320.f / O_width);
-    if (!finalHeigth) {
-        finalHeigth = 320;
-    }
-    return finalHeigth;
-}
+
 - (UIImageView *)getCurrentImageView
 {
     UIImageView * view = nil;
@@ -492,15 +464,16 @@
         view = self.rearImageView;
     return view;
 }
+
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     [[[[UIApplication sharedApplication] delegate] window] addSubview:self.view];
     isAnimating = NO;
     [self.view setUserInteractionEnabled:YES];
 }
-- (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect
+
+- (void)showPhotoListScreen
 {
-    
     self.tempView = [[[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.tempView.backgroundColor = [UIColor blackColor];
     [self.view setUserInteractionEnabled:NO];
@@ -539,7 +512,8 @@
         }
     }
 }
-#pragma mark Refresh ScrollView
+
+#pragma mark - Refresh ScrollView
 - (void)setScrollViewProperty
 {
     self.scrollView.pagingEnabled = YES;
@@ -548,27 +522,27 @@
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.showsHorizontalScrollIndicator = NO;
 }
-- (BOOL)getDisplayImagesWithCurpage:(int)page {
-    
+
+- (BOOL)getDisplayImagesWithCurpage:(int)page
+{
     int pre = [self validPageValue:curPage-1];
     int last = [self validPageValue:curPage+1];
-    
     if([curImages count] != 0) [curImages removeAllObjects];
     [curImages addObject:[imageArray objectAtIndex:pre]];
     [curImages addObject:[imageArray objectAtIndex:curPage]];
     [curImages addObject:[imageArray objectAtIndex:last]];
     return YES;
-    
 }
-- (int)validPageValue:(NSInteger)value {
-    
+
+- (int)validPageValue:(NSInteger)value
+{
     if(value <= 0) value = 0;                   // value＝1为第一张，value = 0为前面一张
     if(value >= imageArray.count) value = imageArray.count - 1;
     return value;
 }
+
 - (void)resetRect:(InfoImageView *)imageView
 {
-    
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
     CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
     CGRect frameRect = self.scrollView.frame;
@@ -590,7 +564,6 @@
 
 - (void)resetImageRect:(InfoImageView *)imageView
 {
-    
     CGFloat w = [[[imageView info] objectForKey:@"width"] floatValue];
     CGFloat h = [[[imageView info] objectForKey:@"height"] floatValue];
     CGRect frameRect = self.scrollView.frame;
@@ -653,7 +626,7 @@
     }
     
     [imageView resetGigView];
-    [self resetModel:imageView];
+    [self resetScrollView:imageView];
     if (![[[imageView info] objectForKey:@"multi_frames"] boolValue])
         [imageView.actV startAnimating];
     
@@ -669,31 +642,31 @@
         [imageView.actV stopAnimating];
         [self resetImageRect:imageView];
         if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
-            [self setModelForGif:imageView];
+            [self setScrollViewForGif:imageView];
             [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
         }
     } failure:^(NSError *error) {
         
         if ([[[imageView info] objectForKey:@"multi_frames"] boolValue]){
-            [self setModelForGif:imageView];
+            [self setScrollViewForGif:imageView];
             [imageView playGif:[NSURL URLWithString:[imageView.info objectForKey:@"photo_url"]]];
         }
     }];
 }
 
-- (void)setModelForGif:(InfoImageView *)imageView
+- (void)setScrollViewForGif:(InfoImageView *)imageView
 {
     ((UIScrollView *)imageView.superview).scrollEnabled = NO;
     ((UIScrollView *)imageView.superview).maximumZoomScale = 1.f;
 }
 
-- (void)resetModel:(InfoImageView *)imageView
+- (void)resetScrollView:(InfoImageView *)imageView
 {
     ((UIScrollView *)imageView.superview).scrollEnabled = YES;
     ((UIScrollView *)imageView.superview).maximumZoomScale = 1.f;
 }
 
-- (void)refreshScrollviewOnMinBounds
+- (void)refreshScrollViewOnMinBounds
 {
     self.fontImageView.info = [imageArray objectAtIndex:0];
     self.currentImageView.info = [imageArray objectAtIndex:1];
@@ -709,7 +682,7 @@
     
 }
 
-- (void)refreshScrollviewOnMaxBounds
+- (void)refreshScrollViewOnMaxBounds
 {
     //    NSLog(@"%s %d",__FUNCTION__,curPage);
     self.rearImageView.info = [imageArray objectAtIndex:imageArray.count - 1];
@@ -726,7 +699,7 @@
     
 }
 
-- (void)refreshScrollviewWhenPhotonumLessThree
+- (void)refreshScrollViewWhenPhotonumLessThree
 {
     self.fontImageView.info = [imageArray objectAtIndex:0];
     if (imageArray.count == 2) {
@@ -768,18 +741,18 @@
     if (!imageArray || imageArray.count == 0) return;
     [self.view setUserInteractionEnabled:NO];
     if (photoNum <= 3) {
-        [self refreshScrollviewWhenPhotonumLessThree];
+        [self refreshScrollViewWhenPhotonumLessThree];
     }else if (curPage == 0) {
-        [self refreshScrollviewOnMinBounds];
+        [self refreshScrollViewOnMinBounds];
     }else if (curPage == imageArray.count - 1) {
-        [self refreshScrollviewOnMaxBounds];
+        [self refreshScrollViewOnMaxBounds];
     }else{
         [self refreshScrollViewNormal];
     }
     [self.view setUserInteractionEnabled:YES];
 }
 
-#pragma mark scrollView  Delegate
+#pragma mark -  ScrollView  Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (isLoading || isAnimating)  return;
@@ -790,7 +763,6 @@
         self.info = [imageArray objectAtIndex:curPage];
         return;
     }
-    
     int x = self.scrollView.contentOffset.x;
     if (x == self.scrollView.frame.size.width) {
         if (Imagestate != AtNomal) {
@@ -801,7 +773,6 @@
         }
         return;
     }
-    
     if(x == (self.scrollView.frame.size.width * 2)) {
         curPage = [self validPageValue:curPage + 1];
         [self refreshScrollView];

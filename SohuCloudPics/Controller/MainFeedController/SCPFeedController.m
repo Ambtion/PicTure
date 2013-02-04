@@ -67,6 +67,7 @@
     }
     [self.manager performSelector:@selector(refreshData:) withObject:nil afterDelay:0.2];
 }
+
 - (void)viewDidAppear:(BOOL)animated
 {
     if (_item == nil) {

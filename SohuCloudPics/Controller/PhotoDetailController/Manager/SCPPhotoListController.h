@@ -23,8 +23,9 @@
 @end
 
 @class SCPPhotoListController;
+
 @protocol SCPPhotoListControllerDeletate <NSObject>
-- (void)whenViewRemveFromSuperview;
+- (void)photoListController:(SCPPhotoListController *)listController viewdidRemoveFromSuperView:(UIView *)view;
 @end
 
 typedef enum _imageStatePosition
@@ -77,7 +78,7 @@ typedef enum _imageStatePosition
 @property (nonatomic,retain) UIScrollView * scrollView;
 
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager;
-- (void)showWithPushController:(id)nav_ctrller fromRect:(CGRect)temRect image:(UIImage *)image ImgaeRect:(CGRect)imageRect;
+- (void)showPhotoListScreen;
 - (UIImageView *)getCurrentImageView;
 
 @end
