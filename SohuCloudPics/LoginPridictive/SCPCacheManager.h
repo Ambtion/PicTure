@@ -13,5 +13,6 @@
 @interface SCPCacheManager : NSObject
 
 + (void)removeCacheOfImage;
+
 + (void)removeCacheAlluserInfobutMe;
 @end

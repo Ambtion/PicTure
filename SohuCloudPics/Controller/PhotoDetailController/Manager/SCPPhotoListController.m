@@ -212,14 +212,11 @@
     
 }
 
-<<<<<<< HEAD
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
 }
 
-=======
->>>>>>> recode
 #pragma mark Ratation
 - (CGAffineTransform )getTransfrom
 {

@@ -21,7 +21,6 @@ typedef enum {
 
 @interface SCPAlbumController : SCPSecondController <PullingRefreshDelegate, BannerDataSoure, UITableViewDataSource, SCPAlbumCellDelegate, SCPRequestManagerDelegate,UIAlertViewDelegate>
 {    
-    SCPAlbumControllerState _state;
     UIButton *_backButton;
     UIView *_rightBarView;
     UIButton *_switchButton;

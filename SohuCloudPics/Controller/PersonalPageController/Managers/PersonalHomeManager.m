@@ -10,6 +10,7 @@
 
 #import "SCPPersonalHomeController.h"
 #import "SCPAlbumListController.h"
+#import "SCPAlbumGridController.h"
 #import "SCPPhotoDetailController.h"
 #import "SCPFollowingListViewController.h"
 #import "SCPFollowedListViewController.h"
@@ -382,7 +383,7 @@ static float OFFSET = 0.f;
 {
     NSNumber * isShowingGrid = [SCPPerfrenceStoreManager isShowingGridView];
     if (!isShowingGrid ||  [isShowingGrid boolValue]) {
-        SCPAlbumGridController *gird = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:_user_ID];
+        SCPAlbumGridController * gird = [[SCPAlbumGridController  alloc] initWithNibName:nil bundle:nil useID:_user_ID];
         [gird refresh];
         [_controller.navigationController pushViewController:gird animated:YES];
         [gird release];

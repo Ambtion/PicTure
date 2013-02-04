@@ -153,9 +153,7 @@
 		C51A82B9169D73F2008CD8EA /* prog_wait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C51A82B7169D73F2008CD8EA /* prog_wait@2x.png */; };
 		C51A82BB169D835E008CD8EA /* settings_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = C51A82BA169D835E008CD8EA /* settings_clear.png */; };
 		C51BB06C16A6DD77004BAD32 /* alubm_switch_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = C51BB06B16A6DD77004BAD32 /* alubm_switch_btn.png */; };
-		C5246CF916A6D58E004E32DF /* SCPCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5246CF816A6D58E004E32DF /* SCPCacheManager.m */; };
 		C526524416A560B600AC1662 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = C526524316A560B600AC1662 /* ground.png */; };
-		C527025016BBBF5F008A1559 /* SCPPerfrenceStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C527024F16BBBF5F008A1559 /* SCPPerfrenceStoreManager.m */; };
 		C52F3F3E168C853F009858C0 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F2D168C853F009858C0 /* SDImageCache.m */; };
 		C52F3F3F168C853F009858C0 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F31168C853F009858C0 /* SDWebImageDecoder.m */; };
 		C52F3F40168C853F009858C0 /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F3F33168C853F009858C0 /* SDWebImageDownloader.m */; };
@@ -324,6 +322,9 @@
 		C58950EC1654C2D1005865EE /* NoticeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C58950EB1654C2D1005865EE /* NoticeManager.m */; };
 		C58950EF1654C7E2005865EE /* NoticeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C58950EE1654C7E2005865EE /* NoticeViewCell.m */; };
 		C589F45A15F98ACA00FAC5B1 /* GifDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C589F45915F98ACA00FAC5B1 /* GifDetail.m */; };
+		C58A04DA16BF951B00A9E579 /* SCPCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C58A04D416BF951B00A9E579 /* SCPCacheManager.m */; };
+		C58A04DB16BF951B00A9E579 /* SCPLoginPridictive.m in Sources */ = {isa = PBXBuildFile; fileRef = C58A04D616BF951B00A9E579 /* SCPLoginPridictive.m */; };
+		C58A04DC16BF951B00A9E579 /* SCPPerfrenceStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C58A04D816BF951B00A9E579 /* SCPPerfrenceStoreManager.m */; };
 		C58AB44416757AA900C96450 /* SCPAlert_DeletView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58AB44316757AA900C96450 /* SCPAlert_DeletView.m */; };
 		C58AB4461675838600C96450 /* pop_up_bg_delet.png in Resources */ = {isa = PBXBuildFile; fileRef = C58AB4451675838600C96450 /* pop_up_bg_delet.png */; };
 		C58AD468163A330000D59675 /* SCPAlert_WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58AD467163A330000D59675 /* SCPAlert_WaitView.m */; };
@@ -337,7 +338,6 @@
 		C58BA24C16B7AB7C00338CE4 /* PlazeDataAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58BA24B16B7AB7C00338CE4 /* PlazeDataAdapter.m */; };
 		C58BD83E166E01B700BEBA9E /* end_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C58BD83D166E01B700BEBA9E /* end_bg.png */; };
 		C58BEF25168951A1004946B1 /* explore_up_page_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C58BEF24168951A1004946B1 /* explore_up_page_icon.png */; };
-		C58D865C1612CB9F006FE9EF /* SCPLoginPridictive.m in Sources */ = {isa = PBXBuildFile; fileRef = C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */; };
 		C58D86631612F45A006FE9EF /* MainFeedBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = C58D86621612F45A006FE9EF /* MainFeedBanner.m */; };
 		C58DA659162EADDB001E881D /* BannerForHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58DA658162EADDB001E881D /* BannerForHeadView.m */; };
 		C58E342216A54E1C00C11E59 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C58E342116A54E1C00C11E59 /* Default.png */; };
@@ -699,12 +699,7 @@
 		C51A82BA169D835E008CD8EA /* settings_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_clear.png; sourceTree = "<group>"; };
 		C51BB06B16A6DD77004BAD32 /* alubm_switch_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alubm_switch_btn.png; sourceTree = "<group>"; };
 		C5246CED16A6CBFE004E32DF /* URLLibaray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLLibaray.h; sourceTree = "<group>"; };
-		C5246CF416A6D1C5004E32DF /* SCPStoreLibaray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPStoreLibaray.h; sourceTree = "<group>"; };
-		C5246CF716A6D58E004E32DF /* SCPCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPCacheManager.h; sourceTree = "<group>"; };
-		C5246CF816A6D58E004E32DF /* SCPCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPCacheManager.m; sourceTree = "<group>"; };
 		C526524316A560B600AC1662 /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
-		C527024E16BBBF5F008A1559 /* SCPPerfrenceStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPPerfrenceStoreManager.h; sourceTree = "<group>"; };
-		C527024F16BBBF5F008A1559 /* SCPPerfrenceStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPerfrenceStoreManager.m; sourceTree = "<group>"; };
 		C52F3F2C168C853F009858C0 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		C52F3F2D168C853F009858C0 /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
 		C52F3F2E168C853F009858C0 /* SDImageCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCacheDelegate.h; sourceTree = "<group>"; };
@@ -922,6 +917,13 @@
 		C58950EE1654C7E2005865EE /* NoticeViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeViewCell.m; sourceTree = "<group>"; };
 		C589F45815F98ACA00FAC5B1 /* GifDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GifDetail.h; sourceTree = "<group>"; };
 		C589F45915F98ACA00FAC5B1 /* GifDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GifDetail.m; sourceTree = "<group>"; };
+		C58A04D316BF951B00A9E579 /* SCPCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPCacheManager.h; sourceTree = "<group>"; };
+		C58A04D416BF951B00A9E579 /* SCPCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPCacheManager.m; sourceTree = "<group>"; };
+		C58A04D516BF951B00A9E579 /* SCPLoginPridictive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPLoginPridictive.h; sourceTree = "<group>"; };
+		C58A04D616BF951B00A9E579 /* SCPLoginPridictive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPLoginPridictive.m; sourceTree = "<group>"; };
+		C58A04D716BF951B00A9E579 /* SCPPerfrenceStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPPerfrenceStoreManager.h; sourceTree = "<group>"; };
+		C58A04D816BF951B00A9E579 /* SCPPerfrenceStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPPerfrenceStoreManager.m; sourceTree = "<group>"; };
+		C58A04D916BF951B00A9E579 /* SCPStoreLibaray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPStoreLibaray.h; sourceTree = "<group>"; };
 		C58AB44216757AA900C96450 /* SCPAlert_DeletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPAlert_DeletView.h; sourceTree = "<group>"; };
 		C58AB44316757AA900C96450 /* SCPAlert_DeletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPAlert_DeletView.m; sourceTree = "<group>"; };
 		C58AB4451675838600C96450 /* pop_up_bg_delet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_up_bg_delet.png; sourceTree = "<group>"; };
@@ -941,8 +943,6 @@
 		C58BA24B16B7AB7C00338CE4 /* PlazeDataAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlazeDataAdapter.m; path = Controller/ExplorerController/Managers/PlazeDataAdapter.m; sourceTree = "<group>"; };
 		C58BD83D166E01B700BEBA9E /* end_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = end_bg.png; sourceTree = "<group>"; };
 		C58BEF24168951A1004946B1 /* explore_up_page_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explore_up_page_icon.png; sourceTree = "<group>"; };
-		C58D865A1612CB9F006FE9EF /* SCPLoginPridictive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPLoginPridictive.h; sourceTree = "<group>"; };
-		C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPLoginPridictive.m; sourceTree = "<group>"; };
 		C58D86611612F45A006FE9EF /* MainFeedBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainFeedBanner.h; path = Controller/MainFeedController/Views/MainFeedBanner.h; sourceTree = "<group>"; };
 		C58D86621612F45A006FE9EF /* MainFeedBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainFeedBanner.m; path = Controller/MainFeedController/Views/MainFeedBanner.m; sourceTree = "<group>"; };
 		C58DA657162EADDB001E881D /* BannerForHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerForHeadView.h; sourceTree = "<group>"; };
@@ -1311,8 +1311,7 @@
 				61124E1415DE0BF6002C844F /* SCPAppDelegate.m */,
 				C588DE36168559DF008744D1 /* Network */,
 				C53BB10A1654D8C00043B7E7 /* Guide */,
-				C58D86591612CB78006FE9EF /* storeCache */,
-				C58D86591612CB78006FE9EF /* LoginAndCacheManger */,
+				C58A04D216BF951B00A9E579 /* LoginPridictive */,
 				61124E1B15DE0BFF002C844F /* Controller */,
 				61907A5A15EB8CFB00324A6B /* Resourse */,
 				61124E0B15DE0BF6002C844F /* Supporting Files */,
@@ -2418,6 +2417,20 @@
 			path = Controller/NoticeController;
 			sourceTree = "<group>";
 		};
+		C58A04D216BF951B00A9E579 /* LoginPridictive */ = {
+			isa = PBXGroup;
+			children = (
+				C58A04D916BF951B00A9E579 /* SCPStoreLibaray.h */,
+				C58A04D316BF951B00A9E579 /* SCPCacheManager.h */,
+				C58A04D416BF951B00A9E579 /* SCPCacheManager.m */,
+				C58A04D516BF951B00A9E579 /* SCPLoginPridictive.h */,
+				C58A04D616BF951B00A9E579 /* SCPLoginPridictive.m */,
+				C58A04D716BF951B00A9E579 /* SCPPerfrenceStoreManager.h */,
+				C58A04D816BF951B00A9E579 /* SCPPerfrenceStoreManager.m */,
+			);
+			path = LoginPridictive;
+			sourceTree = "<group>";
+		};
 		C58B5EB216AF8B2900D7E4FE /* CountViewLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -2425,23 +2438,6 @@
 				C58B5EB416AF8B4A00D7E4FE /* CountLabel.m */,
 			);
 			name = CountViewLabel;
-			sourceTree = "<group>";
-		};
-
-		C58D86591612CB78006FE9EF /* LoginAndCacheManger */ = {
-			isa = PBXGroup;
-			children = (
-				C5246CF416A6D1C5004E32DF /* SCPStoreLibaray.h */,
-				C5246CF716A6D58E004E32DF /* SCPCacheManager.h */,
-				C5246CF816A6D58E004E32DF /* SCPCacheManager.m */,
-				C58D865A1612CB9F006FE9EF /* SCPLoginPridictive.h */,
-				C58D865B1612CB9F006FE9EF /* SCPLoginPridictive.m */,
-				C527024E16BBBF5F008A1559 /* SCPPerfrenceStoreManager.h */,
-				C527024F16BBBF5F008A1559 /* SCPPerfrenceStoreManager.m */,
-			);
-
-			name = LoginAndCacheManger;
-			path = LoginPridictive;
 			sourceTree = "<group>";
 		};
 		C58D86641612F5D9006FE9EF /* maiFeed */ = {
@@ -2978,7 +2974,6 @@
 				C58641A71611CB830048DDA6 /* SCPFollowCommonCell.m in Sources */,
 				C58641D11611CE940048DDA6 /* SCPUploadController.m in Sources */,
 				C58641D21611CE940048DDA6 /* SCPLabelBox.m in Sources */,
-				C58D865C1612CB9F006FE9EF /* SCPLoginPridictive.m in Sources */,
 				C58D86631612F45A006FE9EF /* MainFeedBanner.m in Sources */,
 				C5ED1DE71613F26900C112B6 /* LoginTipView.m in Sources */,
 				C5ED1DFD1614045100C112B6 /* CameraViewController.m in Sources */,
@@ -3079,14 +3074,15 @@
 				C587AD3A169E705B00F2C16F /* SCPAlert_AlbumProperty.m in Sources */,
 				C5AADC2B16A2565700166B86 /* SCPReadDealController.m in Sources */,
 				C58873FE16A5290800C21AC4 /* PhotoDesEditController.m in Sources */,
-				C5246CF916A6D58E004E32DF /* SCPCacheManager.m in Sources */,
 				C595934A16A79D320020B800 /* SCPGuideViewExchange.m in Sources */,
 				C593BFA516AD0BBD0015CE50 /* SCPNewFoldersCell.m in Sources */,
 				C58B5EB516AF8B4A00D7E4FE /* CountLabel.m in Sources */,
-				C527025016BBBF5F008A1559 /* SCPPerfrenceStoreManager.m in Sources */,
 				C58BA24C16B7AB7C00338CE4 /* PlazeDataAdapter.m in Sources */,
 				C5D9E03116B916CC00B2A442 /* MyHomeManager.m in Sources */,
 				C50538DA16BA0881003EB7AA /* EmojiUnit.m in Sources */,
+				C58A04DA16BF951B00A9E579 /* SCPCacheManager.m in Sources */,
+				C58A04DB16BF951B00A9E579 /* SCPLoginPridictive.m in Sources */,
+				C58A04DC16BF951B00A9E579 /* SCPPerfrenceStoreManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
