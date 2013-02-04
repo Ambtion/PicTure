@@ -204,7 +204,7 @@
                                              selector:@selector(listOrientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
-}g
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {

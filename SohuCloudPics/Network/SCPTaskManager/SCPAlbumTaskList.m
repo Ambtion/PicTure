@@ -236,6 +236,7 @@
         }
     }
 }
+
 - (ASIFormDataRequest *)getUploadRequest:(NSData *)imageData
 {
     NSString * str = [NSString stringWithFormat:@"%@/upload/api?folder_id=%@&access_token=%@",BASICURL,self.albumId,[SCPLoginPridictive currentToken]];
