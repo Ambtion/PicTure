@@ -169,11 +169,7 @@
 }
 
 - (id)initWithUseInfo:(NSDictionary * ) info : (PhotoDetailManager *)dataManager
-<<<<<<< HEAD
-{    
-=======
 {
->>>>>>> recode
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.view.backgroundColor = [UIColor blackColor];
@@ -198,13 +194,9 @@
     }
     return self;
 }
-<<<<<<< HEAD
 
-- (void)viewDidAppear:(BOOL)animated
-=======
 #pragma mark - View Appear
-- (void)viewWillAppear:(BOOL)animated
->>>>>>> recode
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -212,7 +204,7 @@
                                              selector:@selector(listOrientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
-}
+}g
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -220,16 +212,12 @@
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
 
-<<<<<<< HEAD
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.hidesBackButton = YES;
 }
 
-#pragma mark Ratation
-=======
 #pragma mark - Ratation
->>>>>>> recode
 - (CGAffineTransform )getTransfrom
 {
     UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
