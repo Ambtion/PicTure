@@ -81,23 +81,25 @@
     [_pullingController refreshDoneLoadingTableViewData];
     [_pullingController reloadDataSourceWithAniamtion:NO];
 }
+
 - (void)updateBanner
 {
 	[self.pullingController.headView BannerreloadDataSource];
 }
+
 - (void)updateBannerWithAlbumCount:(int)count andAuthorName:(NSString *)name photoNum:(NSInteger)photo_num
 {
-	if (count < 0) {
-		count = 0;
-	}
+	if (count < 0)	count = 0;
     self.bannerLeftString = [NSString stringWithFormat:@"有%d个专辑", count];
     self.bannerRightString = [NSString stringWithFormat:@"有%d张图片",photo_num];
     [self.pullingController.headView BannerreloadDataSource];
 }
+
 - (void)pullingreloadMoreTableViewData:(id)sender
 {
     [self.pullingController moreDoneLoadingTableViewData];
 }
+
 - (void)initNavigationItem
 {
     int rightBarWidth = 250;
