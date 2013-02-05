@@ -81,17 +81,11 @@
     [_pullingController reloadDataSourceWithAniamtion:NO];
 }
 
-//- (void)updateBanner
-//{
-//	[self.pullingController.headView BannerreloadDataSource];
-//}
-
 - (void)updateBannerWithAlbumCount:(int)count andAuthorName:(NSString *)name photoNum:(NSInteger)photo_num
 {
-	if (count < 0)	count = 0;
+    NSLog(@"%d %d",count, photo_num);
     self.bannerLeftString = [NSString stringWithFormat:@"有%d个专辑", count];
     self.bannerRightString = [NSString stringWithFormat:@"有%d张图片",photo_num];
-//    [self.pullingController.headView BannerreloadDataSource];
 }
 
 - (void)pullingreloadMoreTableViewData:(id)sender
@@ -233,13 +227,12 @@
 
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-//    NSLog(@"%@",info);
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
 	_hasNextPage = [[folderinfo objectForKey:@"has_next"] boolValue];
     _loadedPage = _currentPage;
-	if (_currentPage == 1) {
+	if ([info objectForKey:@"userInfo"]) {
 		NSDictionary * creator = [info objectForKey:@"userInfo"];
 		int albumCount = [[creator objectForKey:@"public_folders"] intValue];
 		if ([SCPLoginPridictive currentUserId] && [[SCPLoginPridictive currentUserId] isEqualToString:_user_id]) {
@@ -250,7 +243,6 @@
         if (_albumList.count)
             [_albumList removeAllObjects];
     }
-    
 	NSArray *folderList = [folderinfo  objectForKey:@"folders"];
 	for (int i = 0; i < folderList.count; ++i) {
 		NSDictionary *Afolder = [folderList objectAtIndex:i];
