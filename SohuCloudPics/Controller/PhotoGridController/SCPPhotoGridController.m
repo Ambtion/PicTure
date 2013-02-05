@@ -487,17 +487,22 @@
                 for (UIProgressView * pro in cell.progViewList) [pro setHidden:NO];
                 [[cell imageViewAt:i] setAlpha:0.5];
             }
+            
             //设置图片
             [[cell imageViewAt:i] setImage:[self.thumbnailArray objectAtIndex:taskTotal - tag.integerValue - 1]];
             //当前任务 设置进度条
             
             if (tag.integerValue == _uploadTaskList.taskList.count - 1) {
+                [[cell.progViewList objectAtIndex:i] setProgress:0.f];
                 [self.uploadTaskList.currentTask.request setUploadProgressDelegate:[cell.progViewList objectAtIndex:i]];
-            }
+            }g
             //完成的任务
             if (tag.integerValue >= _uploadTaskList.taskList.count) {
                 [[cell.progViewList objectAtIndex:i] setHidden:YES];
                 [[cell imageViewAt:i] setAlpha:1.f];
+            }else{
+                [[cell.progViewList objectAtIndex:i] setHidden:NO];
+                [[cell imageViewAt:i] setAlpha:0.5];
             }
             SCPPhoto *photoData = [_photoList objectAtIndex:tag.intValue];
             [cell updateViewWithTask:photoData Position:i PreToDel:[_imagesToDel containsObject:photoData]];
