@@ -22,6 +22,7 @@
 
 - (void)dealloc
 {
+    [self removeObserverOnCenter];
     self.currlabel = nil;
     self.curProgreeeView = nil;
     [super dealloc];
@@ -116,7 +117,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self removeObserverOnCenter];
 }
 
 #pragma mark -

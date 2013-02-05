@@ -19,6 +19,7 @@
 @implementation SCPAlbumListController
 - (void)dealloc
 {
+    [self addObserVerOnCenter];
     self.curProgreeeView = nil;
     [super dealloc];
 }
@@ -107,7 +108,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self addObserVerOnCenter];
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
