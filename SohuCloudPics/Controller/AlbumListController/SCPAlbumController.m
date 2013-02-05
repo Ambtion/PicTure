@@ -76,7 +76,7 @@
     
     [self.view addSubview:_pullingController.view];
     [self initNavigationItem];
-    g
+    
     [_pullingController refreshDoneLoadingTableViewData];
     [_pullingController reloadDataSourceWithAniamtion:NO];
 }
