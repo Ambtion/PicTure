@@ -143,31 +143,43 @@
         resultBlock(self.data,self);
         return;
     }
+    
     ALAssetsLibrary * lib = [[ALAssetsLibrary alloc] init];
     [lib assetForURL:_asseetUrl resultBlock:^(ALAsset *asset) {
+        
         ALAssetRepresentation * defaultRep = [asset defaultRepresentation];
-        UIImage * image = [UIImage imageWithCGImage:[defaultRep fullResolutionImage]
-                                              scale:[defaultRep scale] orientation:(UIImageOrientation)[defaultRep orientation]];
-        image = [image fixOrientation];
+        
+        Byte *buffer = (Byte*)malloc(defaultRep.size);
+        NSUInteger buffered = [defaultRep getBytes:buffer fromOffset:0.0 length:defaultRep.size error:nil];
+        NSData * data = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
+        
         NSNumber * isUploadJPEGImage = nil;
-        if ([SCPLoginPridictive currentUserId]){
+        
+        if ([SCPLoginPridictive isLogin]){
             isUploadJPEGImage = [SCPPerfrenceStoreManager isUploadJPEGImage];
         }else{
             resultBlock(nil,self);
             return;
         }
-        NSData * data = nil;
-        if (!isUploadJPEGImage || !isUploadJPEGImage) {
-            //PNG
-            data = UIImageJPEGRepresentation(image, 1.f);
+        
+        if (!isUploadJPEGImage || ![isUploadJPEGImage boolValue]) {
+//            data = UIImageJPEGRepresentation(image, 1.f);
+//            NSLog(@"ori:when upload: %f",[data length]/(1024 * 1024.f));
+            
         }else{
-            //JPEG
-            data = UIImageJPEGRepresentation(image, 0.7f);
+            CGDataProviderRef jpegdata = CGDataProviderCreateWithCFData((CFDataRef)data);
+            CGImageRef imageRef = CGImageCreateWithJPEGDataProvider(jpegdata, NULL, YES, kCGRenderingIntentDefault);
+            UIImage * image = [UIImage imageWithCGImage:imageRef];
+            data = UIImageJPEGRepresentation(image, 0.5);
+//            UIImage * image = [UIImage imageWithCGImage:[defaultRep fullResolutionImage]                                              scale:[defaultRep scale] orientation:(UIImageOrientation)[defaultRep orientation]];
+         //            image = [image fixOrientation];
+//            NSLog(@"cpmpre:when upload : %f",[data length]/(1024 * 1024.f));
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             resultBlock(data,self);
             [lib release];
         });
+        
     } failureBlock:^(NSError *error) {
         myfailtureBlock(error,self);
         [lib release];

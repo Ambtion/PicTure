@@ -56,10 +56,11 @@
     NSDictionary * userinfo = [self valueForUserinfo];
     return [self valueForKey:ISUPLOADJPEGIMAGE inUserinfo:userinfo];
 }
+
 + (void)setIsUploadJPEGImage:(BOOL)ture
 {
     if (![SCPLoginPridictive isLogin]) return;
-    [self userDefoultStoreValue:[NSNumber numberWithBool:ture] forKey:HOMEBACKGROUND];
+    [self userDefoultStoreValue:[NSNumber numberWithBool:ture] forKey:ISUPLOADJPEGIMAGE];
 }
 
 + (NSNumber *)isShowingGridView

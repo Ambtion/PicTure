@@ -133,36 +133,33 @@
     
     if (!session) return;
     preview = [AVCaptureVideoPreviewLayer layerWithSession: session];
-//    preview.orientation = UIInterfaceOrientationPortrait;
     preview.frame = aView.bounds;
     preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [aView.layer addSublayer: preview];
     
 }
 
-- (void)changePreviewOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    
-    [CATransaction begin];
-    
-    imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
-    movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
-    if (interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-        g_orientation = UIImageOrientationUp;
-            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-            movieConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-    }else if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft){
-        g_orientation = UIImageOrientationDown;
-            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-            movieConnection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-    }else{
-            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationPortrait;
-            movieConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
-    }
-//    NSLog(@"%s, %d",__FUNCTION__, interfaceOrientation);
-    [CATransaction commit];
-    
-}
+//- (void)changePreviewOrientation:(UIInterfaceOrientation)interfaceOrientation
+//{
+//    
+//    [CATransaction begin];
+//    
+//    imageCaptureconnection = [imagecaptureOutput connectionWithMediaType:AVMediaTypeVideo];
+//    movieConnection = [movieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
+//    if (interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+//        g_orientation = UIImageOrientationUp;
+//            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+//            movieConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+//    }else if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft){
+//        g_orientation = UIImageOrientationDown;
+//            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+//            movieConnection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+//    }else{
+//            imageCaptureconnection.videoOrientation = AVCaptureVideoOrientationPortrait;
+//            movieConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
+//    }
+//    [CATransaction commit];
+//}
 
 #pragma mark -
 #pragma mark captureImage
@@ -176,11 +173,9 @@
          ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
              NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
              NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-             UIImage *t_image = [[UIImage alloc] initWithData:imageData ];
-//             NSLog(@"BBBBBBBBBB :::%d",[t_image imageOrientation]);
+             UIImage * t_image = [[UIImage alloc] initWithData:imageData ];
              self.image = [[[UIImage alloc]initWithCGImage:t_image.CGImage scale:1.0 orientation:UIImageOrientationRight] autorelease];
              [t_image release],t_image = nil;
-             //t_image is  same  to self.image
              dispatch_async(dispatch_get_main_queue(), ^{
                  sucecces(self.image);
                  self.image = nil;
@@ -266,6 +261,7 @@
         movieConnection.enabled = NO;
     if (!imageCaptureconnection.isEnabled)
         imageCaptureconnection.enabled = YES;
+    
     if ([self.session canSetSessionPreset:AVCaptureSessionPresetPhoto]) {
         [self.session setSessionPreset:AVCaptureSessionPresetPhoto] ;
     }

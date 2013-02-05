@@ -41,6 +41,14 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.view addGestureRecognizer:_naviRecognizerDown];
+    [self.view addGestureRecognizer:_naviRecognizerUp];
+    [self.view addGestureRecognizer:_slideRecognizerR2L];    
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -82,8 +90,8 @@
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     if ([self.navigationController isKindOfClass:[SCPMenuNavigationController class]])
         [((SCPMenuNavigationController *)self.navigationController) resetMenu];
+     
 }
-
 - (void)hideNavigationBar {
     if (!self.navigationController.navigationBarHidden && [self.navigationController isKindOfClass:[SCPMenuNavigationController class]]) 
         [self.navigationController setNavigationBarHidden:YES animated:YES];

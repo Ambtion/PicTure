@@ -72,6 +72,7 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
     }
     [self setSelecteStateonButton];
 }
+
 - (void)tapGestureHandle:(id)gesture
 {
     
@@ -111,24 +112,17 @@ static NSString * ICON[4] = {@"user_icon_plain.png",@"user_icon_sea.png",@"user_
 - (void)memoryBackImageWithName:(NSString *)name
 {
     [SCPPerfrenceStoreManager resetHomeBackGroudImageName:name];
-    
-//    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-//    NSMutableDictionary * userinfo = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:[SCPLoginPridictive currentUserId]]];
-//    if (!userinfo) userinfo = [NSMutableDictionary dictionaryWithCapacity:0];
-//    [userinfo setValue:name forKey:@"HomeBackImage"];
-//    [userDefault setObject:userinfo forKey:[SCPLoginPridictive currentUserId]];
-//    [userDefault synchronize];
 }
+
 - (NSInteger)getSelectedImage
 {
-    
-//    NSDictionary * userinfo = [[NSUserDefaults standardUserDefaults] objectForKey:[SCPLoginPridictive currentUserId]];
     NSString * str = [SCPPerfrenceStoreManager homeBackGroundImageName];
     if (!str)       return 1000;
     for (int i = 0; i < 4; i++)
         if([IMAGENAME[i] isEqualToString:str]) return 1000 + i;
     return 1000;
 }
+
 - (void)show
 {
     SCPAppDelegate * appDelegate = (SCPAppDelegate *)[[UIApplication sharedApplication] delegate];

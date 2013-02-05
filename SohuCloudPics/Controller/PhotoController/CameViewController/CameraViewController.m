@@ -95,6 +95,7 @@
     self.imageForTemp = nil;
     [super dealloc];
 }
+
 #pragma customize NavigationBar
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -106,10 +107,12 @@
     //为了防止viwedidiAppear中出现的未知错误;
     //    [self performSelector:@selector(openCamera) withObject:nil afterDelay:0.5];
 }
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [self openCamera];
 }
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -117,6 +120,7 @@
     [((SCPMenuNavigationController *)self.navigationController).ribbonView setHidden:NO];
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
+
 #pragma mark -
 #pragma mark initViews
 -(void)initDataContainers
@@ -129,6 +133,7 @@
     isForwardPhoto = NO;
     outPutImage = YES;
 }
+
 -(void)initializeCamera
 {
 //    NSLog(@"initializeCamera start");
@@ -142,6 +147,7 @@
 //    NSLog(@"initializeCamera end");
     
 }
+
 -(void)addPreviews
 {
     self.preview = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)] autorelease];
@@ -153,8 +159,8 @@
     self.preview.userInteractionEnabled = YES;
     [self.preview addGestureRecognizer:tap];
     [tap release];
-    
 }
+
 -(void)addFuctionsubviews
 {
     //add Flash on preview
@@ -419,11 +425,10 @@
 //    NSLog(@"playMovie end");
     
 }
+
 -(void)takePicture
 {
-    //    [CameraImageHelper CaptureStillImageWithblockSucecces:^(UIImage *image) {
     [camerBox CaptureStillImageWithblockSucecces:^(UIImage *image) {
-//        NSLog(@"CaptureStillImageWithblockSucecces");
         self.imageForTemp = image;
         isForwardImage = YES;
         [self closeCamera];

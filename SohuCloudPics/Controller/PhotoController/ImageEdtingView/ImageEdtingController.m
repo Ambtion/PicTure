@@ -555,7 +555,6 @@
 }
 -(void)writeToAlbum
 {
-
     [_library writeImageToSavedPhotosAlbum:self.originalImage.CGImage orientation:(ALAssetOrientation)[self.originalImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
             [self showTipForSecretImageSetting];
