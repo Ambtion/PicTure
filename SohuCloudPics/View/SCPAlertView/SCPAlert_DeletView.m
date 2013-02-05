@@ -23,7 +23,6 @@
 
 - (id)initWithMessage:(NSString *)msg delegate:(id<SCPAlertDeletViewDelegate>)delegate;
 {
-    
     self = [super initWithFrame:[[UIScreen mainScreen] bounds]];
     if (self) {
         

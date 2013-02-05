@@ -11,11 +11,9 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 #import "UIImage+ExternScale.h"
-
 #import "PhotoSwitch.h"
 #import "FlashButton.h"
 #import "Time.h"
-
 #import "CameraImageBox.h"
 
 @class CameraViewController;

@@ -38,7 +38,7 @@
 -(void)CaptureStillImageWithblockSucecces:(void(^)(UIImage* image))sucecces;
 -(void)switchCameraPosition;
 -(void)setFlashMode:(AVCaptureFlashMode)mode;
-- (void)changePreviewOrientation:(UIInterfaceOrientation)interfaceOrientation;
+//- (void)changePreviewOrientation:(UIInterfaceOrientation)interfaceOrientation;
 -(void)focusAtpoint:(CGPoint)point;
 //video
 -(void)changeOutPutToMoveFile;

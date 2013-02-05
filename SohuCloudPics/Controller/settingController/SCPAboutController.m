@@ -14,8 +14,8 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
     
+    [super viewDidLoad];
     UIImageView * image = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aboutv1.0.0.png"]] autorelease];
     image.frame = CGRectMake(0, 0, 320, 480);
     [self.view addSubview:image];

@@ -462,7 +462,7 @@
         return;
     }
 //    NSLog(@"makeRation start");
-    _imageview.animationImages = [UIImage imageByRotate:_imageview.animationImages :_rotate];
+    _imageview.animationImages = [UIImage imageByRotate:_imageview.animationImages rotation:_rotate];
     _rotate = 0;
 //    NSLog(@"makeRation end");
 }

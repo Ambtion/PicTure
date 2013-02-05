@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-static NSString * DELETE = @"确定删除图片?";
+#define DELETE  [NSString stringWithFormat: @"确定删除图片?"]
 
 @class SCPAlert_DeletView;
 
