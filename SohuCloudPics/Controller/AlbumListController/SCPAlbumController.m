@@ -83,7 +83,6 @@
 
 - (void)updateBannerWithAlbumCount:(int)count andAuthorName:(NSString *)name photoNum:(NSInteger)photo_num
 {
-    NSLog(@"%d %d",count, photo_num);
     self.bannerLeftString = [NSString stringWithFormat:@"有%d个专辑", count];
     self.bannerRightString = [NSString stringWithFormat:@"有%d张图片",photo_num];
 }
@@ -146,13 +145,11 @@
 	_currentPage = 0;
 	_loadedPage = 0;
     if (isLoading) return;
-    NSLog(@"%s",__FUNCTION__);
     [_request getFoldersinfoWithID:_user_id];
 }
 
 - (void)loadNextPage
 {
-    NSLog(@"%s",__FUNCTION__);
     if (isLoading) return;
 	if (_hasNextPage) {
 		if (_currentPage == _loadedPage) {
