@@ -43,7 +43,7 @@
     }
     return array;
 }
-+(NSArray *)imageByRotate:(NSArray*)imageArray:(NSInteger)interger
++(NSArray *)imageByRotate:(NSArray*)imageArray rotation:(NSInteger)interger
 {
     UIImage * outputImage = nil;
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];

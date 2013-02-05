@@ -11,7 +11,7 @@
 @interface UIImage (GifTool)
 
 +(NSArray *)imageByScalingProportionallyToSize:(NSArray*)source :(CGSize)targetSize;
-+(NSArray *)imageByRotate:(NSArray*)imageArray:(NSInteger)interger;
-+(UIImage*)imageByResize:(CGImageRef )image;
++(NSArray *)imageByRotate:(NSArray *)imageArray rotation:(NSInteger)interger;
++(UIImage *)imageByResize:(CGImageRef )image;
 
 @end

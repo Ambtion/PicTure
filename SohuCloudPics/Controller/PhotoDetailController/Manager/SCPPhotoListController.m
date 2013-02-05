@@ -220,7 +220,7 @@
 #pragma mark - Ratation
 - (CGAffineTransform )getTransfrom
 {
-    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
+    UIInterfaceOrientation orientation = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
     if (UIInterfaceOrientationIsPortrait(orientation))
         return CGAffineTransformIdentity;
     if (orientation == UIInterfaceOrientationLandscapeLeft)

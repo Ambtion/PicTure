@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-
-static NSString *LOGIN_HINT = @"欢迎使用搜狐云图,留住回忆,分享快乐。登录后即可享受我们为您提供的图片云服务,轻松管理您的图片生活。";
+#define LOGIN_HINT [NSString stringWithFormat:@"%@", @"欢迎使用搜狐云图,留住回忆,分享快乐。登录后即可享受我们为您提供的图片云服务,轻松管理您的图片生活。"]
 
 @class SCPAlert_LoginView;
-
 @protocol SCPAlertLoginViewDelegate <NSObject>
 - (void)alertViewOKClicked:(SCPAlert_LoginView *)view;
 @end

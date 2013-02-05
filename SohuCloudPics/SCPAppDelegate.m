@@ -68,7 +68,7 @@
     }
 }
 
-#pragma mark  - functionGuideView
+#pragma mark - FunctionGuideView
 
 - (void)showFunctionGuideView
 {

@@ -23,7 +23,7 @@
 
 - (id)initWithMessage:(NSString *)msg delegate:(id<SCPAlertLoginViewDelegate>)delegate;
 {
-    
+
     self = [super initWithFrame:[[UIScreen mainScreen] bounds]];
     if (self) {
         
