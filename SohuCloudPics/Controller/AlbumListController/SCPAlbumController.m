@@ -146,11 +146,13 @@
 	_currentPage = 0;
 	_loadedPage = 0;
     if (isLoading) return;
+    NSLog(@"%s",__FUNCTION__);
     [_request getFoldersinfoWithID:_user_id];
 }
 
 - (void)loadNextPage
 {
+    NSLog(@"%s",__FUNCTION__);
     if (isLoading) return;
 	if (_hasNextPage) {
 		if (_currentPage == _loadedPage) {
@@ -212,19 +214,14 @@
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];   
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
 - (void)viewDidDisappear:(BOOL)animated
 {
     //pop 则还原,qie不是switch;
     if (!self.navigationController && !isSwitch)
         [tempRibbon setHidden:NO];
 }
-#pragma mark -
-#pragma mark SCPRequestManagerDelegate
 
+#pragma mark - SCPRequestManagerDelegate
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
     isLoading = NO;
@@ -232,14 +229,16 @@
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
 	_hasNextPage = [[folderinfo objectForKey:@"has_next"] boolValue];
     _loadedPage = _currentPage;
-	if ([info objectForKey:@"userInfo"]) {
+	if (_currentPage <= 1) {
 		NSDictionary * creator = [info objectForKey:@"userInfo"];
-		int albumCount = [[creator objectForKey:@"public_folders"] intValue];
-		if ([SCPLoginPridictive currentUserId] && [[SCPLoginPridictive currentUserId] isEqualToString:_user_id]) {
-			albumCount += [[creator objectForKey:@"private_folders"] intValue];
-		}
-		NSString * nickname = [creator objectForKey:@"user_nick"];
-		[self updateBannerWithAlbumCount:albumCount andAuthorName:nickname photoNum:[[creator objectForKey:@"photo_num"] intValue]];
+        if (creator) {
+            int albumCount = [[creator objectForKey:@"public_folders"] intValue];
+            if ([SCPLoginPridictive currentUserId] && [[SCPLoginPridictive currentUserId] isEqualToString:_user_id]) {
+                albumCount += [[creator objectForKey:@"private_folders"] intValue];
+            }
+            NSString * nickname = [creator objectForKey:@"user_nick"];
+            [self updateBannerWithAlbumCount:albumCount andAuthorName:nickname photoNum:[[creator objectForKey:@"photo_num"] intValue]];g
+        }
         if (_albumList.count)
             [_albumList removeAllObjects];
     }
