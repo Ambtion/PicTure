@@ -237,7 +237,7 @@
                 albumCount += [[creator objectForKey:@"private_folders"] intValue];
             }
             NSString * nickname = [creator objectForKey:@"user_nick"];
-            [self updateBannerWithAlbumCount:albumCount andAuthorName:nickname photoNum:[[creator objectForKey:@"photo_num"] intValue]];g
+            [self updateBannerWithAlbumCount:albumCount andAuthorName:nickname photoNum:[[creator objectForKey:@"photo_num"] intValue]];
         }
         if (_albumList.count)
             [_albumList removeAllObjects];
