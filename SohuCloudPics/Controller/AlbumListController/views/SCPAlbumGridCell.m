@@ -214,7 +214,7 @@
     UIImageView * coverImageView = [self coverImageViewAt:position];
     [coverImageView setHidden:NO];
     NSString *str = [NSString stringWithFormat:@"%@_c150",album.coverURL];
-    [coverImageView cancelCurrentImageLoad];
+//    [coverImageView cancelCurrentImageLoad];
     [coverImageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:[UIImage imageNamed:@"frame_alubme_default_image.png"] options:0];
 
     /* set progess view */
