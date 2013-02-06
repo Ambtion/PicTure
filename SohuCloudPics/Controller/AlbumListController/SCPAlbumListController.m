@@ -83,6 +83,7 @@
     if (indexPath.row >= self.albumList.count) {
         return cell;
     }
+    
     SCPAlbum * album = [self.albumList objectAtIndex:indexPath.row];
     [cell updateViewWithAlbum:album preToDel:(_state == SCPAlbumControllerStateDelete)];
 	cell.photoImageView.tag = indexPath.row;
@@ -95,6 +96,8 @@
         if ([tasks.albumId isEqualToString: album.albumId]) {
             UIProgressView * pro = cell.progressView;
             [pro setHidden:NO];
+            pro.progress = 0.f;
+
         }
         //当前进行的任务
         if ([album.albumId isEqualToString:[SCPUploadTaskManager currentManager].curTask.albumId]) {

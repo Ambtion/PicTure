@@ -97,6 +97,7 @@
             if ([[NSString stringWithFormat:@"%@",tasks.albumId] isEqualToString: [NSString stringWithFormat:@"%@",album.albumId]]) {
                 UIProgressView * pro = [cell.progressViewList objectAtIndex:indexInCell];
                 [pro setHidden:NO];
+                pro.progress = 0.f;
             }
             //当前进行的任务
             if ([[NSString stringWithFormat:@"%@",album.albumId] isEqualToString:[NSString stringWithFormat:@"%@",[SCPUploadTaskManager currentManager].curTask.albumId]]) {
