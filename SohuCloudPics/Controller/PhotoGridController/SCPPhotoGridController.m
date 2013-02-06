@@ -502,6 +502,7 @@
             }else{
                 [[cell.progViewList objectAtIndex:i] setHidden:NO];
                 [[cell imageViewAt:i] setAlpha:0.5];
+                [[cell.progViewList objectAtIndex:i] setProgress:0.f];
             }
             SCPPhoto *photoData = [_photoList objectAtIndex:tag.intValue];
             [cell updateViewWithTask:photoData Position:i PreToDel:[_imagesToDel containsObject:photoData]];
