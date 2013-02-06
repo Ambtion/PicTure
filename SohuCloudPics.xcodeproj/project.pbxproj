@@ -459,7 +459,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4A6C1FDA16A9892600FE77DE /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
+		4A6C1FDA16A9892600FE77DE /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = SohuCloudPics/External/Umeng/libMobClickLibrary.a; sourceTree = "<group>"; };
 		4A6C1FDB16A9892600FE77DE /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		4AB7B871166CE988002A2E91 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		4AB7B872166CE988002A2E91 /* NSObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+JSON.h"; sourceTree = "<group>"; };
@@ -528,7 +528,7 @@
 		4ABF610D166CE4D5001B0FCB /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		4ABF6134166CE634001B0FCB /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		4ABF6135166CE634001B0FCB /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
-		4AC844A816AE5D9F00272620 /* libUMFeedback.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMFeedback.a; sourceTree = "<group>"; };
+		4AC844A816AE5D9F00272620 /* libUMFeedback.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUMFeedback.a; path = SohuCloudPics/External/Umeng/libUMFeedback.a; sourceTree = "<group>"; };
 		4AC844A916AE5D9F00272620 /* UMFeedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMFeedback.h; sourceTree = "<group>"; };
 		4AC844AC16AE5FF800272620 /* UMAppKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMAppKey.h; sourceTree = "<group>"; };
 		61124E0015DE0BF6002C844F /* SohuCloudPics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SohuCloudPics.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1132,9 +1132,7 @@
 		4A6C1FD916A988AC00FE77DE /* Umeng */ = {
 			isa = PBXGroup;
 			children = (
-				4AC844A816AE5D9F00272620 /* libUMFeedback.a */,
 				4AC844A916AE5D9F00272620 /* UMFeedback.h */,
-				4A6C1FDA16A9892600FE77DE /* libMobClickLibrary.a */,
 				4A6C1FDB16A9892600FE77DE /* MobClick.h */,
 			);
 			path = Umeng;
@@ -1282,6 +1280,8 @@
 		61124E0315DE0BF6002C844F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4AC844A816AE5D9F00272620 /* libUMFeedback.a */,
+				4A6C1FDA16A9892600FE77DE /* libMobClickLibrary.a */,
 				C58EFC0E162691B100975363 /* MediaPlayer.framework */,
 				C57B29061608132900FAB228 /* CoreImage.framework */,
 				61EE783115DE34210007C158 /* AssetsLibrary.framework */,
