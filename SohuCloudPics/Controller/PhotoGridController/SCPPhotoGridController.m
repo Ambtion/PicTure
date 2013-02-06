@@ -506,6 +506,9 @@
             if (tag.integerValue == _uploadTaskList.taskList.count - 1) {
                 [[cell.progViewList objectAtIndex:i] setProgress:0.f];
                 [self.uploadTaskList.currentTask.request setUploadProgressDelegate:[cell.progViewList objectAtIndex:i]];
+            }else{
+                if ([self.uploadTaskList.currentTask.request.uploadProgressDelegate isEqual:[cell.progViewList objectAtIndex:i]])
+                    [self.uploadTaskList.currentTask.request setUploadProgressDelegate:nil];
             }
             //完成的任务
             if (tag.integerValue >= _uploadTaskList.taskList.count) {
