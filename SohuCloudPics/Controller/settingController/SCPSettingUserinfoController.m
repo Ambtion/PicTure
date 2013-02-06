@@ -23,6 +23,7 @@
 @synthesize controller;
 - (void)dealloc
 {
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_request setDelegate:nil];
     [_request release];
@@ -60,8 +61,8 @@
         [toast show];
         [toast release];
         [self.navigationController popViewControllerAnimated:YES];
-    } failure:^(NSString *error) {
         
+    } failure:^(NSString *error) {
         if ([error isEqualToString:REFRESHFAILTURE]) {
                 SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"提示信息" message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
                 [tip show];

@@ -16,11 +16,11 @@
        
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    ELCAlbumPickerController *albumController = [[[ELCAlbumPickerController alloc] initWithNibName:@"ELCAlbumPickerController" bundle:[NSBundle mainBundle]] autorelease];
+    ELCAlbumPickerController * albumController = [[[ELCAlbumPickerController alloc] initWithNibName:@"ELCAlbumPickerController" bundle:[NSBundle mainBundle]] autorelease];
     ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initWithRootViewController:albumController];
     [albumController setParent:elcPicker];
     [elcPicker setDelegate:self];
-    
+
     DeleteController *delCtrl = [[[DeleteController alloc] initWithNibName:nil bundle:nil] autorelease];
     [delCtrl addChildViewController:elcPicker];
     albumController.delController = delCtrl;
@@ -36,7 +36,7 @@
 
 - (UIViewController * )popViewControllerAnimated:(BOOL)animated
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     UIViewController * tc = [super popViewControllerAnimated:animated];
     return tc;
 }
@@ -48,18 +48,6 @@
     }
     [super pushViewController:viewController animated:animated];
     return ;
-}
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

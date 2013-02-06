@@ -11,12 +11,12 @@
 
 @implementation SCPAboutController
 
-
 - (void)viewDidLoad
 {
     
     [super viewDidLoad];
-    UIImageView * image = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aboutv1.0.0.png"]] autorelease];
+    self.view.backgroundColor = [UIColor colorWithRed:244/255.f green:244/255.f blue:244/255.f alpha:1];
+    UIImageView * image = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"about.png"]] autorelease];
     image.frame = CGRectMake(0, 0, 320, 480);
     [self.view addSubview:image];
     self.view.backgroundColor = [UIColor colorWithRed:244.0f/255.f green:244.0f/255.f blue:244.0f/255.f alpha:1];
@@ -26,6 +26,15 @@
     [backButton addTarget:self action:@selector(aboutNavigationBack:) forControlEvents:UIControlEventTouchUpInside];
     backButton.frame = CGRectMake(5, 2, 35, 35);
     [self.view addSubview:backButton];
+    UILabel * versionLabel = [[[UILabel alloc] initWithFrame:CGRectMake(160, 140, 100, 15)] autorelease];
+    versionLabel.backgroundColor = [UIColor clearColor];
+    versionLabel.textColor = [UIColor colorWithRed:126/255.f green:126/255.f blue:126/255.f alpha:1];
+    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+    
+    NSString *currentVersion = [infoDic objectForKey:(NSString *)kCFBundleVersionKey];
+    versionLabel.text = [NSString stringWithFormat:@"V %@",currentVersion];
+    versionLabel.font = [UIFont systemFontOfSize:14.f];
+    [image addSubview:versionLabel];
     
     UIImageView * sohu2003 = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sohu-2013.png"]] autorelease];
     CGRect rect = CGRectMake(0, 0, 320, 10);

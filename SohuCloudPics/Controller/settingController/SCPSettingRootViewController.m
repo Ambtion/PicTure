@@ -173,7 +173,9 @@ static BOOL SwitchShow[7] = {NO,YES,NO,NO,NO,NO,NO};
     NSData * recervedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
     NSString *results = [[[NSString alloc] initWithBytes:[recervedData bytes] length:[recervedData length] encoding:NSUTF8StringEncoding] autorelease];
     NSDictionary *dic = [results JSONValue];
+    
     NSNumber * newVersion = [dic objectForKey:@"versionCode"];
+    
     BOOL isUpata = [self CompareVersionFromOldVersion:currentVersion newVersion:newVersion];
     if (isUpata) {
         UIApplication *application = [UIApplication sharedApplication];
