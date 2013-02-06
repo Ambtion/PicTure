@@ -118,7 +118,6 @@
 {
     
     if (photo.photoUrl) {
-        
         UIImageView *view = [self imageViewAt:position];
         [view setHidden:NO];
         NSString *url = [NSString stringWithFormat:@"%@_c150", photo.photoUrl];

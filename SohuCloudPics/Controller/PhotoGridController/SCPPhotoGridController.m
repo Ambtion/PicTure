@@ -416,6 +416,7 @@
     [_rightBarView addSubview:_trashButton];
     [_rightBarView addSubview:_iMarkButton];
 }
+
 - (void)onDeleteOKClicked:(id)sender
 {
     
@@ -427,6 +428,7 @@
     [alterView show];
     [self.pullingController openDataChangeFunction];
 }
+
 - (void)onDeleteCancelClicked:(id)sender
 {
     _state = PhotoGridStateNormal;
@@ -447,8 +449,8 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_backButton];
     self.navigationItem.leftBarButtonItem = item;
     [item release];
-    
 }
+
 #pragma mark -
 #pragma tableView delegate datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -469,18 +471,29 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    static NSString *identifier = @"albumListCell";
-    SCPPhotoGridCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    static NSString *cellNomal = @"albumListCell";
+    static NSString * cellWithTask = @"albumListCellTask";
+    
+    NSString * indentify = nil;
+    static int photoCount = 4;
+    int offset = photoCount * [indexPath row];
+    
+    if ( offset < taskTotal - 3) {
+        indentify = cellWithTask;
+    }else{
+        indentify = cellNomal;
+    }
+    SCPPhotoGridCell * cell = [tableView dequeueReusableCellWithIdentifier:indentify];
     if (!cell) {
-        cell = [[[SCPPhotoGridCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
+        cell = [[[SCPPhotoGridCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:indentify] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
     }
-    static int photoCount = 4;
-    int offset = photoCount * [indexPath row];
+    
     for (int i = 0; i < 4; i++) {
         NSNumber * tag = [NSNumber numberWithInt:i + offset];
         if (tag.integerValue < taskTotal) {
+            
             if (self.uploadTaskList.taskList.count == taskTotal) {//初始化任务
                 //显示所有的任务进度
                 for (UIProgressView * pro in cell.progViewList) [pro setHidden:NO];
@@ -668,5 +681,9 @@
     self.uploadTaskList = [[SCPUploadTaskManager currentManager] getAlbumTaskWithAlbum:self.albumData.albumId];
     [self.pullingController reloadDataSourceWithAniamtion:NO];
 }
-
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    NSLog(@"%s",__FUNCTION__);
+}
 @end
