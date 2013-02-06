@@ -481,12 +481,11 @@
     for (int i = 0; i < 4; i++) {
         NSNumber * tag = [NSNumber numberWithInt:i + offset];
         if (tag.integerValue < taskTotal) {
-//            if (self.uploadTaskList.taskList.count == taskTotal) {//初始化任务
-//                //显示所有的任务进度
-//                for (UIProgressView * pro in cell.progViewList) [pro setHidden:NO];
-//                [[cell imageViewAt:i] setAlpha:0.5];
-//            }
-            
+            if (self.uploadTaskList.taskList.count == taskTotal) {//初始化任务
+                //显示所有的任务进度
+                for (UIProgressView * pro in cell.progViewList) [pro setHidden:NO];
+                [[cell imageViewAt:i] setAlpha:0.5];
+            }
             //设置图片
             [[cell imageViewAt:i] setImage:[self.thumbnailArray objectAtIndex:taskTotal - tag.integerValue - 1]];
             //当前任务 设置进度条
@@ -635,9 +634,8 @@
     [self removeObserverOnCenter];
     [[SCPUploadTaskManager currentManager].curTask clearProgreessView];
 }
-#pragma mark -
-#pragma mark Notification
 
+#pragma mark -  Notification
 - (void)addObserVerOnCenter
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(albumChange:) name:ALBUMTASKCHANGE object:nil];
