@@ -245,22 +245,23 @@
     }
     
     if (row == 0) {
-        
         cell.mylabelText.text = @"新建私密专辑";
         cell.mylabelText.frame = CGRectMake(40, 0, 280, 40);
         cell.iconView.image = [UIImage imageNamed:@"add_album_icon.png"];
         cell.mydetailText.text = nil;
     }else{
-        cell.mylabelText.frame = CGRectMake(40, 4, 240, 18);
-        FoldersMode * model = [_header.foldersArray objectAtIndex:(row - 1)];
-        cell.mylabelText.text = model.foldrsName;
-        if (model.isPublic) {
-            cell.mydetailText.text = @"公开专辑";
-            
-        }else{
-            cell.mydetailText.text = @"私密专辑";
+        if (row - 1 < _header.foldersArray.count) {
+            cell.mylabelText.frame = CGRectMake(40, 4, 240, 18);
+            FoldersMode * model = [_header.foldersArray objectAtIndex:(row - 1)];
+            cell.mylabelText.text = model.foldrsName;
+            if (model.isPublic) {
+                cell.mydetailText.text = @"公开专辑";
+                
+            }else{
+                cell.mydetailText.text = @"私密专辑";
+            }
+            cell.iconView.image = model.isPublic ? [UIImage imageNamed:@"unlock_icon.png"] : [UIImage imageNamed:@"lock_icon.png"];
         }
-        cell.iconView.image = model.isPublic ? [UIImage imageNamed:@"unlock_icon.png"] : [UIImage imageNamed:@"lock_icon.png"];
     }
     return cell;
     

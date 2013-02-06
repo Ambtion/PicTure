@@ -79,7 +79,9 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
     }
-    
+    if (indexPath.row >= self.albumList.count) {
+        return cell;
+    }
     SCPAlbum * album = [self.albumList objectAtIndex:indexPath.row];
     [cell updateViewWithAlbum:album preToDel:(_state == SCPAlbumControllerStateDelete)];
 	cell.photoImageView.tag = indexPath.row;

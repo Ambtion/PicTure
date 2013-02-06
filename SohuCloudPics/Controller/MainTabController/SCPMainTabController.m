@@ -9,12 +9,10 @@
 #import "SCPMainTabController.h"
 
 #import <QuartzCore/QuartzCore.h>
-
 #import "SCPFeedController.h"
 #import "SCPPlazeController.h"
 #import "SCPFirstIntroController.h"
 #import "SCPMenuNavigationController.h"
-
 #import "SCPMyHomeController.h"
 
 @implementation SCPMainTabController
@@ -31,15 +29,16 @@
 {
     self = [super init];
     if (self) {
+        
         slideRecognizerL2R = [[SCPHorizontalGestureRecognizer alloc] initWithTarget:self action:@selector(switchTab)];
         slideRecognizerL2R.direction = UISwipeGestureRecognizerDirectionRight;
         [self.view addGestureRecognizer:slideRecognizerL2R];
         self.delegate = self;
         //注意使用addChildViewController 会引起Two-stage rotation animation is deprecated. This application should use the smoother single-stage animation.
         //Plaze
-        SCPPlazeController * plaze= [[SCPPlazeController alloc] initWithNibName:nil bundle:nil];
+        SCPPlazeController * plaze= [[SCPPlazeController alloc] init];
         // MainFeed
-        SCPFeedController * mainFeed = [[SCPFeedController alloc] initWithNibName:nil bundle:nil];
+        SCPFeedController * mainFeed = [[SCPFeedController alloc] init];
         self.viewControllers = [NSArray arrayWithObjects:plaze,mainFeed,nil];
         [plaze release];
         [mainFeed release];
@@ -49,8 +48,7 @@
 
 - (void)makeTabBarHidden:(BOOL)hide
 {
-    if ( [self.view.subviews count] < 2 )
-        return;
+    if ( [self.view.subviews count] < 2 )  return;
     UIView *contentView;
     if ( [[self.view.subviews objectAtIndex:0] isKindOfClass:[UITabBar class]] )
         contentView = [self.view.subviews objectAtIndex:1];
@@ -67,7 +65,6 @@
                                        self.view.bounds.size.width,
                                        self.view.bounds.size.height - self.tabBar.frame.size.height);
     }  
-    
     self.tabBar.hidden = hide;  
 }
 

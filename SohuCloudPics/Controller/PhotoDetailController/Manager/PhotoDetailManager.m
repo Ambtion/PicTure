@@ -207,7 +207,8 @@
         des = [[[FeedDescription alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FeedDescribtion"] autorelease];
         des.delegate = self;
     }
-    des.dataScoure = [_dataSourceArray objectAtIndex:row];
+    if (_dataSourceArray.count > row)
+        des.dataScoure = [_dataSourceArray objectAtIndex:row];
     return des;
 }
 

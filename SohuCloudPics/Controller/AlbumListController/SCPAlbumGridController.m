@@ -101,7 +101,7 @@
             }
         }
     }
-	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 5) {
+	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 5 &&[self tableView:tableView numberOfRowsInSection:0] > 5) {
 		[self loadNextPage];
 	}
     return cell;
@@ -138,7 +138,7 @@
     self.curProgreeeView.progress = 0.01;
     self.curProgreeeView = nil;
     [self.currlabel setHidden:NO];
-    self.currlabel  = nil;
+    self.currlabel = nil;
     [self refresh];
 }
 - (void)albumChange:(NSNotification *)notification
