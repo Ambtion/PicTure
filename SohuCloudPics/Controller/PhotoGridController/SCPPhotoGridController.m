@@ -481,11 +481,11 @@
     for (int i = 0; i < 4; i++) {
         NSNumber * tag = [NSNumber numberWithInt:i + offset];
         if (tag.integerValue < taskTotal) {
-            if (self.uploadTaskList.taskList.count == taskTotal) {//初始化任务
-                //显示所有的任务进度
-                for (UIProgressView * pro in cell.progViewList) [pro setHidden:NO];
-                [[cell imageViewAt:i] setAlpha:0.5];
-            }
+//            if (self.uploadTaskList.taskList.count == taskTotal) {//初始化任务
+//                //显示所有的任务进度
+//                for (UIProgressView * pro in cell.progViewList) [pro setHidden:NO];
+//                [[cell imageViewAt:i] setAlpha:0.5];
+//            }
             
             //设置图片
             [[cell imageViewAt:i] setImage:[self.thumbnailArray objectAtIndex:taskTotal - tag.integerValue - 1]];
@@ -525,8 +525,7 @@
     return cell;
 }
 
-#pragma mark -
-#pragma mark SCPPhotoGridCellDelegate
+#pragma mark - SCPPhotoGridCellDelegate
 - (void)onImageViewClicked:(UIImageView *)imageView
 {
 	NSNumber *tag = [NSNumber numberWithInt:imageView.tag];
@@ -572,8 +571,8 @@
     }
     [_pullingController.tableView reloadData];
 }
-#pragma mark - AlterViewDelegate
 
+#pragma mark - AlterViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if ([alertView message]&&[alertView.message isEqualToString:REFRESHFAILTURE]) {
@@ -592,12 +591,13 @@
         [self.pullingController reloadDataSourceWithAniamtion:NO];
     }
 }
-#pragma mark -
-#pragma mark BannerDataSource
+
+#pragma mark - BannerDataSource
 - (NSString *)bannerDataSouceLeftLabel
 {
     return [NSString stringWithFormat:@"有%d张图片", self.albumData.photoNum];
 }
+
 - (NSString *)bannerDataSouceRightLabel
 {
     return [NSString stringWithFormat:@"%d次浏览", self.albumData.viewCount];
