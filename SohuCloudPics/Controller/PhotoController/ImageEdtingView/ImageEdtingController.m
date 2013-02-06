@@ -17,8 +17,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ImageToolBox.h"
 #import "SCPLoginPridictive.h"
-
 #import "SCPAlertView_LoginTip.h"
+
 
 #define IMAGE_OUTPATH [[[NSString alloc] initWithFormat:@"%@/Documents/%@",NSHomeDirectory(), @"originalImage.jpeg"]autorelease]
 

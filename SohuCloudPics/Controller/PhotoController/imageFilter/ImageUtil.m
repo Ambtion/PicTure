@@ -88,7 +88,7 @@ static CGContextRef CreateRGBABitmapContext (CGImageRef inImage)// 返回一个�
     free(bitmapData);
     CGContextRelease(context);
     CGImageRelease(imageRef);
-    NSLog(@"end");
+//    NSLog(@"end");
     return F_image;
 
 }
