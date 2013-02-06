@@ -152,7 +152,7 @@ enum {
 - (void)updataData
 {
     self.contentView.frame = CGRectMake(0, 0, 320, [_dataSource getHeight]);
-//    [_photoImageView cancelCurrentImageLoad];
+    [_photoImageView cancelCurrentImageLoad];
     NSString * str = [NSString stringWithFormat:@"%@_c640",_dataSource.photoImage];
     [_photoImageView setImageWithURL:[NSURL URLWithString:str]];
     [self showGifButton];

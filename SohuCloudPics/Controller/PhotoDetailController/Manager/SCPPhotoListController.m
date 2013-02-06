@@ -640,7 +640,7 @@
         str = [NSString stringWithFormat:@"%@_w640",[[imageView info] objectForKey:@"photo_url"]];
     }
     
-//    [imageView cancelCurrentImageLoad];
+    [imageView cancelCurrentImageLoad];
     [imageView setImageWithURL:[NSURL URLWithString:str] placeholderImage:nil options: 0 success:^(UIImage *image) {
         [imageView.actV stopAnimating];
         [self resetImageRect:imageView];
