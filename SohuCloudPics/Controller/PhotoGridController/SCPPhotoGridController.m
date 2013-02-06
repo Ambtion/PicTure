@@ -212,7 +212,6 @@
         self.pullingController.headView.labelName.text = self.albumData.name;
         [_photoList removeAllObjects];
     }
-    
     [self updateUploadPhotoList];
     hasNextPage = [[photolistinfo objectForKey:@"has_next"] boolValue];
     curpage = [[photolistinfo objectForKey:@"page"] intValue];

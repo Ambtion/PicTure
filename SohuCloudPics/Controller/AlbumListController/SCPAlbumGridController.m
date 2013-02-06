@@ -49,6 +49,11 @@
 	return [[[SCPAlbumListController alloc] initWithNibName:nil bundle:nil useID:self.user_id] autorelease];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self addObserVerOnCenter];
+}
 #pragma mark -
 #pragma tableViewDelegate & dataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -101,22 +106,10 @@
             }
         }
     }
-	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 5 &&[self tableView:tableView numberOfRowsInSection:0] > 5) {
+	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 5 && [self tableView:tableView numberOfRowsInSection:0] - 5 > 0) {
 		[self loadNextPage];
 	}
     return cell;
-}
-
-#pragma mark -
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self addObserVerOnCenter];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
 }
 
 #pragma mark -

@@ -19,7 +19,7 @@
 @implementation SCPAlbumListController
 - (void)dealloc
 {
-    [self addObserVerOnCenter];
+    [self removeObserverOnCenter];
     self.curProgreeeView = nil;
     [super dealloc];
 }
@@ -35,6 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self addObserVerOnCenter];
 }
 
 #pragma mark -
@@ -106,16 +107,7 @@
 	}
     return cell;
 }
-#pragma mark -
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self removeObserverOnCenter];
-}
+
 #pragma mark -
 #pragma mark Notification
 

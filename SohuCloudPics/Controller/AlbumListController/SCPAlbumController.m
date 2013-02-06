@@ -75,24 +75,16 @@
     _pullingController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.view addSubview:_pullingController.view];
-	[self updateBanner];
     [self initNavigationItem];
     
     [_pullingController refreshDoneLoadingTableViewData];
     [_pullingController reloadDataSourceWithAniamtion:NO];
 }
 
-- (void)updateBanner
-{
-	[self.pullingController.headView BannerreloadDataSource];
-}
-
 - (void)updateBannerWithAlbumCount:(int)count andAuthorName:(NSString *)name photoNum:(NSInteger)photo_num
 {
-	if (count < 0)	count = 0;
     self.bannerLeftString = [NSString stringWithFormat:@"有%d个专辑", count];
     self.bannerRightString = [NSString stringWithFormat:@"有%d张图片",photo_num];
-    [self.pullingController.headView BannerreloadDataSource];
 }
 
 - (void)pullingreloadMoreTableViewData:(id)sender
@@ -219,39 +211,34 @@
     [((SCPMenuNavigationController *) self.navigationController).ribbonView setHidden:YES];   
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
 - (void)viewDidDisappear:(BOOL)animated
 {
     //pop 则还原,qie不是switch;
     if (!self.navigationController && !isSwitch)
         [tempRibbon setHidden:NO];
 }
-#pragma mark -
-#pragma mark SCPRequestManagerDelegate
 
+#pragma mark - SCPRequestManagerDelegate
 - (void)requestFinished:(SCPRequestManager *)mangeger output:(NSDictionary *)info
 {
-//    NSLog(@"%@",info);
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderinfo"];
 	_currentPage = [[folderinfo objectForKey:@"page"] intValue];
 	_hasNextPage = [[folderinfo objectForKey:@"has_next"] boolValue];
     _loadedPage = _currentPage;
-	if (_currentPage == 1) {
+	if (_currentPage <= 1) {
 		NSDictionary * creator = [info objectForKey:@"userInfo"];
-		int albumCount = [[creator objectForKey:@"public_folders"] intValue];
-		if ([SCPLoginPridictive currentUserId] && [[SCPLoginPridictive currentUserId] isEqualToString:_user_id]) {
-			albumCount += [[creator objectForKey:@"private_folders"] intValue];
-		}
-		NSString * nickname = [creator objectForKey:@"user_nick"];
-		[self updateBannerWithAlbumCount:albumCount andAuthorName:nickname photoNum:[[creator objectForKey:@"photo_num"] intValue]];
+        if (creator) {
+            int albumCount = [[creator objectForKey:@"public_folders"] intValue];
+            if ([SCPLoginPridictive currentUserId] && [[SCPLoginPridictive currentUserId] isEqualToString:_user_id]) {
+                albumCount += [[creator objectForKey:@"private_folders"] intValue];
+            }
+            NSString * nickname = [creator objectForKey:@"user_nick"];
+            [self updateBannerWithAlbumCount:albumCount andAuthorName:nickname photoNum:[[creator objectForKey:@"photo_num"] intValue]];
+        }
         if (_albumList.count)
             [_albumList removeAllObjects];
     }
-    
 	NSArray *folderList = [folderinfo  objectForKey:@"folders"];
 	for (int i = 0; i < folderList.count; ++i) {
 		NSDictionary *Afolder = [folderList objectAtIndex:i];
