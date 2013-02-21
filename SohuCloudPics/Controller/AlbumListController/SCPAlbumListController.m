@@ -105,9 +105,8 @@
         }
     }
     //    cell.contentView.backgroundColor = [UIColor redColor];
-	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 5) {
+    if (self.albumList.count - 5 > 0 && indexPath.row >= self.albumList.count - 5)
 		[self loadNextPage];
-	}
     return cell;
 }
 

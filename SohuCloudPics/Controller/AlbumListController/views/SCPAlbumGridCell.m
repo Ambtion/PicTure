@@ -47,8 +47,8 @@
 {
     
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    
     if (self) {
+        
         _coverImageViewList = [[NSMutableArray alloc] initWithCapacity:0];
         _frameImageViewList = [[NSMutableArray alloc] initWithCapacity:0];
         _progressViewList = [[NSMutableArray alloc] initWithCapacity:0];
@@ -60,7 +60,6 @@
         
         int frameSize = 320 / count;
         self.frame = CGRectMake(0, 0, 320, GRID_CELL_HEIGHT);
-        
         UIImage * background = [UIImage imageNamed:@"150.png"];
         for (int i = 0; i < _photoCount; i++) {
             /* frame image view */
@@ -115,15 +114,15 @@
     }
     return self;
 }
-- (UILabel *)getLabelInSuperView:(id)object
-{
-    for (id ob in [[object superview] subviews]) {
-        if ([ob isKindOfClass:[UILabel class]]) {
-            return ob;
-        }
-    }
-    return nil;
-}
+//- (UILabel *)getLabelInSuperView:(id)object
+//{
+//    for (id ob in [[object superview] subviews]) {
+//        if ([ob isKindOfClass:[UILabel class]]) {
+//            return ob;
+//        }
+//    }
+//    return nil;
+//}
 
 - (UIImageView *)coverImageViewAt:(int)position
 {

@@ -98,7 +98,7 @@
                 UIProgressView * pro = [cell.progressViewList objectAtIndex:indexInCell];
                 [pro setHidden:NO];
                 pro.progress = 0.f;
-            }
+            }g
             //当前进行的任务
             if ([[NSString stringWithFormat:@"%@",album.albumId] isEqualToString:[NSString stringWithFormat:@"%@",[SCPUploadTaskManager currentManager].curTask.albumId]]) {
                 self.curProgreeeView = [cell.progressViewList objectAtIndex:indexInCell];
@@ -107,9 +107,8 @@
             }
         }
     }
-	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 5 && [self tableView:tableView numberOfRowsInSection:0] - 5 > 0) {
+	if ( (self.albumList.count + _photoCount - 1) / _photoCount - 5 > 0 && indexPath.row >= (self.albumList.count + _photoCount - 1) / _photoCount - 5 )
 		[self loadNextPage];
-	}
     return cell;
 }
 
