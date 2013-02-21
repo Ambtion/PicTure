@@ -196,7 +196,7 @@
 
 - (void)cancelLogin:(UIButton *)button
 {
-    if ([_delegate respondsToSelector:@selector(SCPLogin:cancelLogin:)]) {
+    if ([_delegate respondsToSelector:@selector(login:cancelLogin:)]) {
         [_delegate login:self cancelLogin:button];
     }
 }
