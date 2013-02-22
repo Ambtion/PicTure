@@ -44,7 +44,7 @@
     CGRect rect = self.view.frame;
     rect.size.height = self.view.frame.size.height - 121 ;
     self.view.frame = rect;
-g}
+}
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
