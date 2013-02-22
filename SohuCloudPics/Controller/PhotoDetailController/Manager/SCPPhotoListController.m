@@ -287,6 +287,7 @@
     isLoading = NO;
     NSDictionary * folderinfo = [info objectForKey:@"folderInfo"];
     NSDictionary * photolist = [info objectForKey:@"photoList"];
+//    NSLog(@"MMMM %@",folderinfo);
     if ([folderinfo allKeys]){
         photoNum = [[folderinfo objectForKey:@"photo_num"] intValue];
         if (!photoNum) {
@@ -311,6 +312,7 @@
 - (void)requestFailed:(NSString *)error
 {
     isLoading = NO;
+//    NSLog(@"NNNN %@",error);
     [self.view setUserInteractionEnabled:YES];
     if (!imageArray.count){
         [imageArray addObject:self.info];
@@ -758,7 +760,9 @@
 #pragma mark -  ScrollView  Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (isLoading || isAnimating)  return;
+    
+    if (isLoading ||!imageArray.count || isAnimating)  return;
+
     if (![scrollView isEqual:self.scrollView] || ![scrollView isDragging])      return;
     
     if (photoNum <= 3) {
