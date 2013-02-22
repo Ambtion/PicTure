@@ -183,6 +183,7 @@
 		C54105561675E0520063A1BD /* pop_up_btn_L.png in Resources */ = {isa = PBXBuildFile; fileRef = C54105531675E0520063A1BD /* pop_up_btn_L.png */; };
 		C54105571675E0520063A1BD /* pop_up_L.png in Resources */ = {isa = PBXBuildFile; fileRef = C54105541675E0520063A1BD /* pop_up_L.png */; };
 		C5480643163695AD007CE543 /* upload_defoult_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C5480642163695AD007CE543 /* upload_defoult_bg.png */; };
+		C55259A816D77933006C2CC2 /* ELCAlbumPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55259A716D77933006C2CC2 /* ELCAlbumPickerViewController.m */; };
 		C55EA77216A56A2200216691 /* personal_album_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = C55EA76F16A56A2200216691 /* personal_album_btn.png */; };
 		C55EA77316A56A2200216691 /* personal_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = C55EA77016A56A2200216691 /* personal_setting.png */; };
 		C55EA77416A56A2200216691 /* personal_slogn.png in Resources */ = {isa = PBXBuildFile; fileRef = C55EA77116A56A2200216691 /* personal_slogn.png */; };
@@ -563,8 +564,6 @@
 		61907A5815EB8B5B00324A6B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		61EE781015DE33640007C158 /* DeleteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteController.h; path = External/ELCImagePicker/DeleteController.h; sourceTree = "<group>"; };
 		61EE781115DE33640007C158 /* DeleteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeleteController.m; path = External/ELCImagePicker/DeleteController.m; sourceTree = "<group>"; };
-		61EE781215DE33640007C158 /* ELCAlbumPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ELCAlbumPickerController.h; path = External/ELCImagePicker/ELCAlbumPickerController.h; sourceTree = "<group>"; };
-		61EE781315DE33640007C158 /* ELCAlbumPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ELCAlbumPickerController.m; path = External/ELCImagePicker/ELCAlbumPickerController.m; sourceTree = "<group>"; };
 		61EE781515DE33640007C158 /* ELCAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ELCAsset.h; path = External/ELCImagePicker/ELCAsset.h; sourceTree = "<group>"; };
 		61EE781615DE33640007C158 /* ELCAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ELCAsset.m; path = External/ELCImagePicker/ELCAsset.m; sourceTree = "<group>"; };
 		61EE781715DE33640007C158 /* ELCAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ELCAssetCell.h; path = External/ELCImagePicker/ELCAssetCell.h; sourceTree = "<group>"; };
@@ -744,6 +743,8 @@
 		C54105531675E0520063A1BD /* pop_up_btn_L.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_up_btn_L.png; sourceTree = "<group>"; };
 		C54105541675E0520063A1BD /* pop_up_L.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop_up_L.png; sourceTree = "<group>"; };
 		C5480642163695AD007CE543 /* upload_defoult_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload_defoult_bg.png; sourceTree = "<group>"; };
+		C55259A616D77933006C2CC2 /* ELCAlbumPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ELCAlbumPickerViewController.h; path = External/ELCImagePicker/ELCAlbumPickerViewController.h; sourceTree = "<group>"; };
+		C55259A716D77933006C2CC2 /* ELCAlbumPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ELCAlbumPickerViewController.m; path = External/ELCImagePicker/ELCAlbumPickerViewController.m; sourceTree = "<group>"; };
 		C55EA76F16A56A2200216691 /* personal_album_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personal_album_btn.png; sourceTree = "<group>"; };
 		C55EA77016A56A2200216691 /* personal_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personal_setting.png; sourceTree = "<group>"; };
 		C55EA77116A56A2200216691 /* personal_slogn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personal_slogn.png; sourceTree = "<group>"; };
@@ -1541,8 +1542,8 @@
 				C501610A1640BFDF00875B12 /* AlbumControllerManager.m */,
 				61EE781015DE33640007C158 /* DeleteController.h */,
 				61EE781115DE33640007C158 /* DeleteController.m */,
-				61EE781215DE33640007C158 /* ELCAlbumPickerController.h */,
-				61EE781315DE33640007C158 /* ELCAlbumPickerController.m */,
+				C55259A616D77933006C2CC2 /* ELCAlbumPickerViewController.h */,
+				C55259A716D77933006C2CC2 /* ELCAlbumPickerViewController.m */,
 				61EE781515DE33640007C158 /* ELCAsset.h */,
 				61EE781615DE33640007C158 /* ELCAsset.m */,
 				61EE781715DE33640007C158 /* ELCAssetCell.h */,
@@ -3081,6 +3082,7 @@
 				C58A04DA16BF951B00A9E579 /* SCPCacheManager.m in Sources */,
 				C58A04DB16BF951B00A9E579 /* SCPLoginPridictive.m in Sources */,
 				C58A04DC16BF951B00A9E579 /* SCPPerfrenceStoreManager.m in Sources */,
+				C55259A816D77933006C2CC2 /* ELCAlbumPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

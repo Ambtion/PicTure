@@ -1,15 +1,17 @@
 //
-//  AlbumPickerController.h
+//  ELCAlbumPickerViewController.h
+//  SohuCloudPics
 //
-//  Created by Matt Tuzzolo on 2/15/11.
-//  Copyright 2011 ELC Technologies. All rights reserved.
+//  Created by sohu on 13-2-22.
+//
 //
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "DeleteController.h"
 
-@interface ELCAlbumPickerController : UIViewController<UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource> {
+@interface ELCAlbumPickerViewController : UIViewController<UIAlertViewDelegate,
+    UITableViewDelegate,UITableViewDataSource> {
 	
 	NSMutableArray *assetGroups;
 	NSOperationQueue *queue;
@@ -24,4 +26,3 @@
 @property (nonatomic,retain ) ALAssetsLibrary * library;
 -(void)selectedAssets:(NSArray*)_assets;
 @end
-

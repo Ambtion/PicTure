@@ -1,16 +1,17 @@
 //
-//  AlbumPickerController.m
+//  ELCAlbumPickerViewController.m
+//  SohuCloudPics
 //
-//  Created by Matt Tuzzolo on 2/15/11.
-//  Copyright 2011 ELC Technologies. All rights reserved.
+//  Created by sohu on 13-2-22.
+//
 //
 
-#import "ELCAlbumPickerController.h"
+#import "ELCAlbumPickerViewController.h"
 #import "ELCImagePickerController.h"
 #import "ELCAssetTablePicker.h"
 #import "SCPMenuNavigationController.h"
 
-@implementation ELCAlbumPickerController
+@implementation ELCAlbumPickerViewController
 
 @synthesize parent, assetGroups,library;
 @synthesize delController;
@@ -22,12 +23,11 @@
     
     [super viewDidLoad];
     [self customizeNavigation];
-    self.mytableView = [[[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain] autorelease];
+    self.mytableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
     self.mytableView.delegate = self;
     self.mytableView.dataSource  = self;
     CGRect rect = self.mytableView.frame;
-    rect.size.height = self.view.frame.size.height - 121 + 44;
-    rect.origin.y -= 44;
+    rect.size.height = self.view.frame.size.height - 121 ;
     self.mytableView.frame = rect;
     [self.view addSubview:self.mytableView];
     UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
@@ -45,7 +45,7 @@
 	[self.navigationItem setLeftBarButtonItem:cancelButtonItem];
     [cancelButtonItem release];
     [self.navigationItem setTitle:@"相册"];
-
+    
 }
 
 - (void)customizeNavigationWhenALbumCannotRead
@@ -75,7 +75,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-//    [self readAlbum];
+    //    [self readAlbum];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
@@ -182,7 +182,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-//    NSLog(@"1::%@, offset:%f",NSStringFromCGRect(self.tableView.frame),self.tableView.contentOffset.y);
+    //    NSLog(@"1::%@, offset:%f",NSStringFromCGRect(self.tableView.frame),self.tableView.contentOffset.y);
 	ELCAssetTablePicker *picker = [[ELCAssetTablePicker alloc] initWithNibName:@"ELCAssetTablePicker" bundle:[NSBundle mainBundle]];
 	picker.parent = self;
     // Move me
@@ -192,7 +192,7 @@
     self.delController.Grouptitle  = [picker.assetGroup valueForProperty:ALAssetsGroupPropertyName];
 	[self.navigationController pushViewController:picker animated:YES];
 	[picker release];
-//    NSLog(@"2::%@, offset:%f",NSStringFromCGRect(self.tableView.frame),self.tableView.contentOffset.y);
+    //    NSLog(@"2::%@, offset:%f",NSStringFromCGRect(self.tableView.frame),self.tableView.contentOffset.y);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
@@ -218,5 +218,5 @@
     [super dealloc];
 }
 
-@end
 
+@end
