@@ -22,6 +22,13 @@
     [self customizeNavigation];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    CGRect rect = self.tableView.frame;
+    rect.size.height = self.view.frame.size.height - 121;
+    self.tableView.frame = rect;
+}
 - (void) customizeNavigation
 {
     UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];

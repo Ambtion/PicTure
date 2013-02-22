@@ -40,10 +40,11 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     CGRect rect = self.view.frame;
-    rect.size.height = self.view.frame.size.height - 121;
+    rect.size.height = self.view.frame.size.height - 121 ;
     self.view.frame = rect;
-}
+g}
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
