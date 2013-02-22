@@ -18,8 +18,9 @@
 @synthesize selectedAssetsLabel;
 @synthesize assetGroup, elcAssets;
 @synthesize delController;
+
 -(void)viewDidLoad {
-        
+    
 	[self.tableView setSeparatorColor:[UIColor clearColor]];
 	[self.tableView setAllowsSelection:NO];
     [self.navigationItem setTitle:@"图片"];
@@ -27,22 +28,19 @@
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     self.elcAssets = tempArray;
     [tempArray release];
-	
 	UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)] autorelease];
 	[self.navigationItem setRightBarButtonItem:doneButtonItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
     [self preparePhotos];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
     CGRect rect = self.view.frame;
-    rect.size.height = self.view.frame.size.height - 121 ;
+    rect.size.height = self.view.frame.size.height - 121;
     self.view.frame = rect;
 }
 

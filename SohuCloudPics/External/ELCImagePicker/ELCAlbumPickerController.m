@@ -14,21 +14,28 @@
 
 @synthesize parent, assetGroups,library;
 @synthesize delController;
+@synthesize tableView = _tableView;
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     [self customizeNavigation];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-}
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    self.tableView = [[[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain] autorelease];
+    self.tableView.delegate = self;
+    self.tableView.dataSource  = self;
     CGRect rect = self.tableView.frame;
-    rect.size.height = self.view.frame.size.height - 121;
+    rect.size.height = self.view.frame.size.height - 121 + 44;
+    rect.origin.y -= 44;
     self.tableView.frame = rect;
+    [self.view addSubview:self.tableView];
+    UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
+    self.tableView.tableHeaderView = view;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [self readAlbum];
 }
+
 - (void) customizeNavigation
 {
     UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
@@ -38,6 +45,7 @@
 	[self.navigationItem setLeftBarButtonItem:cancelButtonItem];
     [cancelButtonItem release];
     [self.navigationItem setTitle:@"相册"];
+
 }
 
 - (void)customizeNavigationWhenALbumCannotRead
@@ -67,8 +75,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-  
-    [self readAlbum];
+//    [self readAlbum];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
@@ -121,6 +128,7 @@
 	}
     [self selectedAssets:selectedAssetsImages];
 }
+
 -(void)cancelAction:(id)sender
 {
     [((ELCImagePickerController *)self.parent) cancelImagePicker];
@@ -156,8 +164,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
-    
     // Get count
     if (assetGroups.count > indexPath.row) {
         ALAssetsGroup * g = (ALAssetsGroup*)[assetGroups objectAtIndex:indexPath.row];
@@ -174,17 +182,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
+//    NSLog(@"1::%@, offset:%f",NSStringFromCGRect(self.tableView.frame),self.tableView.contentOffset.y);
 	ELCAssetTablePicker *picker = [[ELCAssetTablePicker alloc] initWithNibName:@"ELCAssetTablePicker" bundle:[NSBundle mainBundle]];
 	picker.parent = self;
-    
     // Move me
-        picker.assetGroup = [assetGroups objectAtIndex:indexPath.row];
+    picker.assetGroup = [assetGroups objectAtIndex:indexPath.row];
     [picker.assetGroup setAssetsFilter:[ALAssetsFilter allPhotos]];
     picker.delController = self.delController;
     self.delController.Grouptitle  = [picker.assetGroup valueForProperty:ALAssetsGroupPropertyName];
 	[self.navigationController pushViewController:picker animated:YES];
-    
 	[picker release];
+//    NSLog(@"2::%@, offset:%f",NSStringFromCGRect(self.tableView.frame),self.tableView.contentOffset.y);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -201,14 +209,10 @@
     // Relinquish ownership any cached data, images, etc that aren't in use.
 }
 
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.tableView = nil;
     self.delController = nil;
     [assetGroups release];
     [library release];

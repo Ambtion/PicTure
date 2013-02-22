@@ -85,7 +85,6 @@
     bgimageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"upload_defoult_bg.png"]];
     bgimageView.frame = CGRectMake((320 - 235)/2.f, 55, 235, 30);
     [imageView addSubview:bgimageView];
-    
 	// Do any additional setup after loading the view.
 }
 - (void)dealloc

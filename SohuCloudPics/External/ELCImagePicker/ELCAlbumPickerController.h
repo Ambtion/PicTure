@@ -9,7 +9,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "DeleteController.h"
 
-@interface ELCAlbumPickerController : UITableViewController<UIAlertViewDelegate> {
+@interface ELCAlbumPickerController : UIViewController<UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource> {
 	
 	NSMutableArray *assetGroups;
 	NSOperationQueue *queue;
@@ -17,11 +17,11 @@
     ALAssetsLibrary *library;
     BOOL _isReading;
 }
+@property (strong,nonatomic) UITableView * tableView;
 @property (strong,nonatomic) DeleteController *delController;
 @property (nonatomic, assign) id parent;
 @property (nonatomic, retain) NSMutableArray *assetGroups;
 @property (nonatomic,retain ) ALAssetsLibrary * library;
 -(void)selectedAssets:(NSArray*)_assets;
-
 @end
 

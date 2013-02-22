@@ -565,7 +565,6 @@
 		61EE781115DE33640007C158 /* DeleteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeleteController.m; path = External/ELCImagePicker/DeleteController.m; sourceTree = "<group>"; };
 		61EE781215DE33640007C158 /* ELCAlbumPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ELCAlbumPickerController.h; path = External/ELCImagePicker/ELCAlbumPickerController.h; sourceTree = "<group>"; };
 		61EE781315DE33640007C158 /* ELCAlbumPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ELCAlbumPickerController.m; path = External/ELCImagePicker/ELCAlbumPickerController.m; sourceTree = "<group>"; };
-		61EE781415DE33640007C158 /* ELCAlbumPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ELCAlbumPickerController.xib; path = External/ELCImagePicker/ELCAlbumPickerController.xib; sourceTree = "<group>"; };
 		61EE781515DE33640007C158 /* ELCAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ELCAsset.h; path = External/ELCImagePicker/ELCAsset.h; sourceTree = "<group>"; };
 		61EE781615DE33640007C158 /* ELCAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ELCAsset.m; path = External/ELCImagePicker/ELCAsset.m; sourceTree = "<group>"; };
 		61EE781715DE33640007C158 /* ELCAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ELCAssetCell.h; path = External/ELCImagePicker/ELCAssetCell.h; sourceTree = "<group>"; };
@@ -1544,7 +1543,6 @@
 				61EE781115DE33640007C158 /* DeleteController.m */,
 				61EE781215DE33640007C158 /* ELCAlbumPickerController.h */,
 				61EE781315DE33640007C158 /* ELCAlbumPickerController.m */,
-				61EE781415DE33640007C158 /* ELCAlbumPickerController.xib */,
 				61EE781515DE33640007C158 /* ELCAsset.h */,
 				61EE781615DE33640007C158 /* ELCAsset.m */,
 				61EE781715DE33640007C158 /* ELCAssetCell.h */,
