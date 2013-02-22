@@ -22,6 +22,7 @@
     
     [super viewDidLoad];
     [self customizeNavigation];
+    [self.tableView setHidden:YES];
     self.tableView = [[[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain] autorelease];
     self.tableView.delegate = self;
     self.tableView.dataSource  = self;
