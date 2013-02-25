@@ -8,10 +8,10 @@
 #import "ELCAssetTablePicker.h"
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
-//#import "ELCAlbumPickerController.h"
 #import "ELCAlbumPickerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCPAlertView_LoginTip.h"
+
 
 @implementation ELCAssetTablePicker
 
@@ -95,8 +95,6 @@
     {		
         [selectedAssetsImages addObject:elcAsset.asset];
 	}
-
-//    [(ELCAlbumPickerController*)self.parent selectedAssets:selectedAssetsImages];
     [(ELCAlbumPickerViewController*)self.parent selectedAssets:selectedAssetsImages];
 }
 

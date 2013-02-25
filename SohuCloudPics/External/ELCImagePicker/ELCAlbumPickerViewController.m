@@ -1,5 +1,4 @@
 //
-//  ELCAlbumPickerViewController.m
 //  SohuCloudPics
 //
 //  Created by sohu on 13-2-22.
@@ -7,9 +6,9 @@
 //
 
 #import "ELCAlbumPickerViewController.h"
-#import "ELCImagePickerController.h"
 #import "ELCAssetTablePicker.h"
 #import "SCPMenuNavigationController.h"
+#import "ELCImagePickerNavController.h"
 
 @implementation ELCAlbumPickerViewController
 
@@ -131,7 +130,7 @@
 
 -(void)cancelAction:(id)sender
 {
-    [((ELCImagePickerController *)self.parent) cancelImagePicker];
+    [((ELCImagePickerNavController *)self.parent) cancelImagePicker];
 }
 
 -(void)reloadTableView
@@ -141,7 +140,7 @@
 
 -(void)selectedAssets:(NSArray*)_assets
 {
-	[(ELCImagePickerController*)parent selectedAssets:_assets];
+    [(ELCImagePickerNavController*)parent selectedAssets:_assets];
 }
 #pragma mark -
 #pragma mark Table view data source

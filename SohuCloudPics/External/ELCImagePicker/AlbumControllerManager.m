@@ -16,10 +16,9 @@
        
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-//    ELCAlbumPickerController * albumController = [[[ELCAlbumPickerController alloc] init] autorelease];
     
     ELCAlbumPickerViewController * albumController = [[[ELCAlbumPickerViewController alloc] init] autorelease];
-    ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initWithRootViewController:albumController];
+     ELCImagePickerNavController *elcPicker = [[ELCImagePickerNavController alloc] initWithRootViewController:albumController];
     [albumController setParent:elcPicker];
     [elcPicker setDelegate:self];
 

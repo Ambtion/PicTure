@@ -1,5 +1,4 @@
 //
-//  ELCAlbumPickerViewController.h
 //  SohuCloudPics
 //
 //  Created by sohu on 13-2-22.

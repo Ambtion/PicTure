@@ -1,19 +1,20 @@
 //
-//  ELCImagePickerController.m
-//  ELCImagePickerDemo
+//  ELCImagePickerNavController.m
+//  SohuCloudPics
 //
-//  Created by Collin Ruffenach on 9/9/10.
-//  Copyright 2010 ELC Technologies. All rights reserved.
+//  Created by sohu on 13-2-25.
+//
 //
 
-#import "ELCImagePickerController.h"
+#import "ELCImagePickerNavController.h"
 #import "ELCAsset.h"
 #import "ELCAssetCell.h"
 #import "ELCAssetTablePicker.h"
 
 #import "SCPUploadController.h"
 #import "SCPAlertView_LoginTip.h"
-@implementation ELCImagePickerController
+
+@implementation ELCImagePickerNavController
 @synthesize backTo;
 @synthesize delegate;
 
@@ -25,6 +26,7 @@
     }
     return self;
 }
+
 -(void)cancelImagePicker {
     
 	if([delegate respondsToSelector:@selector(elcImagePickerControllerDidCancel:)]) {
@@ -52,7 +54,7 @@
         [workingDictionary setObject:[UIImage imageWithCGImage:[asset aspectRatioThumbnail] ]forKey:@"UIImagePickerControllerThumbnail"];
 		[returnArray addObject:workingDictionary];
 		
-		[workingDictionary release];	
+		[workingDictionary release];
 	}
 	
 	if([delegate respondsToSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:)]) {
@@ -67,7 +69,7 @@
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
-//    NSLog(@"ELC Image Picker received memory warning.");
+    //    NSLog(@"ELC Image Picker received memory warning.");
     [super didReceiveMemoryWarning];
 }
 
@@ -77,9 +79,9 @@
 
 
 - (void)dealloc {
-//    NSLog(@"deallocing ELCImagePickerController");
     self.backTo = nil;
     [super dealloc];
 }
 
 @end
+

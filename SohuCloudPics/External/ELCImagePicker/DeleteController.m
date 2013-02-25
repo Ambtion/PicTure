@@ -8,11 +8,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "DeleteController.h"
 #import "TabCell.h"
-
 #import "ImageEdtingController.h"
-
-#import "ELCImagePickerController.h"
-//#import "ELCAlbumPickerController.h"
+#import "ELCImagePickerNavController.h"
 #import "ELCAlbumPickerViewController.h"
 
 #define CONTENT_SIZE 84
@@ -208,8 +205,7 @@
 {
     [UIApplication sharedApplication].statusBarHidden = NO;
 
-    ELCImagePickerController * pic = (ELCImagePickerController *)[self.viewControllers objectAtIndex:0];
-//    ELCAlbumPickerController * alb = [pic.viewControllers objectAtIndex:0];
+    ELCImagePickerNavController * pic = (ELCImagePickerNavController *)[self.viewControllers objectAtIndex:0];
     ELCAlbumPickerViewController * alb = [pic.viewControllers objectAtIndex:0];
     ALAssetsLibrary * lib = alb.library;
     [lib assetForURL:assetURL resultBlock:^(ALAsset *asset) {

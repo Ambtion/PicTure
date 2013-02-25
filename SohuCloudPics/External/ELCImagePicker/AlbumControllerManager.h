@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-//#import "ELCAlbumPickerController.h"
+#import "ELCImagePickerNavController.h"
 #import "ELCAlbumPickerViewController.h"
-#import "ELCImagePickerController.h"
 
 @interface AlbumControllerManager : UINavigationController
 
