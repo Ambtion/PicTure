@@ -574,7 +574,6 @@
 		61EE781C15DE33640007C158 /* ELCAssetTablePicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ELCAssetTablePicker.xib; path = External/ELCImagePicker/ELCAssetTablePicker.xib; sourceTree = "<group>"; };
 		61EE781D15DE33640007C158 /* ELCImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ELCImagePickerController.h; path = External/ELCImagePicker/ELCImagePickerController.h; sourceTree = "<group>"; };
 		61EE781E15DE33640007C158 /* ELCImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ELCImagePickerController.m; path = External/ELCImagePicker/ELCImagePickerController.m; sourceTree = "<group>"; };
-		61EE781F15DE33640007C158 /* ELCImagePickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ELCImagePickerController.xib; path = External/ELCImagePicker/ELCImagePickerController.xib; sourceTree = "<group>"; };
 		61EE782015DE33640007C158 /* Overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Overlay.png; path = External/ELCImagePicker/Overlay.png; sourceTree = "<group>"; };
 		61EE782115DE33640007C158 /* Overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Overlay@2x.png"; path = "External/ELCImagePicker/Overlay@2x.png"; sourceTree = "<group>"; };
 		61EE782215DE33640007C158 /* TabCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabCell.h; path = External/ELCImagePicker/TabCell.h; sourceTree = "<group>"; };
@@ -1554,7 +1553,6 @@
 				61EE781C15DE33640007C158 /* ELCAssetTablePicker.xib */,
 				61EE781D15DE33640007C158 /* ELCImagePickerController.h */,
 				61EE781E15DE33640007C158 /* ELCImagePickerController.m */,
-				61EE781F15DE33640007C158 /* ELCImagePickerController.xib */,
 				61EE782215DE33640007C158 /* TabCell.h */,
 				61EE782315DE33640007C158 /* TabCell.m */,
 			);

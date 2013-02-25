@@ -61,7 +61,6 @@
     
     SCPUploadController * ctrl = [[[SCPUploadController alloc] initWithImageToUpload:returnArray :self.backTo] autorelease];
     [self.navigationController pushViewController:ctrl animated:YES];
-    
 }
 
 #pragma mark -
