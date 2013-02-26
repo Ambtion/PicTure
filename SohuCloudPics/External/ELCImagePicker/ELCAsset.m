@@ -6,13 +6,12 @@
 //
 
 #import "ELCAsset.h"
-#import "ELCAssetTablePicker.h"
+#import "ELCAssetTablePickerView.h"
 #import "SCPAlertView_LoginTip.h"
 
 
 @implementation ELCAsset
 
-//@synthesize asset;
 @synthesize parent;
 @synthesize toggleDelegate;
 @synthesize overlayView = _overlayView;
@@ -68,7 +67,6 @@
     
     //图片点击的时候
 //    NSLog(@"self %@",_asset);
-//    NSLog(@"toggleSelection %d",self.parent == nil && (!_overlayView.hidden));
     if(self.parent == nil && (!_overlayView.hidden)){
         if(toggleDelegate){
             _overlayView.hidden = !_overlayView.hidden;
@@ -78,7 +76,7 @@
         }
         return;
     }
-    if([(ELCAssetTablePicker*)self.parent totalSelectedAssets] >= 10 && _overlayView.hidden) {
+    if([(ELCAssetTablePickerView*)self.parent totalSelectedAssets] >= 10 && _overlayView.hidden) {
         SCPAlertView_LoginTip * tip = [[SCPAlertView_LoginTip alloc] initWithTitle:@"选择数量已达上限" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [tip show];
         [tip release];

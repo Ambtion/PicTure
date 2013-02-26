@@ -6,7 +6,7 @@
 //
 
 #import "ELCAlbumPickerViewController.h"
-#import "ELCAssetTablePicker.h"
+#import "ELCAssetTablePickerView.h"
 #import "SCPMenuNavigationController.h"
 #import "ELCImagePickerNavController.h"
 
@@ -26,10 +26,11 @@
     self.mytableView.delegate = self;
     self.mytableView.dataSource  = self;
     CGRect rect = self.mytableView.frame;
-    rect.size.height = self.view.frame.size.height - 121 ;
+    rect.origin.y -= 20;
+    rect.size.height = self.view.frame.size.height - 121 + 20;
     self.mytableView.frame = rect;
     [self.view addSubview:self.mytableView];
-    UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
+    UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44 + 20)] autorelease];
     self.mytableView.tableHeaderView = view;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [self readAlbum];
@@ -179,10 +180,10 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-    //    NSLog(@"1::%@, offset:%f",NSStringFromCGRect(self.tableView.frame),self.tableView.contentOffset.y);
-	ELCAssetTablePicker *picker = [[ELCAssetTablePicker alloc] initWithNibName:@"ELCAssetTablePicker" bundle:[NSBundle mainBundle]];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ELCAssetTablePickerView *picker = [[ELCAssetTablePickerView alloc] init];
 	picker.parent = self;
     // Move me
     picker.assetGroup = [assetGroups objectAtIndex:indexPath.row];

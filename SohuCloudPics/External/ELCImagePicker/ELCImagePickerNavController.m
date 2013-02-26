@@ -9,8 +9,6 @@
 #import "ELCImagePickerNavController.h"
 #import "ELCAsset.h"
 #import "ELCAssetCell.h"
-#import "ELCAssetTablePicker.h"
-
 #import "SCPUploadController.h"
 #import "SCPAlertView_LoginTip.h"
 

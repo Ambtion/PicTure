@@ -1,11 +1,12 @@
 //
-//  AssetTablePicker.m
+//  ELCAssetTablePickerViewController.m
+//  SohuCloudPics
 //
-//  Created by Matt Tuzzolo on 2/15/11.
-//  Copyright 2011 ELC Technologies. All rights reserved.
+//  Created by sohu on 13-2-26.
+//
 //
 
-#import "ELCAssetTablePicker.h"
+#import "ELCAssetTablePickerView.h"
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
 #import "ELCAlbumPickerViewController.h"
@@ -13,17 +14,29 @@
 #import "SCPAlertView_LoginTip.h"
 
 
-@implementation ELCAssetTablePicker
+@implementation ELCAssetTablePickerView
 
 @synthesize parent;
-@synthesize selectedAssetsLabel;
 @synthesize assetGroup, elcAssets;
 @synthesize delController;
+@synthesize tableView = _tableView;
 
 -(void)viewDidLoad {
     
-	[self.tableView setSeparatorColor:[UIColor clearColor]];
+    self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
+    self.tableView.delegate = self;
+    self.tableView.dataSource  = self;
+    CGRect rect = self.tableView.frame;
+    rect.origin.y -= 20;
+    rect.size.height = self.view.frame.size.height - 121 + 20;
+    self.tableView.frame = rect;
+    [self.view addSubview:self.tableView];
+    UIView * view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44 + 20)] autorelease];
+    view.backgroundColor = [UIColor clearColor];
+    self.tableView.tableHeaderView = view;
 	[self.tableView setAllowsSelection:NO];
+    [self.tableView setSeparatorColor:[UIColor clearColor]];
+    self.tableView.backgroundColor = [UIColor clearColor];
     [self.navigationItem setTitle:@"图片"];
     
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
@@ -38,23 +51,16 @@
     [self preparePhotos];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    CGRect rect = self.view.frame;
-    rect.size.height = self.view.frame.size.height - 121;
-    self.view.frame = rect;
-}
-
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
     [self.navigationController popViewControllerAnimated:NO];
 }
 
 -(void)preparePhotos {
-
+    
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop)
-     {         
+     {
          if(result == nil){
              return;
          }
@@ -90,9 +96,9 @@
 - (void) doneAction:(id)sender {
 	
 	NSMutableArray *selectedAssetsImages = [[[NSMutableArray alloc] init] autorelease];
-	    
-	for(ELCAsset *elcAsset in self.delController.assetList) 
-    {		
+    
+	for(ELCAsset *elcAsset in self.delController.assetList)
+    {
         [selectedAssetsImages addObject:elcAsset.asset];
 	}
     [(ELCAlbumPickerViewController*)self.parent selectedAssets:selectedAssetsImages];
@@ -151,15 +157,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
-        
+    
     ELCAssetCell *cell = (ELCAssetCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (cell == nil) 
-    {		        
+    
+    if (cell == nil)
+    {
         cell = [[[ELCAssetCell alloc] initWithAssets:[self assetsForIndexPath:indexPath] reuseIdentifier:CellIdentifier] autorelease];
-    }	
-	else 
-    {		
+    }
+	else
+    {
 		[cell setAssets:[self assetsForIndexPath:indexPath]];
 	}
     
@@ -174,18 +180,18 @@
 - (int)totalSelectedAssets
 {
     int count = 0;
-    for(ELCAsset *asset in self.elcAssets) 
+    for(ELCAsset *asset in self.elcAssets)
     {
-		if([asset selected]) 
-        {            
-            count++;	
+		if([asset selected])
+        {
+            count++;
 		}
 	}
     
     return count;
 }
 
-- (void)dealloc 
+- (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     for (ELCAsset *asset in self.elcAssets) {
@@ -193,8 +199,7 @@
     }
     self.elcAssets = nil;
     self.delController = nil;
-    [selectedAssetsLabel release];
-    [super dealloc];    
+    [super dealloc];
 }
 
 @end

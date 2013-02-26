@@ -204,7 +204,6 @@
 -(void)imageEdtingDidSave:(ImageEdtingController *)imageEdting imageinfo:(NSURL *)assetURL info:(id)info num:(NSInteger)tag
 {
     [UIApplication sharedApplication].statusBarHidden = NO;
-
     ELCImagePickerNavController * pic = (ELCImagePickerNavController *)[self.viewControllers objectAtIndex:0];
     ELCAlbumPickerViewController * alb = [pic.viewControllers objectAtIndex:0];
     ALAssetsLibrary * lib = alb.library;

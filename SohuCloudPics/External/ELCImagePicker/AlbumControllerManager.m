@@ -13,17 +13,16 @@
 
 - (id)initWithpresentController:(id)controller
 {
-       
+    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    
     ELCAlbumPickerViewController * albumController = [[[ELCAlbumPickerViewController alloc] init] autorelease];
-     ELCImagePickerNavController *elcPicker = [[ELCImagePickerNavController alloc] initWithRootViewController:albumController];
+    ELCImagePickerNavController * elcPicker = [[ELCImagePickerNavController alloc] initWithRootViewController:albumController];
     [albumController setParent:elcPicker];
     [elcPicker setDelegate:self];
-
+    
     DeleteController *delCtrl = [[[DeleteController alloc] initWithNibName:nil bundle:nil] autorelease];
-    [delCtrl addChildViewController:elcPicker];
+    delCtrl.viewControllers  = [NSArray arrayWithObject:elcPicker];
     albumController.delController = delCtrl;
     elcPicker.backTo = controller;
     self = [super initWithRootViewController:delCtrl];
@@ -37,7 +36,6 @@
 
 - (UIViewController * )popViewControllerAnimated:(BOOL)animated
 {
-//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     UIViewController * tc = [super popViewControllerAnimated:animated];
     return tc;
 }
