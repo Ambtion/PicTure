@@ -73,16 +73,16 @@
 }
 + (void)removeCachedAllImageData
 {
+    NSLog(@"%s",__FUNCTION__);
     NSUserDefaults *defults = [NSUserDefaults standardUserDefaults];
     for (int i = 0; i < 10; i++) {
         NSString * str = [NSString stringWithFormat:@"image_%d",i];
         [defults removeObjectForKey:str];
         str = [NSString stringWithFormat:@"image_array_%d",i];
         [defults removeObjectForKey:str];
-        
-        [defults synchronize];
     }
-    
+    [defults synchronize];
+
 }
 
 @end

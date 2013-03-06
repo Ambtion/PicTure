@@ -580,11 +580,9 @@
 
 -(void)closesActivityIndicator
 {
-    //    [_alview stopAnimating];
+    
     [_alview removeFromSuperview];
     [_alview release];
     [self.view setUserInteractionEnabled:YES];
 }
-#pragma mark orientation
-
 @end

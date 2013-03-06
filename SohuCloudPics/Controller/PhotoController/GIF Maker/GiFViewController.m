@@ -18,13 +18,12 @@
 @synthesize imageArray = _imageArray;
 - (void)dealloc
 {
-//    NSLog(@"%s start",__FUNCTION__);
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     self.imageArray = nil;
     [_gifResize release];
     [_gifDuration release];
     [_gifFitterBar release];
-
+    
     [_imageview release];
     [_boundsView release];
     [_playButton release];
@@ -32,9 +31,8 @@
     [_waitView release];
     [_saveButton release];
     [super dealloc];
-//    NSLog(@"%s start end",__FUNCTION__);
- 
 }
+
 #pragma mark -
 #pragma mark init
 -(id)initWithImages:(NSArray*) array andDurationTimer:(Float64)time :(id)controller
@@ -68,7 +66,7 @@
     [self addPlayButton];
     [self addViewBar];
     [self addTabBar];
-//    NSLog(@"self Frame:%@",NSStringFromCGRect(self.view.frame));
+    //    NSLog(@"self Frame:%@",NSStringFromCGRect(self.view.frame));
     
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -97,7 +95,22 @@
     _imageview.animationImages = self.imageArray;
     _imageview.animationRepeatCount = 1;
     _imageview.animationDuration = _durationTime;
+    UITapGestureRecognizer * gesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureOnImageView:)] autorelease];
+    [_imageview addGestureRecognizer:gesture];
+    [_imageview setUserInteractionEnabled:YES];
+    gesture.delegate = self;
     [_boundsView addSubview:_imageview];
+}
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if ([touch.view isKindOfClass:[UIButton class]])
+        return NO;
+    return YES;
+}
+-(void)tapGestureOnImageView:(id)sender
+{
+    if (!_imageview.isAnimating) return;
+    [self stopPlay];
 }
 -(void)addPlayButton
 {
@@ -112,11 +125,18 @@
 }
 -(void)play:(UIButton*)button
 {
-    [self.view setUserInteractionEnabled:NO];
+    //    [self.view setUserInteractionEnabled:NO];
     [_imageview startAnimating];
     button.hidden = YES;
     [self performSelector:@selector(showPlayButton) withObject:nil afterDelay:_imageview.animationDuration];
-}    
+}
+-(void)stopPlay
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showPlayButton) object:nil];
+    [_imageview stopAnimating];
+    [self showPlayButton];
+}
+
 -(void)showPlayButton
 {
     [self.view setUserInteractionEnabled:YES];
@@ -150,7 +170,7 @@
     [self.view addSubview:bgview];
     
     UIButton* cutButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cutButton.tag = 1000; 
+    cutButton.tag = 1000;
     [cutButton setBackgroundImage:[UIImage imageNamed:@"resize_normal.png"] forState:UIControlStateNormal];
     [cutButton setBackgroundImage:[UIImage imageNamed:@"resize_normal.png"] forState:UIControlStateHighlighted];
     [cutButton addTarget:self action:@selector(tabBarAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -168,15 +188,15 @@
     [bgview addSubview:translate];
     
     UIButton * fpbutton = [UIButton buttonWithType:UIButtonTypeCustom];
-    fpbutton.tag = 1002; 
+    fpbutton.tag = 1002;
     [fpbutton addTarget:self action:@selector(tabBarAction:) forControlEvents:UIControlEventTouchUpInside];
     fpbutton.frame = CGRectMake(160 + 24,4, 41, 41);
     [fpbutton setBackgroundImage:[UIImage imageNamed:@"speed_normal.png"] forState:UIControlStateNormal];
     [fpbutton setBackgroundImage:[UIImage imageNamed:@"speed_normal.png"] forState:UIControlStateHighlighted];
     [bgview addSubview:fpbutton];
-
+    
     UIButton* _filterbutton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _filterbutton.tag = 1003; 
+    _filterbutton.tag = 1003;
     _filterbutton.frame = CGRectMake(240 + 3, 4 , 62, 41);
     [self setFilterBackImage:_filterbutton];
     [_filterbutton addTarget:self action:@selector(tabBarAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -184,7 +204,7 @@
 }
 -(void)setFilterBackImage:(UIButton* )button
 {
-//    NSLog(@"setFilterBackImage");
+    //    NSLog(@"setFilterBackImage");
     if (isHiddenFitter) {
         [button setBackgroundImage:[UIImage imageNamed:@"特效.png"] forState:UIControlStateNormal];
         [button setBackgroundImage:[UIImage imageNamed:@"特效-2.png"] forState:UIControlStateHighlighted];
@@ -207,14 +227,14 @@
     
     [fpbutton setBackgroundImage:[UIImage imageNamed:@"speed_normal.png"] forState:UIControlStateNormal];
     [fpbutton setBackgroundImage:[UIImage imageNamed:@"speed_normal.png"] forState:UIControlStateHighlighted];
-
+    
 }
 -(void)tabBarAction:(UIButton*)button
 {
+    [self stopPlay];
     switch (button.tag) {
         case 1000:
             //Resize
-            
             [self initGifResize];
             if (_gifResize.view.superview) {
                 [button setBackgroundImage:[UIImage imageNamed:@"resize_normal.png"] forState:UIControlStateNormal];
@@ -233,8 +253,6 @@
                     UIButton* button = (UIButton*)[bgview viewWithTag:1003];
                     [self setFilterBackImage:button];
                 }
-                
-                //add self view
                 [button setBackgroundImage:[UIImage imageNamed:@"resize_press.png"] forState:UIControlStateNormal];
                 [button setBackgroundImage:[UIImage imageNamed:@"resize_press.png"] forState:UIControlStateHighlighted];
                 [self.view addSubview:_gifResize.view];
@@ -251,7 +269,7 @@
             if (_gifDuration.view.superview) {
                 [button setBackgroundImage:[UIImage imageNamed:@"speed_normal.png"] forState:UIControlStateNormal];
                 [button setBackgroundImage:[UIImage imageNamed:@"speed_normal.png"] forState:UIControlStateHighlighted];
-
+                
                 [_gifDuration.view removeFromSuperview];
             }else {
                 if (_gifResize.view.superview ) {
@@ -266,7 +284,7 @@
                 }
                 [button setBackgroundImage:[UIImage imageNamed:@"speed_press.png"] forState:UIControlStateNormal];
                 [button setBackgroundImage:[UIImage imageNamed:@"speed_press.png"] forState:UIControlStateHighlighted];
-
+                
                 [self.view addSubview:_gifDuration.view];
             }
             break;
@@ -304,12 +322,10 @@
         [_gifResize setBackImage:[UIImage imageNamed:@"resize_bg.png"]];
         _gifResize.delegate = self;
     }
-
 }
 -(void)initGifDuration
 {
     if (_gifDuration == nil) {
-        
         NSArray* Narray = [NSArray arrayWithObjects:@"speed_10_normal.png",@"speed_15_normal.png",@"speed_20_normal.png", nil];
         NSArray* Sarray = [NSArray arrayWithObjects:@"speed_10_press.png",@"speed_15_press.png",@"speed_20_press.png", nil];
         CGRect rect = CGRectMake(92, self.view.frame.size.height - 112, 223, 62);
@@ -320,13 +336,15 @@
 }
 -(void)Ration
 {
+    [self stopPlay];
     CGAffineTransform newstransform = CGAffineTransformRotate(_imageview.transform, M_PI_2);
     _imageview.transform = newstransform;
     _rotate ++;
-    _rotate %= 4; 
+    _rotate %= 4;
 }
 -(void)GifDetail:(GifDetail *)controller actionAtindex:(NSInteger)index
 {
+    [self stopPlay];
     if (controller == _gifDuration) {
         CGFloat duration = 0;
         switch (index) {
@@ -336,44 +354,42 @@
             case 1:
                 duration = _durationTime * 2/ 3 ;
                 break;
-                case 2:
+            case 2:
                 duration = _durationTime / 2;
                 break;
             default:
                 break;
         }
-//        NSLog(@"_gifDuration %f",duration);
         _imageview.animationDuration = duration;
     }
+    
     if (controller == _gifResize) {
         CGFloat scale = 0.f;
         switch (index) {
             case 0:
-                scale = 135.f/_boundsView.frame.size.width; 
+                scale = 135.f/_boundsView.frame.size.width;
                 break;
             case 1:
-                scale = 202.f/_boundsView.frame.size.width; 
-
+                scale = 202.f/_boundsView.frame.size.width;
+                
                 break;
             case 2:
-                scale = 256.f/_boundsView.frame.size.width; 
+                scale = 256.f/_boundsView.frame.size.width;
                 break;
             default:
                 break;
         }
-//        NSLog(@"scale = 128.f/_imageview.frame.size.width ,%f",_boundsView.frame.size.width);
         _boundsView.transform = CGAffineTransformConcat(_boundsView.transform, CGAffineTransformMakeScale(scale, scale));
     }
 }
 -(void)fitterAction:(UIButton *)button
 {
+    [self stopPlay];
     if (button.tag == 500) {
-//        NSLog(@"fitterAction original");
+        //        NSLog(@"fitterAction original");
         _imageview.animationImages = self.imageArray;
         _imageview.image = [_imageview.animationImages objectAtIndex:0];
-
     }else {
-
         if (_activity == nil) {
             _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
             _activity.center = CGPointMake(36.5, 36.5);
@@ -387,39 +403,40 @@
 
 -(void)fitterwithFittername:(NSInteger)filternum
 {
-   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-       [self.view setUserInteractionEnabled:NO];
-       NSArray * array_s = [Filterlibrary cachedArrayDataForName:filternum];
-       if (array_s) {
-           dispatch_async(dispatch_get_main_queue(), ^{
-               _imageview.animationImages = array_s;
-               _imageview.image = [_imageview.animationImages objectAtIndex:0];
-               [_activity stopAnimating];
-               [_activity removeFromSuperview];
-               [self.view setUserInteractionEnabled:YES];
-           });
-           return ;
-       }
-       
-       NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
-       for (int i = 0; i < self.imageArray.count; i++) {
-           UIImage * image = [self.imageArray objectAtIndex:i];
-           [array addObject:[ImageUtil imageWithImage:image withMatrixNum:filternum]];
-       }
-       dispatch_async(dispatch_get_main_queue(), ^{
-           _imageview.animationImages = array;
-           _imageview.image = [_imageview.animationImages objectAtIndex:0];
-           [_activity stopAnimating];
-           [_activity removeFromSuperview];
-           [self.view setUserInteractionEnabled:YES];
-       });
-       [Filterlibrary storeCachedOAuthArrayData:array forName:filternum];
-   });
+    [self.view setUserInteractionEnabled:NO];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSArray * array_s = [Filterlibrary cachedArrayDataForName:filternum];
+        if (array_s) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _imageview.animationImages = array_s;
+                _imageview.image = [_imageview.animationImages objectAtIndex:0];
+                [_activity stopAnimating];
+                [_activity removeFromSuperview];
+                [self.view setUserInteractionEnabled:YES];
+            });
+            return ;
+        }
+        
+        NSMutableArray * array = [NSMutableArray arrayWithCapacity:0];
+        for (int i = 0; i < self.imageArray.count; i++) {
+            UIImage * image = [self.imageArray objectAtIndex:i];
+            [array addObject:[ImageUtil imageWithImage:image withMatrixNum:filternum]];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _imageview.animationImages = array;
+            _imageview.image = [_imageview.animationImages objectAtIndex:0];
+            [_activity stopAnimating];
+            [_activity removeFromSuperview];
+            [self.view setUserInteractionEnabled:YES];
+        });
+        [Filterlibrary storeCachedOAuthArrayData:array forName:filternum];
+    });
 }
 #pragma mark -
 #pragma mark gif Function TopBar
 -(void)gifbackTop:(UIButton*)button
 {
+    [Filterlibrary removeCachedAllImageData];
     [_controller dismissModalViewControllerAnimated:YES];
 }
 
@@ -439,13 +456,12 @@
     [gifmaker setGifFrame:_imageview.animationImages delay:delay];
     NSData * data = [[[NSData alloc] initWithData:[gifmaker saveAnimatedGif]] autorelease];
     [_alterView dismissWithClickedButtonIndex:0 animated:YES];
-
+    [Filterlibrary  removeCachedAllImageData];
     //Gif unlogin
     if (![SCPLoginPridictive isLogin]) {
         [_controller dismissModalViewControllerAnimated:YES];
         return;
     }
-    
     NSDictionary * dic = [NSDictionary dictionaryWithObjectsAndKeys:data,@"ImageData",_imageview.image,@"UIImagePickerControllerThumbnail",nil];
     [self.view setUserInteractionEnabled:YES];
     SCPUploadController *ctrl = [[[SCPUploadController alloc] initWithImageToUpload:[NSArray arrayWithObject:dic]:_controller] autorelease];
@@ -454,40 +470,27 @@
 }
 - (void)image:(UIImage *)image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
 {
-//    NSLog(@"%@",error);
+    //    NSLog(@"%@",error);
 }
 -(void)makeRation
 {
+    
     if (_rotate == 0) {
         return;
     }
-//    NSLog(@"makeRation start");
     _imageview.animationImages = [UIImage imageByRotate:_imageview.animationImages rotation:_rotate];
     _rotate = 0;
-//    NSLog(@"makeRation end");
 }
 -(void)makeResize
 {
     if (_imageview.frame.size.width == 256) {
         return;
     }
-//    NSLog(@"makeResize start");
+    //    NSLog(@"makeResize start");
     _imageview.animationImages = [UIImage imageByScalingProportionallyToSize:_imageview.animationImages :_imageview.bounds.size];
     CGRect rect = _imageview.frame;
     _imageview.transform = CGAffineTransformIdentity;
     _imageview.frame = rect;
-//    NSLog(@"makeResize end");
+    //    NSLog(@"makeResize end");
 }
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-//{
-//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-//}
-
 @end

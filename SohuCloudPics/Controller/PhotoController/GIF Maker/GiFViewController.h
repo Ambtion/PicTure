@@ -14,7 +14,7 @@
 #import "GifDetail.h"
 #import "FreeGifMaker.h"
 
-@interface GiFViewController : UIViewController<GifDetailDelegate,FitterDelegate>
+@interface GiFViewController : UIViewController<GifDetailDelegate,FitterDelegate,UIGestureRecognizerDelegate>
 {
     NSArray *_imageArray;
     UIView* _boundsView;
