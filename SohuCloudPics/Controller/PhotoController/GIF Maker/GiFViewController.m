@@ -30,7 +30,7 @@
     [_activity release];
     [_waitView release];
     [_saveButton release];
-    [super dealloc];
+    [super dealloc];    
 }
 
 #pragma mark -
@@ -52,22 +52,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [Filterlibrary removeCachedAllImageData];
     //reload gesture
     UIImageView *bgView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"camera_bg.png"]] autorelease];
     bgView.frame = self.view.bounds;
     [self.view addSubview:bgView];
-    UISwipeGestureRecognizer * right = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(gifbackTop:)];
+    UISwipeGestureRecognizer * right = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(gifbackTop:)] autorelease];
     right.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:right];
-    [right release];
     
     [self addboundsView];
     [self addPlayButton];
     [self addViewBar];
     [self addTabBar];
-    //    NSLog(@"self Frame:%@",NSStringFromCGRect(self.view.frame));
-    
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -436,13 +433,12 @@
 #pragma mark gif Function TopBar
 -(void)gifbackTop:(UIButton*)button
 {
-    [Filterlibrary removeCachedAllImageData];
+//    [Filterlibrary removeCachedAllImageData];
     [_controller dismissModalViewControllerAnimated:YES];
 }
 
 -(void)saveGif:(UIButton*)button
 {
-    
     SCPAlert_WaitView *  _alterView = [[[SCPAlert_WaitView alloc] initWithImage:[UIImage imageNamed:@"pop_alert.png"] text:@"制作中" withView: self.view] autorelease];
     [_alterView show];
     [self.view setUserInteractionEnabled:NO];
@@ -456,7 +452,6 @@
     [gifmaker setGifFrame:_imageview.animationImages delay:delay];
     NSData * data = [[[NSData alloc] initWithData:[gifmaker saveAnimatedGif]] autorelease];
     [_alterView dismissWithClickedButtonIndex:0 animated:YES];
-    [Filterlibrary  removeCachedAllImageData];
     //Gif unlogin
     if (![SCPLoginPridictive isLogin]) {
         [_controller dismissModalViewControllerAnimated:YES];

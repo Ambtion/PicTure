@@ -28,7 +28,6 @@
 }
 + (void)storeCachedOAuthArrayData:(NSArray *)image_array forName:(NSInteger)number
 {
-//    NSLog(@"storeCachedOAuthArrayData");
     NSString * str = [NSString stringWithFormat:@"image_array_%d",number];
     NSUserDefaults * defults = [NSUserDefaults standardUserDefaults];
     NSMutableArray * tempArray = [NSMutableArray arrayWithCapacity:0];
@@ -42,14 +41,12 @@
         }
     }
     [pool drain];
-//    NSLog(@"storeCachedOAuthArrayData %d",tempArray.count);
     [defults setObject:tempArray forKey:str];
     [defults synchronize];
     
 }
 + (NSArray *)cachedArrayDataForName:(NSInteger)number
 {
-    
     NSString * str = [NSString stringWithFormat:@"image_array_%d",number];
     NSUserDefaults *defults = [NSUserDefaults standardUserDefaults];
     NSArray *dataArray = [defults objectForKey:str];
@@ -62,18 +59,15 @@
             [pool drain];
             pool = [[NSAutoreleasePool alloc] init];
         }
-        
     }
     [pool drain];
     if (tempArray.count == 0) {
         return nil;
     }
-//    NSLog(@"cachedArrayDataForName %d",tempArray.count);
     return tempArray;
 }
 + (void)removeCachedAllImageData
 {
-    NSLog(@"%s",__FUNCTION__);
     NSUserDefaults *defults = [NSUserDefaults standardUserDefaults];
     for (int i = 0; i < 10; i++) {
         NSString * str = [NSString stringWithFormat:@"image_%d",i];
@@ -82,7 +76,7 @@
         [defults removeObjectForKey:str];
     }
     [defults synchronize];
-
+    
 }
 
 @end
