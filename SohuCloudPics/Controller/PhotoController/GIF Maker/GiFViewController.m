@@ -52,7 +52,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [Filterlibrary removeCachedAllImageData];
     //reload gesture
     UIImageView *bgView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"camera_bg.png"]] autorelease];
     bgView.frame = self.view.bounds;
@@ -70,6 +69,7 @@
 {
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController.navigationBar setHidden:YES];
+    [Filterlibrary removeCachedAllImageData];
 }
 
 #pragma addSubViews
