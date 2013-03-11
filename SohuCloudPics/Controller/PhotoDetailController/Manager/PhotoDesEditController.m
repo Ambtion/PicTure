@@ -42,7 +42,11 @@
 {
     if (self = [super init]) {
         self.originalDes = des;
+        if (photo_id){
         self.photo_id = photo_id;
+        }else{
+        self.photo_id = nil;
+        }
     }
     return self;
 }
